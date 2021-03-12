@@ -1,0 +1,11 @@
+# Default ignored files
+#/.idea/shelf/
+#/.idea/workspace.xml
+
+/.idea/
+
+# Project exclude paths
+/catraMMSLib/target/
+
+*.jar
+*.class
