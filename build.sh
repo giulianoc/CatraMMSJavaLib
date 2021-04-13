@@ -1,6 +1,8 @@
 #!/bin/bash
 
 mvn --projects catraMMSLib clean compile install
+
+echo "mvn install"
 mvn install:install-file -Dfile=catraMMSLib/target/catraMMSLib.jar -DgroupId=com.catra -DartifactId=catraMMSLib -Dversion=1.0.0-SNAPSHOT -Dpackaging=jar
 if [ $? -ne 0 ]; then
   exit 1

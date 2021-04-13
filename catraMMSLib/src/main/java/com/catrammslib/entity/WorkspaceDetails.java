@@ -42,6 +42,38 @@ public class WorkspaceDetails implements Serializable {
     // private List<Encoder> encoderList = new ArrayList<>();
 
     @Override
+    public String toString() {
+        return "WorkspaceDetails{" +
+                "workspaceKey=" + workspaceKey +
+                ", isEnabled=" + isEnabled +
+                ", name='" + name + '\'' +
+                ", maxEncodingPriority='" + maxEncodingPriority + '\'' +
+                ", encodingPeriod='" + encodingPeriod + '\'' +
+                ", maxIngestionsNumber=" + maxIngestionsNumber +
+                ", maxStorageInMB=" + maxStorageInMB +
+                ", usageInMB=" + usageInMB +
+                ", lastUsageInMBUpdate=" + lastUsageInMBUpdate +
+                ", languageCode='" + languageCode + '\'' +
+                ", creationDate=" + creationDate +
+                ", apiKey='" + apiKey + '\'' +
+                ", owner=" + owner +
+                ", defaultWorkspace=" + defaultWorkspace +
+                ", admin=" + admin +
+                ", createRemoveWorkspace=" + createRemoveWorkspace +
+                ", ingestWorkflow=" + ingestWorkflow +
+                ", createProfiles=" + createProfiles +
+                ", deliveryAuthorization=" + deliveryAuthorization +
+                ", shareWorkspace=" + shareWorkspace +
+                ", editMedia=" + editMedia +
+                ", editConfiguration=" + editConfiguration +
+                ", killEncoding=" + killEncoding +
+                ", cancelIngestionJob=" + cancelIngestionJob +
+                ", editEncodersPool=" + editEncodersPool +
+                ", applicationRecorder=" + applicationRecorder +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
