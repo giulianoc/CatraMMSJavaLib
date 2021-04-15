@@ -1287,7 +1287,8 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildRemoveJson(
             String label, String ingester,
-            List<Long> referenceMediaItemKeyList
+            List<Long> referenceMediaItemKeyList,
+            List<Long> referencePhysicalPathKeyList
     )
             throws Exception
     {
@@ -1303,7 +1304,7 @@ public class CatraMMSWorkflow {
 
             joParameters.put("Ingester", ingester);
 
-            if (referenceMediaItemKeyList != null)
+            if (referenceMediaItemKeyList != null && referenceMediaItemKeyList.size() > 0)
             {
                 JSONArray jsonReferencesArray = new JSONArray();
                 joParameters.put("References", jsonReferencesArray);
@@ -1316,12 +1317,32 @@ public class CatraMMSWorkflow {
                     joReference.put("ReferenceMediaItemKey", referenceMediaItemKey);
                 }
             }
+            else if (referencePhysicalPathKeyList != null && referencePhysicalPathKeyList.size() > 0)
+            {
+                JSONArray jsonReferencesArray = new JSONArray();
+                joParameters.put("References", jsonReferencesArray);
+
+                for(Long referencePhysicalPathKey: referencePhysicalPathKeyList)
+                {
+                    JSONObject joReference = new JSONObject();
+                    jsonReferencesArray.put(joReference);
+
+                    joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
+                }
+            }
+            else
+            {
+                String errorMessage = "Wrong input";
+                mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
 
             return joTask;
         }
         catch (Exception e)
         {
-            String errorMessage = "buildAddContentJson failed. Exception: " + e;
+            String errorMessage = "buildRemoveJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
@@ -1332,7 +1353,8 @@ public class CatraMMSWorkflow {
             String label, String title, List<String> tags, String ingester,
             String videoSpeedType, int videoSpeedSize,
             String encodingPriority,
-            String retention, JSONObject joUserData,
+            String mediaItemRetention, String physicalItemRetention,
+            JSONObject joUserData,
             String startPublishing, String endPublishing,
             List<String> referenceLabelList,
             List<Long> referenceMediaItemKeyList
@@ -1350,7 +1372,7 @@ public class CatraMMSWorkflow {
             joTask.put("Parameters", joParameters);
 
             setContentParameters(joParameters,
-                    title, ingester, retention, null,
+                    title, ingester, mediaItemRetention, physicalItemRetention,
                     tags, joUserData,
                     startPublishing, endPublishing,
                     null, null);

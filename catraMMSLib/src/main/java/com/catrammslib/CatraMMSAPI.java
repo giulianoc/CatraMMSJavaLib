@@ -355,7 +355,7 @@ public class CatraMMSAPI {
         return apiKey;
     }
 
-    public List<Object> login(boolean ldapEnabled, String username, String password)
+    public List<Object> login(boolean ldapEnabled, String username, String password, String remoteClientIPAddress)
             throws Exception
     {
         String mmsInfo;
@@ -365,24 +365,38 @@ public class CatraMMSAPI {
 
             String postBodyRequest = "";
 
+            JSONObject joBody = new JSONObject();
             if (ldapEnabled)
             {
+                joBody.put("Name", username);
+                joBody.put("Password", password);
+                if (remoteClientIPAddress != null && !remoteClientIPAddress.isEmpty())
+                    joBody.put("RemoteClientIPAddress", remoteClientIPAddress);
+                /*
                 postBodyRequest =
                         "{ "
                                 + "\"Name\": \"" + username + "\", "
                                 + "\"Password\": \"" + password + "\" "
                                 + "} "
                 ;
+                */
             }
             else
             {
+                joBody.put("EMail", username);
+                joBody.put("Password", password);
+                if (remoteClientIPAddress != null && !remoteClientIPAddress.isEmpty())
+                    joBody.put("RemoteClientIPAddress", remoteClientIPAddress);
+                /*
                 postBodyRequest =
                         "{ "
                                 + "\"EMail\": \"" + username + "\", "
                                 + "\"Password\": \"" + password + "\" "
                                 + "} "
                 ;
+                */
             }
+            postBodyRequest = joBody.toString(2);
 
             mLogger.info("login"
                     + ", mmsURL: " + mmsURL
