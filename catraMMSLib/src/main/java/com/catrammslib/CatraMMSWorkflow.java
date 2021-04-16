@@ -426,7 +426,7 @@ public class CatraMMSWorkflow {
     static public JSONObject buildFaceRecognitionJson(
             String label, String title, List<String> tags, String ingester,
             String retention, JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
             List<Long> referenceMediaItemKeyList,
             long faceRecognition_InitialFramesNumberToBeSkipped
@@ -601,7 +601,7 @@ public class CatraMMSWorkflow {
             String label, String title, List<String> tags, String ingester,
             Float instantInSeconds,
             String retention, JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
             List<Long> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
@@ -648,7 +648,7 @@ public class CatraMMSWorkflow {
             Long videoTrackNumber, Long audioTrackNumber, boolean forTheWorkflowEditor,
             String outputFileFormat,
             String retention, JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
             List<Long> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
@@ -732,7 +732,7 @@ public class CatraMMSWorkflow {
             String uniqueName, Boolean allowUniqueNameOverride,
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
-            String startPublishing, String endPublishing
+            Date startPublishing, Date endPublishing
     )
             throws Exception
     {
@@ -872,7 +872,7 @@ public class CatraMMSWorkflow {
             String label, String title, List<String> tags, String ingester,
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             Float maxDurationInSeconds, Float extraSecondsToCutWhenMaxDurationIsReached,
             String dependenciesToBeAddedToReferences,   // atTheBeginning, atTheEnd
             String uniqueName,
@@ -929,7 +929,7 @@ public class CatraMMSWorkflow {
             double startTimeInSeconds, double endTimeInSeconds, boolean keyFrameSeeking,
             Boolean fixEndTimeIfOvercomeDuration,
             String retention, JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
             List<Long> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
@@ -989,7 +989,7 @@ public class CatraMMSWorkflow {
             int maxWaitingForLastChunkInSeconds,
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
-            String startPublishing, String endPublishing
+            Date startPublishing, Date endPublishing
     )
             throws Exception
     {
@@ -1357,7 +1357,7 @@ public class CatraMMSWorkflow {
             String encodingPriority,
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
             List<Long> referenceMediaItemKeyList
     )
@@ -1407,7 +1407,7 @@ public class CatraMMSWorkflow {
             String mediaItemRetention, String physicalItemRetention,
             List<String> tags,
             JSONObject joUserData,
-            String startPublishing, String endPublishing,
+            Date startPublishing, Date endPublishing,
             String uniqueName, Boolean allowUniqueNameOverride
     )
             throws Exception
@@ -1438,8 +1438,11 @@ public class CatraMMSWorkflow {
 
             if (startPublishing!= null && endPublishing != null)
             {
-                joParameters.put("StartPublishing", startPublishing);
-                joParameters.put("EndPublishing", endPublishing);
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("StartPublishing", dateFormat.format(startPublishing));
+                joParameters.put("EndPublishing", dateFormat.format(endPublishing));
             }
 
             if (uniqueName != null)
