@@ -729,7 +729,9 @@ public class CatraMMSWorkflow {
             String sourceURL, String pushBinaryFileName,
             String variantOfReferencedLabel,
             String externalDeliveryTechnology, String externalDeliveryURL,
-            String uniqueName, Boolean allowUniqueNameOverride, String retention, JSONObject joUserData,
+            String uniqueName, Boolean allowUniqueNameOverride,
+            String mediaItemRetention, String physicalItemRetention,
+            JSONObject joUserData,
             String startPublishing, String endPublishing
     )
             throws Exception
@@ -769,7 +771,7 @@ public class CatraMMSWorkflow {
             else
             {
                 setContentParameters(joParameters,
-                        title, ingester, retention, null,
+                        title, ingester, mediaItemRetention, physicalItemRetention,
                         tags, joUserData,
                         startPublishing, endPublishing,
                         null, null);
@@ -859,7 +861,7 @@ public class CatraMMSWorkflow {
         }
         catch (Exception e)
         {
-            String errorMessage = "buildAddContentJson failed. Exception: " + e;
+            String errorMessage = "buildMediaCrossReferenceJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
@@ -914,7 +916,7 @@ public class CatraMMSWorkflow {
         }
         catch (Exception e)
         {
-            String errorMessage = "buildAddContentJson failed. Exception: " + e;
+            String errorMessage = "buildConcatDemuxJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
@@ -1125,7 +1127,7 @@ public class CatraMMSWorkflow {
         }
         catch (Exception e)
         {
-            String errorMessage = "buildAddContentJson failed. Exception: " + e;
+            String errorMessage = "buildEncodeJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
@@ -1391,7 +1393,7 @@ public class CatraMMSWorkflow {
         }
         catch (Exception e)
         {
-            String errorMessage = "buildAddContentJson failed. Exception: " + e;
+            String errorMessage = "buildVideoSpeedJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
