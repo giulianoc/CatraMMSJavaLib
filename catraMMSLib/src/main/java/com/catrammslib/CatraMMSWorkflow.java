@@ -2,6 +2,8 @@ package com.catrammslib;
 
 import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.utility.LiveProxyOutput;
+import com.catrammslib.utility.MediaItemKeyReference;
+import com.catrammslib.utility.UniqueNameReference;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -428,7 +430,7 @@ public class CatraMMSWorkflow {
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
             long faceRecognition_InitialFramesNumberToBeSkipped
     )
             throws Exception
@@ -453,7 +455,7 @@ public class CatraMMSWorkflow {
                     null,
                     referenceLabelList, referenceMediaItemKeyList,
                     null,
-                    null, null,
+                    null,
                     null);
 
             joParameters.put("CascadeName", "haarcascade_frontalface_alt_tree");
@@ -603,7 +605,7 @@ public class CatraMMSWorkflow {
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
     )
             throws Exception
@@ -627,7 +629,7 @@ public class CatraMMSWorkflow {
             setCommonParameters(joParameters,
                     null,
                     referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null, null,
+                    null,
                     null);
 
             joParameters.put("InstantInSeconds", instantInSeconds);
@@ -650,7 +652,7 @@ public class CatraMMSWorkflow {
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
     )
             throws Exception
@@ -674,7 +676,7 @@ public class CatraMMSWorkflow {
             setCommonParameters(joParameters,
                     null,
                     referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null, null,
+                    null,
                     null);
 
             if (outputFileFormat == null || outputFileFormat.isEmpty())
@@ -779,7 +781,7 @@ public class CatraMMSWorkflow {
                 setCommonParameters(joParameters,
                         null,
                         null, null, null,
-                        null, null,
+                        null,
                         null);
 
                 joParameters.put("FileFormat", fileFormat);
@@ -878,8 +880,8 @@ public class CatraMMSWorkflow {
             String uniqueName,
             Boolean allowUniqueNameOverride,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
-            List<String> referenceUniqueNameList, List<Boolean> errorIfContentNotFoundListForReferenceUniqueName,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
+            List<UniqueNameReference> referenceUniqueNameList,
             String waitForGlobalIngestionLabel
     )
             throws Exception
@@ -903,7 +905,7 @@ public class CatraMMSWorkflow {
             setCommonParameters(joParameters,
                     dependenciesToBeAddedToReferences,
                     referenceLabelList, referenceMediaItemKeyList, null,
-                    referenceUniqueNameList, errorIfContentNotFoundListForReferenceUniqueName,
+                    referenceUniqueNameList,
                     waitForGlobalIngestionLabel);
 
             if (maxDurationInSeconds != null)
@@ -931,7 +933,7 @@ public class CatraMMSWorkflow {
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
     )
             throws Exception
@@ -955,7 +957,7 @@ public class CatraMMSWorkflow {
             setCommonParameters(joParameters,
                     null,
                     referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null, null,
+                    null,
                     null);
 
             if (outputFileFormat != null)
@@ -1038,7 +1040,7 @@ public class CatraMMSWorkflow {
     static public JSONObject buildChangeFileFormat(
             String label, String outputFileFormat,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList
     )
             throws Exception
@@ -1056,7 +1058,7 @@ public class CatraMMSWorkflow {
             setCommonParameters(joParameters,
                     null,
                     referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null, null,
+                    null,
                     null);
 
             joParameters.put("OutputFileFormat", outputFileFormat);
@@ -1359,7 +1361,7 @@ public class CatraMMSWorkflow {
             JSONObject joUserData,
             Date startPublishing, Date endPublishing,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList
+            List<MediaItemKeyReference> referenceMediaItemKeyList
     )
             throws Exception
     {
@@ -1382,7 +1384,7 @@ public class CatraMMSWorkflow {
             setCommonParameters(joParameters,
                     null,
                     referenceLabelList, referenceMediaItemKeyList, null,
-                    null, null,
+                    null,
                     null);
 
             joParameters.put("VideoSpeedType", videoSpeedType);
@@ -1465,9 +1467,9 @@ public class CatraMMSWorkflow {
 
             String dependenciesToBeAddedToReferences,
             List<String> referenceLabelList,
-            List<Long> referenceMediaItemKeyList,
+            List<MediaItemKeyReference> referenceMediaItemKeyList,
             List<Long> referencePhysicalPathKeyList,
-            List<String> referenceUniqueNameList, List<Boolean> errorIfContentNotFoundListForReferenceUniqueName,
+            List<UniqueNameReference> referenceUniqueNameList,
             String waitForGlobalIngestionLabel
     )
             throws Exception
@@ -1507,12 +1509,16 @@ public class CatraMMSWorkflow {
                 JSONArray jsonReferencesArray = new JSONArray();
                 joParameters.put("References", jsonReferencesArray);
 
-                for(Long referenceMediaItemKey: referenceMediaItemKeyList)
+                for(MediaItemKeyReference mediaItemKeyReference: referenceMediaItemKeyList)
                 {
                     JSONObject joReference = new JSONObject();
                     jsonReferencesArray.put(joReference);
 
-                    joReference.put("ReferenceMediaItemKey", referenceMediaItemKey);
+                    joReference.put("ReferenceMediaItemKey", mediaItemKeyReference.getMediaItemKey());
+                    if (mediaItemKeyReference.getEncodingProfileKey() != null)
+                        joReference.put("ReferenceEncodingProfileKey", mediaItemKeyReference.getEncodingProfileKey());
+                    else if (mediaItemKeyReference.getEncodingProfileLabel() != null)
+                        joReference.put("ReferenceEncodingProfileLabel", mediaItemKeyReference.getEncodingProfileLabel());
                 }
             }
 
@@ -1537,16 +1543,20 @@ public class CatraMMSWorkflow {
 
                 for(int index = 0; index < referenceUniqueNameList.size(); index++)
                 {
-                    String referenceUniqueName = referenceUniqueNameList.get(index);
+                    UniqueNameReference referenceUniqueName = referenceUniqueNameList.get(index);
                     Boolean errorIfContentNotFound = true;
-                    if (errorIfContentNotFoundListForReferenceUniqueName != null)
-                        errorIfContentNotFound = errorIfContentNotFoundListForReferenceUniqueName.get(index);
+                    if (referenceUniqueName.getErrorIfContentNotFound() != null)
+                        errorIfContentNotFound = referenceUniqueName.getErrorIfContentNotFound();
 
                     JSONObject joReference = new JSONObject();
                     jsonReferencesArray.put(joReference);
 
                     joReference.put("ReferenceUniqueName", referenceUniqueName);
                     joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
+                    if (referenceUniqueName.getEncodingProfileKey() != null)
+                        joReference.put("ReferenceEncodingProfileKey", referenceUniqueName.getEncodingProfileKey());
+                    else if (referenceUniqueName.getEncodingProfileLabel() != null)
+                        joReference.put("ReferenceEncodingProfileLabel", referenceUniqueName.getEncodingProfileLabel());
                 }
             }
         }
