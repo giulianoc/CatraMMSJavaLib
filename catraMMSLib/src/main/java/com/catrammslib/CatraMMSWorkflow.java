@@ -2,8 +2,7 @@ package com.catrammslib;
 
 import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.utility.LiveProxyOutput;
-import com.catrammslib.utility.MediaItemKeyReference;
-import com.catrammslib.utility.UniqueNameReference;
+import com.catrammslib.utility.MediaItemReference;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -429,8 +428,7 @@ public class CatraMMSWorkflow {
             String label, String title, List<String> tags, String ingester,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
+            List<MediaItemReference> mediaItemReferenceList,
             long faceRecognition_InitialFramesNumberToBeSkipped
     )
             throws Exception
@@ -453,9 +451,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     null,
-                    referenceLabelList, referenceMediaItemKeyList,
-                    null,
-                    null,
+                    mediaItemReferenceList,
                     null);
 
             joParameters.put("CascadeName", "haarcascade_frontalface_alt_tree");
@@ -516,7 +512,7 @@ public class CatraMMSWorkflow {
             JSONObject joFrameContainingFace = CatraMMSWorkflow.buildFaceRecognitionJson(
                     frameContainingFaceImageReferenceLabel, title, imageTags, ingester,
                     imageRetention, null, null, null,
-                    null, null, faceRecognition_InitialFramesNumberToBeSkipped);
+                    null, faceRecognition_InitialFramesNumberToBeSkipped);
             jaImageGroupOfTasks.put(joFrameContainingFace);
 
             {
@@ -540,8 +536,7 @@ public class CatraMMSWorkflow {
                 joFrame = CatraMMSWorkflow.buildFrameJson(
                         frameImageReferenceLabel, title,
                         imageTags, ingester, frameCaptureSeconds, imageRetention,
-                        null, null, null,
-                        null, null, null
+                        null, null, null, null
                 );
                 joFrameContainingFaceOnError.put("Task", joFrame);
             }
@@ -604,9 +599,7 @@ public class CatraMMSWorkflow {
             Float instantInSeconds,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
-            List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -628,8 +621,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     null,
-                    referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null,
+                    mediaItemReferenceList,
                     null);
 
             joParameters.put("InstantInSeconds", instantInSeconds);
@@ -651,9 +643,7 @@ public class CatraMMSWorkflow {
             String outputFileFormat,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
-            List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -675,8 +665,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     null,
-                    referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null,
+                    mediaItemReferenceList,
                     null);
 
             if (outputFileFormat == null || outputFileFormat.isEmpty())
@@ -780,7 +769,6 @@ public class CatraMMSWorkflow {
 
                 setCommonParameters(joParameters,
                         null,
-                        null, null, null,
                         null,
                         null);
 
@@ -879,9 +867,7 @@ public class CatraMMSWorkflow {
             String dependenciesToBeAddedToReferences,   // atTheBeginning, atTheEnd
             String uniqueName,
             Boolean allowUniqueNameOverride,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
-            List<UniqueNameReference> referenceUniqueNameList,
+            List<MediaItemReference> mediaItemReferenceList,
             String waitForGlobalIngestionLabel
     )
             throws Exception
@@ -904,8 +890,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     dependenciesToBeAddedToReferences,
-                    referenceLabelList, referenceMediaItemKeyList, null,
-                    referenceUniqueNameList,
+                    mediaItemReferenceList,
                     waitForGlobalIngestionLabel);
 
             if (maxDurationInSeconds != null)
@@ -932,9 +917,7 @@ public class CatraMMSWorkflow {
             Boolean fixEndTimeIfOvercomeDuration,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
-            List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -956,8 +939,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     null,
-                    referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null,
+                    mediaItemReferenceList,
                     null);
 
             if (outputFileFormat != null)
@@ -1039,9 +1021,7 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildChangeFileFormat(
             String label, String outputFileFormat,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
-            List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -1057,8 +1037,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     null,
-                    referenceLabelList, referenceMediaItemKeyList, referencePhysicalPathKeyList,
-                    null,
+                    mediaItemReferenceList,
                     null);
 
             joParameters.put("OutputFileFormat", outputFileFormat);
@@ -1360,8 +1339,7 @@ public class CatraMMSWorkflow {
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
             Date startPublishing, Date endPublishing,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -1383,8 +1361,7 @@ public class CatraMMSWorkflow {
 
             setCommonParameters(joParameters,
                     null,
-                    referenceLabelList, referenceMediaItemKeyList, null,
-                    null,
+                    mediaItemReferenceList,
                     null);
 
             joParameters.put("VideoSpeedType", videoSpeedType);
@@ -1466,10 +1443,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters,
 
             String dependenciesToBeAddedToReferences,
-            List<String> referenceLabelList,
-            List<MediaItemKeyReference> referenceMediaItemKeyList,
-            List<Long> referencePhysicalPathKeyList,
-            List<UniqueNameReference> referenceUniqueNameList,
+            List<MediaItemReference> mediaItemReferenceList,
             String waitForGlobalIngestionLabel
     )
             throws Exception
@@ -1490,73 +1464,45 @@ public class CatraMMSWorkflow {
             if (dependenciesToBeAddedToReferences != null)
                 joParameters.put("DependenciesToBeAddedToReferences", dependenciesToBeAddedToReferences);
 
-            if (referenceLabelList != null && referenceLabelList.size() > 0)
+            if (mediaItemReferenceList != null && mediaItemReferenceList.size() > 0)
             {
                 JSONArray jsonReferencesArray = new JSONArray();
                 joParameters.put("References", jsonReferencesArray);
 
-                for(String referenceLabel: referenceLabelList)
+                for(MediaItemReference mediaItemReference: mediaItemReferenceList)
                 {
                     JSONObject joReference = new JSONObject();
                     jsonReferencesArray.put(joReference);
 
-                    joReference.put("ReferenceLabel", referenceLabel);
-                }
-            }
+                    if (mediaItemReference.getMediaItemKey() != null)
+                    {
+                        joReference.put("ReferenceMediaItemKey", mediaItemReference.getMediaItemKey());
+                        if (mediaItemReference.getEncodingProfileKey() != null)
+                            joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
+                        else if (mediaItemReference.getEncodingProfileLabel() != null)
+                            joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
+                    }
+                    else if (mediaItemReference.getUniqueName() != null)
+                    {
+                        Boolean errorIfContentNotFound = true;
+                        if (mediaItemReference.getErrorIfContentNotFound() != null)
+                            errorIfContentNotFound = mediaItemReference.getErrorIfContentNotFound();
 
-            if (referenceMediaItemKeyList != null && referenceMediaItemKeyList.size() > 0)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                for(MediaItemKeyReference mediaItemKeyReference: referenceMediaItemKeyList)
-                {
-                    JSONObject joReference = new JSONObject();
-                    jsonReferencesArray.put(joReference);
-
-                    joReference.put("ReferenceMediaItemKey", mediaItemKeyReference.getMediaItemKey());
-                    if (mediaItemKeyReference.getEncodingProfileKey() != null)
-                        joReference.put("ReferenceEncodingProfileKey", mediaItemKeyReference.getEncodingProfileKey());
-                    else if (mediaItemKeyReference.getEncodingProfileLabel() != null)
-                        joReference.put("ReferenceEncodingProfileLabel", mediaItemKeyReference.getEncodingProfileLabel());
-                }
-            }
-
-            if (referencePhysicalPathKeyList != null && referencePhysicalPathKeyList.size() > 0)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                for(Long referencePhysicalPathKey: referencePhysicalPathKeyList)
-                {
-                    JSONObject joReference = new JSONObject();
-                    jsonReferencesArray.put(joReference);
-
-                    joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
-                }
-            }
-
-            if (referenceUniqueNameList != null && referenceUniqueNameList.size() > 0)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                for(int index = 0; index < referenceUniqueNameList.size(); index++)
-                {
-                    UniqueNameReference referenceUniqueName = referenceUniqueNameList.get(index);
-                    Boolean errorIfContentNotFound = true;
-                    if (referenceUniqueName.getErrorIfContentNotFound() != null)
-                        errorIfContentNotFound = referenceUniqueName.getErrorIfContentNotFound();
-
-                    JSONObject joReference = new JSONObject();
-                    jsonReferencesArray.put(joReference);
-
-                    joReference.put("ReferenceUniqueName", referenceUniqueName);
-                    joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
-                    if (referenceUniqueName.getEncodingProfileKey() != null)
-                        joReference.put("ReferenceEncodingProfileKey", referenceUniqueName.getEncodingProfileKey());
-                    else if (referenceUniqueName.getEncodingProfileLabel() != null)
-                        joReference.put("ReferenceEncodingProfileLabel", referenceUniqueName.getEncodingProfileLabel());
+                        joReference.put("ReferenceUniqueName", mediaItemReference.getUniqueName());
+                        joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
+                        if (mediaItemReference.getEncodingProfileKey() != null)
+                            joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
+                        else if (mediaItemReference.getEncodingProfileLabel() != null)
+                            joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
+                    }
+                    else if (mediaItemReference.getPhysicalPathKey() != null)
+                    {
+                        joReference.put("ReferencePhysicalPathKey", mediaItemReference.getPhysicalPathKey());
+                    }
+                    else if (mediaItemReference.getIngestionLabel() != null)
+                    {
+                        joReference.put("ReferenceLabel", mediaItemReference.getIngestionLabel());
+                    }
                 }
             }
         }

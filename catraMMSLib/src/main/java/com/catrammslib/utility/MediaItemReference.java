@@ -5,18 +5,63 @@ import java.io.Serializable;
 /**
  * Created by multi on 13.06.18.
  */
-public class UniqueNameReference implements Serializable {
+public class MediaItemReference implements Serializable {
+
+    // option mediaItemKey
+    private Long mediaItemKey;
+
+    // option physicalPathKey
+    private Long physicalPathKey;
+
+    // option uniqueName
     private String uniqueName;
     private Boolean errorIfContentNotFound;
+
+    // option ingestion label
+    private String ingestionLabel;
+
+    // used only in case of mediaItemKey or uniqueName
     private String encodingProfileLabel;
     private Long encodingProfileKey;
 
 
-    public UniqueNameReference()
+    public MediaItemReference()
     {
+        mediaItemKey = null;
+
+        physicalPathKey = null;
+
+        uniqueName = null;
         errorIfContentNotFound = null;
+
+        ingestionLabel = null;
+
         encodingProfileKey = null;
         encodingProfileLabel = null;
+    }
+
+    public Long getMediaItemKey() {
+        return mediaItemKey;
+    }
+
+    public void setMediaItemKey(Long mediaItemKey) {
+        this.mediaItemKey = mediaItemKey;
+    }
+
+    public String getIngestionLabel() {
+        return ingestionLabel;
+    }
+
+    public void setIngestionLabel(String ingestionLabel) {
+        this.ingestionLabel = ingestionLabel;
+    }
+
+    public Long getPhysicalPathKey() {
+        return physicalPathKey;
+    }
+
+    public void setPhysicalPathKey(Long physicalPathKey) {
+        this.physicalPathKey = physicalPathKey;
     }
 
     public String getUniqueName() {
