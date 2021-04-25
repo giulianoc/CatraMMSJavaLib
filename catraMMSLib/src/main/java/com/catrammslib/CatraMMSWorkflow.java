@@ -864,7 +864,7 @@ public class CatraMMSWorkflow {
             JSONObject joUserData,
             Date startPublishing, Date endPublishing,
             Float maxDurationInSeconds, Float extraSecondsToCutWhenMaxDurationIsReached,
-            String dependenciesToBeAddedToReferences,   // atTheBeginning, atTheEnd
+            String dependenciesToBeAddedToReferencesAt,   // Beginning, End or an integer
             String uniqueName,
             Boolean allowUniqueNameOverride,
             List<MediaItemReference> mediaItemReferenceList,
@@ -889,7 +889,7 @@ public class CatraMMSWorkflow {
                     uniqueName, allowUniqueNameOverride);
 
             setCommonParameters(joParameters,
-                    dependenciesToBeAddedToReferences,
+                    dependenciesToBeAddedToReferencesAt,
                     mediaItemReferenceList,
                     waitForGlobalIngestionLabel);
 
@@ -1442,7 +1442,7 @@ public class CatraMMSWorkflow {
     static private void setCommonParameters(
             JSONObject joParameters,
 
-            String dependenciesToBeAddedToReferences,
+            String dependenciesToBeAddedToReferencesAt,
             List<MediaItemReference> mediaItemReferenceList,
             String waitForGlobalIngestionLabel
     )
@@ -1461,8 +1461,9 @@ public class CatraMMSWorkflow {
                 jaWaitForArray.put(joWaitForLabel);
             }
 
-            if (dependenciesToBeAddedToReferences != null)
-                joParameters.put("DependenciesToBeAddedToReferences", dependenciesToBeAddedToReferences);
+            if (dependenciesToBeAddedToReferencesAt != null
+                    && !dependenciesToBeAddedToReferencesAt.isEmpty())
+                joParameters.put("DependenciesToBeAddedToReferencesAt", dependenciesToBeAddedToReferencesAt);
 
             if (mediaItemReferenceList != null && mediaItemReferenceList.size() > 0)
             {
@@ -1481,19 +1482,24 @@ public class CatraMMSWorkflow {
                             joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
                             joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
-                    }
-                    else if (mediaItemReference.getUniqueName() != null)
-                    {
+
                         Boolean errorIfContentNotFound = true;
                         if (mediaItemReference.getErrorIfContentNotFound() != null)
                             errorIfContentNotFound = mediaItemReference.getErrorIfContentNotFound();
-
-                        joReference.put("ReferenceUniqueName", mediaItemReference.getUniqueName());
                         joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
+                    }
+                    else if (mediaItemReference.getUniqueName() != null)
+                    {
+                        joReference.put("ReferenceUniqueName", mediaItemReference.getUniqueName());
                         if (mediaItemReference.getEncodingProfileKey() != null)
                             joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
                             joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
+
+                        Boolean errorIfContentNotFound = true;
+                        if (mediaItemReference.getErrorIfContentNotFound() != null)
+                            errorIfContentNotFound = mediaItemReference.getErrorIfContentNotFound();
+                        joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
                     }
                     else if (mediaItemReference.getPhysicalPathKey() != null)
                     {
