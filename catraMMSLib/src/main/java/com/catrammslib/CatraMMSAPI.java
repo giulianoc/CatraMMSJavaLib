@@ -776,7 +776,8 @@ public class CatraMMSAPI {
         return workflowRoot;
     }
 
-    public String getMetaDataContent(String username, String password, Long ingestionRootKey)
+    public String getMetaDataContent(String username, String password,
+                                     Long ingestionRootKey, Boolean processedMetadata)
             throws Exception
     {
         String metaDataContent;
@@ -784,11 +785,14 @@ public class CatraMMSAPI {
         try
         {
             mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/ingestionRoot/metaDataContent/" + ingestionRootKey;
+                    + "/catramms/v1/ingestionRoot/metaDataContent/" + ingestionRootKey
+                    + "?processedMetadata=" + (processedMetadata == null ? "false" : processedMetadata)
+            ;
 
             mLogger.info("getMetaDataContent"
                     + ", mmsURL: " + mmsURL
                     + ", ingestionRootKey: " + ingestionRootKey
+                    + ", processedMetadata: " + processedMetadata
             );
 
             Date now = new Date();
@@ -3010,8 +3014,12 @@ public class CatraMMSAPI {
     }
 
     public String getVODDeliveryURL(String username, String password,
-                                    Long mediaItemKey, String uniqueName, Long encodingProfileKey, // first option
-                                    PhysicalPath physicalPath, // second option
+
+                                    // first option (encodingProfileKey or encodingProfileLabel)
+                                    Long mediaItemKey, String uniqueName, Long encodingProfileKey, String encodingProfileLabel,
+
+                                    // second option
+                                    PhysicalPath physicalPath,
                                  long ttlInSeconds, int maxRetries, Boolean save)
             throws Exception
     {
@@ -3022,7 +3030,8 @@ public class CatraMMSAPI {
         try
         {
             if (physicalPath == null
-                    && ((mediaItemKey == null && uniqueName == null) || encodingProfileKey == null)
+                    && ((mediaItemKey == null && uniqueName == null)
+                        || (encodingProfileKey == null && (encodingProfileLabel == null || encodingProfileLabel.isEmpty())))
             )
             {
                 String errorMessage = "physicalPath or (mediaItemKey-uniqueName)/encodingProfileKey have to be present";
@@ -3051,28 +3060,63 @@ public class CatraMMSAPI {
                         + "&redirect=false"
                 ;
             }
-            else // if (mediaItemKey != null && encodingProfileKey != null)
+            else // if (mediaItemKey != null && encodingProfileKey-encodingProfileLabel != null)
             {
-                // in this case mediaItemKey or uniqueName has to be valid and encodingProfileKey has to be valid
+                // in this case mediaItemKey or uniqueName has to be valid and encodingProfileKey-encodingProfileLabel has to be valid
                 if (mediaItemKey == null)
-                    mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                        + "/catramms/v1/delivery/vod/0/" + encodingProfileKey
-                        + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
-                        + "&ttlInSeconds=" + ttlInSeconds
-                        + "&maxRetries=" + maxRetries
-                        + "&save=" + save.toString()
-                            + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
-                        + "&redirect=false"
-                    ;
+                {
+                    if (encodingProfileKey == null)
+                    {
+                        mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                                + "/catramms/v1/delivery/vod/0/0"
+                                + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
+                                + "&encodingProfileLabel=" + java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8") // requires unescape server side
+                                + "&ttlInSeconds=" + ttlInSeconds
+                                + "&maxRetries=" + maxRetries
+                                + "&save=" + save.toString()
+                                + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+                                + "&redirect=false"
+                        ;
+                    }
+                    else
+                    {
+                        mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                                + "/catramms/v1/delivery/vod/0/" + encodingProfileKey
+                                + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
+                                + "&ttlInSeconds=" + ttlInSeconds
+                                + "&maxRetries=" + maxRetries
+                                + "&save=" + save.toString()
+                                + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+                                + "&redirect=false"
+                        ;
+                    }
+                }
                 else
-                    mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                        + "/catramms/v1/delivery/vod/" + mediaItemKey + "/" + encodingProfileKey
-                        + "?ttlInSeconds=" + ttlInSeconds
-                        + "&maxRetries=" + maxRetries
-                        + "&save=" + save.toString()
+                {
+                    if (encodingProfileKey == null)
+                    {
+                        mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                            + "/catramms/v1/delivery/vod/" + mediaItemKey + "/0"
+                            + "?encodingProfileLabel=" + java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8") // requires unescape server side
+                            + "&ttlInSeconds=" + ttlInSeconds
+                            + "&maxRetries=" + maxRetries
+                            + "&save=" + save.toString()
                             + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
-                        + "&redirect=false"
-                    ;
+                            + "&redirect=false"
+                        ;
+                    }
+                    else
+                    {
+                        mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                                + "/catramms/v1/delivery/vod/" + mediaItemKey + "/" + encodingProfileKey
+                                + "?ttlInSeconds=" + ttlInSeconds
+                                + "&maxRetries=" + maxRetries
+                                + "&save=" + save.toString()
+                                + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+                                + "&redirect=false"
+                        ;
+                    }
+                }
             }
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -5340,6 +5384,12 @@ public class CatraMMSAPI {
                 {
                     encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
                     encodingJob.setOverlayVideoPhysicalPathKey(joParameters.getLong("overlayVideoPhysicalPathKey"));
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("IntroOutroOverlay"))
+                {
+                    encodingJob.setIntroVideoPhysicalPathKey(joParameters.getLong("introVideoPhysicalPathKey"));
+                    encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
+                    encodingJob.setOutroVideoPhysicalPathKey(joParameters.getLong("outroVideoPhysicalPathKey"));
                 }
                 else
                 {

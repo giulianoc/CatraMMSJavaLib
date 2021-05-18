@@ -58,6 +58,11 @@ public class EncodingJob implements Serializable {
     private Long mainVideoPhysicalPathKey;
     private Long overlayVideoPhysicalPathKey;
 
+    // type is 'IntroOutroOverlay'
+    private Long introVideoPhysicalPathKey;
+    // private Long mainVideoPhysicalPathKey;   already present in PictureInPicture
+    private Long outroVideoPhysicalPathKey;
+
     // type is AwaitingTheBeginning
     private Date countDownEnd;
     private String awaitingTheBeginningOutputType;
@@ -333,6 +338,22 @@ public class EncodingJob implements Serializable {
 
     public void setAwaitingTheBeginningSegmentDurationInSeconds(Long awaitingTheBeginningSegmentDurationInSeconds) {
         this.awaitingTheBeginningSegmentDurationInSeconds = awaitingTheBeginningSegmentDurationInSeconds;
+    }
+
+    public Long getIntroVideoPhysicalPathKey() {
+        return introVideoPhysicalPathKey;
+    }
+
+    public void setIntroVideoPhysicalPathKey(Long introVideoPhysicalPathKey) {
+        this.introVideoPhysicalPathKey = introVideoPhysicalPathKey;
+    }
+
+    public Long getOutroVideoPhysicalPathKey() {
+        return outroVideoPhysicalPathKey;
+    }
+
+    public void setOutroVideoPhysicalPathKey(Long outroVideoPhysicalPathKey) {
+        this.outroVideoPhysicalPathKey = outroVideoPhysicalPathKey;
     }
 
     public Long getIngestionJobKey() {

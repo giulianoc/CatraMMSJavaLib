@@ -910,6 +910,72 @@ public class CatraMMSWorkflow {
         }
     }
 
+    static public JSONObject buildIntroOutroOverlayJson(
+            String label, String title, List<String> tags, String ingester,
+            String mediaItemRetention, String physicalItemRetention,
+            JSONObject joUserData,
+            Date startPublishing, Date endPublishing,
+            String encodingPriority, String encodingProfileLabel,
+            Long introOverlayDurationInSeconds, Long outroOverlayDurationInSeconds,
+            Boolean muteIntroOverlay, Boolean muteOutroOverlay,
+            String dependenciesToBeAddedToReferencesAt,   // Beginning, End or an integer
+            String uniqueName,
+            Boolean allowUniqueNameOverride,
+            List<MediaItemReference> mediaItemReferenceList,
+            String waitForGlobalIngestionLabel
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Intro-Outro-Overlay");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            setContentParameters(joParameters,
+                    title, ingester, mediaItemRetention, physicalItemRetention,
+                    tags, joUserData,
+                    startPublishing, endPublishing,
+                    uniqueName, allowUniqueNameOverride);
+
+            setCommonParameters(joParameters,
+                    dependenciesToBeAddedToReferencesAt,
+                    mediaItemReferenceList,
+                    waitForGlobalIngestionLabel);
+
+            if (encodingPriority != null && !encodingPriority.isEmpty())
+                joParameters.put("EncodingPriority", encodingPriority);
+
+            if (encodingProfileLabel != null && !encodingProfileLabel.isEmpty())
+                joParameters.put("EncodingProfileLabel", encodingProfileLabel);
+
+            if (introOverlayDurationInSeconds != null)
+                joParameters.put("IntroOverlayDurationInSeconds", introOverlayDurationInSeconds);
+
+            if (outroOverlayDurationInSeconds != null)
+                joParameters.put("OutroOverlayDurationInSeconds", outroOverlayDurationInSeconds);
+
+            if (muteIntroOverlay != null)
+                joParameters.put("MuteIntroOverlay", muteIntroOverlay);
+
+            if (muteOutroOverlay != null)
+                joParameters.put("MuteOutroOverlay", muteOutroOverlay);
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildIntroOutroOverlayJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
     static public JSONObject buildCutJson(
             String label, String title, List<String> tags, String ingester,
             String outputFileFormat,
