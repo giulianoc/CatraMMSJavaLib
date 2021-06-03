@@ -535,7 +535,6 @@ public class CatraMMSWorkflow {
                         "MMS_JPG_240",
                         null,
                         null,
-                        null,
                         utcProcessingStartingFrom
                 ));
             }
@@ -560,7 +559,6 @@ public class CatraMMSWorkflow {
                         ingester, "image",
                         "High",
                         "MMS_JPG_240",
-                        null,
                         null,
                         null,
                         utcProcessingStartingFrom
@@ -1154,7 +1152,6 @@ public class CatraMMSWorkflow {
             String contentType, // video, audio, image
             String encodingPriority, String encodingProfileLabel,
             String encodersPool,
-            Date processingStartingFrom,
             Long referencePhysicalPathKey,
             Long utcProcessingStartingFrom
     )
@@ -1182,12 +1179,12 @@ public class CatraMMSWorkflow {
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
 
-            if (processingStartingFrom != null)
+            if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(processingStartingFrom));
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             if (referencePhysicalPathKey != null)
@@ -1199,14 +1196,6 @@ public class CatraMMSWorkflow {
                 jaReferences.put(joReference);
 
                 joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
-            }
-
-            if (utcProcessingStartingFrom != null)
-            {
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;
