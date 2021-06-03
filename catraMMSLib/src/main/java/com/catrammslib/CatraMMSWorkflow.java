@@ -59,7 +59,8 @@ public class CatraMMSWorkflow {
 
     static public List<Object> buildGroupOfTasks(
             String label, String executionType,
-            List<String> referencesOutput)
+            List<String> referencesOutput,
+            Long utcProcessingStartingFrom)
             throws Exception
     {
         try
@@ -91,6 +92,14 @@ public class CatraMMSWorkflow {
 
                         joReferenceOutput.put("ReferenceLabel", referenceOutput);
                     }
+                }
+
+                if (utcProcessingStartingFrom != null)
+                {
+                    DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                    joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
                 }
             }
 
@@ -479,7 +488,8 @@ public class CatraMMSWorkflow {
             String title, List<String> imageTags, String ingester,
             String imageRetention,
             long faceRecognition_InitialFramesNumberToBeSkipped,
-            Float frameCaptureSeconds
+            Float frameCaptureSeconds,
+            Long utcProcessingStartingFrom
     )
             throws Exception
     {
@@ -498,7 +508,7 @@ public class CatraMMSWorkflow {
 
                 oImageGroupOfTasks = CatraMMSWorkflow.buildGroupOfTasks(
                         imageGroupOfTasksReferenceLabel, "parallel",
-                        referencesOutput);
+                        referencesOutput, utcProcessingStartingFrom);
                 JSONObject joImageGroupOfTasks = (JSONObject) oImageGroupOfTasks.get(0);
                 jaImageGroupOfTasks = (JSONArray) oImageGroupOfTasks.get(1);
                 JSONArray jaReferencesOutput = (JSONArray) oImageGroupOfTasks.get(2);
@@ -525,7 +535,8 @@ public class CatraMMSWorkflow {
                         "MMS_JPG_240",
                         null,
                         null,
-                        null
+                        null,
+                        utcProcessingStartingFrom
                 ));
             }
 
@@ -551,7 +562,8 @@ public class CatraMMSWorkflow {
                         "MMS_JPG_240",
                         null,
                         null,
-                        null
+                        null,
+                        utcProcessingStartingFrom
                 ));
             }
 
@@ -868,7 +880,8 @@ public class CatraMMSWorkflow {
             String uniqueName,
             Boolean allowUniqueNameOverride,
             List<MediaItemReference> mediaItemReferenceList,
-            String waitForGlobalIngestionLabel
+            String waitForGlobalIngestionLabel,
+            Long utcProcessingStartingFrom
     )
             throws Exception
     {
@@ -898,6 +911,14 @@ public class CatraMMSWorkflow {
 
             if (extraSecondsToCutWhenMaxDurationIsReached != null)
                 joParameters.put("ExtraSecondsToCutWhenMaxDurationIsReached", extraSecondsToCutWhenMaxDurationIsReached);
+
+            if (utcProcessingStartingFrom != null)
+            {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+            }
 
             return joTask;
         }
@@ -1087,7 +1108,8 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildChangeFileFormat(
             String label, String outputFileFormat,
-            List<MediaItemReference> mediaItemReferenceList
+            List<MediaItemReference> mediaItemReferenceList,
+            Long utcProcessingStartingFrom
     )
             throws Exception
     {
@@ -1108,6 +1130,14 @@ public class CatraMMSWorkflow {
 
             joParameters.put("OutputFileFormat", outputFileFormat);
 
+            if (utcProcessingStartingFrom != null)
+            {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+            }
+
             return joTask;
         }
         catch (Exception e)
@@ -1125,7 +1155,8 @@ public class CatraMMSWorkflow {
             String encodingPriority, String encodingProfileLabel,
             String encodersPool,
             Date processingStartingFrom,
-            Long referencePhysicalPathKey
+            Long referencePhysicalPathKey,
+            Long utcProcessingStartingFrom
     )
             throws Exception
     {
@@ -1168,6 +1199,14 @@ public class CatraMMSWorkflow {
                 jaReferences.put(joReference);
 
                 joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
+            }
+
+            if (utcProcessingStartingFrom != null)
+            {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;

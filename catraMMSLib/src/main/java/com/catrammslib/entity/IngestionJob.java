@@ -48,6 +48,36 @@ public class IngestionJob implements Serializable {
         return getLabel();
     }
 
+    public boolean isPlayable()
+    {
+        boolean playable;
+
+        if (getStatus().equalsIgnoreCase("EncodingQueued"))
+        {
+            if (getIngestionType().equalsIgnoreCase("Live-Grid"))
+                playable = true;
+            else if (getIngestionType().equalsIgnoreCase("Live-Recorder"))
+            {
+                if (getRecordingMonitorHLS() || getRecordingVirtualVOD())
+                    playable = true;
+                else
+                    playable = false;
+            }
+            else if (getIngestionType().equalsIgnoreCase("Live-Proxy"))
+            {
+                // we should look into the Outputs to check if there is an HLS/MDP Output
+                // for now we will just set false
+                playable = false;
+            }
+            else
+                playable = false;
+        }
+        else
+            playable = false;
+
+        return playable;
+    }
+
     public String getHtmlErrorMessage() {
         return (errorMessage == null ? errorMessage : errorMessage.replace("\n", "<br/>"));
     }

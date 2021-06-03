@@ -3153,8 +3153,9 @@ public class CatraMMSAPI {
     }
 
     public String getLiveDeliveryURL(String username, String password,
-                                    Long ingestionJobKey
-                                    // long ttlInSeconds, int maxRetries
+                                    Long ingestionJobKey,
+                                    Long ttlInSeconds, // if null -> 3600 * 24
+                                    Long maxRetries    // if null -> 3600 * 24 / 5
     )
             throws Exception
     {
@@ -3174,13 +3175,23 @@ public class CatraMMSAPI {
 
             String mmsURL;
 
-            long ttlInSeconds = 3600 * 24;
-            int maxRetries = 3600 * 24 / 5;
+            long lTtlInSeconds;
+            long lMaxRetries;
+
+            if(ttlInSeconds == null)
+                lTtlInSeconds = 3600 * 24;
+            else
+                lTtlInSeconds = ttlInSeconds;
+
+            if(maxRetries == null)
+                lMaxRetries = 3600 * 24 / 5;
+            else
+                lMaxRetries = maxRetries;
 
             mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/v1/delivery/live/" + ingestionJobKey
-                    + "?ttlInSeconds=" + ttlInSeconds
-                    + "&maxRetries=" + maxRetries
+                    + "?ttlInSeconds=" + lTtlInSeconds
+                    + "&maxRetries=" + lMaxRetries
                     + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
                     + "&redirect=false"
                     ;
@@ -6247,13 +6258,19 @@ public class CatraMMSAPI {
                     WorkflowVariable workflowVariable = new WorkflowVariable();
 
                     workflowVariable.setName(variableName);
+
+                    if (joWorkflowVariable.has("IsNull"))
+                        workflowVariable.setNullVariable(joWorkflowVariable.getBoolean("IsNull"));
+                    else
+                        workflowVariable.setNullVariable(false);
+
                     if (joWorkflowVariable.has("Description"))
                         workflowVariable.setDescription(joWorkflowVariable.getString("Description"));
                     if (joWorkflowVariable.has("Type"))
                         workflowVariable.setType(joWorkflowVariable.getString("Type"));
                     else
                         workflowVariable.setType("string");
-                    if (joWorkflowVariable.has("Value"))
+                    if (!workflowVariable.isNullVariable() && joWorkflowVariable.has("Value"))
                     {
                         if (workflowVariable.getType().equalsIgnoreCase("string"))
                             workflowVariable.setStringValue(joWorkflowVariable.getString("Value"));

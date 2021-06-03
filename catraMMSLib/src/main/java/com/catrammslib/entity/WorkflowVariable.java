@@ -10,6 +10,7 @@ public class WorkflowVariable implements Serializable{
 
     private String name;
     private String description;
+    private boolean nullVariable;
     private String type;
     private String stringValue;
     private long longValue;
@@ -47,6 +48,7 @@ public class WorkflowVariable implements Serializable{
 
         workflowVariable.setName(getName());
         workflowVariable.setDescription(getDescription());
+        workflowVariable.setNullVariable(isNullVariable());
         workflowVariable.setType(getType());
         workflowVariable.setStringValue(getStringValue());
         workflowVariable.setLongValue(getLongValue());
@@ -62,6 +64,7 @@ public class WorkflowVariable implements Serializable{
         return "WorkflowVariable{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", nullVariable='" + nullVariable + '\'' +
                 ", type='" + type + '\'' +
                 ", stringValue='" + stringValue + '\'' +
                 ", longValue=" + longValue +
@@ -92,6 +95,7 @@ public class WorkflowVariable implements Serializable{
         this.type = "datetime"; // really it could be also datetime-millisecs
     }
 
+
     public String getName() {
         return name;
     }
@@ -114,6 +118,14 @@ public class WorkflowVariable implements Serializable{
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public boolean isNullVariable() {
+        return nullVariable;
+    }
+
+    public void setNullVariable(boolean nullVariable) {
+        this.nullVariable = nullVariable;
     }
 
     public String getStringValue() {
