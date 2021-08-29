@@ -1,5 +1,10 @@
 package com.catrammslib.entity;
 
+import com.catrammslib.CatraMMSWorkflow;
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -7,6 +12,8 @@ import java.util.Date;
  * Created by multi on 08.06.18.
  */
 public class WorkflowVariable implements Serializable{
+
+    private static final Logger mLogger = Logger.getLogger(CatraMMSWorkflow.class);
 
     private String name;
     private String description;
@@ -17,6 +24,8 @@ public class WorkflowVariable implements Serializable{
     private double doubleValue;
     private boolean booleanValue;
     private Date datetimeValue;
+    private JSONObject jsonObjectValue;
+    private JSONArray jsonArrayValue;
 
     public WorkflowVariable() {
     }
@@ -41,6 +50,14 @@ public class WorkflowVariable implements Serializable{
         setName(name);
         setValue(datetimeValue);
     }
+    public WorkflowVariable(String name, JSONObject jsonObjectValue) {
+        setName(name);
+        setValue(jsonObjectValue);
+    }
+    public WorkflowVariable(String name, JSONArray jsonArrayValue) {
+        setName(name);
+        setValue(jsonArrayValue);
+    }
 
     public WorkflowVariable clone()
     {
@@ -55,6 +72,8 @@ public class WorkflowVariable implements Serializable{
         workflowVariable.setDoubleValue(getDoubleValue());
         workflowVariable.setBooleanValue(isBooleanValue());
         workflowVariable.setDatetimeValue(getDatetimeValue());
+        workflowVariable.setJsonObjectValue(getJsonObjectValue());
+        workflowVariable.setJsonArrayValue(getJsonArrayValue());
 
         return workflowVariable;
     }
@@ -71,6 +90,8 @@ public class WorkflowVariable implements Serializable{
                 ", doubleValue=" + doubleValue +
                 ", booleanValue=" + booleanValue +
                 ", datetimeValue=" + datetimeValue +
+                ", jsonObjectValue=" + (jsonObjectValue == null ? "{}" : jsonObjectValue.toString()) +
+                ", jsonArrayValue=" + (jsonArrayValue == null ? "{}" : jsonArrayValue.toString()) +
                 '}';
     }
 
@@ -94,7 +115,59 @@ public class WorkflowVariable implements Serializable{
         this.datetimeValue = datetimeValue;
         this.type = "datetime"; // really it could be also datetime-millisecs
     }
+    public void setValue(JSONObject jsonObjectValue) {
+        this.jsonObjectValue = jsonObjectValue;
+        this.type = "jsonObject";
+    }
+    public void setValue(JSONArray jsonArrayValue) {
+        this.jsonArrayValue = jsonArrayValue;
+        this.type = "jsonArray";
+    }
 
+
+    // used workflowAsLibraryProperties.xhtml
+    public String getsJsonObjectValue() {
+        return jsonObjectValue == null ? "{}" : jsonObjectValue.toString();
+    }
+
+    // used workflowAsLibraryProperties.xhtml
+    public void setsJsonObjectValue(String sJsonObjectValue)
+    {
+        try {
+            if (sJsonObjectValue == null || sJsonObjectValue.isEmpty())
+                jsonObjectValue = new JSONObject();
+            else
+                jsonObjectValue = new JSONObject(sJsonObjectValue);
+        }
+        catch (Exception e)
+        {
+            jsonObjectValue = new JSONObject();
+
+            mLogger.error("Exception: " + e);
+        }
+    }
+
+    // used workflowAsLibraryProperties.xhtml
+    public String getsJsonArrayValue() {
+        return jsonArrayValue == null ? "[]" : jsonArrayValue.toString();
+    }
+
+    // used workflowAsLibraryProperties.xhtml
+    public void setsJsonArrayValue(String sJsonArrayValue)
+    {
+        try {
+            if (sJsonArrayValue == null || sJsonArrayValue.isEmpty())
+                jsonArrayValue = new JSONArray();
+            else
+                jsonArrayValue = new JSONArray(sJsonArrayValue);
+        }
+        catch (Exception e)
+        {
+            jsonArrayValue = new JSONArray();
+
+            mLogger.error("Exception: " + e);
+        }
+    }
 
     public String getName() {
         return name;
@@ -158,6 +231,22 @@ public class WorkflowVariable implements Serializable{
 
     public void setBooleanValue(boolean booleanValue) {
         this.booleanValue = booleanValue;
+    }
+
+    public JSONObject getJsonObjectValue() {
+        return jsonObjectValue;
+    }
+
+    public void setJsonObjectValue(JSONObject jsonObjectValue) {
+        this.jsonObjectValue = jsonObjectValue;
+    }
+
+    public JSONArray getJsonArrayValue() {
+        return jsonArrayValue;
+    }
+
+    public void setJsonArrayValue(JSONArray jsonArrayValue) {
+        this.jsonArrayValue = jsonArrayValue;
     }
 
     public Date getDatetimeValue() {

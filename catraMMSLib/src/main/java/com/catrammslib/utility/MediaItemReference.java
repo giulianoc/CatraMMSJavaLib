@@ -15,7 +15,7 @@ public class MediaItemReference implements Serializable {
 
     // option uniqueName
     private String uniqueName;
-    private Boolean errorIfContentNotFound;
+    private Boolean stopIfReferenceProcessingError;
 
     // option ingestion label
     private String ingestionLabel;
@@ -32,7 +32,7 @@ public class MediaItemReference implements Serializable {
         physicalPathKey = null;
 
         uniqueName = null;
-        errorIfContentNotFound = null;
+        stopIfReferenceProcessingError = false;
 
         ingestionLabel = null;
 
@@ -72,12 +72,12 @@ public class MediaItemReference implements Serializable {
         this.uniqueName = uniqueName;
     }
 
-    public Boolean getErrorIfContentNotFound() {
-        return errorIfContentNotFound;
+    public Boolean getStopIfReferenceProcessingError() {
+        return stopIfReferenceProcessingError;
     }
 
-    public void setErrorIfContentNotFound(Boolean errorIfContentNotFound) {
-        this.errorIfContentNotFound = errorIfContentNotFound;
+    public void setStopIfReferenceProcessingError(Boolean stopIfReferenceProcessingError) {
+        this.stopIfReferenceProcessingError = stopIfReferenceProcessingError;
     }
 
     public String getEncodingProfileLabel() {

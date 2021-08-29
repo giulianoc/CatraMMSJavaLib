@@ -13,6 +13,7 @@ public class EncodingJob implements Serializable {
     private Long encoderKey;
     private Long encodingPid;
     private Date start;
+    private Boolean endEstimate;
     private Date end;
     private Long progress;
     private Long failuresNumber;
@@ -24,7 +25,7 @@ public class EncodingJob implements Serializable {
     private Long ingestionJobKey;
     private Boolean ownedByCurrentWorkspace;
 
-    // type is 'EncodeVideoAudio' or 'EncodeImage'
+    // type is 'EncodeVideoAudio' or 'EncodeImage' or 'CutFrameAccurate'
     private Long encodingProfileKey;    // type is also LiveGrid
     private Long sourcePhysicalPathKey;
 
@@ -226,6 +227,14 @@ public class EncodingJob implements Serializable {
 
     public void setRecordingPeriodEnd(Date recordingPeriodEnd) {
         this.recordingPeriodEnd = recordingPeriodEnd;
+    }
+
+    public Boolean getEndEstimate() {
+        return endEstimate;
+    }
+
+    public void setEndEstimate(Boolean endEstimate) {
+        this.endEstimate = endEstimate;
     }
 
     public String getProcessorMMS() {

@@ -15,6 +15,7 @@ public class IngestionJob implements Serializable {
     private String metaDataContent;
     private Date processingStartingFrom;
     private Date startProcessing;
+    private Boolean endProcessingEstimate;
     private Date endProcessing;
     private String status;
     private String errorMessage;
@@ -136,6 +137,14 @@ public class IngestionJob implements Serializable {
 
     public void setStartProcessing(Date startProcessing) {
         this.startProcessing = startProcessing;
+    }
+
+    public Boolean getEndProcessingEstimate() {
+        return endProcessingEstimate;
+    }
+
+    public void setEndProcessingEstimate(Boolean endProcessingEstimate) {
+        this.endProcessingEstimate = endProcessingEstimate;
     }
 
     public Date getEndProcessing() {

@@ -10,7 +10,7 @@ public class SATChannelConf implements Serializable{
 
     private Long confKey;
     private Long sourceSATConfKey;
-    private String name;
+    private String label;
     private String region;
     private String country;
     private Long imageMediaItemKey;
@@ -39,12 +39,12 @@ public class SATChannelConf implements Serializable{
         this.confKey = confKey;
     }
 
-    public String getName() {
-        return name;
+    public String getLabel() {
+        return label;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getRegion() {

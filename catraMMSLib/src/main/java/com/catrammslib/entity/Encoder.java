@@ -15,9 +15,11 @@ public class Encoder implements Serializable{
     private String serverName;
     private Long port;
 
+    /*
     private Long maxTranscodingCapability;
     private Long maxLiveProxiesCapabilities;
     private Long maxLiveRecordingCapabilities;
+     */
 
     @Override
     public boolean equals(Object o) {
@@ -72,6 +74,7 @@ public class Encoder implements Serializable{
         this.port = port;
     }
 
+    /*
     public Long getMaxTranscodingCapability() {
         return maxTranscodingCapability;
     }
@@ -95,6 +98,7 @@ public class Encoder implements Serializable{
     public void setMaxLiveRecordingCapabilities(Long maxLiveRecordingCapabilities) {
         this.maxLiveRecordingCapabilities = maxLiveRecordingCapabilities;
     }
+     */
 
     public Boolean getExternal() {
         return external;

@@ -9,6 +9,7 @@ public class LiveProxyOutput implements Serializable {
     private Long segmentDurationInSeconds;
     private String otherOutputOptions;
     private String encodingProfileLabel;
+    private String audioVolumeChange;
 
     public String getOutputType() {
         return outputType;
@@ -48,6 +49,14 @@ public class LiveProxyOutput implements Serializable {
 
     public void setDeliveryCode(Long deliveryCode) {
         this.deliveryCode = deliveryCode;
+    }
+
+    public String getAudioVolumeChange() {
+        return audioVolumeChange;
+    }
+
+    public void setAudioVolumeChange(String audioVolumeChange) {
+        this.audioVolumeChange = audioVolumeChange;
     }
 
     public String getOtherOutputOptions() {

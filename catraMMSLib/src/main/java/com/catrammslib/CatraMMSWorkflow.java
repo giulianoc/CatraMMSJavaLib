@@ -164,6 +164,8 @@ public class CatraMMSWorkflow {
 
                     joParameters.put(workflowVariable.getName(), dateFormat.format(workflowVariable.getDatetimeValue()));
                 }
+                else if(workflowVariable.getType().equalsIgnoreCase("jsonObject"))
+                    joParameters.put(workflowVariable.getName(), workflowVariable.getJsonObjectValue());
                 else
                 {
                     String errorMessage = "WorkflowVariable type not managed"
@@ -213,7 +215,8 @@ public class CatraMMSWorkflow {
             Long utcLiveRecorderStart,
             Long utcLiveRecorderEnd,
             String encodersPool,
-            String userAgent
+            String userAgent,
+            List<LiveProxyOutput> liveRecorderOutputList
     )
             throws Exception
     {
@@ -302,6 +305,37 @@ public class CatraMMSWorkflow {
                     joVirtualVOD.put("EncodingProfileLabel", liveRecorderVirtualVODEncodingProfileLabel);
             }
 
+            if (liveRecorderOutputList != null && liveRecorderOutputList.size() > 0)
+            {
+                JSONArray jaOutputs = new JSONArray();
+                joParameters.put("Outputs", jaOutputs);
+
+                for(LiveProxyOutput liveProxyOutput: liveRecorderOutputList)
+                {
+                    JSONObject joOutput = new JSONObject();
+                    jaOutputs.put(joOutput);
+
+                    joOutput.put("OutputType", liveProxyOutput.getOutputType());
+                    if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+                        joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+                    else
+                    {
+                        joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
+                        if (liveProxyOutput.getSegmentDurationInSeconds() != null)
+                            joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
+                    }
+
+                    if (liveProxyOutput.getEncodingProfileLabel() != null)
+                        joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
+
+                    if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
+                        joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
+
+                    if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
+                        joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
+                }
+            }
+
             return joTask;
         }
         catch (Exception e)
@@ -316,11 +350,21 @@ public class CatraMMSWorkflow {
     static public JSONObject buildLiveProxyJson(
             String label,
 
-            String channelType,     // IP_MMSAsClient, Satellite or IP_MMSAsServer.
+            String channelType,     // IP_MMSAsClient, Satellite, IP_MMSAsServer or CaptureLive.
             String ipLiveConfigurationLabel,    // mandatory if channelType is IP_MMSAsClient
             String satLiveConfigurationLabel,   // mandatory if channelType is Satellite
+            Long videoDeviceNumber,             // mandatory if channelType is CaptureLive
+            String videoInputFormat,            // optional if channelType is CaptureLive
+            Long videoFrameRate,                // optional if channelType is CaptureLive
+            Long videoWidth,                    // optional if channelType is CaptureLive
+            Long videoHeight,                   // optional if channelType is CaptureLive
+            Long audioDeviceNumber,             // mandatory if channelType is CaptureLive
+            Long audioChannelsNumber,           // optional if channelType is CaptureLive
+            Long actAsServerPort,               // mandatory if channelType is IP_MMSAsServer
+            String actAsServerBindIP,           // mandatory if channelType is IP_MMSAsServer
+            String actAsServerURI,              // mandatory if channelType is IP_MMSAsServer
+            Long actAsServerListenTimeout,      // mandatory if channelType is IP_MMSAsServer
 
-            Long actAsServerPort, String actAsServerBindIP, String actAsServerURI, Long actAsServerListenTimeout,
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
             String userAgent,
@@ -354,6 +398,25 @@ public class CatraMMSWorkflow {
                 joParameters.put("ActAsServerPort", actAsServerPort);
                 joParameters.put("ActAsServerURI", actAsServerURI);
                 joParameters.put("ActAsServerListenTimeout", actAsServerListenTimeout);
+            }
+            else if (channelType.equals("CaptureLive"))
+            {
+                JSONObject joCaptureLive = new JSONObject();
+                joParameters.put("CaptureLive", joCaptureLive);
+
+                joCaptureLive.put("VideoDeviceNumber", videoDeviceNumber);
+                if (videoInputFormat != null && !videoInputFormat.isEmpty())
+                    joCaptureLive.put("VideoInputFormat", videoInputFormat);
+                if (videoFrameRate != null)
+                    joCaptureLive.put("FrameRate", videoFrameRate);
+                if (videoWidth != null)
+                    joCaptureLive.put("Width", videoWidth);
+                if (videoHeight != null)
+                    joCaptureLive.put("Height", videoHeight);
+
+                joCaptureLive.put("AudioDeviceNumber", audioDeviceNumber);
+                if (audioChannelsNumber != null)
+                    joCaptureLive.put("ChannelsNumber", audioChannelsNumber);
             }
 
             if (encodersPool != null && !encodersPool.isEmpty())
@@ -420,6 +483,9 @@ public class CatraMMSWorkflow {
 
                 if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
                     joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
+
+                if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
+                    joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
             }
 
             return joTask;
@@ -998,7 +1064,7 @@ public class CatraMMSWorkflow {
     static public JSONObject buildCutJson(
             String label, String title, List<String> tags, String ingester,
             String outputFileFormat,
-            double startTimeInSeconds, double endTimeInSeconds, boolean keyFrameSeeking,
+            double startTimeInSeconds, double endTimeInSeconds, String cutType,
             Boolean fixEndTimeIfOvercomeDuration,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
@@ -1031,7 +1097,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("OutputFileFormat", outputFileFormat);
             joParameters.put("StartTimeInSeconds", startTimeInSeconds);
             joParameters.put("EndTimeInSeconds", endTimeInSeconds);
-            joParameters.put("KeyFrameSeeking", keyFrameSeeking);
+            joParameters.put("CutType", cutType);
             if (fixEndTimeIfOvercomeDuration != null)
                 joParameters.put("FixEndTimeIfOvercomeDuration", fixEndTimeIfOvercomeDuration);
 
@@ -1055,6 +1121,7 @@ public class CatraMMSWorkflow {
 
             Long utcLiveCutStartInMilliSecs,
             Long utcLiveCutEndInMilliSecs,
+            Long chunkEncodingProfileKey,
             int maxWaitingForLastChunkInSeconds,
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
@@ -1079,6 +1146,9 @@ public class CatraMMSWorkflow {
                     uniqueName, allowUniqueNameOverride);
 
             joParameters.put("DeliveryCode", deliveryCode);
+
+            if (chunkEncodingProfileKey != null)
+                joParameters.put("ChunkEncodingProfileKey", chunkEncodingProfileKey);
 
             {
                 JSONObject joCutPeriod = new JSONObject();
@@ -1152,7 +1222,7 @@ public class CatraMMSWorkflow {
             String contentType, // video, audio, image
             String encodingPriority, String encodingProfileLabel,
             String encodersPool,
-            Long referencePhysicalPathKey,
+            List<MediaItemReference> mediaItemReferenceList,
             Long utcProcessingStartingFrom
     )
             throws Exception
@@ -1187,16 +1257,10 @@ public class CatraMMSWorkflow {
                 joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
-            if (referencePhysicalPathKey != null)
-            {
-                JSONArray jaReferences = new JSONArray();
-                joParameters.put("References", jaReferences);
-
-                JSONObject joReference = new JSONObject();
-                jaReferences.put(joReference);
-
-                joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
-            }
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
 
             return joTask;
         }
@@ -1211,7 +1275,7 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildLocalCopy(
             String label, String destinationLocalPath, String destinationLocalFileName,
-            List<Long> referenceMediaItemKeyList, List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -1228,33 +1292,10 @@ public class CatraMMSWorkflow {
             joParameters.put("LocalPath", destinationLocalPath);
             joParameters.put("LocalFileName", destinationLocalFileName);
 
-            if (referenceMediaItemKeyList != null || referencePhysicalPathKeyList != null)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                if (referenceMediaItemKeyList != null)
-                {
-                    for(Long referenceMediaItemKey: referenceMediaItemKeyList)
-                    {
-                        JSONObject joReference = new JSONObject();
-                        jsonReferencesArray.put(joReference);
-
-                        joReference.put("ReferenceMediaItemKey", referenceMediaItemKey);
-                    }
-                }
-
-                if (referencePhysicalPathKeyList != null)
-                {
-                    for(Long referencePhysicalPathKey: referencePhysicalPathKeyList)
-                    {
-                        JSONObject joReference = new JSONObject();
-                        jsonReferencesArray.put(joReference);
-
-                        joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
-                    }
-                }
-            }
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
 
             return joTask;
         }
@@ -1300,7 +1341,7 @@ public class CatraMMSWorkflow {
             String method, // GET, POST
             String protocol, String hostName, String uri, String parameters,
             Long timeoutInSeconds, Long maxRetries,
-            List<Long> referenceMediaItemKeyList, List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -1323,33 +1364,10 @@ public class CatraMMSWorkflow {
             joParameters.put("Timeout", timeoutInSeconds);
             joParameters.put("MaxRetries", maxRetries);
 
-            if (referenceMediaItemKeyList != null || referencePhysicalPathKeyList != null)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                if (referenceMediaItemKeyList != null)
-                {
-                    for(Long referenceMediaItemKey: referenceMediaItemKeyList)
-                    {
-                        JSONObject joReference = new JSONObject();
-                        jsonReferencesArray.put(joReference);
-
-                        joReference.put("ReferenceMediaItemKey", referenceMediaItemKey);
-                    }
-                }
-
-                if (referencePhysicalPathKeyList != null)
-                {
-                    for(Long referencePhysicalPathKey: referencePhysicalPathKeyList)
-                    {
-                        JSONObject joReference = new JSONObject();
-                        jsonReferencesArray.put(joReference);
-
-                        joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
-                    }
-                }
-            }
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
 
             return joTask;
         }
@@ -1364,8 +1382,7 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildRemoveJson(
             String label, String ingester,
-            List<Long> referenceMediaItemKeyList,
-            List<Long> referencePhysicalPathKeyList
+            List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
     {
@@ -1381,39 +1398,10 @@ public class CatraMMSWorkflow {
 
             joParameters.put("Ingester", ingester);
 
-            if (referenceMediaItemKeyList != null && referenceMediaItemKeyList.size() > 0)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                for(Long referenceMediaItemKey: referenceMediaItemKeyList)
-                {
-                    JSONObject joReference = new JSONObject();
-                    jsonReferencesArray.put(joReference);
-
-                    joReference.put("ReferenceMediaItemKey", referenceMediaItemKey);
-                }
-            }
-            else if (referencePhysicalPathKeyList != null && referencePhysicalPathKeyList.size() > 0)
-            {
-                JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
-
-                for(Long referencePhysicalPathKey: referencePhysicalPathKeyList)
-                {
-                    JSONObject joReference = new JSONObject();
-                    jsonReferencesArray.put(joReference);
-
-                    joReference.put("ReferencePhysicalPathKey", referencePhysicalPathKey);
-                }
-            }
-            else
-            {
-                String errorMessage = "Wrong input";
-                mLogger.error(errorMessage);
-
-                throw new Exception(errorMessage);
-            }
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
 
             return joTask;
         }
@@ -1577,10 +1565,10 @@ public class CatraMMSWorkflow {
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
                             joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
 
-                        Boolean errorIfContentNotFound = true;
-                        if (mediaItemReference.getErrorIfContentNotFound() != null)
-                            errorIfContentNotFound = mediaItemReference.getErrorIfContentNotFound();
-                        joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
+                        Boolean stopIfReferenceProcessingError = false;
+                        if (mediaItemReference.getStopIfReferenceProcessingError() != null)
+                            stopIfReferenceProcessingError = mediaItemReference.getStopIfReferenceProcessingError();
+                        joReference.put("StopIfReferenceProcessingError", stopIfReferenceProcessingError);
                     }
                     else if (mediaItemReference.getUniqueName() != null)
                     {
@@ -1590,10 +1578,10 @@ public class CatraMMSWorkflow {
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
                             joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
 
-                        Boolean errorIfContentNotFound = true;
-                        if (mediaItemReference.getErrorIfContentNotFound() != null)
-                            errorIfContentNotFound = mediaItemReference.getErrorIfContentNotFound();
-                        joReference.put("ErrorIfContentNotFound", errorIfContentNotFound);
+                        Boolean stopIfReferenceProcessingError = false;
+                        if (mediaItemReference.getStopIfReferenceProcessingError() != null)
+                            stopIfReferenceProcessingError = mediaItemReference.getStopIfReferenceProcessingError();
+                        joReference.put("StopIfReferenceProcessingError", stopIfReferenceProcessingError);
                     }
                     else if (mediaItemReference.getPhysicalPathKey() != null)
                     {

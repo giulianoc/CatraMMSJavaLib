@@ -1679,13 +1679,14 @@ public class CatraMMSAPI {
                               long startIndex, long pageSize,
                               Long mediaItemKey, String uniqueName,
                               List<Long> otherMediaItemsKey,
-                              String contentType,
+                              String contentType,   // video, audio, image
                               Date ingestionStart, Date ingestionEnd,
                               String title, Boolean bLiveRecordingChunk,
                               List<String> tagsIn, List<String> tagsNotIn,
                               String jsonCondition,
                               String orderBy, String jsonOrderBy,
-                          List<MediaItem> mediaItemsList)
+                              List<MediaItem> mediaItemsList    // has to be initialized (new ArrayList<>())
+    )
             throws Exception
     {
         Long numFound;
@@ -4115,7 +4116,7 @@ public class CatraMMSAPI {
         return channelConf;
     }
 
-    public Long addSATChannelConf(String username, String password,
+    public Long addSATChannelConf(String username, String password, String label,
                                  Long sourceSATConfKey, String region, String country,
                                  Long imageMediaItemKey, String imageUniqueName, Long position,
                                  String channelData)
@@ -4129,6 +4130,7 @@ public class CatraMMSAPI {
             {
                 JSONObject joChannelConf = new JSONObject();
 
+                joChannelConf.put("Label", label);
                 joChannelConf.put("SourceSATConfKey", sourceSATConfKey);
                 if (region != null)
                     joChannelConf.put("Region", region);
@@ -4185,7 +4187,7 @@ public class CatraMMSAPI {
     }
 
     public void modifySATChannelConf(String username, String password,
-                                    Long confKey, Long sourceSATConfKey, String region, String country,
+                                    Long confKey, String label, Long sourceSATConfKey, String region, String country,
                                     Long imageMediaItemKey, String imageUniqueName, Long position,
                                     String channelData)
             throws Exception
@@ -4196,6 +4198,7 @@ public class CatraMMSAPI {
         {
             mLogger.info("modifyChannelConf"
                     + ", username: " + username
+                    + ", label: " + label
                     + ", sourceSATConfKey: " + sourceSATConfKey
                     + ", region: " + region
                     + ", country: " + country
@@ -4209,6 +4212,7 @@ public class CatraMMSAPI {
             {
                 JSONObject joChannelConf = new JSONObject();
 
+                joChannelConf.put("Label", label);
                 joChannelConf.put("SourceSATConfKey", sourceSATConfKey);
                 if (region != null)
                     joChannelConf.put("Region", region);
@@ -4279,8 +4283,8 @@ public class CatraMMSAPI {
     public Long getSATChannelConf(String username, String password,
                                  long startIndex, long pageSize,
                                  Long confKey,
-                                 String name, String region, String country,
-                                  String nameOrder,   // asc or desc
+                                 String label, String region, String country,
+                                  String labelOrder,   // asc or desc
                                  List<SATChannelConf> channelConfList)
             throws Exception
     {
@@ -4293,10 +4297,10 @@ public class CatraMMSAPI {
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
-                    + "&name=" + (name == null ? "" : java.net.URLEncoder.encode(name, "UTF-8")) // requires unescape server side
-                    + "&region=" + (region == null ? "" : java.net.URLEncoder.encode(region, "UTF-8"))
-                    + "&country=" + (country == null ? "" : java.net.URLEncoder.encode(country, "UTF-8"))
-                    + "&nameOrder=" + (nameOrder == null ? "" : nameOrder)
+                    + (label == null || label.isEmpty() ? "" : ("&label=" + java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+                    + (region == null || region.isEmpty() ? "" : ("&region=" + java.net.URLEncoder.encode(region, "UTF-8")))
+                    + (region == null || region.isEmpty() ? "" : ("&country=" + java.net.URLEncoder.encode(country, "UTF-8")))
+                    + (labelOrder == null || labelOrder.isEmpty() ? "" : ("&labelOrder=" + labelOrder))
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -4631,7 +4635,7 @@ public class CatraMMSAPI {
     public Long getSourceSATChannelConf(String username, String password,
                                   long startIndex, long pageSize,
                                   Long confKey,
-                                  Long serviceId, String name, Long frequency,
+                                  Long serviceId, String name, Long frequency, String lnb,
                                   Long videoPid, String audioPids,
                                   String nameOrder,   // asc or desc
                                   List<SourceSATChannelConf> channelConfList)
@@ -4646,12 +4650,13 @@ public class CatraMMSAPI {
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
-                    + "&serviceId=" + (serviceId == null ? "" : serviceId)
-                    + "&name=" + (name == null ? "" : java.net.URLEncoder.encode(name, "UTF-8")) // requires unescape server side
-                    + "&frequency=" + (frequency == null ? "" : frequency)
-                    + "&videoPid=" + (videoPid == null ? "" : videoPid)
-                    + "&audioPids=" + (audioPids == null ? "" : java.net.URLEncoder.encode(audioPids, "UTF-8"))
-                    + "&nameOrder=" + (nameOrder == null ? "" : nameOrder)
+                    + (serviceId == null  ? "" : ("&serviceId=" + serviceId))
+                    + (name == null || name.isEmpty() ? "" : ("&name=" + java.net.URLEncoder.encode(name, "UTF-8"))) // requires unescape server side
+                    + (frequency == null  ? "" : ("&frequency=" + frequency))
+                    + (lnb == null || lnb.isEmpty() ? "" : ("&lnb=" + java.net.URLEncoder.encode(lnb, "UTF-8"))) // requires unescape server side
+                    + (videoPid == null  ? "" : ("&videoPid=" + videoPid))
+                    + (audioPids == null || audioPids.isEmpty() ? "" : ("&audioPids=" + java.net.URLEncoder.encode(audioPids, "UTF-8")))
+                    + (nameOrder == null || nameOrder.isEmpty() ? "" : ("&nameOrder=" + nameOrder))
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -5289,6 +5294,31 @@ public class CatraMMSAPI {
                 encodingJob.setProgress(null);
             else
                 encodingJob.setProgress(encodingJobInfo.getLong("progress"));
+
+            // end processing estimation
+            {
+                encodingJob.setEndEstimate(false);
+
+                Date now = new Date();
+
+                if (encodingJob.getEnd() == null
+                        && encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+                        && encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+                {
+                    Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+                    // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+                    Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(encodingJob.getStart());
+                    calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+                    encodingJob.setEndEstimate(true);
+                    encodingJob.setEnd(calendar.getTime());
+                }
+            }
+
             if (encodingJobInfo.isNull("failuresNumber"))
                 encodingJob.setFailuresNumber(null);
             else
@@ -5303,7 +5333,9 @@ public class CatraMMSAPI {
                         || encodingJob.getType().equalsIgnoreCase("EncodeImage"))
                 {
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourcePhysicalPathKey"));
+                    encodingJob.setSourcePhysicalPathKey(
+                            joParameters.getJSONArray("sourcesToBeEncodedRoot").getJSONObject(0)
+                                    .getLong("sourcePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("OverlayImageOnVideo"))
                 {
@@ -5402,6 +5434,11 @@ public class CatraMMSAPI {
                     encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
                     encodingJob.setOutroVideoPhysicalPathKey(joParameters.getLong("outroVideoPhysicalPathKey"));
                 }
+                else if (encodingJob.getType().equalsIgnoreCase("CutFrameAccurate"))
+                {
+                    encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
+                    encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+                }
                 else
                 {
                     mLogger.error("Wrong encodingJob.getType(): " + encodingJob.getType());
@@ -5433,9 +5470,9 @@ public class CatraMMSAPI {
             encoder.setProtocol(encoderInfo.getString("protocol"));
             encoder.setServerName(encoderInfo.getString("serverName"));
             encoder.setPort(encoderInfo.getLong("port"));
-            encoder.setMaxTranscodingCapability(encoderInfo.getLong("maxTranscodingCapability"));
-            encoder.setMaxLiveProxiesCapabilities(encoderInfo.getLong("maxLiveProxiesCapabilities"));
-            encoder.setMaxLiveRecordingCapabilities(encoderInfo.getLong("maxLiveRecordingCapabilities"));
+            // encoder.setMaxTranscodingCapability(encoderInfo.getLong("maxTranscodingCapability"));
+            // encoder.setMaxLiveProxiesCapabilities(encoderInfo.getLong("maxLiveProxiesCapabilities"));
+            // encoder.setMaxLiveRecordingCapabilities(encoderInfo.getLong("maxLiveRecordingCapabilities"));
         }
         catch (Exception e)
         {
@@ -5899,8 +5936,34 @@ public class CatraMMSAPI {
 
                 fillEncodingJob(encodingJob, encodingJobInfo);
 
+                // end processing estimation
+                {
+                    ingestionJob.setEndProcessingEstimate(false);
+
+                    Date now = new Date();
+
+                    if (ingestionJob.getEndProcessing() == null
+                            && ingestionJob.getStartProcessing() != null && ingestionJob.getStartProcessing().getTime() < now.getTime()
+                            && encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+                    {
+                        Long elapsedInMillisecs = now.getTime() - ingestionJob.getStartProcessing().getTime();
+
+                        // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+                        Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(ingestionJob.getStartProcessing());
+                        calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+                        ingestionJob.setEndProcessingEstimate(true);
+                        ingestionJob.setEndProcessing(calendar.getTime());
+                    }
+                }
+
                 ingestionJob.setEncodingJob(encodingJob);
             }
+            else
+                ingestionJob.setEndProcessingEstimate(false);
         }
         catch (Exception e)
         {
@@ -6145,7 +6208,7 @@ public class CatraMMSAPI {
             if (channelConfInfo.has("confKey") && !channelConfInfo.isNull("confKey"))
                 channelConf.setConfKey(channelConfInfo.getLong("confKey"));
             channelConf.setSourceSATConfKey(channelConfInfo.getLong("sourceSATConfKey"));
-            channelConf.setName(channelConfInfo.getString("name"));
+            channelConf.setLabel(channelConfInfo.getString("label"));
 
             if (channelConfInfo.has("region") && !channelConfInfo.isNull("region"))
                 channelConf.setRegion(channelConfInfo.getString("region"));
@@ -6294,6 +6357,10 @@ public class CatraMMSAPI {
 
                             workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("Value")));
                         }
+                        else if (workflowVariable.getType().equalsIgnoreCase("jsonObject"))
+                            workflowVariable.setJsonObjectValue(joWorkflowVariable.getJSONObject("Value"));
+                        else if (workflowVariable.getType().equalsIgnoreCase("jsonArray"))
+                            workflowVariable.setJsonArrayValue(joWorkflowVariable.getJSONArray("Value"));
                         else
                             mLogger.error("Unknown type: " + workflowVariable.getType());
                     }
