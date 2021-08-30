@@ -1967,7 +1967,7 @@ public class CatraMMSAPI {
     }
 
     public MediaItem updateMediaItem(String username, String password,
-                                     Long mediaItemKey,
+                                     Long mediaItemKey, // mandatory
                                      String newTitle,
                                      String newUserData,
                                      String newTags,    // json array of string
@@ -1982,29 +1982,48 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            JSONArray jaTags;
-            try {
-                jaTags = new JSONArray(newTags);
-            }
-            catch (Exception ex)
+            if (newTitle == null
+                    && newUserData == null
+                    && newTags == null
+                    && newRetentionInMinutes == null
+                    && newUniqueName == null
+            )
             {
-                String errorMessage = "updateMediaItem. Wrong tags format"
-                        + ", newTags: " + newTags
-                ;
+                String errorMessage = "No updates has to be done";
                 mLogger.error(errorMessage);
 
                 throw new Exception(errorMessage);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/mediaItem/" + mediaItemKey
+            JSONArray jaTags = null;
+            if (newTags != null)
+            {
+                try {
+                    jaTags = new JSONArray(newTags);
+                } catch (Exception ex) {
+                    String errorMessage = "updateMediaItem. Wrong tags format"
+                            + ", newTags: " + newTags;
+                    mLogger.error(errorMessage);
+
+                    throw new Exception(errorMessage);
+                }
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/v1/mediaItem/" + mediaItemKey
                     ;
 
             JSONObject joEdit = new JSONObject();
-            joEdit.put("Title", newTitle);
-            joEdit.put("UserData", newUserData); // mms backend manages this field as string since it saves it as string into DB
-            joEdit.put("Tags", jaTags); // mms backend manages this field as a json array to get the tags
-            joEdit.put("RetentionInMinutes", newRetentionInMinutes);
-            joEdit.put("UniqueName", newUniqueName);
+            if (newTitle != null)
+                joEdit.put("Title", newTitle);
+            if (newUserData != null)
+                joEdit.put("UserData", newUserData); // mms backend manages this field as string since it saves it as string into DB
+            if (jaTags != null)
+                joEdit.put("Tags", jaTags); // mms backend manages this field as a json array to get the tags
+            if (newRetentionInMinutes != null)
+                joEdit.put("RetentionInMinutes", newRetentionInMinutes);
+            if (newUniqueName != null)
+                joEdit.put("UniqueName", newUniqueName);
 
             String sEdit = joEdit.toString(4);
 
