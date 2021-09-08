@@ -393,11 +393,11 @@ public class HttpFeedFetcher {
     }
 
     static public String fetchPostHttpsJson(String url, String contentType, int timeoutInSeconds, int maxRetriesNumber,
-                                            String user, String password, String postBodyRequest)
+                                            String user, String password, String authorizationHeader, String postBodyRequest)
             throws Exception
     {
         return fetchBodyHttpsJson("POST", url, contentType, timeoutInSeconds, maxRetriesNumber,
-                user, password, postBodyRequest);
+                user, password, authorizationHeader, postBodyRequest);
     }
 
     static public String fetchPutHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
@@ -405,7 +405,7 @@ public class HttpFeedFetcher {
             throws Exception
     {
         String contentType = null;
-        return fetchBodyHttpsJson("PUT", url, contentType, timeoutInSeconds, maxRetriesNumber, user, password, putBodyRequest);
+        return fetchBodyHttpsJson("PUT", url, contentType, timeoutInSeconds, maxRetriesNumber, user, password, null, putBodyRequest);
     }
 
     static public String fetchDeleteHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
@@ -415,12 +415,13 @@ public class HttpFeedFetcher {
         String contentType = null;
         // String deleteBodyRequest = null;
         return fetchBodyHttpsJson("DELETE", url, contentType, timeoutInSeconds, maxRetriesNumber,
-                user, password, deleteBodyRequest);
+                user, password, null, deleteBodyRequest);
     }
 
     static private String fetchBodyHttpsJson(String httpMethod, String url, String contentType,
                                              int timeoutInSeconds, int maxRetriesNumber,
-                                             String user, String password, String postBodyRequest)
+                                             String user, String password, String authorizationHeader,
+                                             String postBodyRequest)
             throws Exception
     {
         // fetchWebPage
@@ -492,7 +493,12 @@ public class HttpFeedFetcher {
                     conn.setConnectTimeout(timeoutInSeconds * 1000);
                     conn.setReadTimeout(timeoutInSeconds * 1000);
 
-                    if (user != null && password != null)
+                    if (authorizationHeader != null)
+                    {
+                        conn.setRequestProperty("Authorization", authorizationHeader);
+                        mLogger.info("Add Header, Authorization: " + authorizationHeader);
+                    }
+                    else if (user != null && password != null)
                     {
                         // String encoded = DatatypeConverter.printBase64Binary((user + ":" + password).getBytes("utf-8"));
                         String encoded = Base64.getEncoder().encodeToString((user + ":" + password).getBytes("utf-8"));

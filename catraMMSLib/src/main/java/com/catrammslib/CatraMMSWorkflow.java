@@ -600,6 +600,7 @@ public class CatraMMSWorkflow {
                         "High",
                         "MMS_JPG_240",
                         null,
+                        null, null,
                         null,
                         utcProcessingStartingFrom
                 ));
@@ -626,6 +627,7 @@ public class CatraMMSWorkflow {
                         "High",
                         "MMS_JPG_240",
                         null,
+                        null, null,
                         null,
                         utcProcessingStartingFrom
                 ));
@@ -793,7 +795,7 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildAddContentJson(
             String label, String title, String fileFormat, List<String> tags, String ingester,
-            String sourceURL, String pushBinaryFileName,
+            String sourceURL, String pushBinaryFileName, Boolean regenerateTimestamps,
             String variantOfReferencedLabel,
             String externalDeliveryTechnology, String externalDeliveryURL,
             String uniqueName, Boolean allowUniqueNameOverride,
@@ -818,6 +820,10 @@ public class CatraMMSWorkflow {
                 joParameters.put("Ingester", ingester);
 
                 joParameters.put("FileFormat", fileFormat);
+
+                // see docs/TASK_01_Add_Content_JSON_Format.txt
+                if (regenerateTimestamps != null)
+                    joParameters.put("RegenerateTimestamps", regenerateTimestamps);
 
                 if (sourceURL != null && !sourceURL.isEmpty())
                     joParameters.put("SourceURL", sourceURL);
@@ -849,6 +855,10 @@ public class CatraMMSWorkflow {
                         null);
 
                 joParameters.put("FileFormat", fileFormat);
+
+                // see docs/TASK_01_Add_Content_JSON_Format.txt
+                if (regenerateTimestamps != null)
+                    joParameters.put("RegenerateTimestamps", regenerateTimestamps);
 
                 if (sourceURL != null && !sourceURL.isEmpty())
                     joParameters.put("SourceURL", sourceURL);
@@ -1222,6 +1232,7 @@ public class CatraMMSWorkflow {
             String contentType, // video, audio, image
             String encodingPriority, String encodingProfileLabel,
             String encodersPool,
+            Long videoTrackIndex, Long audioTrackIndex,
             List<MediaItemReference> mediaItemReferenceList,
             Long utcProcessingStartingFrom
     )
@@ -1248,6 +1259,11 @@ public class CatraMMSWorkflow {
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
+
+            if (videoTrackIndex != null && videoTrackIndex >= 0)
+                joParameters.put("VideoTrackIndex", videoTrackIndex);
+            if (audioTrackIndex != null && audioTrackIndex >= 0)
+                joParameters.put("AudioTrackIndex", audioTrackIndex);
 
             if (utcProcessingStartingFrom != null)
             {

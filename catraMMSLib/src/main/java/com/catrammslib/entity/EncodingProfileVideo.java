@@ -1,6 +1,8 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by multi on 09.06.18.
@@ -17,6 +19,10 @@ public class EncodingProfileVideo implements Serializable {
     private Long kBufSize;
     private Long frameRate;
     private Long keyFrameIntervalInSeconds;
+
+    private List<VideoBitRate> videoBitRateList = new ArrayList<>();
+    private List<AudioBitRate> audioBitRateList = new ArrayList<>();
+
 
     public String getCodec() {
         return codec;
@@ -64,6 +70,22 @@ public class EncodingProfileVideo implements Serializable {
 
     public void setkBitRate(Long kBitRate) {
         this.kBitRate = kBitRate;
+    }
+
+    public List<VideoBitRate> getVideoBitRateList() {
+        return videoBitRateList;
+    }
+
+    public void setVideoBitRateList(List<VideoBitRate> videoBitRateList) {
+        this.videoBitRateList = videoBitRateList;
+    }
+
+    public List<AudioBitRate> getAudioBitRateList() {
+        return audioBitRateList;
+    }
+
+    public void setAudioBitRateList(List<AudioBitRate> audioBitRateList) {
+        this.audioBitRateList = audioBitRateList;
     }
 
     public String getOtherOutputParameters() {

@@ -279,7 +279,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, postBodyRequest);
+                    username, password, null, postBodyRequest);
             mLogger.info("register. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -407,7 +407,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, postBodyRequest);
+                    username, password, null, postBodyRequest);
             mLogger.info("login. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -469,7 +469,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, postBodyRequest);
+                    username, password, null, postBodyRequest);
             mLogger.info("createWorkspace. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -700,7 +700,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, postBodyRequest);
+                    username, password, null, postBodyRequest);
             mLogger.info("mmsSupport. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -730,7 +730,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonWorkflow);
+                    username, password, null, jsonWorkflow);
             mLogger.info("ingestWorkflow. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1073,7 +1073,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, joEncoder);
+                    username, password, null, joEncoder);
             mLogger.info("addEncoder. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1413,7 +1413,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, joEncodersPool);
+                    username, password, null, joEncodersPool);
             mLogger.info("addEncodersPool. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1541,7 +1541,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password, null, null);
             mLogger.info("assignEncoderToWorkspace. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1779,7 +1779,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonOtherInputs);
+                    username, password, null, jsonOtherInputs);
             mLogger.info("getMediaItems. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1852,7 +1852,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonTags);
+                    username, password, null, jsonTags);
             mLogger.info("getMediaItem. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1920,7 +1920,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonTags);
+                    username, password, null, jsonTags);
             mLogger.info("getMediaItem. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3497,7 +3497,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonYouTubeConf);
+                    username, password, null, jsonYouTubeConf);
             mLogger.info("addYouTubeConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3664,7 +3664,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonFacebookConf);
+                    username, password, null, jsonFacebookConf);
             mLogger.info("addFacebookConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3852,7 +3852,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonChannelConf);
+                    username, password, null, jsonChannelConf);
             mLogger.info("addIPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4177,7 +4177,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonChannelConf);
+                    username, password, null, jsonChannelConf);
             mLogger.info("addSATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4498,7 +4498,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonChannelConf);
+                    username, password, null, jsonChannelConf);
             mLogger.info("addSourceSATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4836,7 +4836,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonFTPConf);
+                    username, password, null, jsonFTPConf);
             mLogger.info("addFTPConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -5012,7 +5012,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonEMailConf);
+                    username, password, null, jsonEMailConf);
             mLogger.info("addEMailConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -6023,22 +6023,10 @@ public class CatraMMSAPI {
                     encodingProfile.getVideoDetails().setWidth(joVideoInfo.getLong("Width"));
                     encodingProfile.getVideoDetails().setHeight(joVideoInfo.getLong("Height"));
                     encodingProfile.getVideoDetails().setTwoPasses(joVideoInfo.getBoolean("TwoPasses"));
-                    if (joVideoInfo.isNull("KBitRate"))
-                        encodingProfile.getVideoDetails().setkBitRate(null);
-                    else
-                        encodingProfile.getVideoDetails().setkBitRate(joVideoInfo.getLong("KBitRate"));
                     if (joVideoInfo.isNull("OtherOutputParameters"))
                         encodingProfile.getVideoDetails().setOtherOutputParameters(null);
                     else
                         encodingProfile.getVideoDetails().setOtherOutputParameters(joVideoInfo.getString("OtherOutputParameters"));
-                    if (joVideoInfo.isNull("KMaxRate"))
-                        encodingProfile.getVideoDetails().setkMaxRate(null);
-                    else
-                        encodingProfile.getVideoDetails().setkMaxRate(joVideoInfo.getLong("KMaxRate"));
-                    if (joVideoInfo.isNull("KBufSize"))
-                        encodingProfile.getVideoDetails().setkBufSize(null);
-                    else
-                        encodingProfile.getVideoDetails().setkBufSize(joVideoInfo.getLong("KBufSize"));
                     if (joVideoInfo.isNull("FrameRate"))
                         encodingProfile.getVideoDetails().setFrameRate(null);
                     else
@@ -6048,13 +6036,45 @@ public class CatraMMSAPI {
                     else
                         encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(joVideoInfo.getLong("KeyFrameIntervalInSeconds"));
 
+                    if (joVideoInfo.isNull("KBitRate"))
+                        encodingProfile.getVideoDetails().setkBitRate(null);
+                    else
+                        encodingProfile.getVideoDetails().setkBitRate(joVideoInfo.getLong("KBitRate"));
+                    if (joVideoInfo.isNull("KMaxRate"))
+                        encodingProfile.getVideoDetails().setkMaxRate(null);
+                    else
+                        encodingProfile.getVideoDetails().setkMaxRate(joVideoInfo.getLong("KMaxRate"));
+                    if (joVideoInfo.isNull("KBufSize"))
+                        encodingProfile.getVideoDetails().setkBufSize(null);
+                    else
+                        encodingProfile.getVideoDetails().setkBufSize(joVideoInfo.getLong("KBufSize"));
+                    if (joVideoInfo.has("BitRates"))
+                    {
+                        JSONArray jaBitRates = joVideoInfo.getJSONArray("BitRates");
+                        for (int bitRateIndex = 0; bitRateIndex < jaBitRates.length(); bitRateIndex++)
+                        {
+                            JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
+
+                            VideoBitRate videoBitRate = new VideoBitRate();
+                            encodingProfile.getVideoDetails().getVideoBitRateList().add(videoBitRate);
+
+                            videoBitRate.setWidth(joVideoInfo.getLong("Width"));
+                            videoBitRate.setHeight(joVideoInfo.getLong("Height"));
+                            videoBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
+                            if (joBitRate.isNull("KMaxRate"))
+                                videoBitRate.setkMaxRate(null);
+                            else
+                                videoBitRate.setkMaxRate(joBitRate.getLong("KMaxRate"));
+                            if (joBitRate.isNull("KBufferSize"))
+                                videoBitRate.setkBufferSize(null);
+                            else
+                                videoBitRate.setkBufferSize(joBitRate.getLong("KBufferSize"));
+                        }
+                    }
+
                     JSONObject joAudioInfo = joProfileInfo.getJSONObject("Audio");
 
                     encodingProfile.getAudioDetails().setCodec(joAudioInfo.getString("Codec"));
-                    if (joAudioInfo.isNull("KBitRate"))
-                        encodingProfile.getAudioDetails().setkBitRate(null);
-                    else
-                        encodingProfile.getAudioDetails().setkBitRate(joAudioInfo.getLong("KBitRate"));
                     if (joAudioInfo.isNull("OtherOutputParameters"))
                         encodingProfile.getAudioDetails().setOtherOutputParameters(null);
                     else
@@ -6067,16 +6087,33 @@ public class CatraMMSAPI {
                         encodingProfile.getAudioDetails().setSampleRate(null);
                     else
                         encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
+
+                    if (joAudioInfo.isNull("KBitRate"))
+                        encodingProfile.getAudioDetails().setkBitRate(null);
+                    else
+                        encodingProfile.getAudioDetails().setkBitRate(joAudioInfo.getLong("KBitRate"));
+                    if (joAudioInfo.has("BitRates"))
+                    {
+                        JSONArray jaBitRates = joAudioInfo.getJSONArray("BitRates");
+                        for (int bitRateIndex = 0; bitRateIndex < jaBitRates.length(); bitRateIndex++)
+                        {
+                            JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
+
+                            AudioBitRate audioBitRate = new AudioBitRate();
+                            encodingProfile.getVideoDetails().getAudioBitRateList().add(audioBitRate);
+
+                            if (joBitRate.isNull("KBitRate"))
+                                audioBitRate.setkBitRate(null);
+                            else
+                                audioBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
+                        }
+                    }
                 }
                 else if (encodingProfile.getContentType().equalsIgnoreCase("audio"))
                 {
                     JSONObject joAudioInfo = joProfileInfo.getJSONObject("Audio");
 
                     encodingProfile.getAudioDetails().setCodec(joAudioInfo.getString("Codec"));
-                    if (joAudioInfo.isNull("KBitRate"))
-                        encodingProfile.getAudioDetails().setkBitRate(null);
-                    else
-                        encodingProfile.getAudioDetails().setkBitRate(joAudioInfo.getLong("KBitRate"));
                     if (joAudioInfo.isNull("OtherOutputParameters"))
                         encodingProfile.getAudioDetails().setOtherOutputParameters(null);
                     else
@@ -6089,6 +6126,27 @@ public class CatraMMSAPI {
                         encodingProfile.getAudioDetails().setSampleRate(null);
                     else
                         encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
+
+                    if (joAudioInfo.isNull("KBitRate"))
+                        encodingProfile.getAudioDetails().setkBitRate(null);
+                    else
+                        encodingProfile.getAudioDetails().setkBitRate(joAudioInfo.getLong("KBitRate"));
+                    if (joAudioInfo.has("BitRates"))
+                    {
+                        JSONArray jaBitRates = joAudioInfo.getJSONArray("BitRates");
+                        for (int bitRateIndex = 0; bitRateIndex < jaBitRates.length(); bitRateIndex++)
+                        {
+                            JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
+
+                            AudioBitRate audioBitRate = new AudioBitRate();
+                            encodingProfile.getAudioDetails().getAudioBitRateList().add(audioBitRate);
+
+                            if (joBitRate.isNull("KBitRate"))
+                                audioBitRate.setkBitRate(null);
+                            else
+                                audioBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
+                        }
+                    }
                 }
                 else if (encodingProfile.getContentType().equalsIgnoreCase("image"))
                 {

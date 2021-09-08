@@ -1,6 +1,8 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by multi on 09.06.18.
@@ -11,6 +13,8 @@ public class EncodingProfileAudio implements Serializable {
     private String otherOutputParameters;
     private Long channelsNumber;
     private Long sampleRate;
+
+    private List<AudioBitRate> audioBitRateList = new ArrayList<>();
 
     public String getCodec() {
         return codec;
@@ -42,6 +46,14 @@ public class EncodingProfileAudio implements Serializable {
 
     public void setChannelsNumber(Long channelsNumber) {
         this.channelsNumber = channelsNumber;
+    }
+
+    public List<AudioBitRate> getAudioBitRateList() {
+        return audioBitRateList;
+    }
+
+    public void setAudioBitRateList(List<AudioBitRate> audioBitRateList) {
+        this.audioBitRateList = audioBitRateList;
     }
 
     public Long getSampleRate() {
