@@ -11,5 +11,7 @@ fi
 
 echo "Delivery: ./catraMMSLib/target/catraMMSLib.jar"
 
+echo "In case of push: git push https://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@github.com/giulianoc/CatraMMSJavaLib.git"
+
 exit 0
 
