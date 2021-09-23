@@ -1,6 +1,7 @@
 package com.catrammslib;
 
 import com.catrammslib.entity.*;
+import com.catrammslib.utility.BulkOfDeliveryURLData;
 import com.catrammslib.utility.HttpFeedFetcher;
 import com.catrammslib.utility.IngestionResult;
 import org.apache.log4j.Logger;
@@ -3033,6 +3034,163 @@ public class CatraMMSAPI {
         }
     }
 
+    public void getBulkOfDeliveryURL(
+            String username, String password,
+            List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataList,  // IN and OUT (deliveryURL)
+            long ttlInSeconds, int maxRetries
+    )
+            throws Exception
+    {
+        String mmsInfo;
+        Map<String, BulkOfDeliveryURLData> vodBulkOfDeliveryURLDataMap = new HashMap<>();
+        Map<Long, BulkOfDeliveryURLData> liveBulkOfDeliveryURLDataMap = new HashMap<>();
+        try
+        {
+            /*
+            {
+                "vodUniqueNameList" : [
+                    {
+                        "uniqueName": "...",
+                        "encodingProfileKey": 123
+                    },
+                    ...
+                ],
+                "liveIngestionJobKeyList" : [
+                    {
+                        "ingestionJobKey": 1234
+                    },
+                    ...
+                ]
+             }
+             */
+
+            JSONObject joDeliveryAuthorizationDetails = new JSONObject();
+            {
+                JSONArray jaVodUniqueNameList = new JSONArray();
+                joDeliveryAuthorizationDetails.put("vodUniqueNameList", jaVodUniqueNameList);
+
+                JSONArray jaLiveIngestionJobKeyList = new JSONArray();
+                joDeliveryAuthorizationDetails.put("liveIngestionJobKeyList", jaLiveIngestionJobKeyList);
+
+                for (BulkOfDeliveryURLData bulkOfDeliveryURLData: bulkOfDeliveryURLDataList)
+                {
+                    if (bulkOfDeliveryURLData.getVodUniqueName() != null)
+                    {
+                        JSONObject joVodUniqueName = new JSONObject();
+                        jaVodUniqueNameList.put(joVodUniqueName);
+
+                        joVodUniqueName.put("uniqueName", bulkOfDeliveryURLData.getVodUniqueName());
+                        joVodUniqueName.put("encodingProfileKey", bulkOfDeliveryURLData.getVodEncodingProfileKey());
+
+                        vodBulkOfDeliveryURLDataMap.put(bulkOfDeliveryURLData.getVodUniqueName(), bulkOfDeliveryURLData);
+                    }
+                    else if (bulkOfDeliveryURLData.getLiveIngestionJobKey() != null)
+                    {
+                        JSONObject joLiveIngestionJobKey = new JSONObject();
+                        jaLiveIngestionJobKeyList.put(joLiveIngestionJobKey);
+
+                        joLiveIngestionJobKey.put("ingestionJobKey", bulkOfDeliveryURLData.getLiveIngestionJobKey());
+                        if (bulkOfDeliveryURLData.getLiveDeliveryCode() != null)
+                            joLiveIngestionJobKey.put("deliveryCode", bulkOfDeliveryURLData.getLiveDeliveryCode());
+
+                        liveBulkOfDeliveryURLDataMap.put(bulkOfDeliveryURLData.getLiveIngestionJobKey(), bulkOfDeliveryURLData);
+                    }
+                }
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/v1/bulkOfDelivery"
+                    + "?ttlInSeconds=" + ttlInSeconds
+                    + "&maxRetries=" + maxRetries
+                    + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+            ;
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null,
+                    joDeliveryAuthorizationDetails.toString());
+            mLogger.info("getBulkOfDeliveryURL. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        JSONObject joDeliveryURLList;
+        try
+        {
+            joDeliveryURLList = new JSONObject(mmsInfo);
+
+            /*
+            {
+                "vodUniqueNameList" : [
+                    {
+                        "uniqueName": "...",
+                        "encodingProfileKey": 123,
+                        "deliveryURL", "..."
+                    },
+                    ...
+                ],
+                "liveIngestionJobKeyList" : [
+                    {
+                        "ingestionJobKey": 1234,
+                        "deliveryCode": 1234,
+                        "deliveryURL", "..."
+                    },
+                    ...
+                ]
+             }
+             */
+
+            if (joDeliveryURLList.has("vodUniqueNameList"))
+            {
+                JSONArray jaVodUniqueNameList = joDeliveryURLList.getJSONArray("vodUniqueNameList");
+                for (int vodUniqueNameIndex = 0; vodUniqueNameIndex < jaVodUniqueNameList.length(); vodUniqueNameIndex++)
+                {
+                    JSONObject joVodUniqueName = jaVodUniqueNameList.getJSONObject(vodUniqueNameIndex);
+
+                    if (joVodUniqueName.has("uniqueName") && joVodUniqueName.has("deliveryURL")
+                        && !joVodUniqueName.isNull("uniqueName") && !joVodUniqueName.isNull("deliveryURL"))
+                    {
+                        BulkOfDeliveryURLData bulkOfDeliveryURLData
+                                = vodBulkOfDeliveryURLDataMap.get(joVodUniqueName.getString("uniqueName"));
+                        bulkOfDeliveryURLData.setDeliveryURL(joVodUniqueName.getString("deliveryURL"));
+                    }
+                }
+            }
+
+            if (joDeliveryURLList.has("liveIngestionJobKeyList"))
+            {
+                JSONArray jaLiveIngestionJobKeyList = joDeliveryURLList.getJSONArray("liveIngestionJobKeyList");
+                for (int liveIngestionJobKeyIndex = 0; liveIngestionJobKeyIndex < jaLiveIngestionJobKeyList.length(); liveIngestionJobKeyIndex++)
+                {
+                    JSONObject joLiveIngestionJobKey = jaLiveIngestionJobKeyList.getJSONObject(liveIngestionJobKeyIndex);
+
+                    if (joLiveIngestionJobKey.has("ingestionJobKey") && joLiveIngestionJobKey.has("deliveryURL")
+                            && !joLiveIngestionJobKey.isNull("ingestionJobKey") && !joLiveIngestionJobKey.isNull("deliveryURL"))
+                    {
+                        BulkOfDeliveryURLData bulkOfDeliveryURLData
+                                = liveBulkOfDeliveryURLDataMap.get(joLiveIngestionJobKey.getLong("ingestionJobKey"));
+                        bulkOfDeliveryURLData.setDeliveryURL(joLiveIngestionJobKey.getString("deliveryURL"));
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "deliveryURLList processing failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public String getVODDeliveryURL(String username, String password,
 
                                     // first option (encodingProfileKey or encodingProfileLabel)
@@ -5352,7 +5510,8 @@ public class CatraMMSAPI {
                         || encodingJob.getType().equalsIgnoreCase("EncodeImage"))
                 {
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    encodingJob.setSourcePhysicalPathKey(
+                    if (joParameters.getJSONArray("sourcesToBeEncodedRoot").length() > 0)
+                        encodingJob.setSourcePhysicalPathKey(
                             joParameters.getJSONArray("sourcesToBeEncodedRoot").getJSONObject(0)
                                     .getLong("sourcePhysicalPathKey"));
                 }
@@ -5404,6 +5563,34 @@ public class CatraMMSAPI {
                     else if (joParameters.has("url"))   // new one
                         encodingJob.setLiveURL(joParameters.getString("url"));
 
+                    if (joParameters.has("timePeriod") && joParameters.getBoolean("timePeriod"))
+                    {
+                        encodingJob.setProxyPeriodEnd(new Date(1000 * joParameters.getLong("utcProxyPeriodEnd")));
+                        encodingJob.setProxyPeriodStart(new Date(1000 * joParameters.getLong("utcProxyPeriodStart")));
+                    }
+
+                    // Outputs
+                    {
+                        String outputTypes = "";
+                        String segmentsDurationInSeconds = "";
+                        if (joParameters.has("outputsRoot"))
+                        {
+                            JSONArray jaOutputsRoot = joParameters.getJSONArray("outputsRoot");
+                            for (int outputIndex = 0; outputIndex < jaOutputsRoot.length(); outputIndex++)
+                            {
+                                JSONObject joOutput = jaOutputsRoot.getJSONObject(outputIndex);
+                                outputTypes += joOutput.getString("outputType");
+                                if (joOutput.has("segmentDurationInSeconds"))
+                                    segmentsDurationInSeconds += joOutput.getLong("segmentDurationInSeconds");
+                            }
+                        }
+                        encodingJob.setLiveProxyOutputTypes(outputTypes);
+                        encodingJob.setLiveProxySegmentsDurationInSeconds(segmentsDurationInSeconds);
+                    }
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("VODProxy")
+                )
+                {
                     if (joParameters.has("timePeriod") && joParameters.getBoolean("timePeriod"))
                     {
                         encodingJob.setProxyPeriodEnd(new Date(1000 * joParameters.getLong("utcProxyPeriodEnd")));
@@ -6020,8 +6207,6 @@ public class CatraMMSAPI {
                         encodingProfile.getVideoDetails().setProfile(null);
                     else
                         encodingProfile.getVideoDetails().setProfile(joVideoInfo.getString("Profile"));
-                    encodingProfile.getVideoDetails().setWidth(joVideoInfo.getLong("Width"));
-                    encodingProfile.getVideoDetails().setHeight(joVideoInfo.getLong("Height"));
                     encodingProfile.getVideoDetails().setTwoPasses(joVideoInfo.getBoolean("TwoPasses"));
                     if (joVideoInfo.isNull("OtherOutputParameters"))
                         encodingProfile.getVideoDetails().setOtherOutputParameters(null);
@@ -6036,18 +6221,6 @@ public class CatraMMSAPI {
                     else
                         encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(joVideoInfo.getLong("KeyFrameIntervalInSeconds"));
 
-                    if (joVideoInfo.isNull("KBitRate"))
-                        encodingProfile.getVideoDetails().setkBitRate(null);
-                    else
-                        encodingProfile.getVideoDetails().setkBitRate(joVideoInfo.getLong("KBitRate"));
-                    if (joVideoInfo.isNull("KMaxRate"))
-                        encodingProfile.getVideoDetails().setkMaxRate(null);
-                    else
-                        encodingProfile.getVideoDetails().setkMaxRate(joVideoInfo.getLong("KMaxRate"));
-                    if (joVideoInfo.isNull("KBufSize"))
-                        encodingProfile.getVideoDetails().setkBufSize(null);
-                    else
-                        encodingProfile.getVideoDetails().setkBufSize(joVideoInfo.getLong("KBufSize"));
                     if (joVideoInfo.has("BitRates"))
                     {
                         JSONArray jaBitRates = joVideoInfo.getJSONArray("BitRates");
@@ -6058,14 +6231,22 @@ public class CatraMMSAPI {
                             VideoBitRate videoBitRate = new VideoBitRate();
                             encodingProfile.getVideoDetails().getVideoBitRateList().add(videoBitRate);
 
-                            videoBitRate.setWidth(joVideoInfo.getLong("Width"));
-                            videoBitRate.setHeight(joVideoInfo.getLong("Height"));
+                            videoBitRate.setWidth(joBitRate.getLong("Width"));
+                            videoBitRate.setHeight(joBitRate.getLong("Height"));
                             videoBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
-                            if (joBitRate.isNull("KMaxRate"))
+                            if (!joBitRate.has("ForceOriginalAspectRatio") || joBitRate.isNull("ForceOriginalAspectRatio"))
+                                videoBitRate.setForceOriginalAspectRatio(null);
+                            else
+                                videoBitRate.setForceOriginalAspectRatio(joBitRate.getString("ForceOriginalAspectRatio"));
+                            if (!joBitRate.has("Pad") || joBitRate.isNull("Pad"))
+                                videoBitRate.setPad(null);
+                            else
+                                videoBitRate.setPad(joBitRate.getBoolean("Pad"));
+                            if (!joBitRate.has("KMaxRate") || joBitRate.isNull("KMaxRate"))
                                 videoBitRate.setkMaxRate(null);
                             else
                                 videoBitRate.setkMaxRate(joBitRate.getLong("KMaxRate"));
-                            if (joBitRate.isNull("KBufferSize"))
+                            if (!joBitRate.has("KBufferSize") || joBitRate.isNull("KBufferSize"))
                                 videoBitRate.setkBufferSize(null);
                             else
                                 videoBitRate.setkBufferSize(joBitRate.getLong("KBufferSize"));
@@ -6088,10 +6269,6 @@ public class CatraMMSAPI {
                     else
                         encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
 
-                    if (joAudioInfo.isNull("KBitRate"))
-                        encodingProfile.getAudioDetails().setkBitRate(null);
-                    else
-                        encodingProfile.getAudioDetails().setkBitRate(joAudioInfo.getLong("KBitRate"));
                     if (joAudioInfo.has("BitRates"))
                     {
                         JSONArray jaBitRates = joAudioInfo.getJSONArray("BitRates");
@@ -6102,7 +6279,7 @@ public class CatraMMSAPI {
                             AudioBitRate audioBitRate = new AudioBitRate();
                             encodingProfile.getVideoDetails().getAudioBitRateList().add(audioBitRate);
 
-                            if (joBitRate.isNull("KBitRate"))
+                            if (!joBitRate.has("KBitRate") || joBitRate.isNull("KBitRate"))
                                 audioBitRate.setkBitRate(null);
                             else
                                 audioBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
@@ -6127,10 +6304,6 @@ public class CatraMMSAPI {
                     else
                         encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
 
-                    if (joAudioInfo.isNull("KBitRate"))
-                        encodingProfile.getAudioDetails().setkBitRate(null);
-                    else
-                        encodingProfile.getAudioDetails().setkBitRate(joAudioInfo.getLong("KBitRate"));
                     if (joAudioInfo.has("BitRates"))
                     {
                         JSONArray jaBitRates = joAudioInfo.getJSONArray("BitRates");

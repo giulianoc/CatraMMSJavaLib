@@ -10,13 +10,8 @@ import java.util.List;
 public class EncodingProfileVideo implements Serializable {
     private String codec;
     private String profile;
-    private Long width;
-    private Long height;
     private Boolean twoPasses;
-    private Long kBitRate;
     private String otherOutputParameters;
-    private Long kMaxRate;
-    private Long kBufSize;
     private Long frameRate;
     private Long keyFrameIntervalInSeconds;
 
@@ -40,36 +35,12 @@ public class EncodingProfileVideo implements Serializable {
         this.profile = profile;
     }
 
-    public Long getWidth() {
-        return width;
-    }
-
-    public void setWidth(Long width) {
-        this.width = width;
-    }
-
-    public Long getHeight() {
-        return height;
-    }
-
-    public void setHeight(Long height) {
-        this.height = height;
-    }
-
     public Boolean getTwoPasses() {
         return twoPasses;
     }
 
     public void setTwoPasses(Boolean twoPasses) {
         this.twoPasses = twoPasses;
-    }
-
-    public Long getkBitRate() {
-        return kBitRate;
-    }
-
-    public void setkBitRate(Long kBitRate) {
-        this.kBitRate = kBitRate;
     }
 
     public List<VideoBitRate> getVideoBitRateList() {
@@ -94,22 +65,6 @@ public class EncodingProfileVideo implements Serializable {
 
     public void setOtherOutputParameters(String otherOutputParameters) {
         this.otherOutputParameters = otherOutputParameters;
-    }
-
-    public Long getkMaxRate() {
-        return kMaxRate;
-    }
-
-    public void setkMaxRate(Long kMaxRate) {
-        this.kMaxRate = kMaxRate;
-    }
-
-    public Long getkBufSize() {
-        return kBufSize;
-    }
-
-    public void setkBufSize(Long kBufSize) {
-        this.kBufSize = kBufSize;
     }
 
     public Long getFrameRate() {

@@ -9,7 +9,6 @@ import java.util.List;
  */
 public class EncodingProfileAudio implements Serializable {
     private String codec;
-    private Long kBitRate;
     private String otherOutputParameters;
     private Long channelsNumber;
     private Long sampleRate;
@@ -22,14 +21,6 @@ public class EncodingProfileAudio implements Serializable {
 
     public void setCodec(String codec) {
         this.codec = codec;
-    }
-
-    public Long getkBitRate() {
-        return kBitRate;
-    }
-
-    public void setkBitRate(Long kBitRate) {
-        this.kBitRate = kBitRate;
     }
 
     public String getOtherOutputParameters() {

@@ -645,7 +645,9 @@ public class CatraMMSWorkflow {
     }
 
     static public JSONObject buildEmailNotificationJson(
-            String label, String configurationLabel
+            String label, String configurationLabel,
+            List<String> userSubstitutionsToBeReplaced,
+            List<String> userSubstitutionsReplaceWith
     )
             throws Exception
     {
@@ -660,6 +662,33 @@ public class CatraMMSWorkflow {
             joTask.put("Parameters", joParameters);
 
             joParameters.put("ConfigurationLabel", configurationLabel);
+
+            if (userSubstitutionsToBeReplaced != null
+                    && userSubstitutionsReplaceWith != null
+                    && userSubstitutionsToBeReplaced.size() == userSubstitutionsReplaceWith.size())
+            {
+                JSONArray jaUserSubstitutions = new JSONArray();
+                joParameters.put("UserSubstitutions", jaUserSubstitutions);
+
+                for (int userSubstitutionIndex = 0;
+                     userSubstitutionIndex < userSubstitutionsToBeReplaced.size();
+                     userSubstitutionIndex++)
+                {
+                    String toBeReplaced = userSubstitutionsToBeReplaced.get(userSubstitutionIndex);
+                    String replaceWith = userSubstitutionsReplaceWith.get(userSubstitutionIndex);
+
+                    if (toBeReplaced != null && !toBeReplaced.isEmpty()
+                            && replaceWith != null && !replaceWith.isEmpty()
+                    )
+                    {
+                        JSONObject joUserSubstitution = new JSONObject();
+                        jaUserSubstitutions.put(joUserSubstitution);
+
+                        joUserSubstitution.put("ToBeReplaced", toBeReplaced);
+                        joUserSubstitution.put("ReplaceWith", replaceWith);
+                    }
+                }
+            }
 
             return joTask;
         }
@@ -999,6 +1028,64 @@ public class CatraMMSWorkflow {
         catch (Exception e)
         {
             String errorMessage = "buildConcatDemuxJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+    static public JSONObject buildCheckStreamingJson(
+            String label,
+            String inputType,           // Channel or StreamingUrl
+            String configurationLabel,  // only if inputType is Channel
+            String streamingName,       // only if inputType is StreamingUrl
+            String streamingUrl,        // only if inputType is StreamingUrl
+            String waitForGlobalIngestionLabel,
+            Long utcProcessingStartingFrom
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Check-Streaming");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            setCommonParameters(joParameters,
+                    null,
+                    null,
+                    waitForGlobalIngestionLabel);
+
+            joParameters.put("InputType", inputType);
+
+            if (inputType != null && inputType.equalsIgnoreCase("Channel"))
+            {
+                joParameters.put("ConfigurationLabel", configurationLabel);
+            }
+            else
+            {
+                joParameters.put("StreamingName", streamingName);
+                joParameters.put("StreamingUrl", streamingUrl);
+
+            }
+
+            if (utcProcessingStartingFrom != null)
+            {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+            }
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildCheckStreamingJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;

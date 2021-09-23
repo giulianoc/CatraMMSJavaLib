@@ -69,6 +69,12 @@ public class EncodingJob implements Serializable {
     private String awaitingTheBeginningOutputType;
     private Long awaitingTheBeginningSegmentDurationInSeconds;
 
+
+    // filled by GUI
+    private String mediaTitle;
+    private String mediaDuration;
+
+
     public Long getEncodingJobKey() {
         return encodingJobKey;
     }
@@ -363,6 +369,22 @@ public class EncodingJob implements Serializable {
 
     public void setOutroVideoPhysicalPathKey(Long outroVideoPhysicalPathKey) {
         this.outroVideoPhysicalPathKey = outroVideoPhysicalPathKey;
+    }
+
+    public String getMediaTitle() {
+        return mediaTitle;
+    }
+
+    public void setMediaTitle(String mediaTitle) {
+        this.mediaTitle = mediaTitle;
+    }
+
+    public String getMediaDuration() {
+        return mediaDuration;
+    }
+
+    public void setMediaDuration(String mediaDuration) {
+        this.mediaDuration = mediaDuration;
     }
 
     public Long getIngestionJobKey() {

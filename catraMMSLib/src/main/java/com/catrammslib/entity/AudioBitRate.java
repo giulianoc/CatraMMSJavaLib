@@ -5,6 +5,7 @@ import java.util.Objects;
 
 public class AudioBitRate implements Serializable {
     private Long kBitRate;
+    private String sKBitRate;
 
     @Override
     public boolean equals(Object o) {
@@ -17,6 +18,16 @@ public class AudioBitRate implements Serializable {
     @Override
     public int hashCode() {
         return Objects.hash(kBitRate);
+    }
+
+    public String getsKBitRate() {
+        return sKBitRate;
+    }
+
+    public void setsKBitRate(String sKBitRate) {
+        this.sKBitRate = sKBitRate;
+
+        kBitRate = Long.parseLong(sKBitRate);
     }
 
     public Long getkBitRate() {

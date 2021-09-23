@@ -1,12 +1,26 @@
 package com.catrammslib.entity;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 public class VideoBitRate implements Serializable {
+
+    // private final Logger mLogger = Logger.getLogger(this.getClass());
+
     private Long width;
+    private String sWidth;
+
     private Long height;
+    private String sHeight;
+
+    private String forceOriginalAspectRatio;    // decrease, increase
+    private Boolean pad;
+
     private Long kBitRate;
+    private String sKBitRate;
+
     private Long kMaxRate;
     private Long kBufferSize;
 
@@ -23,6 +37,36 @@ public class VideoBitRate implements Serializable {
         return Objects.hash(kBitRate);
     }
 
+    public String getsWidth() {
+        return sWidth;
+    }
+
+    public void setsWidth(String sWidth) {
+        this.sWidth = sWidth;
+
+        width = Long.parseLong(sWidth);
+    }
+
+    public String getsHeight() {
+        return sHeight;
+    }
+
+    public void setsHeight(String sHeight) {
+        this.sHeight = sHeight;
+
+        height = Long.parseLong(sHeight);
+    }
+
+    public String getsKBitRate() {
+        return sKBitRate;
+    }
+
+    public void setsKBitRate(String sKBitRate) {
+        this.sKBitRate = sKBitRate;
+
+        kBitRate = Long.parseLong(sKBitRate);
+    }
+
     public Long getWidth() {
         return width;
     }
@@ -37,6 +81,22 @@ public class VideoBitRate implements Serializable {
 
     public void setHeight(Long height) {
         this.height = height;
+    }
+
+    public String getForceOriginalAspectRatio() {
+        return forceOriginalAspectRatio;
+    }
+
+    public void setForceOriginalAspectRatio(String forceOriginalAspectRatio) {
+        this.forceOriginalAspectRatio = forceOriginalAspectRatio;
+    }
+
+    public Boolean getPad() {
+        return pad;
+    }
+
+    public void setPad(Boolean pad) {
+        this.pad = pad;
     }
 
     public Long getkBitRate() {

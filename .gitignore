@@ -9,3 +9,10 @@
 
 *.jar
 *.class
+.project
+.settings
+*.iml
+.classpath
+.project
+.settings
+
