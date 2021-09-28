@@ -1,18 +1,19 @@
 package com.catrammslib;
 
-import com.catrammslib.entity.WorkflowVariable;
-import com.catrammslib.utility.LiveProxyOutput;
-import com.catrammslib.utility.MediaItemReference;
-import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+
+import com.catrammslib.entity.WorkflowVariable;
+import com.catrammslib.utility.LiveProxyOutput;
+import com.catrammslib.utility.MediaItemReference;
+
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class CatraMMSWorkflow {
 
@@ -1316,8 +1317,11 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildEncodeJson(
             String label, String ingester,
-            String contentType, // video, audio, image
-            String encodingPriority, String encodingProfileLabel,
+			// video, audio, image (it has to used only in case the workflow is sent to the workflow editor page)
+            String contentType,
+            String encodingPriority,	// Low, Medium, High 
+			// encodingProfileLabel or encodingProfileSetLabel has to be present
+			String encodingProfileLabel, String encodingProfileSetLabel,
             String encodersPool,
             Long videoTrackIndex, Long audioTrackIndex,
             List<MediaItemReference> mediaItemReferenceList,
@@ -1337,12 +1341,14 @@ public class CatraMMSWorkflow {
 
             joParameters.put("Ingester", ingester);
 
-            if (contentType != null) // it has to used only in case the workflow is sent to the workflow editor page
+            if (contentType != null)
                 joParameters.put("ContentType", contentType);
 
             joParameters.put("EncodingPriority", encodingPriority);
             if (encodingProfileLabel != null)
                 joParameters.put("EncodingProfileLabel", encodingProfileLabel);
+			else if (encodingProfileSetLabel != null)
+                joParameters.put("EncodingProfileSetLabel", encodingProfileSetLabel);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
