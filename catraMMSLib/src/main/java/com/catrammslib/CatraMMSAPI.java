@@ -1,17 +1,51 @@
 package com.catrammslib;
 
-import com.catrammslib.entity.*;
-import com.catrammslib.utility.BulkOfDeliveryURLData;
-import com.catrammslib.utility.HttpFeedFetcher;
-import com.catrammslib.utility.IngestionResult;
-import org.apache.log4j.Logger;
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.InputStream;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.TimeZone;
+
+import com.catrammslib.entity.AudioBitRate;
+import com.catrammslib.entity.AudioTrack;
+import com.catrammslib.entity.EMailConf;
+import com.catrammslib.entity.Encoder;
+import com.catrammslib.entity.EncodersPool;
+import com.catrammslib.entity.EncodingJob;
+import com.catrammslib.entity.EncodingProfile;
+import com.catrammslib.entity.EncodingProfilesSet;
+import com.catrammslib.entity.FTPConf;
+import com.catrammslib.entity.FacebookConf;
+import com.catrammslib.entity.IPChannelConf;
+import com.catrammslib.entity.IngestionJob;
+import com.catrammslib.entity.IngestionJobMediaItem;
+import com.catrammslib.entity.IngestionWorkflow;
+import com.catrammslib.entity.MediaItem;
+import com.catrammslib.entity.MediaItemCrossReference;
+import com.catrammslib.entity.PhysicalPath;
+import com.catrammslib.entity.SATChannelConf;
+import com.catrammslib.entity.SourceSATChannelConf;
+import com.catrammslib.entity.UserProfile;
+import com.catrammslib.entity.VideoBitRate;
+import com.catrammslib.entity.VideoTrack;
+import com.catrammslib.entity.WorkflowLibrary;
+import com.catrammslib.entity.WorkflowVariable;
+import com.catrammslib.entity.WorkspaceDetails;
+import com.catrammslib.entity.YouTubeConf;
+import com.catrammslib.utility.BulkOfDeliveryURLData;
+import com.catrammslib.utility.HttpFeedFetcher;
+import com.catrammslib.utility.IngestionResult;
+
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 /**
  * Created by multi on 08.06.18.
@@ -152,7 +186,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workspace/share"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace/share"
                     + "?userAlreadyPresent=" + userAlreadyPresent.toString()
                     + "&createRemoveWorkspace=" + createRemoveWorkspace.toString()
                     + "&ingestWorkflow=" + ingestWorkflow.toString()
@@ -226,7 +260,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/workspace/default/" + workspaceKeyToBeSetAsDefault
+                    + "/catramms/1.0.1/workspace/default/" + workspaceKeyToBeSetAsDefault
                     ;
 
             String postBodyRequest = "";
@@ -258,7 +292,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/user";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
 
             String postBodyRequest = "{ "
                     + "\"Name\": \"" + userNameToRegister + "\", "
@@ -316,7 +350,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/user/" + userKey + "/" + confirmationCode;
+                    + "/catramms/1.0.1/user/" + userKey + "/" + confirmationCode;
 
             String username = null;
             String password = null;
@@ -362,7 +396,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/login";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/login";
 
             String postBodyRequest = "";
 
@@ -455,7 +489,7 @@ public class CatraMMSAPI {
         String mmsURL = null;
         try
         {
-            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workspace";
+            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace";
 
             JSONObject joNewWorkspace = new JSONObject();
             joNewWorkspace.put("WorkspaceName", workspaceNameToRegister);
@@ -515,7 +549,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workspace";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace";
 
             JSONObject joBodyRequest = new JSONObject();
             joBodyRequest.put("Enabled", newEnabled);
@@ -587,7 +621,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workspace";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace";
 
             mLogger.info("deleteWorkspace"
                     + ", mmsURL: " + mmsURL
@@ -621,7 +655,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/user";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
 
             String bodyRequest = "{ "
                     + "\"Name\": \"" + newName + "\", "
@@ -684,7 +718,7 @@ public class CatraMMSAPI {
         String mmsURL = null;
         try
         {
-            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/mmsSupport";
+            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/support";
 
             JSONObject joMMSSupport = new JSONObject();
             joMMSSupport.put("UserEmailAddress", userEmailAddress);
@@ -721,7 +755,7 @@ public class CatraMMSAPI {
         String mmsURL = null;
         try
         {
-            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/ingestion";
+            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflow";
 
             mLogger.info("ingestWorkflow"
                     + ", mmsURL: " + mmsURL
@@ -786,7 +820,7 @@ public class CatraMMSAPI {
         try
         {
             mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/ingestionRoot/metaDataContent/" + ingestionRootKey
+                    + "/catramms/1.0.1/workflow/metaDataContent/" + ingestionRootKey
                     + "?processedMetadata=" + (processedMetadata == null ? "false" : processedMetadata)
             ;
 
@@ -824,7 +858,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profile/" + contentType;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfile/" + contentType;
 
             mLogger.info("addEncodingProfile"
                             + ", mmsURL: " + mmsURL
@@ -870,7 +904,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profile/" + encodingProfileKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfile/" + encodingProfileKey;
 
             mLogger.info("removeEncodingProfile"
                             + ", mmsURL: " + mmsURL
@@ -900,7 +934,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profilesSet/" + contentType;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfilesSet/" + contentType;
 
             mLogger.info("addEncodingProfilesSet"
                             + ", mmsURL: " + mmsURL
@@ -950,7 +984,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profilesSet/" + encodingProfilesSetKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfilesSet/" + encodingProfilesSetKey;
 
             mLogger.info("removeEncodingProfilesSet"
                             + ", mmsURL: " + mmsURL
@@ -978,7 +1012,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodingJobs/" + encodingJobKey + "?newEncodingJobPriorityCode=" + newEncodingJobPriorityCode;
+                    + "/catramms/1.0.1/encodingJob/" + encodingJobKey + "?newEncodingJobPriorityCode=" + newEncodingJobPriorityCode;
 
             mLogger.info("updateEncodingJobPriority"
                             + ", mmsURL: " + mmsURL
@@ -1005,7 +1039,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodingJobs/" + encodingJobKey;
+                    + "/catramms/1.0.1/encodingJob/" + encodingJobKey;
 
             mLogger.info("killEncodingJob"
                     + ", mmsURL: " + mmsURL
@@ -1032,7 +1066,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodingJobs/" + encodingJobKey + "?tryEncodingAgain=true";
+                    + "/catramms/1.0.1/encodingJob/" + encodingJobKey + "?tryEncodingAgain=true";
 
             mLogger.info("updateEncodingJobTryAgain"
                     + ", mmsURL: " + mmsURL
@@ -1054,7 +1088,9 @@ public class CatraMMSAPI {
     }
 
     public Long addEncoder(String username, String password,
-                           String joEncoder)
+                           String label, boolean external,
+						   boolean enabled, String protocol,
+						   String serverName, Long port)
             throws Exception
     {
         Long encoderKey;
@@ -1062,8 +1098,17 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encoder";
+			JSONObject joEncoder = new JSONObject();
+
+			joEncoder.put("Label", label);
+			joEncoder.put("External", external);
+			joEncoder.put("Enabled", enabled);
+			joEncoder.put("Protocol", protocol);
+			joEncoder.put("ServerName", serverName);
+			joEncoder.put("Port", port);
+
+			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/encoder";
 
             mLogger.info("addEncoder"
                     + ", mmsURL: " + mmsURL
@@ -1074,7 +1119,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, null, joEncoder);
+                    username, password, null, joEncoder.toString());
             mLogger.info("addEncoder. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1103,14 +1148,26 @@ public class CatraMMSAPI {
     }
 
     public void modifyEncoder(String username, String password,
-                              Long encoderKey, String joEncoder)
-            throws Exception
+                              Long encoderKey,
+							  String label, boolean external,
+							  boolean enabled, String protocol,
+							  String serverName, Long port)
+			   throws Exception
     {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encoder/" + encoderKey;
+			JSONObject joEncoder = new JSONObject();
+
+			joEncoder.put("Label", label);
+			joEncoder.put("External", external);
+			joEncoder.put("Enabled", enabled);
+			joEncoder.put("Protocol", protocol);
+			joEncoder.put("ServerName", serverName);
+			joEncoder.put("Port", port);
+
+			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/encoder/" + encoderKey;
 
             mLogger.info("modifyEncoder"
                     + ", mmsURL: " + mmsURL
@@ -1122,7 +1179,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, joEncoder);
+                    username, password, joEncoder.toString());
             mLogger.info("modifyEncoder. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1160,7 +1217,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encoder/" + encoderKey;
+                    + "/catramms/1.0.1/encoder/" + encoderKey;
 
             mLogger.info("removeEncoder"
                     + ", mmsURL: " + mmsURL
@@ -1205,7 +1262,7 @@ public class CatraMMSAPI {
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                + "/catramms/v1/encoder?labelOrder=" + "asc"
+                + "/catramms/1.0.1/encoder?labelOrder=" + "asc"
                     + urlAdminParameters
             ;
 
@@ -1277,7 +1334,7 @@ public class CatraMMSAPI {
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encoder/" + encoderKey
+                    + "/catramms/1.0.1/encoder/" + encoderKey
                     ;
 
             // server API will use allEncoders only in case of admin.
@@ -1343,7 +1400,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodersPool?labelOrder=" + "asc"
+                    + "/catramms/1.0.1/encodersPool?labelOrder=" + "asc"
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -1394,16 +1451,25 @@ public class CatraMMSAPI {
     }
 
     public Long addEncodersPool(String username, String password,
-                           String joEncodersPool)
-            throws Exception
+		String label, List<Encoder> encoderList)
+	throws Exception
     {
         Long encoderKey;
 
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodersPool";
+            JSONObject joEncodersPool = new JSONObject();
+            joEncodersPool.put("Label", label);
+
+            JSONArray jaEncoderKeys = new JSONArray();
+            joEncodersPool.put("encoderKeys", jaEncoderKeys);
+
+            for (Encoder encoder: encoderList)
+                jaEncoderKeys.put(encoder.getEncoderKey());
+
+			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/encodersPool";
 
             mLogger.info("addEncoder"
                     + ", mmsURL: " + mmsURL
@@ -1414,7 +1480,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, null, joEncodersPool);
+                    username, password, null, joEncodersPool.toString());
             mLogger.info("addEncodersPool. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1443,14 +1509,24 @@ public class CatraMMSAPI {
     }
 
     public void modifyEncodersPool(String username, String password,
-                              Long encodersPoolKey, String joEncodersPool)
+                              Long encodersPoolKey, 
+							  String label, List<Encoder> encoderList)
             throws Exception
     {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodersPool/" + encodersPoolKey;
+            JSONObject joEncodersPool = new JSONObject();
+            joEncodersPool.put("Label", label);
+
+            JSONArray jaEncoderKeys = new JSONArray();
+            joEncodersPool.put("encoderKeys", jaEncoderKeys);
+
+            for (Encoder encoder: encoderList)
+                jaEncoderKeys.put(encoder.getEncoderKey());
+
+			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/encodersPool/" + encodersPoolKey;
 
             mLogger.info("modifyEncoder"
                     + ", mmsURL: " + mmsURL
@@ -1462,7 +1538,7 @@ public class CatraMMSAPI {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, joEncodersPool);
+                    username, password, joEncodersPool.toString());
             mLogger.info("modifyEncodersPool. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1500,7 +1576,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/encodersPool/" + encodersPoolKey;
+                    + "/catramms/1.0.1/encodersPool/" + encodersPoolKey;
 
             mLogger.info("removeEncoder"
                     + ", mmsURL: " + mmsURL
@@ -1529,7 +1605,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/workspace-encoder/" + workspaceKey + "/" + encoderKey
+                    + "/catramms/1.0.1/workspace-encoder/" + workspaceKey + "/" + encoderKey
                     ;
 
             mLogger.info("assignEncoderToWorkspace"
@@ -1576,7 +1652,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/workspace-encoder/" + workspaceKey + "/" + encoderKey
+                    + "/catramms/1.0.1/workspace-encoder/" + workspaceKey + "/" + encoderKey
                     ;
 
             mLogger.info("removeEncoderFromWorkspace"
@@ -1626,7 +1702,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/workspace"
+                    + "/catramms/1.0.1/workspace"
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -1723,7 +1799,7 @@ public class CatraMMSAPI {
                 newMediaItemKey = mediaItemKey;
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/mediaItems"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
                     + (newMediaItemKey == null ? "" : ("/" + newMediaItemKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -1738,49 +1814,62 @@ public class CatraMMSAPI {
                     + "&jsonOrderBy=" + (jsonOrderBy == null ? "" : java.net.URLEncoder.encode(jsonOrderBy, "UTF-8"))
                     ;
 
-            JSONObject joOtherInputs = new JSONObject();
-            {
-                JSONArray jaTagsIn = new JSONArray();
-                if (tagsIn != null)
-                {
-                    for(String tag: tagsIn)
-                    {
-                        jaTagsIn.put(tag);
-                    }
-                }
-                joOtherInputs.put("tagsIn", jaTagsIn);
-
-                JSONArray jaTagsNotIn = new JSONArray();
-                if (tagsNotIn != null)
-                {
-                    for(String tag: tagsNotIn)
-                    {
-                        jaTagsNotIn.put(tag);
-                    }
-                }
-                joOtherInputs.put("tagsNotIn", jaTagsNotIn);
-
-                JSONArray jaOtherMediaItemsKey = new JSONArray();
-                if (newMediaItemKey != null && otherMediaItemsKey != null)
-                {
-                    for(Long localMediaItemKey: otherMediaItemsKey)
-                    {
-                        jaOtherMediaItemsKey.put(localMediaItemKey);
-                    }
-                }
-                joOtherInputs.put("otherMediaItemsKey", jaOtherMediaItemsKey);
-            }
-            String jsonOtherInputs = joOtherInputs.toString(4);
+			String body = null;
+			if (tagsIn != null && tagsIn.size() > 0
+				|| (tagsNotIn != null && tagsNotIn.size() > 0))
+			{
+				JSONObject joOtherInputs = new JSONObject();
+				{
+					JSONArray jaTagsIn = new JSONArray();
+					if (tagsIn != null)
+					{
+						for(String tag: tagsIn)
+						{
+							jaTagsIn.put(tag);
+						}
+					}
+					joOtherInputs.put("tagsIn", jaTagsIn);
+	
+					JSONArray jaTagsNotIn = new JSONArray();
+					if (tagsNotIn != null)
+					{
+						for(String tag: tagsNotIn)
+						{
+							jaTagsNotIn.put(tag);
+						}
+					}
+					joOtherInputs.put("tagsNotIn", jaTagsNotIn);
+	
+					JSONArray jaOtherMediaItemsKey = new JSONArray();
+					if (newMediaItemKey != null && otherMediaItemsKey != null)
+					{
+						for(Long localMediaItemKey: otherMediaItemsKey)
+						{
+							jaOtherMediaItemsKey.put(localMediaItemKey);
+						}
+					}
+					joOtherInputs.put("otherMediaItemsKey", jaOtherMediaItemsKey);
+				}
+				body = joOtherInputs.toString(4);
+			}
 
             mLogger.info("mmsURL: " + mmsURL
-                    + ", jsonOtherInputs: " + jsonOtherInputs
+                    + ", body: " + body
                     + ", username: " + username
             );
 
             Date now = new Date();
-            String postContentType = null;
-            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null, jsonOtherInputs);
+			if (body != null && body.length() > 0)
+			{
+				String postContentType = null;
+				mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
+						username, password, null, body);
+			}
+			else
+			{
+				mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+						username, password);
+			}
             mLogger.info("getMediaItems. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1829,8 +1918,8 @@ public class CatraMMSAPI {
         return numFound;
     }
 
-    public MediaItem getMediaItem(String username, String password,
-                                  Long mediaItemKey, Long physicalPathKey)
+    public MediaItem getMediaItemByMediaItemKey(String username, String password,
+                                  Long mediaItemKey)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -1839,22 +1928,14 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/mediaItems/"
-                    + (mediaItemKey == null ? 0 : mediaItemKey)
-                    + "/"
-                    + (physicalPathKey == null ? 0 : physicalPathKey)
-                    ;
-
-            JSONObject joTags = new JSONObject();
-            String jsonTags = joTags.toString(4);
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem/" + mediaItemKey;
 
             mLogger.info("mmsURL: " + mmsURL);
 
             Date now = new Date();
-            String postContentType = null;
-            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null, jsonTags);
-            mLogger.info("getMediaItem. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("getMediaItemByMediaItemKey. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
@@ -1899,9 +1980,9 @@ public class CatraMMSAPI {
         return mediaItem;
     }
 
-    public MediaItem getMediaItem(String username, String password,
-                                  String uniqueName)
-            throws Exception
+    public MediaItem getMediaItemByPhysicalPathKey(String username, String password,
+		Long physicalPathKey)
+        throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -1909,20 +1990,79 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/mediaItems"
-                    + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
-                    ;
-
-            JSONObject joTags = new JSONObject();
-            String jsonTags = joTags.toString(4);
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
+				+ "?physicalPathKey=" + physicalPathKey
+				;
 
             mLogger.info("mmsURL: " + mmsURL);
 
             Date now = new Date();
-            String postContentType = null;
-            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null, jsonTags);
-            mLogger.info("getMediaItem. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber, username, password);
+            mLogger.info("getMediaItemByPhysicalPathKey. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            // throw new Exception(errorMessage);
+            return null;
+        }
+
+        MediaItem mediaItem = new MediaItem();
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaMediaItems = joResponse.getJSONArray("mediaItems");
+
+            if (jaMediaItems.length() != 1)
+            {
+                String errorMessage = "Wrong MediaItems number returned, expected one. jaMediaItems.length: " + jaMediaItems.length();
+                mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+
+            {
+                JSONObject mediaItemInfo = jaMediaItems.getJSONObject(0);
+
+                boolean deep = true;
+                fillMediaItem(mediaItem, mediaItemInfo, deep);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return mediaItem;
+    }
+
+	public MediaItem getMediaItemByUniqueName(String username, String password,
+		String uniqueName)
+        throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
+                    + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
+                    ;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("getMediaItemByUniqueName. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
@@ -2011,7 +2151,7 @@ public class CatraMMSAPI {
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/mediaItem/" + mediaItemKey
+                    + "/catramms/1.0.1/mediaItem/" + mediaItemKey
                     ;
 
             JSONObject joEdit = new JSONObject();
@@ -2090,7 +2230,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/mediaItem/"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem/"
                     + mediaItemKey + "/" + physicalPathKey
                     ;
 
@@ -2159,7 +2299,7 @@ public class CatraMMSAPI {
         {
             String ingestionDatesParameters = "";
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workspace/usage"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace/usage"
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -2208,7 +2348,7 @@ public class CatraMMSAPI {
         try
         {
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/tags"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/tag"
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
                     + "&contentType=" + (contentType == null ? "" : contentType)
@@ -2277,7 +2417,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/ingestionRoots"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflow"
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
                     + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
@@ -2354,7 +2494,7 @@ public class CatraMMSAPI {
                 throw new Exception(errorMessage);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/ingestionRoots/"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflow/"
                     + ingestionRootKey
                     + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
                     ;
@@ -2427,7 +2567,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/ingestionJobs"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/ingestionJob"
                     + (ingestionJobKey == null ? "" : ("/" + ingestionJobKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -2520,7 +2660,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/ingestionJobs/" + ingestionJobKey
+                    + "/catramms/1.0.1/ingestionJob/" + ingestionJobKey
                     + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
                     ;
 
@@ -2578,7 +2718,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/ingestionJobs/" + ingestionJobKey
+                    + "/catramms/1.0.1/ingestionJob/" + ingestionJobKey
                     + "?forceCancel=" + (forceCancel == null ? "false" : forceCancel)
                     ;
 
@@ -2614,7 +2754,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/ingestionJobs/" + ingestionJobKey;
+                    + "/catramms/1.0.1/ingestionJob/" + ingestionJobKey;
 
             JSONObject joBodyRequest = new JSONObject();
             joBodyRequest.put("IngestionType", "Live-Recorder");
@@ -2663,7 +2803,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/encodingJobs"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingJob"
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
                     + "&status=" + status
@@ -2736,7 +2876,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/encodingJobs/" + encodingJobKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingJob/" + encodingJobKey;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -2796,7 +2936,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profile/" + encodingProfileKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfile/" + encodingProfileKey;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -2860,7 +3000,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profiles/" + contentType;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfiles/" + contentType;
             if (encodingProfileKey != null)
                 mmsURL += ("/" + encodingProfileKey);
             if (label != null && !label.isEmpty())
@@ -2924,7 +3064,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profilesSet/" + encodingProfilesSetKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfilesSet/" + encodingProfilesSetKey;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -2986,7 +3126,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/profilesSets/" + contentType;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfilesSets/" + contentType;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -3042,16 +3182,17 @@ public class CatraMMSAPI {
             throws Exception
     {
         String mmsInfo;
-        Map<String, BulkOfDeliveryURLData> vodBulkOfDeliveryURLDataMap = new HashMap<>();
+        Map<String, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMap = new HashMap<>();
         Map<Long, BulkOfDeliveryURLData> liveBulkOfDeliveryURLDataMap = new HashMap<>();
         try
         {
             /*
             {
-                "vodUniqueNameList" : [
+                "uniqueNameList" : [
                     {
                         "uniqueName": "...",
-                        "encodingProfileKey": 123
+                        "encodingProfileKey": 123,
+						"encodingProfileLabel": "..."
                     },
                     ...
                 ],
@@ -3066,23 +3207,27 @@ public class CatraMMSAPI {
 
             JSONObject joDeliveryAuthorizationDetails = new JSONObject();
             {
-                JSONArray jaVodUniqueNameList = new JSONArray();
-                joDeliveryAuthorizationDetails.put("vodUniqueNameList", jaVodUniqueNameList);
+                JSONArray jaUniqueNameList = new JSONArray();
+                joDeliveryAuthorizationDetails.put("uniqueNameList", jaUniqueNameList);
 
                 JSONArray jaLiveIngestionJobKeyList = new JSONArray();
                 joDeliveryAuthorizationDetails.put("liveIngestionJobKeyList", jaLiveIngestionJobKeyList);
 
                 for (BulkOfDeliveryURLData bulkOfDeliveryURLData: bulkOfDeliveryURLDataList)
                 {
-                    if (bulkOfDeliveryURLData.getVodUniqueName() != null)
+                    if (bulkOfDeliveryURLData.getUniqueName() != null)
                     {
-                        JSONObject joVodUniqueName = new JSONObject();
-                        jaVodUniqueNameList.put(joVodUniqueName);
+                        JSONObject joUniqueName = new JSONObject();
+                        jaUniqueNameList.put(joUniqueName);
 
-                        joVodUniqueName.put("uniqueName", bulkOfDeliveryURLData.getVodUniqueName());
-                        joVodUniqueName.put("encodingProfileKey", bulkOfDeliveryURLData.getVodEncodingProfileKey());
+                        joUniqueName.put("uniqueName", bulkOfDeliveryURLData.getUniqueName());
+						if (bulkOfDeliveryURLData.getEncodingProfileKey() != null
+							&& bulkOfDeliveryURLData.getEncodingProfileKey() != -1)
+							joUniqueName.put("encodingProfileKey", bulkOfDeliveryURLData.getEncodingProfileKey());
+						else
+							joUniqueName.put("encodingProfileLabel", bulkOfDeliveryURLData.getEncodingProfileLabel());
 
-                        vodBulkOfDeliveryURLDataMap.put(bulkOfDeliveryURLData.getVodUniqueName(), bulkOfDeliveryURLData);
+                        bulkOfDeliveryURLDataMap.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
                     }
                     else if (bulkOfDeliveryURLData.getLiveIngestionJobKey() != null)
                     {
@@ -3099,7 +3244,7 @@ public class CatraMMSAPI {
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/bulkOfDelivery"
+                    + "/catramms/1.0.1/delivery/bulk"
                     + "?ttlInSeconds=" + ttlInSeconds
                     + "&maxRetries=" + maxRetries
                     + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
@@ -3129,7 +3274,7 @@ public class CatraMMSAPI {
 
             /*
             {
-                "vodUniqueNameList" : [
+                "uniqueNameList" : [
                     {
                         "uniqueName": "...",
                         "encodingProfileKey": 123,
@@ -3148,19 +3293,19 @@ public class CatraMMSAPI {
              }
              */
 
-            if (joDeliveryURLList.has("vodUniqueNameList"))
+            if (joDeliveryURLList.has("uniqueNameList"))
             {
-                JSONArray jaVodUniqueNameList = joDeliveryURLList.getJSONArray("vodUniqueNameList");
-                for (int vodUniqueNameIndex = 0; vodUniqueNameIndex < jaVodUniqueNameList.length(); vodUniqueNameIndex++)
+                JSONArray jaUniqueNameList = joDeliveryURLList.getJSONArray("uniqueNameList");
+                for (int uniqueNameIndex = 0; uniqueNameIndex < jaUniqueNameList.length(); uniqueNameIndex++)
                 {
-                    JSONObject joVodUniqueName = jaVodUniqueNameList.getJSONObject(vodUniqueNameIndex);
+                    JSONObject joUniqueName = jaUniqueNameList.getJSONObject(uniqueNameIndex);
 
-                    if (joVodUniqueName.has("uniqueName") && joVodUniqueName.has("deliveryURL")
-                        && !joVodUniqueName.isNull("uniqueName") && !joVodUniqueName.isNull("deliveryURL"))
+                    if (joUniqueName.has("uniqueName") && joUniqueName.has("deliveryURL")
+                        && !joUniqueName.isNull("uniqueName") && !joUniqueName.isNull("deliveryURL"))
                     {
                         BulkOfDeliveryURLData bulkOfDeliveryURLData
-                                = vodBulkOfDeliveryURLDataMap.get(joVodUniqueName.getString("uniqueName"));
-                        bulkOfDeliveryURLData.setDeliveryURL(joVodUniqueName.getString("deliveryURL"));
+                                = bulkOfDeliveryURLDataMap.get(joUniqueName.getString("uniqueName"));
+                        bulkOfDeliveryURLData.setDeliveryURL(joUniqueName.getString("deliveryURL"));
                     }
                 }
             }
@@ -3230,7 +3375,7 @@ public class CatraMMSAPI {
                 }
 
                 mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                        + "/catramms/v1/delivery/vod/" + physicalPath.getPhysicalPathKey()
+                        + "/catramms/1.0.1/delivery/vod/" + physicalPath.getPhysicalPathKey()
                         + "?ttlInSeconds=" + ttlInSeconds
                         + "&maxRetries=" + maxRetries
                         + "&save=" + save.toString()
@@ -3246,7 +3391,7 @@ public class CatraMMSAPI {
                     if (encodingProfileKey == null)
                     {
                         mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                                + "/catramms/v1/delivery/vod/0/0"
+                                + "/catramms/1.0.1/delivery/vod/0/0"
                                 + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
                                 + "&encodingProfileLabel=" + java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8") // requires unescape server side
                                 + "&ttlInSeconds=" + ttlInSeconds
@@ -3259,7 +3404,7 @@ public class CatraMMSAPI {
                     else
                     {
                         mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                                + "/catramms/v1/delivery/vod/0/" + encodingProfileKey
+                                + "/catramms/1.0.1/delivery/vod/0/" + encodingProfileKey
                                 + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
                                 + "&ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
@@ -3274,7 +3419,7 @@ public class CatraMMSAPI {
                     if (encodingProfileKey == null)
                     {
                         mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                            + "/catramms/v1/delivery/vod/" + mediaItemKey + "/0"
+                            + "/catramms/1.0.1/delivery/vod/" + mediaItemKey + "/0"
                             + "?encodingProfileLabel=" + java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8") // requires unescape server side
                             + "&ttlInSeconds=" + ttlInSeconds
                             + "&maxRetries=" + maxRetries
@@ -3286,7 +3431,7 @@ public class CatraMMSAPI {
                     else
                     {
                         mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                                + "/catramms/v1/delivery/vod/" + mediaItemKey + "/" + encodingProfileKey
+                                + "/catramms/1.0.1/delivery/vod/" + mediaItemKey + "/" + encodingProfileKey
                                 + "?ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
@@ -3367,7 +3512,7 @@ public class CatraMMSAPI {
                 lMaxRetries = maxRetries;
 
             mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/v1/delivery/live/" + ingestionJobKey
+                    + "/catramms/1.0.1/delivery/live/" + ingestionJobKey
                     + "?ttlInSeconds=" + lTtlInSeconds
                     + "&maxRetries=" + lMaxRetries
                     + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
@@ -3415,7 +3560,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
-                    + "/catramms/v1/binary/" + ingestionJobKey;
+                    + "/catramms/1.0.1/binary/" + ingestionJobKey;
 
             mLogger.info("ingestBinaryContentAndRemoveLocalFile"
                             + ", mmsURL: " + mmsURL
@@ -3445,7 +3590,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
-                    + "/catramms/v1/binary/" + ingestionJobKey;
+                    + "/catramms/1.0.1/binary/" + ingestionJobKey;
 
             mLogger.info("ingestBinaryContent"
                             + ", mmsURL: " + mmsURL
@@ -3477,7 +3622,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workflowAsLibrary"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflowAsLibrary"
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -3545,7 +3690,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workflowAsLibrary/" + workflowLibraryKey
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflowAsLibrary/" + workflowLibraryKey
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -3576,7 +3721,7 @@ public class CatraMMSAPI {
 
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workflowAsLibrary"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflowAsLibrary"
                     + "?scope=" + workflowAsLibraryScope
                     ;
 
@@ -3606,7 +3751,7 @@ public class CatraMMSAPI {
 
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/workflowAsLibrary/" + workflowLibraryKey
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflowAsLibrary/" + workflowLibraryKey
                     + "?scope=" + workflowAsLibraryScope
                     ;
 
@@ -3645,7 +3790,7 @@ public class CatraMMSAPI {
                 jsonYouTubeConf = joYouTubeConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/youtube";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube";
 
             mLogger.info("addYouTubeConf"
                             + ", mmsURL: " + mmsURL
@@ -3685,7 +3830,7 @@ public class CatraMMSAPI {
                 jsonYouTubeConf = joYouTubeConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/youtube/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube/" + confKey;
 
             mLogger.info("modifyYouTubeConf"
                     + ", mmsURL: " + mmsURL
@@ -3714,7 +3859,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/youtube/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube/" + confKey;
 
             mLogger.info("removeYouTubeConf"
                             + ", mmsURL: " + mmsURL
@@ -3743,7 +3888,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/youtube";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube";
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -3812,7 +3957,7 @@ public class CatraMMSAPI {
                 jsonFacebookConf = joFacebookConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/facebook";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/facebook";
 
             mLogger.info("addFacebookConf"
                     + ", mmsURL: " + mmsURL
@@ -3852,7 +3997,7 @@ public class CatraMMSAPI {
                 jsonFacebookConf = joFacebookConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/facebook/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/facebook/" + confKey;
 
             mLogger.info("modifyFacebookConf"
                     + ", mmsURL: " + mmsURL
@@ -3881,7 +4026,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/facebook/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/facebook/" + confKey;
 
             mLogger.info("removeFacebookConf"
                     + ", mmsURL: " + mmsURL
@@ -3910,7 +4055,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/facebook";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/facebook";
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -4000,7 +4145,7 @@ public class CatraMMSAPI {
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ipChannel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel";
 
             mLogger.info("addIPChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4092,7 +4237,7 @@ public class CatraMMSAPI {
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ipChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel/" + confKey;
 
             mLogger.info("modifyIPChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4121,7 +4266,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ipChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel/" + confKey;
 
             mLogger.info("removeIPChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4156,7 +4301,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ipChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel"
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -4231,7 +4376,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ipChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel"
                     + "/" + confKey
                     ;
 
@@ -4325,7 +4470,7 @@ public class CatraMMSAPI {
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/satChannel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel";
 
             mLogger.info("addSATChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4407,7 +4552,7 @@ public class CatraMMSAPI {
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/satChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel/" + confKey;
 
             mLogger.info("modifyIPChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4436,7 +4581,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/satChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel/" + confKey;
 
             mLogger.info("removeSATChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4470,7 +4615,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/satChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel"
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -4542,7 +4687,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/satChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel"
                     + "/" + confKey
                     ;
 
@@ -4646,7 +4791,7 @@ public class CatraMMSAPI {
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/sourceSatChannel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatChannel";
 
             mLogger.info("addSourceSATChannel"
                     + ", mmsURL: " + mmsURL
@@ -4759,7 +4904,7 @@ public class CatraMMSAPI {
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/sourceSatChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatChannel/" + confKey;
 
             mLogger.info("modifySourceSATChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4788,7 +4933,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/sourceSatChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatChannel/" + confKey;
 
             mLogger.info("removeSATChannelConf"
                     + ", mmsURL: " + mmsURL
@@ -4823,7 +4968,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/sourceSatChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatChannel"
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -4898,7 +5043,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/sourceSatChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatChannel"
                     + "/" + serviceId
                     ;
 
@@ -4984,7 +5129,7 @@ public class CatraMMSAPI {
                 jsonFTPConf = joFTPConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ftp";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ftp";
 
             mLogger.info("addFTPConf"
                             + ", mmsURL: " + mmsURL
@@ -5030,7 +5175,7 @@ public class CatraMMSAPI {
                 jsonFTPConf = joFTPConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ftp/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ftp/" + confKey;
 
             mLogger.info("modifyFTPConf"
                             + ", mmsURL: " + mmsURL
@@ -5059,7 +5204,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ftp/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ftp/" + confKey;
 
             mLogger.info("removeFTPConf"
                             + ", mmsURL: " + mmsURL
@@ -5088,7 +5233,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/ftp";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ftp";
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -5160,7 +5305,7 @@ public class CatraMMSAPI {
                 jsonEMailConf = joEMailConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/email";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/email";
 
             mLogger.info("addEMailConf"
                             + ", mmsURL: " + mmsURL
@@ -5203,7 +5348,7 @@ public class CatraMMSAPI {
                 jsonEMailConf = joEMailConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/email/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/email/" + confKey;
 
             mLogger.info("modifyEMailConf"
                             + ", mmsURL: " + mmsURL
@@ -5232,7 +5377,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/email/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/email/" + confKey;
 
             mLogger.info("removeEMailConf"
                             + ", mmsURL: " + mmsURL
@@ -5261,7 +5406,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/v1/conf/email";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/email";
 
             mLogger.info("mmsURL: " + mmsURL);
 

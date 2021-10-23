@@ -4,8 +4,9 @@ import java.io.Serializable;
 
 public class BulkOfDeliveryURLData implements Serializable  {
 
-    String vodUniqueName;
-    Long vodEncodingProfileKey;
+    String uniqueName;
+    Long encodingProfileKey;
+	String encodingProfileLabel;
 
     Long liveIngestionJobKey;
     Long liveDeliveryCode;
@@ -14,8 +15,9 @@ public class BulkOfDeliveryURLData implements Serializable  {
 
     public BulkOfDeliveryURLData()
     {
-        vodUniqueName = null;
-        vodEncodingProfileKey = null;
+        uniqueName = null;
+        encodingProfileKey = null;
+        encodingProfileLabel = null;
 
         liveIngestionJobKey = null;
         liveDeliveryCode = null;
@@ -31,23 +33,31 @@ public class BulkOfDeliveryURLData implements Serializable  {
         this.liveDeliveryCode = liveDeliveryCode;
     }
 
-    public String getVodUniqueName() {
-        return vodUniqueName;
-    }
+    public String getUniqueName() {
+		return uniqueName;
+	}
 
-    public void setVodUniqueName(String vodUniqueName) {
-        this.vodUniqueName = vodUniqueName;
-    }
+	public void setUniqueName(String uniqueName) {
+		this.uniqueName = uniqueName;
+	}
 
-    public Long getVodEncodingProfileKey() {
-        return vodEncodingProfileKey;
-    }
+	public String getEncodingProfileLabel() {
+		return encodingProfileLabel;
+	}
 
-    public void setVodEncodingProfileKey(Long vodEncodingProfileKey) {
-        this.vodEncodingProfileKey = vodEncodingProfileKey;
-    }
+	public void setEncodingProfileLabel(String encodingProfileLabel) {
+		this.encodingProfileLabel = encodingProfileLabel;
+	}
 
-    public Long getLiveIngestionJobKey() {
+	public Long getEncodingProfileKey() {
+		return encodingProfileKey;
+	}
+
+	public void setEncodingProfileKey(Long encodingProfileKey) {
+		this.encodingProfileKey = encodingProfileKey;
+	}
+
+	public Long getLiveIngestionJobKey() {
         return liveIngestionJobKey;
     }
 

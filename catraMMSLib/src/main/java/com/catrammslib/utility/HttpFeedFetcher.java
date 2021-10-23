@@ -1,13 +1,5 @@
 package com.catrammslib.utility;
 
-import org.apache.commons.httpclient.HttpException;
-import org.apache.commons.httpclient.HttpStatus;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Logger;
-import sun.net.www.protocol.http.HttpURLConnection;
-
-import javax.net.ssl.*;
 // import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +9,21 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.SecureRandom;
 import java.util.Base64;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.KeyManager;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+
+import org.apache.commons.httpclient.HttpException;
+import org.apache.commons.httpclient.HttpStatus;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.log4j.Logger;
+
+import sun.net.www.protocol.http.HttpURLConnection;
 
 
 public class HttpFeedFetcher {
@@ -111,17 +118,62 @@ public class HttpFeedFetcher {
                     );
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
-                        String responseMessage;
-                        if (url.startsWith("https"))
+						mLogger.error("Response"
+								+ ", url: " + url
+								+ ", statusCode: " + statusCode
+						);
+
+						/*
+						String responseMessage;
+
+						does not work
+						if (url.startsWith("https"))
                             responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
                         else
                             responseMessage = ((HttpURLConnection) conn).getResponseMessage();
 
-                        mLogger.debug("Method failed: " + responseMessage);
+						mLogger.error("Response"
+							+ ", responseMessage: " + responseMessage
+						);
 
                         result = null;
 
-                        throw new Exception("Method failed: " + responseMessage);
+						does not work
+						InputStream is = conn.getInputStream();
+						mLogger.error("Response"
+								+ ", is: " + is
+						);
+						InputStreamReader isr = new InputStreamReader(is);
+						mLogger.error("Response"
+								+ ", isr: " + isr
+						);
+	
+						int numCharsRead;
+						int totalCharsRead = 0;
+						char[] charArray = new char[1024 * 10];
+						StringBuffer sb = new StringBuffer();
+						while ((numCharsRead = isr.read(charArray)) != -1)
+						{
+							sb.append(charArray, 0, numCharsRead);
+							totalCharsRead += numCharsRead;
+							// mLogger.info("content read: " + totalCharsRead + "/" + contentLength + "(" + (contentLength - totalCharsRead) + ")");
+						}
+	
+						mLogger.error("Response"
+								+ ", isr: " + isr
+						);
+
+						responseMessage = sb.toString();
+	
+						mLogger.error("Response"
+								+ ", url: " + url
+								+ ", statusCode: " + statusCode
+								+ ", contentLength: " + contentLength
+								+ ", responseMessage: " + responseMessage
+						);
+						*/
+		
+                        throw new Exception("Method failed, statusCode: " + statusCode);
                     }
 
                     // Read the response body.
@@ -295,6 +347,8 @@ public class HttpFeedFetcher {
                     );
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
+						/*
+						does not work
                         String responseMessage;
                         if (url.startsWith("https"))
                             responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
@@ -302,10 +356,11 @@ public class HttpFeedFetcher {
                             responseMessage = ((HttpURLConnection) conn).getResponseMessage();
 
                         mLogger.debug("Method failed: " + responseMessage);
+						*/
 
                         result = null;
 
-                        throw new Exception("Method failed: " + responseMessage);
+                        throw new Exception("Method failed, statusCode: " + statusCode);
                     }
 
                     // Read the response body.
@@ -563,6 +618,8 @@ public class HttpFeedFetcher {
                     mLogger.info("conn.getResponseCode. statusCode: " + statusCode);
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
+						/*
+						does not work
                         String responseMessage;
                         if (url.startsWith("https"))
                             responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
@@ -596,8 +653,9 @@ public class HttpFeedFetcher {
                         mLogger.debug("Method failed: " + responseMessage);
 
                         result = null;
+						*/
 
-                        throw new Exception("Method failed: " + responseMessage);
+                        throw new Exception("Method failed, statusCode: " + statusCode);
                     }
 
                     // Read the response body.
@@ -795,6 +853,8 @@ public class HttpFeedFetcher {
                     mLogger.info("conn.getResponseCode. statusCode: " + statusCode);
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
+						/*
+						does not work
                         String responseMessage;
                         if (url.startsWith("https"))
                             responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
@@ -802,8 +862,9 @@ public class HttpFeedFetcher {
                             responseMessage = ((HttpURLConnection) conn).getResponseMessage();
 
                         mLogger.debug("Method failed: " + responseMessage);
+						*/
 
-                        throw new Exception("Method failed: " + responseMessage);
+                        throw new Exception("Method failed, statusCode: " + statusCode);
                     }
 
                     mLogger.debug("POST successful. statusCode: " + statusCode);

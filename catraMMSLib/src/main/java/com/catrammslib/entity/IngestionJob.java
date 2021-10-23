@@ -27,6 +27,8 @@ public class IngestionJob implements Serializable {
     private EncodingJob encodingJob = null;
     private Long ingestionRootKey;
 
+	private Boolean selected;
+	
     private Long dependOnIngestionJobKey;
     private int dependOnSuccess;
     private String dependencyIngestionStatus;
@@ -79,7 +81,32 @@ public class IngestionJob implements Serializable {
         return playable;
     }
 
-    public String getHtmlErrorMessage() {
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((ingestionJobKey == null) ? 0 : ingestionJobKey.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IngestionJob other = (IngestionJob) obj;
+		if (ingestionJobKey == null) {
+			if (other.ingestionJobKey != null)
+				return false;
+		} else if (!ingestionJobKey.equals(other.ingestionJobKey))
+			return false;
+		return true;
+	}
+
+	public String getHtmlErrorMessage() {
         return (errorMessage == null ? errorMessage : errorMessage.replace("\n", "<br/>"));
     }
 
@@ -107,7 +134,15 @@ public class IngestionJob implements Serializable {
         this.ingestionJobKey = ingestionJobKey;
     }
 
-    public String getLabel() {
+    public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
+	public String getLabel() {
         return label;
     }
 
