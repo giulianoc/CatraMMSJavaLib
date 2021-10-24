@@ -1774,11 +1774,6 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String ingestionDatesParameters = "";
-            if (ingestionStart != null && ingestionEnd != null)
-                ingestionDatesParameters = "&startIngestionDate=" + simpleDateFormat.format(ingestionStart)
-                        + "&endIngestionDate=" + simpleDateFormat.format(ingestionEnd);
-
             String liveRecordingChunkParameter = "";
             if (bLiveRecordingChunk != null)
             {
@@ -1808,7 +1803,8 @@ public class CatraMMSAPI {
                     + "&title=" + (title == null ? "" : java.net.URLEncoder.encode(title, "UTF-8")) // requires unescape server side
                     + liveRecordingChunkParameter
                     // + "&tags=" + (tags == null ? "" : java.net.URLEncoder.encode(tags, "UTF-8"))
-                    + ingestionDatesParameters
+                    + (ingestionStart != null ? ("&startIngestionDate=" + simpleDateFormat.format(ingestionStart)) : "")
+                    + (ingestionEnd != null ? ("&endIngestionDate=" + simpleDateFormat.format(ingestionEnd)) : "")
                     + "&jsonCondition=" + (jsonCondition == null ? "" : java.net.URLEncoder.encode(jsonCondition, "UTF-8"))
                     + "&orderBy=" + (orderBy == null ? "" : java.net.URLEncoder.encode(orderBy, "UTF-8"))
                     + "&jsonOrderBy=" + (jsonOrderBy == null ? "" : java.net.URLEncoder.encode(jsonOrderBy, "UTF-8"))
