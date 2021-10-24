@@ -26,6 +26,7 @@ public class WorkspaceDetails implements Serializable {
     private String apiKey;
     private Boolean owner;
     private Boolean defaultWorkspace;
+    private Date expirationDate;
     private Boolean admin;
     private Boolean createRemoveWorkspace;
     private Boolean ingestWorkflow;
@@ -58,6 +59,7 @@ public class WorkspaceDetails implements Serializable {
                 ", apiKey='" + apiKey + '\'' +
                 ", owner=" + owner +
                 ", defaultWorkspace=" + defaultWorkspace +
+                ", expirationDate=" + expirationDate +
                 ", admin=" + admin +
                 ", createRemoveWorkspace=" + createRemoveWorkspace +
                 ", ingestWorkflow=" + ingestWorkflow +
@@ -254,7 +256,15 @@ public class WorkspaceDetails implements Serializable {
         this.creationDate = creationDate;
     }
 
-    public Boolean getEditConfiguration() {
+    public Date getExpirationDate() {
+		return expirationDate;
+	}
+
+	public void setExpirationDate(Date expirationDate) {
+		this.expirationDate = expirationDate;
+	}
+
+	public Boolean getEditConfiguration() {
         return editConfiguration;
     }
 

@@ -454,7 +454,7 @@ public class CatraMMSAPI {
         }
 
         UserProfile userProfile = new UserProfile();
-        WorkspaceDetails workspaceDetails = new WorkspaceDetails();
+        WorkspaceDetails workspaceDetails = null;
 
         try
         {
@@ -463,8 +463,12 @@ public class CatraMMSAPI {
             fillUserProfile(userProfile, joWMMSInfo);
             userProfile.setPassword(password);
 
-            JSONObject joWorkspaceInfo = joWMMSInfo.getJSONObject("loginWorkspace");
-            fillWorkspaceDetails(workspaceDetails, joWorkspaceInfo);
+			if (joWMMSInfo.has("workspace") && !joWMMSInfo.isNull("workspace"))
+			{
+				workspaceDetails = new WorkspaceDetails();
+				JSONObject joWorkspaceInfo = joWMMSInfo.getJSONObject("workspace");
+				fillWorkspaceDetails(workspaceDetails, joWorkspaceInfo);
+			}
         }
         catch (Exception e)
         {
@@ -536,7 +540,7 @@ public class CatraMMSAPI {
     public WorkspaceDetails updateWorkspace(String username, String password,
                                        boolean newEnabled, String newName, String newMaxEncodingPriority,
                                        String newEncodingPeriod, Long newMaxIngestionsNumber,
-                                       Long newMaxStorageInMB, String newLanguageCode,
+                                       Long newMaxStorageInMB, String newLanguageCode, Date newExpirationDate,
                                        boolean newCreateRemoveWorkspace, boolean newIngestWorkflow, boolean newCreateProfiles,
                                        boolean newDeliveryAuthorization, boolean newShareWorkspace,
                                        boolean newEditMedia, boolean newEditConfiguration, boolean newKillEncoding,
@@ -559,6 +563,7 @@ public class CatraMMSAPI {
             joBodyRequest.put("MaxIngestionsNumber", newMaxIngestionsNumber);
             joBodyRequest.put("MaxStorageInMB", newMaxStorageInMB);
             joBodyRequest.put("LanguageCode", newLanguageCode);
+            joBodyRequest.put("ExpirationDate", simpleDateFormat.format(newExpirationDate));
             joBodyRequest.put("CreateRemoveWorkspace", newCreateRemoveWorkspace);
             joBodyRequest.put("IngestWorkflow", newIngestWorkflow);
             joBodyRequest.put("CreateProfiles", newCreateProfiles);
@@ -5531,6 +5536,7 @@ public class CatraMMSAPI {
                 workspaceDetails.setApiKey(joUserAPIKey.getString("apiKey"));
                 workspaceDetails.setOwner(joUserAPIKey.getBoolean("owner"));
                 workspaceDetails.setDefaultWorkspace(joUserAPIKey.getBoolean("default"));
+				workspaceDetails.setExpirationDate(simpleDateFormat.parse(joUserAPIKey.getString("expirationDate")));
                 workspaceDetails.setAdmin(joUserAPIKey.getBoolean("admin"));
                 workspaceDetails.setCreateRemoveWorkspace(joUserAPIKey.getBoolean("createRemoveWorkspace"));
                 workspaceDetails.setIngestWorkflow(joUserAPIKey.getBoolean("ingestWorkflow"));
