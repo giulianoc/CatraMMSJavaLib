@@ -195,11 +195,8 @@ public class CatraMMSWorkflow {
 
             Long deliveryCode,        // mandatory
 
-            String channelType,     // IP, Satellite or IP_MMSAsServer.
-            String ipLiveConfigurationLabel,    // mandatory if channelType is IP
-            String satLiveConfigurationLabel,   // mandatory if channelType is Satellite
+            String liveConfigurationLabel,
 
-            Long actAsServerPort, String actAsServerBindIP, String actAsServerURI, Long actAsServerListenTimeout,
             List<String> chunkTags, String ingester,
             String chunkRetention, JSONObject joUserData,
             // String liveRecorderConfiguration,
@@ -248,19 +245,7 @@ public class CatraMMSWorkflow {
 
             joParameters.put("DeliveryCode", deliveryCode);
 
-            joParameters.put("ChannelType", channelType);
-            if (channelType.equals("IP_MMSAsClient"))
-                joParameters.put("ConfigurationLabel", ipLiveConfigurationLabel);
-            else if (channelType.equals("Satellite"))
-                joParameters.put("ConfigurationLabel", satLiveConfigurationLabel);
-            else if (channelType.equals("IP_MMSAsServer"))
-            {
-                joParameters.put("ActAsServerProtocol", "rtmp");
-                joParameters.put("ActAsServerBindIP", actAsServerBindIP);
-                joParameters.put("ActAsServerPort", actAsServerPort);
-                joParameters.put("ActAsServerURI", actAsServerURI);
-                joParameters.put("ActAsServerListenTimeout", actAsServerListenTimeout);
-            }
+            joParameters.put("ConfigurationLabel", liveConfigurationLabel);
 
             joParameters.put("EncoderPriority", encodingPriority);
             // joParameters.put("HighAvailability", highAvailability);
@@ -351,20 +336,7 @@ public class CatraMMSWorkflow {
     static public JSONObject buildLiveProxyJson(
             String label,
 
-            String channelType,     // IP_MMSAsClient, Satellite, IP_MMSAsServer or CaptureLive.
-            String ipLiveConfigurationLabel,    // mandatory if channelType is IP_MMSAsClient
-            String satLiveConfigurationLabel,   // mandatory if channelType is Satellite
-            Long videoDeviceNumber,             // mandatory if channelType is CaptureLive
-            String videoInputFormat,            // optional if channelType is CaptureLive
-            Long videoFrameRate,                // optional if channelType is CaptureLive
-            Long videoWidth,                    // optional if channelType is CaptureLive
-            Long videoHeight,                   // optional if channelType is CaptureLive
-            Long audioDeviceNumber,             // mandatory if channelType is CaptureLive
-            Long audioChannelsNumber,           // optional if channelType is CaptureLive
-            Long actAsServerPort,               // mandatory if channelType is IP_MMSAsServer
-            String actAsServerBindIP,           // mandatory if channelType is IP_MMSAsServer
-            String actAsServerURI,              // mandatory if channelType is IP_MMSAsServer
-            Long actAsServerListenTimeout,      // mandatory if channelType is IP_MMSAsServer
+            String liveConfigurationLabel,
 
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
@@ -387,38 +359,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
 
-            joParameters.put("ChannelType", channelType);
-            if (channelType.equals("IP_MMSAsClient"))
-                joParameters.put("ConfigurationLabel", ipLiveConfigurationLabel);
-            else if (channelType.equals("Satellite"))
-                joParameters.put("ConfigurationLabel", satLiveConfigurationLabel);
-            else if (channelType.equals("IP_MMSAsServer"))
-            {
-                joParameters.put("ActAsServerProtocol", "rtmp");
-                joParameters.put("ActAsServerBindIP", actAsServerBindIP);
-                joParameters.put("ActAsServerPort", actAsServerPort);
-                joParameters.put("ActAsServerURI", actAsServerURI);
-                joParameters.put("ActAsServerListenTimeout", actAsServerListenTimeout);
-            }
-            else if (channelType.equals("CaptureLive"))
-            {
-                JSONObject joCaptureLive = new JSONObject();
-                joParameters.put("CaptureLive", joCaptureLive);
-
-                joCaptureLive.put("VideoDeviceNumber", videoDeviceNumber);
-                if (videoInputFormat != null && !videoInputFormat.isEmpty())
-                    joCaptureLive.put("VideoInputFormat", videoInputFormat);
-                if (videoFrameRate != null)
-                    joCaptureLive.put("FrameRate", videoFrameRate);
-                if (videoWidth != null)
-                    joCaptureLive.put("Width", videoWidth);
-                if (videoHeight != null)
-                    joCaptureLive.put("Height", videoHeight);
-
-                joCaptureLive.put("AudioDeviceNumber", audioDeviceNumber);
-                if (audioChannelsNumber != null)
-                    joCaptureLive.put("ChannelsNumber", audioChannelsNumber);
-            }
+			joParameters.put("ConfigurationLabel", liveConfigurationLabel);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);

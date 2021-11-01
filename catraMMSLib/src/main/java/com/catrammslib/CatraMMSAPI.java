@@ -23,14 +23,13 @@ import com.catrammslib.entity.EncodingProfile;
 import com.catrammslib.entity.EncodingProfilesSet;
 import com.catrammslib.entity.FTPConf;
 import com.catrammslib.entity.FacebookConf;
-import com.catrammslib.entity.IPChannelConf;
+import com.catrammslib.entity.ChannelConf;
 import com.catrammslib.entity.IngestionJob;
 import com.catrammslib.entity.IngestionJobMediaItem;
 import com.catrammslib.entity.IngestionWorkflow;
 import com.catrammslib.entity.MediaItem;
 import com.catrammslib.entity.MediaItemCrossReference;
 import com.catrammslib.entity.PhysicalPath;
-import com.catrammslib.entity.SATChannelConf;
 import com.catrammslib.entity.SourceSATChannelConf;
 import com.catrammslib.entity.UserProfile;
 import com.catrammslib.entity.VideoBitRate;
@@ -4107,12 +4106,28 @@ public class CatraMMSAPI {
         return facebookConfList;
     }
 
-    public Long addIPChannelConf(String username, String password,
-                               String label, String url, String type, String description,
-                               String name, String region, String country,
-                               Long imageMediaItemKey, String imageUniqueName, Long position,
-                               String channelData)
-            throws Exception
+	public Long addChannelConf(String username, String password,
+		String label, 
+		String sourceType,
+		String url, 
+		String pushProtocol,
+		String pushServerName,
+		Long pushServerPort,
+		String pushURI,
+		Long pushListenTimeout,
+		Long captureLiveVideoDeviceNumber,
+		String captureLiveVideoInputFormat,
+		Long captureLiveFrameRate,
+		Long captureLiveWidth,
+		Long captureLiveHeight,
+		Long captureLiveAudioDeviceNumber,
+		Long captureLiveChannelsNumber,
+		Long sourceSATConfKey,
+		String type, String description,
+        String name, String region, String country,
+        Long imageMediaItemKey, String imageUniqueName, Long position,
+        String channelData)
+        throws Exception
     {
 
         String mmsInfo;
@@ -4122,33 +4137,61 @@ public class CatraMMSAPI {
             {
                 JSONObject joChannelConf = new JSONObject();
 
-                joChannelConf.put("Label", label);
-                joChannelConf.put("Url", url);
-                if (type != null)
-                    joChannelConf.put("Type", type);
+                joChannelConf.put("label", label);
+                joChannelConf.put("sourceType", sourceType);
+                if (url != null)
+                	joChannelConf.put("url", url);
+				if (pushProtocol != null)
+                	joChannelConf.put("pushProtocol", pushProtocol);
+				if (pushServerName != null)
+                	joChannelConf.put("pushServerName", pushServerName);
+				if (pushServerPort != null)
+                	joChannelConf.put("pushServerPort", pushServerPort);
+				if (pushURI != null)
+                	joChannelConf.put("pushURI", pushURI);
+				if (pushListenTimeout != null)
+                	joChannelConf.put("pushListenTimeout", pushListenTimeout);
+				if (captureLiveVideoDeviceNumber != null)
+                	joChannelConf.put("captureLiveVideoDeviceNumber", captureLiveVideoDeviceNumber);
+				if (captureLiveVideoInputFormat != null)
+                	joChannelConf.put("captureLiveVideoInputFormat", captureLiveVideoInputFormat);
+				if (captureLiveFrameRate != null)
+                	joChannelConf.put("captureLiveFrameRate", captureLiveFrameRate);
+				if (captureLiveWidth != null)
+                	joChannelConf.put("captureLiveWidth", captureLiveWidth);
+				if (captureLiveHeight != null)
+                	joChannelConf.put("captureLiveHeight", captureLiveHeight);
+				if (captureLiveAudioDeviceNumber != null)
+                	joChannelConf.put("captureLiveAudioDeviceNumber", captureLiveAudioDeviceNumber);
+				if (captureLiveChannelsNumber != null)
+                	joChannelConf.put("captureLiveChannelsNumber", captureLiveChannelsNumber);
+				if (sourceSATConfKey != null)
+                	joChannelConf.put("sourceSATConfKey", sourceSATConfKey);
+				if (type != null)
+                    joChannelConf.put("type", type);
                 if (description != null)
-                    joChannelConf.put("Description", description);
+                    joChannelConf.put("description", description);
                 if (name != null)
-                    joChannelConf.put("Name", name);
+                    joChannelConf.put("name", name);
                 if (region != null)
-                    joChannelConf.put("Region", region);
+                    joChannelConf.put("region", region);
                 if (country != null)
-                    joChannelConf.put("Country", country);
+                    joChannelConf.put("country", country);
                 if (imageMediaItemKey != null)
-                    joChannelConf.put("ImageMediaItemKey", imageMediaItemKey);
+                    joChannelConf.put("imageMediaItemKey", imageMediaItemKey);
                 if (imageUniqueName != null)
-                    joChannelConf.put("ImageUniqueName", imageUniqueName);
+                    joChannelConf.put("imageUniqueName", imageUniqueName);
                 if (position != null)
-                    joChannelConf.put("Position", position);
+                    joChannelConf.put("position", position);
                 if (channelData != null && !channelData.isEmpty())
-                    joChannelConf.put("ChannelData", new JSONObject(channelData));
+                    joChannelConf.put("channelData", new JSONObject(channelData));
 
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/channel";
 
-            mLogger.info("addIPChannelConf"
+            mLogger.info("addChannelConf"
                     + ", mmsURL: " + mmsURL
                     + ", jsonChannelConf: " + jsonChannelConf
             );
@@ -4184,8 +4227,24 @@ public class CatraMMSAPI {
         return confKey;
     }
 
-    public void modifyIPChannelConf(String username, String password,
-                                  Long confKey, String label, String url, String type, String description,
+    public void modifyChannelConf(String username, String password,
+                                  Long confKey, String label, 
+								  String sourceType,
+								  String url, 
+								  String pushProtocol,
+								  String pushServerName,
+								  Long pushServerPort,
+								  String pushURI,
+								  Long pushListenTimeout,
+								  Long captureLiveVideoDeviceNumber,
+								  String captureLiveVideoInputFormat,
+								  Long captureLiveFrameRate,
+								  Long captureLiveWidth,
+								  Long captureLiveHeight,
+								  Long captureLiveAudioDeviceNumber,
+								  Long captureLiveChannelsNumber,
+								  Long sourceSATConfKey,
+								String type, String description,
                                   String name, String region, String country,
                                   Long imageMediaItemKey, String imageUniqueName, Long position,
                                   String channelData)
@@ -4214,33 +4273,61 @@ public class CatraMMSAPI {
             {
                 JSONObject joChannelConf = new JSONObject();
 
-                joChannelConf.put("Label", label);
-                joChannelConf.put("Url", url);
+                joChannelConf.put("label", label);
+                joChannelConf.put("sourceType", sourceType);
+                if (url != null)
+                	joChannelConf.put("url", url);
+				if (pushProtocol != null)
+                	joChannelConf.put("pushProtocol", pushProtocol);
+				if (pushServerName != null)
+                	joChannelConf.put("pushServerName", pushServerName);
+				if (pushServerPort != null)
+                	joChannelConf.put("pushServerPort", pushServerPort);
+				if (pushURI != null)
+                	joChannelConf.put("pushURI", pushURI);
+				if (pushListenTimeout != null)
+                	joChannelConf.put("pushListenTimeout", pushListenTimeout);
+				if (captureLiveVideoDeviceNumber != null)
+                	joChannelConf.put("captureLiveVideoDeviceNumber", captureLiveVideoDeviceNumber);
+				if (captureLiveVideoInputFormat != null)
+                	joChannelConf.put("captureLiveVideoInputFormat", captureLiveVideoInputFormat);
+				if (captureLiveFrameRate != null)
+                	joChannelConf.put("captureLiveFrameRate", captureLiveFrameRate);
+				if (captureLiveWidth != null)
+                	joChannelConf.put("captureLiveWidth", captureLiveWidth);
+				if (captureLiveHeight != null)
+                	joChannelConf.put("captureLiveHeight", captureLiveHeight);
+				if (captureLiveAudioDeviceNumber != null)
+                	joChannelConf.put("captureLiveAudioDeviceNumber", captureLiveAudioDeviceNumber);
+				if (captureLiveChannelsNumber != null)
+                	joChannelConf.put("captureLiveChannelsNumber", captureLiveChannelsNumber);
+				if (sourceSATConfKey != null)
+                	joChannelConf.put("sourceSATConfKey", sourceSATConfKey);
                 if (type != null)
-                    joChannelConf.put("Type", type);
+                    joChannelConf.put("type", type);
                 if (description != null)
-                    joChannelConf.put("Description", description);
+                    joChannelConf.put("description", description);
                 if (name != null)
-                    joChannelConf.put("Name", name);
+                    joChannelConf.put("name", name);
                 if (region != null)
-                    joChannelConf.put("Region", region);
+                    joChannelConf.put("region", region);
                 if (country != null)
-                    joChannelConf.put("Country", country);
+                    joChannelConf.put("country", country);
                 if (imageMediaItemKey != null)
-                    joChannelConf.put("ImageMediaItemKey", imageMediaItemKey);
+                    joChannelConf.put("imageMediaItemKey", imageMediaItemKey);
                 if (imageUniqueName != null)
-                    joChannelConf.put("ImageUniqueName", imageUniqueName);
+                    joChannelConf.put("imageUniqueName", imageUniqueName);
                 if (position != null)
-                    joChannelConf.put("Position", position);
+                    joChannelConf.put("position", position);
                 if (channelData != null && !channelData.isEmpty())
-                    joChannelConf.put("ChannelData", new JSONObject(channelData));
+                    joChannelConf.put("channelData", new JSONObject(channelData));
 
                 jsonChannelConf = joChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/channel/" + confKey;
 
-            mLogger.info("modifyIPChannelConf"
+            mLogger.info("modifyChannelConf"
                     + ", mmsURL: " + mmsURL
                     + ", jsonChannelConf: " + jsonChannelConf
             );
@@ -4248,7 +4335,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, jsonChannelConf);
-            mLogger.info("modifyIPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("modifyChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
@@ -4259,7 +4346,7 @@ public class CatraMMSAPI {
         }
     }
 
-    public void removeIPChannelConf(String username, String password,
+    public void removeChannelConf(String username, String password,
                                    Long confKey)
             throws Exception
     {
@@ -4267,9 +4354,9 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/channel/" + confKey;
 
-            mLogger.info("removeIPChannelConf"
+            mLogger.info("removeChannelConf"
                     + ", mmsURL: " + mmsURL
                     + ", confKey: " + confKey
             );
@@ -4277,7 +4364,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, null);
-            mLogger.info("removeIPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("removeChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
@@ -4288,13 +4375,13 @@ public class CatraMMSAPI {
         }
     }
 
-    public Long getIPChannelConf(String username, String password,
+    public Long getChannelConf(String username, String password,
                                long startIndex, long pageSize,
                                Long confKey, String label,
                                String url,
                                String type, String name, String region, String country,
                                String labelOrder,   // asc or desc
-                               List<IPChannelConf> channelConfList)
+                               List<ChannelConf> channelConfList)
             throws Exception
     {
         Long numFound;
@@ -4302,7 +4389,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/channel"
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -4320,7 +4407,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password);
-            mLogger.info("getIPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("getChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
         catch (Exception e)
@@ -4348,13 +4435,13 @@ public class CatraMMSAPI {
                  channelConfIndex < jaChannelConf.length();
                  channelConfIndex++)
             {
-                IPChannelConf ipChannelConf = new IPChannelConf();
+                ChannelConf channelConf = new ChannelConf();
 
                 JSONObject channelConfInfo = jaChannelConf.getJSONObject(channelConfIndex);
 
-                fillIPChannelConf(ipChannelConf, channelConfInfo);
+                fillChannelConf(channelConf, channelConfInfo);
 
-                channelConfList.add(ipChannelConf);
+                channelConfList.add(channelConf);
             }
         }
         catch (Exception e)
@@ -4368,16 +4455,16 @@ public class CatraMMSAPI {
         return numFound;
     }
 
-    public IPChannelConf getIPChannelConf(String username, String password,
+    public ChannelConf getChannelConf(String username, String password,
                                Long confKey)
             throws Exception
     {
-        IPChannelConf channelConf = null;
+        ChannelConf channelConf = null;
 
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/ipChannel"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/channel"
                     + "/" + confKey
                     ;
 
@@ -4386,7 +4473,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password);
-            mLogger.info("getIPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("getChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
         catch (Exception e)
@@ -4421,322 +4508,11 @@ public class CatraMMSAPI {
 
             if (jaChannelConf.length() == 1)
             {
-                channelConf = new IPChannelConf();
+                channelConf = new ChannelConf();
 
                 JSONObject channelConfInfo = jaChannelConf.getJSONObject(0);
 
-                fillIPChannelConf(channelConf, channelConfInfo);
-            }
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "Parsing channelConf failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        return channelConf;
-    }
-
-    public Long addSATChannelConf(String username, String password, String label,
-                                 Long sourceSATConfKey, String region, String country,
-                                 Long imageMediaItemKey, String imageUniqueName, Long position,
-                                 String channelData)
-            throws Exception
-    {
-
-        String mmsInfo;
-        try
-        {
-            String jsonChannelConf;
-            {
-                JSONObject joChannelConf = new JSONObject();
-
-                joChannelConf.put("Label", label);
-                joChannelConf.put("SourceSATConfKey", sourceSATConfKey);
-                if (region != null)
-                    joChannelConf.put("Region", region);
-                if (country != null)
-                    joChannelConf.put("Country", country);
-                if (imageMediaItemKey != null)
-                    joChannelConf.put("ImageMediaItemKey", imageMediaItemKey);
-                if (imageUniqueName != null)
-                    joChannelConf.put("ImageUniqueName", imageUniqueName);
-                if (position != null)
-                    joChannelConf.put("Position", position);
-                if (channelData != null && !channelData.isEmpty())
-                    joChannelConf.put("ChannelData", new JSONObject(channelData));
-
-                jsonChannelConf = joChannelConf.toString(4);
-            }
-
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel";
-
-            mLogger.info("addSATChannelConf"
-                    + ", mmsURL: " + mmsURL
-                    + ", jsonChannelConf: " + jsonChannelConf
-            );
-
-            Date now = new Date();
-            String contentType = null;
-            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null, jsonChannelConf);
-            mLogger.info("addSATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "addChannelConf MMS failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        Long confKey;
-        try {
-            JSONObject jsonObject = new JSONObject(mmsInfo);
-
-            confKey = jsonObject.getLong("confKey");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "retrieving confKey failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        return confKey;
-    }
-
-    public void modifySATChannelConf(String username, String password,
-                                    Long confKey, String label, Long sourceSATConfKey, String region, String country,
-                                    Long imageMediaItemKey, String imageUniqueName, Long position,
-                                    String channelData)
-            throws Exception
-    {
-
-        String mmsInfo;
-        try
-        {
-            mLogger.info("modifyChannelConf"
-                    + ", username: " + username
-                    + ", label: " + label
-                    + ", sourceSATConfKey: " + sourceSATConfKey
-                    + ", region: " + region
-                    + ", country: " + country
-                    + ", imageMediaItemKey: " + imageMediaItemKey
-                    + ", imageUniqueName: " + imageUniqueName
-                    + ", position: " + position
-                    + ", channelData: " + channelData
-            );
-
-            String jsonChannelConf;
-            {
-                JSONObject joChannelConf = new JSONObject();
-
-                joChannelConf.put("Label", label);
-                joChannelConf.put("SourceSATConfKey", sourceSATConfKey);
-                if (region != null)
-                    joChannelConf.put("Region", region);
-                if (country != null)
-                    joChannelConf.put("Country", country);
-                if (imageMediaItemKey != null)
-                    joChannelConf.put("ImageMediaItemKey", imageMediaItemKey);
-                if (imageUniqueName != null)
-                    joChannelConf.put("ImageUniqueName", imageUniqueName);
-                if (position != null)
-                    joChannelConf.put("Position", position);
-                if (channelData != null && !channelData.isEmpty())
-                    joChannelConf.put("ChannelData", new JSONObject(channelData));
-
-                jsonChannelConf = joChannelConf.toString(4);
-            }
-
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel/" + confKey;
-
-            mLogger.info("modifyIPChannelConf"
-                    + ", mmsURL: " + mmsURL
-                    + ", jsonChannelConf: " + jsonChannelConf
-            );
-
-            Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, jsonChannelConf);
-            mLogger.info("modifySATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "modifyChannelConf MMS failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-    }
-
-    public void removeSATChannelConf(String username, String password,
-                                    Long confKey)
-            throws Exception
-    {
-
-        String mmsInfo;
-        try
-        {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel/" + confKey;
-
-            mLogger.info("removeSATChannelConf"
-                    + ", mmsURL: " + mmsURL
-                    + ", confKey: " + confKey
-            );
-
-            Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
-            mLogger.info("removeSATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "removeChannelConf MMS failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-    }
-
-    public Long getSATChannelConf(String username, String password,
-                                 long startIndex, long pageSize,
-                                 Long confKey,
-                                 String label, String region, String country,
-                                  String labelOrder,   // asc or desc
-                                 List<SATChannelConf> channelConfList)
-            throws Exception
-    {
-        Long numFound;
-
-        String mmsInfo;
-        try
-        {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel"
-                    + (confKey == null ? "" : ("/" + confKey))
-                    + "?start=" + startIndex
-                    + "&rows=" + pageSize
-                    + (label == null || label.isEmpty() ? "" : ("&label=" + java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
-                    + (region == null || region.isEmpty() ? "" : ("&region=" + java.net.URLEncoder.encode(region, "UTF-8")))
-                    + (region == null || region.isEmpty() ? "" : ("&country=" + java.net.URLEncoder.encode(country, "UTF-8")))
-                    + (labelOrder == null || labelOrder.isEmpty() ? "" : ("&labelOrder=" + labelOrder))
-                    ;
-
-            mLogger.info("mmsURL: " + mmsURL);
-
-            Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
-            mLogger.info("getSATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-            // mLogger.info("mmsInfo: " + mmsInfo);
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "MMS API failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        try
-        {
-            JSONObject joMMSInfo = new JSONObject(mmsInfo);
-            JSONObject joResponse = joMMSInfo.getJSONObject("response");
-            numFound = joResponse.getLong("numFound");
-
-            JSONArray jaChannelConf = joResponse.getJSONArray("channelConf");
-
-            mLogger.info("jaChannelConf.length(): " + jaChannelConf.length()
-            );
-
-            channelConfList.clear();
-
-            for (int channelConfIndex = 0;
-                 channelConfIndex < jaChannelConf.length();
-                 channelConfIndex++)
-            {
-                SATChannelConf satChannelConf = new SATChannelConf();
-
-                JSONObject channelConfInfo = jaChannelConf.getJSONObject(channelConfIndex);
-
-                fillSATChannelConf(satChannelConf, channelConfInfo);
-
-                channelConfList.add(satChannelConf);
-            }
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "Parsing channelConf failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        return numFound;
-    }
-
-    public SATChannelConf getSATChannelConf(String username, String password,
-                                          Long confKey)
-            throws Exception
-    {
-        SATChannelConf channelConf = null;
-
-        String mmsInfo;
-        try
-        {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/satChannel"
-                    + "/" + confKey
-                    ;
-
-            mLogger.info("mmsURL: " + mmsURL);
-
-            Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
-            mLogger.info("getSATChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-            // mLogger.info("mmsInfo: " + mmsInfo);
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "MMS API failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        try
-        {
-            JSONObject joMMSInfo = new JSONObject(mmsInfo);
-            JSONObject joResponse = joMMSInfo.getJSONObject("response");
-            Long numFound = joResponse.getLong("numFound");
-
-            JSONArray jaChannelConf = joResponse.getJSONArray("channelConf");
-
-            mLogger.info("jaChannelConf.length(): " + jaChannelConf.length()
-            );
-
-            if (numFound > 1 || jaChannelConf.length() > 1)
-            {
-                String errorMessage = "Wrong API response"
-                        + ", numFound: " + numFound
-                        + ", jaChannelConf.length: " + jaChannelConf.length()
-                        ;
-                mLogger.error(errorMessage);
-
-                throw new Exception(errorMessage);
-            }
-
-            if (jaChannelConf.length() == 1)
-            {
-                channelConf = new SATChannelConf();
-
-                JSONObject channelConfInfo = jaChannelConf.getJSONObject(0);
-
-                fillSATChannelConf(channelConf, channelConfInfo);
+                fillChannelConf(channelConf, channelConfInfo);
             }
         }
         catch (Exception e)
@@ -6175,15 +5951,8 @@ public class CatraMMSAPI {
                     else
                         ingestionJob.setRecordingMonitorHLS(false);
 
-                    if (joMetadataContent.has("ChannelType") && !joMetadataContent.isNull("ChannelType"))
-                    {
-                        if (joMetadataContent.getString("ChannelType").equalsIgnoreCase("IP_MMSAsClient")
-                            || joMetadataContent.getString("ChannelType").equalsIgnoreCase("Satellite"))
-                        {
-                            if (joMetadataContent.has("ConfigurationLabel") && !joMetadataContent.isNull("ConfigurationLabel"))
-                                ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
-                        }
-                    }
+					if (joMetadataContent.has("ConfigurationLabel") && !joMetadataContent.isNull("ConfigurationLabel"))
+						ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
                 }
                 else if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Proxy")
                         && joMetadataContent != null)
@@ -6559,14 +6328,42 @@ public class CatraMMSAPI {
         }
     }
 
-    private void fillIPChannelConf(IPChannelConf channelConf, JSONObject channelConfInfo)
+    private void fillChannelConf(ChannelConf channelConf, JSONObject channelConfInfo)
             throws Exception
     {
         try {
             channelConf.setConfKey(channelConfInfo.getLong("confKey"));
             channelConf.setLabel(channelConfInfo.getString("label"));
-            channelConf.setUrl(channelConfInfo.getString("url"));
-            if (channelConfInfo.has("type") && !channelConfInfo.isNull("type"))
+            channelConf.setSourceType(channelConfInfo.getString("sourceType"));
+            if (channelConfInfo.has("url") && !channelConfInfo.isNull("url"))
+            	channelConf.setUrl(channelConfInfo.getString("url"));
+			if (channelConfInfo.has("pushProtocol") && !channelConfInfo.isNull("pushProtocol"))
+            	channelConf.setPushProtocol(channelConfInfo.getString("pushProtocol"));
+			if (channelConfInfo.has("pushServerName") && !channelConfInfo.isNull("pushServerName"))
+            	channelConf.setPushServerName(channelConfInfo.getString("pushServerName"));
+			if (channelConfInfo.has("pushServerPort") && !channelConfInfo.isNull("pushServerPort"))
+                channelConf.setPushServerPort(channelConfInfo.getLong("pushServerPort"));
+			if (channelConfInfo.has("pushUri") && !channelConfInfo.isNull("pushUri"))
+            	channelConf.setPushURI(channelConfInfo.getString("pushUri"));
+			if (channelConfInfo.has("pushListenTimeout") && !channelConfInfo.isNull("pushListenTimeout"))
+                channelConf.setPushListenTimeout(channelConfInfo.getLong("pushListenTimeout"));
+			if (channelConfInfo.has("captureLiveVideoDeviceNumber") && !channelConfInfo.isNull("captureLiveVideoDeviceNumber"))
+                channelConf.setCaptureLiveVideoDeviceNumber(channelConfInfo.getLong("captureLiveVideoDeviceNumber"));
+			if (channelConfInfo.has("captureLiveVideoInputFormat") && !channelConfInfo.isNull("captureLiveVideoInputFormat"))
+            	channelConf.setCaptureLiveVideoInputFormat(channelConfInfo.getString("captureLiveVideoInputFormat"));
+			if (channelConfInfo.has("captureLiveFrameRate") && !channelConfInfo.isNull("captureLiveFrameRate"))
+            	channelConf.setCaptureLiveFrameRate(channelConfInfo.getLong("captureLiveFrameRate"));
+			if (channelConfInfo.has("captureLiveWidth") && !channelConfInfo.isNull("captureLiveWidth"))
+            	channelConf.setCaptureLiveWidth(channelConfInfo.getLong("captureLiveWidth"));
+			if (channelConfInfo.has("captureLiveHeight") && !channelConfInfo.isNull("captureLiveHeight"))
+            	channelConf.setCaptureLiveHeight(channelConfInfo.getLong("captureLiveHeight"));
+			if (channelConfInfo.has("captureLiveAudioDeviceNumber") && !channelConfInfo.isNull("captureLiveAudioDeviceNumber"))
+            	channelConf.setCaptureLiveAudioDeviceNumber(channelConfInfo.getLong("captureLiveAudioDeviceNumber"));
+			if (channelConfInfo.has("captureLiveChannelsNumber") && !channelConfInfo.isNull("captureLiveChannelsNumber"))
+            	channelConf.setCaptureLiveChannelsNumber(channelConfInfo.getLong("captureLiveChannelsNumber"));
+			if (channelConfInfo.has("satSourceSATConfKey") && !channelConfInfo.isNull("satSourceSATConfKey"))
+            	channelConf.setSourceSATConfKey(channelConfInfo.getLong("satSourceSATConfKey"));
+			if (channelConfInfo.has("type") && !channelConfInfo.isNull("type"))
                 channelConf.setType(channelConfInfo.getString("type"));
             if (channelConfInfo.has("description") && !channelConfInfo.isNull("description"))
                 channelConf.setDescription(channelConfInfo.getString("description"));
@@ -6592,40 +6389,6 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "fillIPChannelConf failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-    }
-
-    private void fillSATChannelConf(SATChannelConf channelConf, JSONObject channelConfInfo)
-            throws Exception
-    {
-        try {
-            if (channelConfInfo.has("confKey") && !channelConfInfo.isNull("confKey"))
-                channelConf.setConfKey(channelConfInfo.getLong("confKey"));
-            channelConf.setSourceSATConfKey(channelConfInfo.getLong("sourceSATConfKey"));
-            channelConf.setLabel(channelConfInfo.getString("label"));
-
-            if (channelConfInfo.has("region") && !channelConfInfo.isNull("region"))
-                channelConf.setRegion(channelConfInfo.getString("region"));
-            if (channelConfInfo.has("country") && !channelConfInfo.isNull("country"))
-                channelConf.setCountry(channelConfInfo.getString("country"));
-
-            if (channelConfInfo.has("imageMediaItemKey") && !channelConfInfo.isNull("imageMediaItemKey"))
-                channelConf.setImageMediaItemKey(channelConfInfo.getLong("imageMediaItemKey"));
-
-            if (channelConfInfo.has("imageUniqueName") && !channelConfInfo.isNull("imageUniqueName"))
-                channelConf.setImageUniqueName(channelConfInfo.getString("imageUniqueName"));
-
-            if (channelConfInfo.has("position") && !channelConfInfo.isNull("position"))
-                channelConf.setPosition(channelConfInfo.getLong("position"));
-            if (channelConfInfo.has("channelData") && !channelConfInfo.isNull("channelData"))
-                channelConf.setChannelData(channelConfInfo.getString("channelData"));
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "fillSATChannelConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
