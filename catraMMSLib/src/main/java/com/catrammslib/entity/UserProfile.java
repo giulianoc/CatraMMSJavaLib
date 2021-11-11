@@ -10,7 +10,7 @@ public class UserProfile implements Serializable {
     private Long userKey;
     private Boolean ldapEnabled;
     private String name;
-    private String emailAddress;
+    private String email;
     private String password;
     private String country;
     private Date creationDate;
@@ -40,15 +40,15 @@ public class UserProfile implements Serializable {
         this.name = name;
     }
 
-    public String getEmailAddress() {
-        return emailAddress;
-    }
+    public String getEmail() {
+		return email;
+	}
 
-    public void setEmailAddress(String emailAddress) {
-        this.emailAddress = emailAddress;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getPassword() {
+	public String getPassword() {
         return password;
     }
 

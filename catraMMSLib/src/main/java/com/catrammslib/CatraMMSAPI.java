@@ -15,6 +15,7 @@ import java.util.TimeZone;
 
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
+import com.catrammslib.entity.ChannelConf;
 import com.catrammslib.entity.EMailConf;
 import com.catrammslib.entity.Encoder;
 import com.catrammslib.entity.EncodersPool;
@@ -23,7 +24,6 @@ import com.catrammslib.entity.EncodingProfile;
 import com.catrammslib.entity.EncodingProfilesSet;
 import com.catrammslib.entity.FTPConf;
 import com.catrammslib.entity.FacebookConf;
-import com.catrammslib.entity.ChannelConf;
 import com.catrammslib.entity.IngestionJob;
 import com.catrammslib.entity.IngestionJobMediaItem;
 import com.catrammslib.entity.IngestionWorkflow;
@@ -202,18 +202,22 @@ public class CatraMMSAPI {
 
             String postBodyRequest;
             if (userAlreadyPresent)
-                postBodyRequest = "{ "
-                    + "\"EMail\": \"" + emailAddressToShare + "\" "
-                    + "} "
-                    ;
+			{
+				JSONObject joObj = new JSONObject();
+				joObj.put("email", emailAddressToShare);
+
+				postBodyRequest = joObj.toString();
+			}
             else
-                postBodyRequest = "{ "
-                        + "\"Name\": \"" + userNameToShare + "\", "
-                        + "\"EMail\": \"" + emailAddressToShare + "\", "
-                        + "\"Password\": \"" + passwordToShare + "\", "
-                        + "\"Country\": \"" + countryToShare + "\" "
-                        + "} "
-                        ;
+			{
+				JSONObject joObj = new JSONObject();
+				joObj.put("name", userNameToShare);
+				joObj.put("email", emailAddressToShare);
+				joObj.put("password", passwordToShare);
+				joObj.put("country", countryToShare);
+
+				postBodyRequest = joObj.toString();
+			}
 
             mLogger.info("shareWorkspace"
                             + ", mmsURL: " + mmsURL
@@ -293,14 +297,14 @@ public class CatraMMSAPI {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
 
-            String postBodyRequest = "{ "
-                    + "\"Name\": \"" + userNameToRegister + "\", "
-                    + "\"EMail\": \"" + emailAddressToRegister + "\", "
-                    + "\"Password\": \"" + passwordToRegister + "\", "
-                    + "\"Country\": \"" + countryToRegister + "\", "
-                    + "\"WorkspaceName\": \"" + workspaceNameToRegister + "\" "
-                    + "} "
-                    ;
+			JSONObject joObject = new JSONObject();
+			joObject.put("name", userNameToRegister);
+			joObject.put("email", emailAddressToRegister);
+			joObject.put("password", passwordToRegister);
+			joObject.put("country", countryToRegister);
+			joObject.put("workspaceName", workspaceNameToRegister);
+
+			String postBodyRequest = joObject.toString();
 
             mLogger.info("register"
                             + ", mmsURL: " + mmsURL
@@ -359,8 +363,8 @@ public class CatraMMSAPI {
             );
 
             Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
             mLogger.info("confirmRegistration. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -402,10 +406,10 @@ public class CatraMMSAPI {
             JSONObject joBody = new JSONObject();
             if (ldapEnabled)
             {
-                joBody.put("Name", username);
-                joBody.put("Password", password);
+                joBody.put("name", username);
+                joBody.put("password", password);
                 if (remoteClientIPAddress != null && !remoteClientIPAddress.isEmpty())
-                    joBody.put("RemoteClientIPAddress", remoteClientIPAddress);
+                    joBody.put("remoteClientIPAddress", remoteClientIPAddress);
                 /*
                 postBodyRequest =
                         "{ "
@@ -417,10 +421,10 @@ public class CatraMMSAPI {
             }
             else
             {
-                joBody.put("EMail", username);
-                joBody.put("Password", password);
+                joBody.put("email", username);
+                joBody.put("password", password);
                 if (remoteClientIPAddress != null && !remoteClientIPAddress.isEmpty())
-                    joBody.put("RemoteClientIPAddress", remoteClientIPAddress);
+                    joBody.put("remoteClientIPAddress", remoteClientIPAddress);
                 /*
                 postBodyRequest =
                         "{ "
@@ -471,7 +475,9 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "Parsing workspaceDetails failed. Exception: " + e;
+            String errorMessage = "Parsing workspaceDetails failed" 
+				+ ", Exception: " + e
+			;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -484,7 +490,79 @@ public class CatraMMSAPI {
         return objects;
     }
 
-    public Long createWorkspace(String username, String password,
+    public UserProfile updateUserProfile(String username, String password,
+                                         String newName,
+                                         String newEmailAddress,
+                                         String newCountry,
+                                         String oldPassword,
+                                         String newPassword)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
+
+			JSONObject joUser = new JSONObject();
+			if (newName != null)
+				joUser.put("name", newName);
+			if (newEmailAddress != null)
+				joUser.put("email", newEmailAddress);
+			if (newPassword != null && !newPassword.isEmpty())
+				joUser.put("newPassword", newPassword);
+			if (oldPassword != null && !oldPassword.isEmpty())
+				joUser.put("oldPassword", oldPassword);
+			if (newCountry != null)
+				joUser.put("country", newCountry);
+
+			String bodyRequest = joUser.toString();
+
+            mLogger.info("updateUser"
+                            + ", mmsURL: " + mmsURL
+                            // + ", bodyRequest: " + bodyRequest
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, bodyRequest);
+            mLogger.info("updateUserProfile. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "updateUser failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        UserProfile userProfile = new UserProfile();
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            fillUserProfile(userProfile, joWMMSInfo);
+
+            if (newPassword != null && !newPassword.isEmpty())
+                userProfile.setPassword(newPassword);
+            else
+                userProfile.setPassword(password);
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing userProfile failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return userProfile;
+    }
+
+	public Long createWorkspace(String username, String password,
                                 String workspaceNameToRegister)
             throws Exception
     {
@@ -492,12 +570,11 @@ public class CatraMMSAPI {
         String mmsURL = null;
         try
         {
-            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace";
+            mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace"
+				+ "?workspaceName=" + java.net.URLEncoder.encode(workspaceNameToRegister, "UTF-8") // requires unescape server side
+			;
 
-            JSONObject joNewWorkspace = new JSONObject();
-            joNewWorkspace.put("WorkspaceName", workspaceNameToRegister);
-
-            String postBodyRequest = joNewWorkspace.toString();
+            String postBodyRequest = null;
 
             mLogger.info("createWorkspace"
                     + ", mmsURL: " + mmsURL
@@ -537,14 +614,14 @@ public class CatraMMSAPI {
     }
 
     public WorkspaceDetails updateWorkspace(String username, String password,
-                                       boolean newEnabled, String newName, String newMaxEncodingPriority,
-                                       String newEncodingPeriod, Long newMaxIngestionsNumber,
-                                       Long newMaxStorageInMB, String newLanguageCode, Date newExpirationDate,
-                                       boolean newCreateRemoveWorkspace, boolean newIngestWorkflow, boolean newCreateProfiles,
-                                       boolean newDeliveryAuthorization, boolean newShareWorkspace,
-                                       boolean newEditMedia, boolean newEditConfiguration, boolean newKillEncoding,
-                                            boolean newCancelIngestionJob, boolean newEditEncodersPool, boolean newApplicationRecorder)
-            throws Exception
+		Boolean newEnabled, String newName, String newMaxEncodingPriority,
+		String newEncodingPeriod, Long newMaxIngestionsNumber,
+		Long newMaxStorageInMB, String newLanguageCode, Date newExpirationDate,
+		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
+		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
+		Boolean newEditMedia, Boolean newEditConfiguration, Boolean newKillEncoding,
+		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newApplicationRecorder)
+        throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -555,31 +632,44 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace";
 
             JSONObject joBodyRequest = new JSONObject();
-            joBodyRequest.put("Enabled", newEnabled);
-            joBodyRequest.put("Name", newName);
-            joBodyRequest.put("MaxEncodingPriority", newMaxEncodingPriority);
-            joBodyRequest.put("EncodingPeriod", newEncodingPeriod);
-            joBodyRequest.put("MaxIngestionsNumber", newMaxIngestionsNumber);
-            joBodyRequest.put("MaxStorageInMB", newMaxStorageInMB);
-            joBodyRequest.put("LanguageCode", newLanguageCode);
-            joBodyRequest.put("ExpirationDate", simpleDateFormat.format(newExpirationDate));
-            joBodyRequest.put("CreateRemoveWorkspace", newCreateRemoveWorkspace);
-            joBodyRequest.put("IngestWorkflow", newIngestWorkflow);
-            joBodyRequest.put("CreateProfiles", newCreateProfiles);
-            joBodyRequest.put("DeliveryAuthorization", newDeliveryAuthorization);
-            joBodyRequest.put("ShareWorkspace", newShareWorkspace);
-            joBodyRequest.put("EditMedia", newEditMedia);
-            joBodyRequest.put("EditConfiguration", newEditConfiguration);
-            joBodyRequest.put("KillEncoding", newKillEncoding);
-            joBodyRequest.put("CancelIngestionJob", newCancelIngestionJob);
-            joBodyRequest.put("EditEncodersPool", newEditEncodersPool);
-            joBodyRequest.put("ApplicationRecorder", newApplicationRecorder);
+			if (newName != null)
+				joBodyRequest.put("workspaceName", newName);
+			if (newEnabled != null)
+            	joBodyRequest.put("isEnabled", newEnabled);
+			if (newMaxEncodingPriority != null)
+				joBodyRequest.put("maxEncodingPriority", newMaxEncodingPriority);
+			if (newEncodingPeriod != null)
+				joBodyRequest.put("encodingPeriod", newEncodingPeriod);
+			if (newMaxIngestionsNumber != null)
+				joBodyRequest.put("maxIngestionsNumber", newMaxIngestionsNumber);
+			if (newMaxStorageInMB != null)
+				joBodyRequest.put("maxStorageInMB", newMaxStorageInMB);
+			if (newLanguageCode != null)
+				joBodyRequest.put("languageCode", newLanguageCode);
+
+			JSONObject joUserAPIKey = new JSONObject();
+			joBodyRequest.put("userAPIKey", joUserAPIKey);
+
+			if (newExpirationDate != null)
+				joUserAPIKey.put("expirationDate", simpleDateFormat.format(newExpirationDate));
+			// all the next fields aare mandatory
+			joUserAPIKey.put("createRemoveWorkspace", newCreateRemoveWorkspace);
+			joUserAPIKey.put("ingestWorkflow", newIngestWorkflow);
+			joUserAPIKey.put("createProfiles", newCreateProfiles);
+			joUserAPIKey.put("deliveryAuthorization", newDeliveryAuthorization);
+			joUserAPIKey.put("shareWorkspace", newShareWorkspace);
+			joUserAPIKey.put("editMedia", newEditMedia);
+			joUserAPIKey.put("editConfiguration", newEditConfiguration);
+			joUserAPIKey.put("killEncoding", newKillEncoding);
+			joUserAPIKey.put("cancelIngestionJob", newCancelIngestionJob);
+			joUserAPIKey.put("editEncodersPool", newEditEncodersPool);
+			joUserAPIKey.put("applicationRecorder", newApplicationRecorder);
 
             String bodyRequest = joBodyRequest.toString();
 
-            mLogger.info("updateUser"
-                            + ", mmsURL: " + mmsURL
-                            + ", bodyRequest: " + bodyRequest
+            mLogger.info("updateWorkspace"
+				+ ", mmsURL: " + mmsURL
+				+ ", bodyRequest: " + bodyRequest
             );
 
             Date now = new Date();
@@ -643,73 +733,6 @@ public class CatraMMSAPI {
 
             throw new Exception(errorMessage);
         }
-    }
-
-    public UserProfile updateUserProfile(String username, String password,
-                                         String newName,
-                                         String newEmailAddress,
-                                         String newCountry,
-                                         String oldPassword,
-                                         String newPassword)
-            throws Exception
-    {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-        String mmsInfo;
-        try
-        {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
-
-            String bodyRequest = "{ "
-                    + "\"Name\": \"" + newName + "\", "
-                    + "\"EMail\": \"" + newEmailAddress + "\", "
-                    + ((newPassword != null && !newPassword.isEmpty()) ? ("\"NewPassword\": \"" + newPassword + "\", ") : "")
-                    + ((oldPassword != null && !oldPassword.isEmpty()) ? ("\"OldPassword\": \"" + oldPassword + "\", ") : "")
-                    + "\"Country\": \"" + newCountry + "\" "
-                    + "} "
-                    ;
-
-            mLogger.info("updateUser"
-                            + ", mmsURL: " + mmsURL
-                            // + ", bodyRequest: " + bodyRequest
-            );
-
-            Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, bodyRequest);
-            mLogger.info("updateUserProfile. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "updateUser failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        UserProfile userProfile = new UserProfile();
-
-        try
-        {
-            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
-
-            fillUserProfile(userProfile, joWMMSInfo);
-
-            if (newPassword != null && !newPassword.isEmpty())
-                userProfile.setPassword(newPassword);
-            else
-                userProfile.setPassword(password);
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "Parsing userProfile failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        return userProfile;
     }
 
     public void mmsSupport(String username, String password,
@@ -4379,7 +4402,8 @@ public class CatraMMSAPI {
                                long startIndex, long pageSize,
                                Long confKey, String label,
                                String url,
-                               String type, String name, String region, String country,
+                               String sourceType, String type, 
+							   String name, String region, String country,
                                String labelOrder,   // asc or desc
                                List<ChannelConf> channelConfList)
             throws Exception
@@ -4395,6 +4419,7 @@ public class CatraMMSAPI {
                     + "&rows=" + pageSize
                     + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
                     + "&url=" + (url == null ? "" : java.net.URLEncoder.encode(url, "UTF-8"))
+                    + "&sourceType=" + (sourceType == null ? "" : sourceType)
                     + "&type=" + (type == null ? "" : java.net.URLEncoder.encode(type, "UTF-8"))
                     + "&name=" + (name == null ? "" : java.net.URLEncoder.encode(name, "UTF-8"))
                     + "&region=" + (region == null ? "" : java.net.URLEncoder.encode(region, "UTF-8"))
@@ -4541,29 +4566,29 @@ public class CatraMMSAPI {
             {
                 JSONObject joChannelConf = new JSONObject();
 
-                joChannelConf.put("ServiceId", serviceId);
-                joChannelConf.put("NetworkId", networkId);
-                joChannelConf.put("TransportStreamId", transportStreamId);
-                joChannelConf.put("Name", name);
-                joChannelConf.put("Satellite", satellite);
-                joChannelConf.put("Frequency", frequency);
-                joChannelConf.put("Lnb", lnb);
-                joChannelConf.put("VideoPid", videoPid);
-                joChannelConf.put("AudioPids", audioPids);
+                joChannelConf.put("serviceId", serviceId);
+                joChannelConf.put("networkId", networkId);
+                joChannelConf.put("transportStreamId", transportStreamId);
+                joChannelConf.put("name", name);
+                joChannelConf.put("satellite", satellite);
+                joChannelConf.put("frequency", frequency);
+                joChannelConf.put("lnb", lnb);
+                joChannelConf.put("videoPid", videoPid);
+                joChannelConf.put("audioPids", audioPids);
                 if (audioItalianPid != null)
-                    joChannelConf.put("AudioItalianPid", audioItalianPid);
+                    joChannelConf.put("audioItalianPid", audioItalianPid);
                 if (audioEnglishPid != null)
-                    joChannelConf.put("AudioEnglishPid", audioEnglishPid);
+                    joChannelConf.put("audioEnglishPid", audioEnglishPid);
                 if (teletextPid != null)
-                    joChannelConf.put("TeletextPid", teletextPid);
+                    joChannelConf.put("teletextPid", teletextPid);
                 if (modulation != null && !modulation.isEmpty())
-                    joChannelConf.put("Modulation", modulation);
-                joChannelConf.put("Polarization", polarization);
-                joChannelConf.put("SymbolRate", symbolRate);
+                    joChannelConf.put("modulation", modulation);
+                joChannelConf.put("polarization", polarization);
+                joChannelConf.put("symbolRate", symbolRate);
                 if (country != null && !country.isEmpty())
-                    joChannelConf.put("Country", country);
+                    joChannelConf.put("country", country);
                 if (deliverySystem != null && !deliverySystem.isEmpty())
-                    joChannelConf.put("DeliverySystem", deliverySystem);
+                    joChannelConf.put("deliverySystem", deliverySystem);
 
                 jsonChannelConf = joChannelConf.toString(4);
             }
@@ -4644,39 +4669,39 @@ public class CatraMMSAPI {
                 JSONObject joChannelConf = new JSONObject();
 
                 if (serviceId != null)
-                    joChannelConf.put("ServiceId", serviceId);
+                    joChannelConf.put("serviceId", serviceId);
                 if (networkId != null)
-                    joChannelConf.put("NetworkId", networkId);
+                    joChannelConf.put("networkId", networkId);
                 if (transportStreamId != null)
-                    joChannelConf.put("TransportStreamId", transportStreamId);
+                    joChannelConf.put("transportStreamId", transportStreamId);
                 if (name != null && !name.isEmpty())
-                    joChannelConf.put("Name", name);
+                    joChannelConf.put("name", name);
                 if (satellite != null && !satellite.isEmpty())
-                    joChannelConf.put("Satellite", satellite);
+                    joChannelConf.put("satellite", satellite);
                 if (frequency != null)
-                    joChannelConf.put("Frequency", frequency);
+                    joChannelConf.put("frequency", frequency);
                 if (lnb != null && !lnb.isEmpty())
-                    joChannelConf.put("Lnb", lnb);
+                    joChannelConf.put("lnb", lnb);
                 if (videoPid != null)
-                    joChannelConf.put("VideoPid", videoPid);
+                    joChannelConf.put("videoPid", videoPid);
                 if (audioPids != null && !audioPids.isEmpty())
-                    joChannelConf.put("AudioPids", audioPids);
+                    joChannelConf.put("audioPids", audioPids);
                 if (audioItalianPid != null)
-                    joChannelConf.put("AudioItalianPid", audioItalianPid);
+                    joChannelConf.put("audioItalianPid", audioItalianPid);
                 if (audioEnglishPid != null)
-                    joChannelConf.put("AudioEnglishPid", audioEnglishPid);
+                    joChannelConf.put("audioEnglishPid", audioEnglishPid);
                 if (teletextPid != null)
-                    joChannelConf.put("TeletextPid", teletextPid);
+                    joChannelConf.put("teletextPid", teletextPid);
                 if (modulation != null && !modulation.isEmpty())
-                    joChannelConf.put("Modulation", modulation);
+                    joChannelConf.put("modulation", modulation);
                 if (polarization != null && !polarization.isEmpty())
-                    joChannelConf.put("Polarization", polarization);
+                    joChannelConf.put("polarization", polarization);
                 if (symbolRate != null)
-                    joChannelConf.put("SymbolRate", symbolRate);
+                    joChannelConf.put("symbolRate", symbolRate);
                 if (country != null && !country.isEmpty())
-                    joChannelConf.put("Country", country);
+                    joChannelConf.put("country", country);
                 if (deliverySystem != null && !deliverySystem.isEmpty())
-                    joChannelConf.put("DeliverySystem", deliverySystem);
+                    joChannelConf.put("deliverySystem", deliverySystem);
 
                 jsonChannelConf = joChannelConf.toString(4);
             }
@@ -4780,7 +4805,7 @@ public class CatraMMSAPI {
             JSONObject joResponse = joMMSInfo.getJSONObject("response");
             numFound = joResponse.getLong("numFound");
 
-            JSONArray jaChannelConf = joResponse.getJSONArray("channelConf");
+            JSONArray jaChannelConf = joResponse.getJSONArray("sourceSATChannelConf");
 
             mLogger.info("jaChannelConf.length(): " + jaChannelConf.length()
             );
@@ -5246,13 +5271,16 @@ public class CatraMMSAPI {
             userProfile.setLdapEnabled(joUserProfileInfo.getBoolean("ldapEnabled"));
             userProfile.setName(joUserProfileInfo.getString("name"));
             userProfile.setCountry(joUserProfileInfo.getString("country"));
-            userProfile.setEmailAddress(joUserProfileInfo.getString("eMailAddress"));
+            userProfile.setEmail(joUserProfileInfo.getString("email"));
             userProfile.setCreationDate(simpleDateFormat.parse(joUserProfileInfo.getString("creationDate")));
             userProfile.setExpirationDate(simpleDateFormat.parse(joUserProfileInfo.getString("expirationDate")));
         }
         catch (Exception e)
         {
-            String errorMessage = "fillUserProfile failed. Exception: " + e;
+            String errorMessage = "fillUserProfile failed" 
+				+ ", Exception: " + e
+				+ ", joUserProfileInfo: " + joUserProfileInfo.toString()
+			;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
