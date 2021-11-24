@@ -37,7 +37,9 @@ public class ChannelConf implements Serializable{
 	private Long captureLiveChannelsNumber;
 	private Long sourceSATConfKey;
 
-    @Override
+	private Boolean selected;
+
+	@Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -66,7 +68,15 @@ public class ChannelConf implements Serializable{
         this.label = label;
     }
 
-    public String getUrl() {
+    public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+
+	public String getUrl() {
         return url;
     }
 
