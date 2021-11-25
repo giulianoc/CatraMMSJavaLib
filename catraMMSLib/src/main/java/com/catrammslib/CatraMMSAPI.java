@@ -3796,7 +3796,8 @@ public class CatraMMSAPI {
     }
 
     public void addYouTubeConf(String username, String password,
-                               String label, String refreshToken)
+                               String label, String tokenType,
+							   String refreshToken, String accessToken)
             throws Exception
     {
 
@@ -3807,10 +3808,14 @@ public class CatraMMSAPI {
             {
                 JSONObject joYouTubeConf = new JSONObject();
 
-                joYouTubeConf.put("Label", label);
-                joYouTubeConf.put("RefreshToken", refreshToken);
+                joYouTubeConf.put("label", label);
+                joYouTubeConf.put("tokenType", tokenType);
+				if (tokenType.equalsIgnoreCase("RefreshToken"))
+                	joYouTubeConf.put("refreshToken", refreshToken);
+				else // if (tokenType.equalsIgnoreCase("AccessToken"))
+					joYouTubeConf.put("accessToken", accessToken);
 
-                jsonYouTubeConf = joYouTubeConf.toString(4);
+                jsonYouTubeConf = joYouTubeConf.toString(1);
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube";
@@ -3836,7 +3841,8 @@ public class CatraMMSAPI {
     }
 
     public void modifyYouTubeConf(String username, String password,
-                               Long confKey, String label, String refreshToken)
+                               Long confKey, String label, 
+							   String tokenType, String refreshToken, String accessToken)
             throws Exception
     {
 
@@ -3847,10 +3853,16 @@ public class CatraMMSAPI {
             {
                 JSONObject joYouTubeConf = new JSONObject();
 
-                joYouTubeConf.put("Label", label);
-                joYouTubeConf.put("RefreshToken", refreshToken);
+				if (label != null)
+                	joYouTubeConf.put("label", label);
+				if (tokenType != null)
+					joYouTubeConf.put("tokenType", tokenType);
+				if (refreshToken != null)
+					joYouTubeConf.put("refreshToken", refreshToken);
+				if (accessToken != null)
+					joYouTubeConf.put("accessToken", accessToken);
 
-                jsonYouTubeConf = joYouTubeConf.toString(4);
+                jsonYouTubeConf = joYouTubeConf.toString(1);
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube/" + confKey;
@@ -6328,7 +6340,11 @@ public class CatraMMSAPI {
         try {
             youTubeConf.setConfKey(youTubeConfInfo.getLong("confKey"));
             youTubeConf.setLabel(youTubeConfInfo.getString("label"));
-            youTubeConf.setRefreshToken(youTubeConfInfo.getString("refreshToken"));
+            youTubeConf.setTokenType(youTubeConfInfo.getString("tokenType"));
+			if (youTubeConfInfo.has("refreshToken") && !youTubeConfInfo.isNull("refreshToken"))
+	            youTubeConf.setRefreshToken(youTubeConfInfo.getString("refreshToken"));
+			if (youTubeConfInfo.has("accessToken") && !youTubeConfInfo.isNull("accessToken"))
+				youTubeConf.setRefreshToken(youTubeConfInfo.getString("accessToken"));
         }
         catch (Exception e)
         {

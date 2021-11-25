@@ -9,8 +9,11 @@ public class YouTubeConf implements Serializable{
 
     private Long confKey;
     private String label;
+    private String tokenType;
     private String refreshToken;
+    private String accessToken;
 
+	
     public Long getConfKey() {
         return confKey;
     }
@@ -19,7 +22,23 @@ public class YouTubeConf implements Serializable{
         this.confKey = confKey;
     }
 
-    public String getLabel() {
+    public String getTokenType() {
+		return tokenType;
+	}
+
+	public void setTokenType(String tokenType) {
+		this.tokenType = tokenType;
+	}
+
+	public String getAccessToken() {
+		return accessToken;
+	}
+
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+
+	public String getLabel() {
         return label;
     }
 
