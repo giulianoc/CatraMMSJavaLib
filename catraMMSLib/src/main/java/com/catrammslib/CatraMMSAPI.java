@@ -6344,7 +6344,7 @@ public class CatraMMSAPI {
 			if (youTubeConfInfo.has("refreshToken") && !youTubeConfInfo.isNull("refreshToken"))
 	            youTubeConf.setRefreshToken(youTubeConfInfo.getString("refreshToken"));
 			if (youTubeConfInfo.has("accessToken") && !youTubeConfInfo.isNull("accessToken"))
-				youTubeConf.setRefreshToken(youTubeConfInfo.getString("accessToken"));
+				youTubeConf.setAccessToken(youTubeConfInfo.getString("accessToken"));
         }
         catch (Exception e)
         {
