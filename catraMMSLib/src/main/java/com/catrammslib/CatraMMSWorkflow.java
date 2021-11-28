@@ -441,7 +441,73 @@ public class CatraMMSWorkflow {
         }
     }
 
-    static public JSONObject buildFaceRecognitionJson(
+    static public JSONObject buildPostOnYouTube(
+            String label,
+
+			String youTubeConfigurationLabel,
+            String title,
+            String description,
+            List<String> tags,
+			Long categoryId,
+			String privacyStatus,
+
+            List<MediaItemReference> mediaItemReferenceList
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Post-On-YouTube");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
+
+			joParameters.put("ConfigurationLabel", youTubeConfigurationLabel);
+
+            if (title != null && !title.isEmpty())
+                joParameters.put("Title", title);
+
+			if (description != null && !description.isEmpty())
+                joParameters.put("Description", description);
+
+			if (tags != null)
+			{
+				JSONArray jaTags = new JSONArray();
+				joParameters.put("Tags", jaTags);
+
+				for (String tag: tags)
+				{
+					if (!tag.isEmpty())
+						jaTags.put(tag);
+				}
+			}
+
+			if (categoryId != null)
+                joParameters.put("CategoryId", categoryId);
+
+			if (privacyStatus != null && !privacyStatus.isEmpty())
+                joParameters.put("Privacy", privacyStatus);
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildPostOnYouTube failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+	static public JSONObject buildFaceRecognitionJson(
             String label, String title, List<String> tags, String ingester,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
