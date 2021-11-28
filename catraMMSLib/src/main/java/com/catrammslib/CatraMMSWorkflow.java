@@ -592,6 +592,47 @@ public class CatraMMSWorkflow {
         }
     }
 
+    static public JSONObject buildPostOnFacebook(
+            String label,
+
+			String facebookConfigurationLabel,
+            String nodeId,
+
+            List<MediaItemReference> mediaItemReferenceList
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Post-On-Facebook");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
+
+			joParameters.put("ConfigurationLabel", facebookConfigurationLabel);
+
+            if (nodeId != null && !nodeId.isEmpty())
+                joParameters.put("NodeId", nodeId);
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildPostOnFacebook failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
 	static public JSONObject buildFaceRecognitionJson(
             String label, String title, List<String> tags, String ingester,
             String retention, JSONObject joUserData,
