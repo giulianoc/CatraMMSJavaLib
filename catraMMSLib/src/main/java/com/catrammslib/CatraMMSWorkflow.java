@@ -507,6 +507,91 @@ public class CatraMMSWorkflow {
         }
     }
 
+    static public JSONObject buildYouTubeLiveBroadcast(
+            String label,
+
+			String youTubeConfigurationLabel,
+            String title,
+            String description,
+			String privacyStatus,
+			Boolean madeForKids,
+			String latencyPreference,
+			String encodersPool,
+			Date startTime, Date endTime,
+
+			// only one of the two below parameters has to be initialized, the other will be null
+			String channelConfigurationLabel,
+            List<MediaItemReference> mediaItemReferenceList
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "YouTube-Live-Broadcast");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+			joParameters.put("YouTubeConfigurationLabel", youTubeConfigurationLabel);
+
+            if (title != null && !title.isEmpty())
+                joParameters.put("Title", title);
+
+			if (description != null && !description.isEmpty())
+                joParameters.put("Description", description);
+
+			if (privacyStatus != null && !privacyStatus.isEmpty())
+                joParameters.put("Privacy", privacyStatus);
+
+			if (madeForKids != null)
+                joParameters.put("MadeForKids", madeForKids);
+
+			if (latencyPreference != null && !latencyPreference.isEmpty())
+                joParameters.put("LatencyPreference", latencyPreference);
+
+			if (channelConfigurationLabel != null)
+			{
+                joParameters.put("SourceType", "Live");
+                joParameters.put("ConfigurationLabel", channelConfigurationLabel);
+			}
+			else
+			{
+                joParameters.put("SourceType", "MediaItem");
+
+				setCommonParameters(joParameters,
+					null,
+					mediaItemReferenceList,
+					null);
+			}
+
+			if (encodersPool != null && !encodersPool.isEmpty())
+                joParameters.put("EncodersPool", encodersPool);
+
+			{
+				JSONObject joProxyPeriod = new JSONObject();
+				joParameters.put("ProxyPeriod", joProxyPeriod);
+
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+				joProxyPeriod.put("Start", dateFormat.format(startTime));
+				joProxyPeriod.put("End", dateFormat.format(endTime));
+			}
+	
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildPostOnYouTube failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
 	static public JSONObject buildFaceRecognitionJson(
             String label, String title, List<String> tags, String ingester,
             String retention, JSONObject joUserData,
