@@ -4144,6 +4144,7 @@ public class CatraMMSAPI {
 	public Long addChannelConf(String username, String password,
 		String label, 
 		String sourceType,
+		String encodersPoolLabel,
 		String url, 
 		String pushProtocol,
 		String pushServerName,
@@ -4174,6 +4175,8 @@ public class CatraMMSAPI {
 
                 joChannelConf.put("label", label);
                 joChannelConf.put("sourceType", sourceType);
+				if (encodersPoolLabel != null)
+                	joChannelConf.put("encodersPoolLabel", encodersPoolLabel);
                 if (url != null)
                 	joChannelConf.put("url", url);
 				if (pushProtocol != null)
@@ -4265,6 +4268,7 @@ public class CatraMMSAPI {
     public void modifyChannelConf(String username, String password,
                                   Long confKey, String label, 
 								  String sourceType,
+								  String encodersPoolLabel,
 								  String url, 
 								  String pushProtocol,
 								  String pushServerName,
@@ -4310,6 +4314,8 @@ public class CatraMMSAPI {
 
                 joChannelConf.put("label", label);
                 joChannelConf.put("sourceType", sourceType);
+				if (encodersPoolLabel != null)
+                	joChannelConf.put("encodersPoolLabel", encodersPoolLabel);
                 if (url != null)
                 	joChannelConf.put("url", url);
 				if (pushProtocol != null)
@@ -6379,6 +6385,8 @@ public class CatraMMSAPI {
             channelConf.setConfKey(channelConfInfo.getLong("confKey"));
             channelConf.setLabel(channelConfInfo.getString("label"));
             channelConf.setSourceType(channelConfInfo.getString("sourceType"));
+			if (channelConfInfo.has("encodersPoolLabel") && !channelConfInfo.isNull("encodersPoolLabel"))
+            	channelConf.setEncodersPoolLabel(channelConfInfo.getString("encodersPoolLabel"));
             if (channelConfInfo.has("url") && !channelConfInfo.isNull("url"))
             	channelConf.setUrl(channelConfInfo.getString("url"));
 			if (channelConfInfo.has("pushProtocol") && !channelConfInfo.isNull("pushProtocol"))

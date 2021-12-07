@@ -345,7 +345,8 @@ public class CatraMMSWorkflow {
             String otherInputOptions,
             Long maxAttemptsNumberInCaseOfErrors,
             Long waitingSecondsBetweenAttemptsInCaseOfErrors,
-            List<LiveProxyOutput> liveProxyOutputList
+            List<LiveProxyOutput> liveProxyOutputList,
+			JSONObject joBroadcasterParameters
     )
             throws Exception
     {
@@ -429,6 +430,9 @@ public class CatraMMSWorkflow {
                 if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
                     joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
             }
+
+			if (joBroadcasterParameters != null)
+				joParameters.put("broadcaster", joBroadcasterParameters);
 
             return joTask;
         }

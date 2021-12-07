@@ -3,12 +3,21 @@ package com.catrammslib.utility;
 import java.io.Serializable;
 
 public class LiveProxyOutput implements Serializable {
-    private String outputType;
+    
+	// RTMP_Stream, HLS
+	private String outputType;
+	// RTMP_Stream
     private String rtmpURL;
-    private Long deliveryCode;
+	// HLS
+	private Long deliveryCode;
+	// HLS
     private Long segmentDurationInSeconds;
-    private String otherOutputOptions;
+
+	// RTMP_Stream, HLS
+	private String otherOutputOptions;
+	// RTMP_Stream, HLS
     private String encodingProfileLabel;
+	// RTMP_Stream, HLS
     private String audioVolumeChange;
 
     public String getOutputType() {

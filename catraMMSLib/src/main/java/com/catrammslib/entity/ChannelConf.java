@@ -10,6 +10,7 @@ public class ChannelConf implements Serializable{
 
     private Long confKey;
     private String label;
+	private String encodersPoolLabel;
     private String url;
     private String type;
     private String description;
@@ -258,6 +259,14 @@ public class ChannelConf implements Serializable{
 
 	public void setPushServerName(String pushServerName) {
 		this.pushServerName = pushServerName;
+	}
+
+	public String getEncodersPoolLabel() {
+		return encodersPoolLabel;
+	}
+
+	public void setEncodersPoolLabel(String encodersPoolLabel) {
+		this.encodersPoolLabel = encodersPoolLabel;
 	}
 
 	public String getType() {
