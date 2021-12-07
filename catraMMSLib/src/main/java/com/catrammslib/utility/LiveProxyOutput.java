@@ -4,10 +4,12 @@ import java.io.Serializable;
 
 public class LiveProxyOutput implements Serializable {
     
-	// RTMP_Stream, HLS
+	// RTMP_Stream, HLS, UDP_Stream
 	private String outputType;
 	// RTMP_Stream
     private String rtmpURL;
+	// UDP_Stream
+    private String udpURL;
 	// HLS
 	private Long deliveryCode;
 	// HLS
@@ -20,6 +22,7 @@ public class LiveProxyOutput implements Serializable {
 	// RTMP_Stream, HLS
     private String audioVolumeChange;
 
+	
     public String getOutputType() {
         return outputType;
     }
@@ -28,7 +31,15 @@ public class LiveProxyOutput implements Serializable {
         this.outputType = outputType;
     }
 
-    public String getRtmpURL() {
+    public String getUdpURL() {
+		return udpURL;
+	}
+
+	public void setUdpURL(String udpURL) {
+		this.udpURL = udpURL;
+	}
+
+	public String getRtmpURL() {
         return rtmpURL;
     }
 
