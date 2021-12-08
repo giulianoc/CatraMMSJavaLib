@@ -5,11 +5,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 /**
  * Created by multi on 09.06.18.
  */
 public class IngestionJob implements Serializable {
-    private Long ingestionJobKey;
+
+    private final Logger mLogger = Logger.getLogger(IngestionJob.class);
+
+	private Long ingestionJobKey;
     private String label;
     private String ingestionType;
     private String metaDataContent;
@@ -68,9 +75,31 @@ public class IngestionJob implements Serializable {
             }
             else if (getIngestionType().equalsIgnoreCase("Live-Proxy"))
             {
-                // we should look into the Outputs to check if there is an HLS/MDP Output
-                // for now we will just set false
-                playable = false;
+				playable = false;
+
+				// in case we have an HLS as Output, it can be played
+				try
+				{
+					JSONObject joParameters = new JSONObject(metaDataContent);
+					if (joParameters.has("Outputs"))
+					{
+						JSONArray jaOutputs = joParameters.getJSONArray("Outputs");
+						for (int outputIndex = 0; outputIndex < jaOutputs.length(); outputIndex++)
+						{
+							JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
+							if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("HLS"))
+							{
+								playable = true;
+
+								break;
+							}
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					mLogger.error("Exception: " + e);
+				}
             }
             else
                 playable = false;
