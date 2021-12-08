@@ -414,6 +414,8 @@ public class CatraMMSWorkflow {
                 joOutput.put("OutputType", liveProxyOutput.getOutputType());
                 if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
                     joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
+                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
                 else
                 {
                     joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
