@@ -464,7 +464,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("Label", label);
-            joTask.put("Type", "Live-Proxy");
+            joTask.put("Type", "VOD-Proxy");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
