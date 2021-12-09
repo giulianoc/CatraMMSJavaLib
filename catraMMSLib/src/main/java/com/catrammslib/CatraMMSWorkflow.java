@@ -447,7 +447,106 @@ public class CatraMMSWorkflow {
         }
     }
 
-    static public JSONObject buildPostOnYouTube(
+    static public JSONObject buildVODProxyJson(
+            String label,
+
+            List<MediaItemReference> mediaItemReferenceList,
+
+            String encodersPool,
+            Date proxyStartTime, Date proxyEndTime,
+            String otherInputOptions,
+            List<LiveProxyOutput> liveProxyOutputList
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Live-Proxy");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            setCommonParameters(joParameters,
+				null,
+				mediaItemReferenceList,
+				null);
+
+            if (encodersPool != null && !encodersPool.isEmpty())
+                joParameters.put("EncodersPool", encodersPool);
+
+            if (otherInputOptions != null && !otherInputOptions.isEmpty())
+                joParameters.put("OtherInputOptions", otherInputOptions);
+
+            if (proxyStartTime != null && proxyEndTime != null)
+            {
+                joParameters.put("TimePeriod", true);
+
+                JSONObject joProxyPeriod = new JSONObject();
+                joParameters.put("ProxyPeriod", joProxyPeriod);
+
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joProxyPeriod.put("Start", dateFormat.format(proxyStartTime));
+                joProxyPeriod.put("End", dateFormat.format(proxyEndTime));
+            }
+            else
+                joParameters.put("TimePeriod", false);
+
+            if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
+            {
+                String errorMessage = "At least one liveProxyOutput has to be present";
+                mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+
+            JSONArray jaOutputs = new JSONArray();
+            joParameters.put("Outputs", jaOutputs);
+
+            for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
+            {
+                JSONObject joOutput = new JSONObject();
+                jaOutputs.put(joOutput);
+
+                joOutput.put("OutputType", liveProxyOutput.getOutputType());
+                if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+                    joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
+                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
+                else
+                {
+                    joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
+                    if (liveProxyOutput.getSegmentDurationInSeconds() != null)
+                        joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
+                }
+
+                if (liveProxyOutput.getEncodingProfileLabel() != null)
+                    joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
+
+                if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
+                    joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
+
+                if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
+                    joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
+            }
+
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildLiveProxyJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+	static public JSONObject buildPostOnYouTube(
             String label,
 
 			String youTubeConfigurationLabel,
