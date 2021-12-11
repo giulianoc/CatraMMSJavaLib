@@ -1,0 +1,122 @@
+package com.catrammslib.utility;
+
+import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.*;
+
+import com.catrammslib.entity.ChannelConf;
+
+public class BroadcastPlaylistItem implements Serializable, Comparable<BroadcastPlaylistItem> {
+
+	private List<String> mediaTypeList = new ArrayList<>();
+
+    private Date start;
+    private Date end;
+	
+	private String mediaType;					// Live Channel, Media, Countdown
+
+	private ChannelConf channelConf;			// in case of Live Channel
+	// I know channelConfigurationLabel is within channelConf but we need it because it is bound in an xhtml
+	private String channelConfigurationLabel;	// in case of Live Channel
+
+	private Long physicalPathKey;				// in case of Media
+
+
+    public BroadcastPlaylistItem()
+    {
+		mediaTypeList.add("Live Channel");
+		mediaTypeList.add("Media");
+		mediaTypeList.add("Countdown");
+
+		mediaType = "Live Channel";
+    }
+
+
+	@Override
+	public int compareTo(BroadcastPlaylistItem broadcastPlaylistItem) {
+        return getStart().compareTo(broadcastPlaylistItem.getStart());
+	}
+
+	// this json will be saved within the Parameters of the Broadcaster IngestionJob
+	// and is used when a new Playlist is received (by the API engine)
+	public JSONObject getJson()
+	{
+		JSONObject joBroadcastPlaylistItem = new JSONObject();
+		try
+		{
+			joBroadcastPlaylistItem.put("mediaType", mediaType);
+			if (mediaType.equalsIgnoreCase("Live Channel"))
+				joBroadcastPlaylistItem.put("channelConfigurationLabel", channelConf.getLabel());
+			else if (mediaType.equalsIgnoreCase("Media"))
+				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
+		}
+		catch(Exception e)
+		{
+			
+		}
+
+		return joBroadcastPlaylistItem;
+	}
+
+	public Date getStart() {
+		return start;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+
+	public Date getEnd() {
+		return end;
+	}
+
+	public void setEnd(Date end) {
+		this.end = end;
+	}
+
+	public List<String> getMediaTypeList() {
+		return mediaTypeList;
+	}
+
+	public void setMediaTypeList(List<String> mediaTypeList) {
+		this.mediaTypeList = mediaTypeList;
+	}
+
+	public String getMediaType() {
+		return mediaType;
+	}
+
+	public void setMediaType(String mediaType) {
+		this.mediaType = mediaType;
+	}
+
+	public String getChannelConfigurationLabel() {
+		return channelConfigurationLabel;
+	}
+
+
+	public void setChannelConfigurationLabel(String channelConfigurationLabel) {
+		this.channelConfigurationLabel = channelConfigurationLabel;
+	}
+
+
+	public ChannelConf getChannelConf() {
+		return channelConf;
+	}
+
+
+	public void setChannelConf(ChannelConf channelConf) {
+		this.channelConf = channelConf;
+	}
+
+
+	public Long getPhysicalPathKey() {
+		return physicalPathKey;
+	}
+
+	public void setPhysicalPathKey(Long physicalPathKey) {
+		this.physicalPathKey = physicalPathKey;
+	}
+
+}

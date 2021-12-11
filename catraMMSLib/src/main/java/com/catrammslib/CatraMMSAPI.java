@@ -38,6 +38,7 @@ import com.catrammslib.entity.WorkflowLibrary;
 import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.entity.WorkspaceDetails;
 import com.catrammslib.entity.YouTubeConf;
+import com.catrammslib.utility.BroadcastPlaylistItem;
 import com.catrammslib.utility.BulkOfDeliveryURLData;
 import com.catrammslib.utility.HttpFeedFetcher;
 import com.catrammslib.utility.IngestionResult;
@@ -2802,6 +2803,77 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "updateIngestionJob_LiveRecorder failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void changeLiveProxyPlaylist(String username, String password,
+        Long ingestionJobKey,
+        List<BroadcastPlaylistItem> broadcastPlaylistItems)
+        throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/ingestionJob/liveProxy/playlist/" + ingestionJobKey;
+
+            JSONArray jaBodyRequest = new JSONArray();
+
+			for (BroadcastPlaylistItem broadcastPlaylistItem: broadcastPlaylistItems)
+			{
+				JSONObject joInputRoot = new JSONObject();
+				jaBodyRequest.put(joInputRoot);
+
+				joInputRoot.put("timePeriod", true);
+				joInputRoot.put("utcProxyPeriodStart", broadcastPlaylistItem.getStart().getTime());
+				joInputRoot.put("utcProxyPeriodEnd", broadcastPlaylistItem.getEnd().getTime());
+
+				if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Live Channel"))
+				{
+					JSONObject joChannelInput = new JSONObject();
+					joInputRoot.put("channelInput", joChannelInput);
+
+					joChannelInput.put("channelConfKey", broadcastPlaylistItem.getChannelConf().getConfKey());
+					joChannelInput.put("channelConfigurationLabel", broadcastPlaylistItem.getChannelConf().getLabel());
+
+					if (broadcastPlaylistItem.getChannelConf().getEncodersPoolLabel() != null 
+						&& !broadcastPlaylistItem.getChannelConf().getEncodersPoolLabel().isEmpty())
+						joChannelInput.put("encodersPoolLabel", broadcastPlaylistItem.getChannelConf().getEncodersPoolLabel());
+
+					joChannelInput.put("channelSourceType", broadcastPlaylistItem.getChannelConf().getSourceType());
+					if (broadcastPlaylistItem.getChannelConf().getSourceType().equalsIgnoreCase("IP_PULL"))
+						joChannelInput.put("url", broadcastPlaylistItem.getChannelConf().getUrl());
+				}
+				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
+				{
+					JSONObject joVODInput = new JSONObject();
+					joInputRoot.put("vodInput", joVODInput);
+
+					joVODInput.put("physicalPathKey", broadcastPlaylistItem.getPhysicalPathKey());
+				}
+			}
+
+            String bodyRequest = jaBodyRequest.toString();
+
+            mLogger.info("updateIngestionJob_LiveRecorder"
+                    + ", mmsURL: " + mmsURL
+                    + ", bodyRequest: " + bodyRequest
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, bodyRequest);
+            mLogger.info("updateWorkspace. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "changeLiveProxyPlaylist failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
