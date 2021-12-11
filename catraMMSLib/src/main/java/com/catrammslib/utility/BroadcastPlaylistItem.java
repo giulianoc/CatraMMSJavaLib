@@ -1,5 +1,6 @@
 package com.catrammslib.utility;
 
+import org.apache.log4j.Logger;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -9,6 +10,8 @@ import com.catrammslib.entity.ChannelConf;
 
 public class BroadcastPlaylistItem implements Serializable, Comparable<BroadcastPlaylistItem> {
 
+    private final Logger mLogger = Logger.getLogger(this.getClass());
+
 	private List<String> mediaTypeList = new ArrayList<>();
 
     private Date start;
@@ -17,14 +20,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private String mediaType;					// Live Channel, Media, Countdown
 
 	private ChannelConf channelConf;			// in case of Live Channel
-	// I know channelConfigurationLabel is within channelConf but we need it because it is bound in an xhtml
+	// I know channelConfigurationLabel is within channelConf but we need it anyway
 	private String channelConfigurationLabel;	// in case of Live Channel
 
 	private Long physicalPathKey;				// in case of Media
 
+	private List<ChannelConf> channelConfigurationList;
 
-    public BroadcastPlaylistItem()
+    public BroadcastPlaylistItem(List<ChannelConf> channelConfigurationList)
     {
+		this.channelConfigurationList = channelConfigurationList;
+
 		mediaTypeList.add("Live Channel");
 		mediaTypeList.add("Media");
 		mediaTypeList.add("Countdown");
@@ -53,10 +59,35 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 		catch(Exception e)
 		{
-			
+			mLogger.error("Exception: " + e);
 		}
 
 		return joBroadcastPlaylistItem;
+	}
+
+	public void setChannelConfigurationLabel(String channelConfigurationLabel) 
+	{
+		this.channelConfigurationLabel = channelConfigurationLabel;
+
+		channelConf = null;
+		for (ChannelConf localChannelConf: channelConfigurationList)
+		{
+			if (localChannelConf.getLabel().equalsIgnoreCase(channelConfigurationLabel))
+			{
+				channelConf = localChannelConf;
+
+				break;
+			}
+		}
+		if (channelConf == null)
+		{
+			mLogger.error("ChannelConf not found"
+				+ ", channelConfigurationLabel: " + channelConfigurationLabel);
+		}
+	}
+
+	public String getChannelConfigurationLabel() {
+		return channelConfigurationLabel;
 	}
 
 	public Date getStart() {
@@ -89,15 +120,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public void setMediaType(String mediaType) {
 		this.mediaType = mediaType;
-	}
-
-	public String getChannelConfigurationLabel() {
-		return channelConfigurationLabel;
-	}
-
-
-	public void setChannelConfigurationLabel(String channelConfigurationLabel) {
-		this.channelConfigurationLabel = channelConfigurationLabel;
 	}
 
 
