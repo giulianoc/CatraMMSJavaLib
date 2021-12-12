@@ -2831,8 +2831,8 @@ public class CatraMMSAPI {
 				jaBodyRequest.put(joInputRoot);
 
 				joInputRoot.put("timePeriod", true);
-				joInputRoot.put("utcProxyPeriodStart", broadcastPlaylistItem.getStart().getTime());
-				joInputRoot.put("utcProxyPeriodEnd", broadcastPlaylistItem.getEnd().getTime());
+				joInputRoot.put("utcProxyPeriodStart", broadcastPlaylistItem.getStart().getTime() / 1000);
+				joInputRoot.put("utcProxyPeriodEnd", broadcastPlaylistItem.getEnd().getTime() / 1000);
 
 				if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Live Channel"))
 				{
