@@ -5599,16 +5599,24 @@ public class CatraMMSAPI {
                 else if (encodingJob.getType().equalsIgnoreCase("LiveProxy")
                 )
                 {
-                    if (joParameters.has("liveURL"))    // previous one
-                        encodingJob.setLiveURL(joParameters.getString("liveURL"));
-                    else if (joParameters.has("url"))   // new one
-                        encodingJob.setLiveURL(joParameters.getString("url"));
+                    if (joParameters.has("inputsRoot"))
+					{
+						JSONArray jaInputsRoot = joParameters.getJSONArray("inputsRoot");
+						if (jaInputsRoot.length() > 0)
+						{
+							JSONObject joFirstInputRoot = jaInputsRoot.getJSONObject(0);
+							JSONObject joLastInputRoot = jaInputsRoot.getJSONObject(jaInputsRoot.length() - 1);
 
-                    if (joParameters.has("timePeriod") && joParameters.getBoolean("timePeriod"))
-                    {
-                        encodingJob.setProxyPeriodEnd(new Date(1000 * joParameters.getLong("utcProxyPeriodEnd")));
-                        encodingJob.setProxyPeriodStart(new Date(1000 * joParameters.getLong("utcProxyPeriodStart")));
-                    }
+							if (joFirstInputRoot.has("url"))
+								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
+
+							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
+								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcProxyPeriodStart")));
+
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
+								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcProxyPeriodEnd")));
+						}
+					}
 
                     // Outputs
                     {
@@ -5632,11 +5640,24 @@ public class CatraMMSAPI {
                 else if (encodingJob.getType().equalsIgnoreCase("VODProxy")
                 )
                 {
-                    if (joParameters.has("timePeriod") && joParameters.getBoolean("timePeriod"))
-                    {
-                        encodingJob.setProxyPeriodEnd(new Date(1000 * joParameters.getLong("utcProxyPeriodEnd")));
-                        encodingJob.setProxyPeriodStart(new Date(1000 * joParameters.getLong("utcProxyPeriodStart")));
-                    }
+                    if (joParameters.has("inputsRoot"))
+					{
+						JSONArray jaInputsRoot = joParameters.getJSONArray("inputsRoot");
+						if (jaInputsRoot.length() > 0)
+						{
+							JSONObject joFirstInputRoot = jaInputsRoot.getJSONObject(0);
+							JSONObject joLastInputRoot = jaInputsRoot.getJSONObject(jaInputsRoot.length() - 1);
+
+							if (joFirstInputRoot.has("url"))
+								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
+
+							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
+								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcProxyPeriodStart")));
+
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
+								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcProxyPeriodEnd")));
+						}
+					}
 
                     // Outputs
                     {
