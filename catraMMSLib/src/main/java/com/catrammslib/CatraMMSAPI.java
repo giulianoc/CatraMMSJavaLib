@@ -6075,8 +6075,11 @@ public class CatraMMSAPI {
                 else if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Proxy")
                         && joMetadataContent != null)
                 {
-                    if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
-                            && joMetadataContent.getBoolean("TimePeriod"))
+					if (joMetadataContent.has("ConfigurationLabel") && !joMetadataContent.isNull("ConfigurationLabel"))
+						ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
+
+					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
+                        && joMetadataContent.getBoolean("TimePeriod"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
