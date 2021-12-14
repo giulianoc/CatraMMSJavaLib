@@ -14,6 +14,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	private List<String> mediaTypeList = new ArrayList<>();
 
+	private Date timestamp;
+
     private Date start;
     private Date end;
 	
@@ -31,6 +33,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
     {
 		this.channelConfigurationList = channelConfigurationList;
 
+		timestamp = new Date();
+		
 		mediaTypeList.add("Live Channel");
 		mediaTypeList.add("Media");
 		mediaTypeList.add("Countdown");
@@ -89,6 +93,16 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	public String getChannelConfigurationLabel() {
 		return channelConfigurationLabel;
 	}
+
+	public Date getTimestamp() {
+		return timestamp;
+	}
+
+
+	public void setTimestamp(Date timestamp) {
+		this.timestamp = timestamp;
+	}
+
 
 	public Date getStart() {
 		return start;

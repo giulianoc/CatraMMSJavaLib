@@ -2861,7 +2861,7 @@ public class CatraMMSAPI {
 
             String bodyRequest = jaBodyRequest.toString();
 
-            mLogger.info("updateIngestionJob_LiveRecorder"
+            mLogger.info("changeLiveProxyPlaylist"
                     + ", mmsURL: " + mmsURL
                     + ", bodyRequest: " + bodyRequest
             );
@@ -2869,7 +2869,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, bodyRequest);
-            mLogger.info("updateWorkspace. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("changeLiveProxyPlaylist. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
