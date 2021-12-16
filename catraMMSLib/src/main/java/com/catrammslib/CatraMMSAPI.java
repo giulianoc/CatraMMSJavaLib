@@ -5678,13 +5678,46 @@ public class CatraMMSAPI {
                         encodingJob.setLiveProxySegmentsDurationInSeconds(segmentsDurationInSeconds);
                     }
                 }
-                else if (encodingJob.getType().equalsIgnoreCase("AwaitingTheBeginning")
+                else if (encodingJob.getType().equalsIgnoreCase("Countdown")
                 )
                 {
-                    encodingJob.setCountDownEnd(new Date(1000 * joParameters.getLong("utcCountDownEnd")));
+                    if (joParameters.has("inputsRoot"))
+					{
+						JSONArray jaInputsRoot = joParameters.getJSONArray("inputsRoot");
+						if (jaInputsRoot.length() > 0)
+						{
+							JSONObject joFirstInputRoot = jaInputsRoot.getJSONObject(0);
+							JSONObject joLastInputRoot = jaInputsRoot.getJSONObject(jaInputsRoot.length() - 1);
 
-                    encodingJob.setAwaitingTheBeginningOutputType(joParameters.getString("outputType"));
-                    encodingJob.setAwaitingTheBeginningSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
+							if (joFirstInputRoot.has("url"))
+								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
+
+							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
+								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcProxyPeriodStart")));
+
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
+								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcProxyPeriodEnd")));
+						}
+					}
+
+                    // Outputs
+                    {
+                        String outputTypes = "";
+                        String segmentsDurationInSeconds = "";
+                        if (joParameters.has("outputsRoot"))
+                        {
+                            JSONArray jaOutputsRoot = joParameters.getJSONArray("outputsRoot");
+                            for (int outputIndex = 0; outputIndex < jaOutputsRoot.length(); outputIndex++)
+                            {
+                                JSONObject joOutput = jaOutputsRoot.getJSONObject(outputIndex);
+                                outputTypes += joOutput.getString("outputType");
+                                if (joOutput.has("segmentDurationInSeconds"))
+                                    segmentsDurationInSeconds += joOutput.getLong("segmentDurationInSeconds");
+                            }
+                        }
+                        encodingJob.setLiveProxyOutputTypes(outputTypes);
+                        encodingJob.setLiveProxySegmentsDurationInSeconds(segmentsDurationInSeconds);
+                    }
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("VideoSpeed")
                 )

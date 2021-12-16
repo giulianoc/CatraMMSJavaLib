@@ -64,11 +64,6 @@ public class EncodingJob implements Serializable {
     // private Long mainVideoPhysicalPathKey;   already present in PictureInPicture
     private Long outroVideoPhysicalPathKey;
 
-    // type is AwaitingTheBeginning
-    private Date countDownEnd;
-    private String awaitingTheBeginningOutputType;
-    private Long awaitingTheBeginningSegmentDurationInSeconds;
-
 
     // filled by GUI
     private String mediaTitle;
@@ -329,30 +324,6 @@ public class EncodingJob implements Serializable {
 
     public void setOwnedByCurrentWorkspace(Boolean ownedByCurrentWorkspace) {
         this.ownedByCurrentWorkspace = ownedByCurrentWorkspace;
-    }
-
-    public Date getCountDownEnd() {
-        return countDownEnd;
-    }
-
-    public void setCountDownEnd(Date countDownEnd) {
-        this.countDownEnd = countDownEnd;
-    }
-
-    public String getAwaitingTheBeginningOutputType() {
-        return awaitingTheBeginningOutputType;
-    }
-
-    public void setAwaitingTheBeginningOutputType(String awaitingTheBeginningOutputType) {
-        this.awaitingTheBeginningOutputType = awaitingTheBeginningOutputType;
-    }
-
-    public Long getAwaitingTheBeginningSegmentDurationInSeconds() {
-        return awaitingTheBeginningSegmentDurationInSeconds;
-    }
-
-    public void setAwaitingTheBeginningSegmentDurationInSeconds(Long awaitingTheBeginningSegmentDurationInSeconds) {
-        this.awaitingTheBeginningSegmentDurationInSeconds = awaitingTheBeginningSegmentDurationInSeconds;
     }
 
     public Long getIntroVideoPhysicalPathKey() {
