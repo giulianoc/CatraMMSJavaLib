@@ -73,7 +73,10 @@ public class IngestionJob implements Serializable {
                 else
                     playable = false;
             }
-            else if (getIngestionType().equalsIgnoreCase("Live-Proxy"))
+            else if (getIngestionType().equalsIgnoreCase("Live-Proxy")
+				|| getIngestionType().equalsIgnoreCase("VOD-Proxy")
+				|| getIngestionType().equalsIgnoreCase("Countdown")
+			)
             {
 				playable = false;
 
