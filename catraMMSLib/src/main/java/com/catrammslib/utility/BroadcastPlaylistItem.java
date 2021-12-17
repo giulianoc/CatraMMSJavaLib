@@ -66,6 +66,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
 				joBroadcastPlaylistItem.put("text", text);
 			}
+			else
+			{
+				mLogger.error("Unknown mediaType: " + mediaType);
+			}
 		}
 		catch(Exception e)
 		{
