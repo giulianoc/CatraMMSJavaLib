@@ -25,7 +25,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	// I know channelConfigurationLabel is within channelConf but we need it anyway
 	private String channelConfigurationLabel;	// in case of Live Channel
 
-	private Long physicalPathKey;				// in case of Media
+	private Long physicalPathKey;				// in case of Media, Countdown
+	private String text;						// in case of Countdown
 
 	private List<ChannelConf> channelConfigurationList;
 
@@ -60,6 +61,11 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				joBroadcastPlaylistItem.put("channelConfigurationLabel", channelConf.getLabel());
 			else if (mediaType.equalsIgnoreCase("Media"))
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
+			else if (mediaType.equalsIgnoreCase("Countdown"))
+			{
+				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
+				joBroadcastPlaylistItem.put("text", text);
+			}
 		}
 		catch(Exception e)
 		{
@@ -101,6 +107,16 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
+	}
+
+
+	public String getText() {
+		return text;
+	}
+
+
+	public void setText(String text) {
+		this.text = text;
 	}
 
 
