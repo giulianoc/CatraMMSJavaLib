@@ -546,6 +546,135 @@ public class CatraMMSWorkflow {
         }
     }
 
+	static public JSONObject buildCountdownJson(
+            String label,
+
+            List<MediaItemReference> mediaItemReferenceList,
+
+            String encodersPool,
+            Date proxyStartTime, Date proxyEndTime,
+            String text,
+            String textPosition_X_InPixel,
+            String textPosition_Y_InPixel,
+            String fontType,
+            Long fontSize,
+            String fontColor,
+            Long textPercentageOpacity,
+            Boolean boxEnable,
+            String boxColor,
+            Long boxPercentageOpacity,
+            List<LiveProxyOutput> liveProxyOutputList
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Countdown");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            setCommonParameters(joParameters,
+				null,
+				mediaItemReferenceList,
+				null);
+
+            {
+                JSONObject joProxyPeriod = new JSONObject();
+                joParameters.put("ProxyPeriod", joProxyPeriod);
+
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joProxyPeriod.put("Start", dateFormat.format(proxyStartTime));
+                joProxyPeriod.put("End", dateFormat.format(proxyEndTime));
+            }
+
+			joParameters.put("Text", text);
+
+			if (textPosition_X_InPixel != null && !textPosition_X_InPixel.isEmpty())
+                joParameters.put("TextPosition_X_InPixel", textPosition_X_InPixel);
+
+			if (textPosition_Y_InPixel != null && !textPosition_Y_InPixel.isEmpty())
+                joParameters.put("TextPosition_Y_InPixel", textPosition_Y_InPixel);
+
+			if (fontType != null && !fontType.isEmpty())
+                joParameters.put("FontType", fontType);
+
+			if (fontSize != null)
+                joParameters.put("FontSize", fontSize);
+
+			if (fontColor != null && !fontColor.isEmpty())
+                joParameters.put("FontColor", fontColor);
+
+			if (textPercentageOpacity != null)
+                joParameters.put("TextPercentageOpacity", textPercentageOpacity);
+
+			if (boxEnable != null)
+                joParameters.put("BoxEnable", boxEnable);
+
+			if (boxColor != null && !boxColor.isEmpty())
+                joParameters.put("BoxColor", boxColor);
+
+			if (boxPercentageOpacity != null)
+                joParameters.put("BoxPercentageOpacity", boxPercentageOpacity);
+
+			if (encodersPool != null && !encodersPool.isEmpty())
+                joParameters.put("EncodersPool", encodersPool);
+
+            if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
+            {
+                String errorMessage = "At least one liveProxyOutput has to be present";
+                mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+
+            JSONArray jaOutputs = new JSONArray();
+            joParameters.put("Outputs", jaOutputs);
+
+            for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
+            {
+                JSONObject joOutput = new JSONObject();
+                jaOutputs.put(joOutput);
+
+                joOutput.put("OutputType", liveProxyOutput.getOutputType());
+                if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+                    joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
+                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
+                else
+                {
+                    joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
+                    if (liveProxyOutput.getSegmentDurationInSeconds() != null)
+                        joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
+                }
+
+                if (liveProxyOutput.getEncodingProfileLabel() != null)
+                    joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
+
+                if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
+                    joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
+
+                if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
+                    joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
+            }
+
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildLiveProxyJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
 	static public JSONObject buildPostOnYouTube(
             String label,
 
