@@ -41,6 +41,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaTypeList.add("Countdown");
 
 		mediaType = "Live Channel";
+
+		text = "days_counter days hours_counter:mins_counter:secs_counter.cents_counter";
     }
 
 
