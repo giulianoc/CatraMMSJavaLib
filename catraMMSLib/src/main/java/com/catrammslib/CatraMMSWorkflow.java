@@ -303,7 +303,13 @@ public class CatraMMSWorkflow {
 
                     joOutput.put("OutputType", liveProxyOutput.getOutputType());
                     if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+					{
                         joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+						if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
+    	                	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
+					}
+					else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
+	                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
                     else
                     {
                         joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
@@ -413,7 +419,11 @@ public class CatraMMSWorkflow {
 
                 joOutput.put("OutputType", liveProxyOutput.getOutputType());
                 if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+				{
                     joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+					if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
+                    	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
+				}
 				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
                     joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
                 else
@@ -514,7 +524,11 @@ public class CatraMMSWorkflow {
 
                 joOutput.put("OutputType", liveProxyOutput.getOutputType());
                 if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+				{
                     joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+					if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
+                    	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
+				}
 				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
                     joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
                 else
@@ -643,7 +657,11 @@ public class CatraMMSWorkflow {
 
                 joOutput.put("OutputType", liveProxyOutput.getOutputType());
                 if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
+				{
                     joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
+					if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
+                    	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
+				}
 				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
                     joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
                 else
