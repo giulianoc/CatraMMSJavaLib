@@ -1590,7 +1590,8 @@ public class CatraMMSWorkflow {
             int maxWaitingForLastChunkInSeconds,
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
-            Date startPublishing, Date endPublishing
+            Date startPublishing, Date endPublishing,
+			Long utcProcessingStartingFrom
     )
             throws Exception
     {
@@ -1626,6 +1627,14 @@ public class CatraMMSWorkflow {
                 joCutPeriod.put("End", dateFormat.format(utcLiveCutEndInMilliSecs));
             }
             joParameters.put("MaxWaitingForLastChunkInSeconds", maxWaitingForLastChunkInSeconds);
+
+			if (utcProcessingStartingFrom != null)
+            {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+            }
 
 
             return joTask;
