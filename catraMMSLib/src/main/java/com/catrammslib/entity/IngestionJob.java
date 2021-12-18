@@ -80,7 +80,9 @@ public class IngestionJob implements Serializable {
             {
 				playable = false;
 
-				// in case we have an HLS as Output, it can be played
+				// it can be played
+				// 1. in case we have an HLS as Output
+				// 2. in case we have an RTMP_Stream as Output and PlayUrl is filled
 				try
 				{
 					JSONObject joParameters = new JSONObject(metaDataContent);
@@ -91,6 +93,14 @@ public class IngestionJob implements Serializable {
 						{
 							JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
 							if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("HLS"))
+							{
+								playable = true;
+
+								break;
+							}
+							else if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream")
+								&& joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+								)
 							{
 								playable = true;
 

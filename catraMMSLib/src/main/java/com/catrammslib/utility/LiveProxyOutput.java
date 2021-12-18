@@ -8,6 +8,8 @@ public class LiveProxyOutput implements Serializable {
 	private String outputType;
 	// RTMP_Stream
     private String rtmpURL;
+	// RTMP_Stream
+    private String playURL;
 	// UDP_Stream
     private String udpURL;
 	// HLS
@@ -47,7 +49,15 @@ public class LiveProxyOutput implements Serializable {
         this.rtmpURL = rtmpURL;
     }
 
-    public Long getSegmentDurationInSeconds() {
+    public String getPlayURL() {
+		return playURL;
+	}
+
+	public void setPlayURL(String playURL) {
+		this.playURL = playURL;
+	}
+
+	public Long getSegmentDurationInSeconds() {
         return segmentDurationInSeconds;
     }
 
