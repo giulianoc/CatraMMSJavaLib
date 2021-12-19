@@ -441,6 +441,9 @@ public class CatraMMSWorkflow {
 
                 if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
                     joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
+
+				if (liveProxyOutput.getFadeDuration() != null)
+                    joOutput.put("fadeDuration", liveProxyOutput.getFadeDuration());
             }
 
 			if (joInternalMMSParameters != null)
@@ -553,7 +556,7 @@ public class CatraMMSWorkflow {
         }
         catch (Exception e)
         {
-            String errorMessage = "buildLiveProxyJson failed. Exception: " + e;
+            String errorMessage = "buildVODProxyJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
@@ -686,7 +689,7 @@ public class CatraMMSWorkflow {
         }
         catch (Exception e)
         {
-            String errorMessage = "buildLiveProxyJson failed. Exception: " + e;
+            String errorMessage = "buildCountdownJson failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;

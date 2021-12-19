@@ -23,7 +23,13 @@ public class LiveProxyOutput implements Serializable {
     private String encodingProfileLabel;
 	// RTMP_Stream, HLS
     private String audioVolumeChange;
+	// RTMP_Stream, HLS
+    private Long fadeDuration;
 
+	void LiveProxyOutput()
+	{
+		fadeDuration = null;
+	}
 	
     public String getOutputType() {
         return outputType;
@@ -33,7 +39,15 @@ public class LiveProxyOutput implements Serializable {
         this.outputType = outputType;
     }
 
-    public String getUdpURL() {
+    public Long getFadeDuration() {
+		return fadeDuration;
+	}
+
+	public void setFadeDuration(Long fadeDuration) {
+		this.fadeDuration = fadeDuration;
+	}
+
+	public String getUdpURL() {
 		return udpURL;
 	}
 
