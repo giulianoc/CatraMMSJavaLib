@@ -45,6 +45,39 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		text = "days_counter days hours_counter:mins_counter:secs_counter.cents_counter";
     }
 
+	@Override
+	public boolean equals(Object obj) 
+	{
+		BroadcastPlaylistItem broadcastPlaylistItem = (BroadcastPlaylistItem) obj;
+
+		if (!mediaType.equals(broadcastPlaylistItem.getMediaType()))
+			return false;
+
+		if (mediaType.equals("Live Channel"))
+		{
+			if (channelConf.getConfKey().longValue() != broadcastPlaylistItem.getChannelConf().getConfKey().longValue())
+				return false;
+		}
+		else if (mediaType.equals("Media"))
+		{
+			if (physicalPathKey.longValue() != broadcastPlaylistItem.getPhysicalPathKey().longValue())
+				return false;
+		}
+		else if (mediaType.equals("Countdown"))
+		{
+			if (physicalPathKey.longValue() != broadcastPlaylistItem.getPhysicalPathKey().longValue()
+				|| !text.equals(broadcastPlaylistItem.getText()))
+				return false;
+		}
+		else
+		{
+			mLogger.error("Unknown mediaType: " + mediaType);
+
+			return false;
+		}
+
+		return true;
+	}
 
 	@Override
 	public int compareTo(BroadcastPlaylistItem broadcastPlaylistItem) {
