@@ -46,42 +46,48 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
     }
 
 	@Override
-	public boolean equals(Object obj) 
+	public int compareTo(BroadcastPlaylistItem broadcastPlaylistItem) {
+        return getStart().compareTo(broadcastPlaylistItem.getStart());
+	}
+
+	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem) 
 	{
-		BroadcastPlaylistItem broadcastPlaylistItem = (BroadcastPlaylistItem) obj;
+		try
+		{
+			if (!mediaType.equals(joBroadcastPlaylistItem.getString("mediaType")))
+				return false;
 
-		if (!mediaType.equals(broadcastPlaylistItem.getMediaType()))
-			return false;
+			if (mediaType.equals("Live Channel"))
+			{
+				if (!channelConfigurationLabel.equals(joBroadcastPlaylistItem.getString("channelConfigurationLabel")))
+					return false;
+			}
+			else if (mediaType.equals("Media"))
+			{
+				if (physicalPathKey.longValue() != joBroadcastPlaylistItem.getLong("physicalPathKey"))
+					return false;
+			}
+			else if (mediaType.equals("Countdown"))
+			{
+				if (physicalPathKey.longValue() != joBroadcastPlaylistItem.getLong("physicalPathKey")
+					|| !text.equals(joBroadcastPlaylistItem.getString("text")))
+					return false;
+			}
+			else
+			{
+				mLogger.error("Unknown mediaType: " + mediaType);
 
-		if (mediaType.equals("Live Channel"))
-		{
-			if (channelConf.getConfKey().longValue() != broadcastPlaylistItem.getChannelConf().getConfKey().longValue())
 				return false;
+			}
 		}
-		else if (mediaType.equals("Media"))
+		catch(Exception e)
 		{
-			if (physicalPathKey.longValue() != broadcastPlaylistItem.getPhysicalPathKey().longValue())
-				return false;
-		}
-		else if (mediaType.equals("Countdown"))
-		{
-			if (physicalPathKey.longValue() != broadcastPlaylistItem.getPhysicalPathKey().longValue()
-				|| !text.equals(broadcastPlaylistItem.getText()))
-				return false;
-		}
-		else
-		{
-			mLogger.error("Unknown mediaType: " + mediaType);
+			mLogger.error("Exception: " + e.getMessage());
 
 			return false;
 		}
 
 		return true;
-	}
-
-	@Override
-	public int compareTo(BroadcastPlaylistItem broadcastPlaylistItem) {
-        return getStart().compareTo(broadcastPlaylistItem.getStart());
 	}
 
 	// this json will be saved within the Parameters of the Broadcaster IngestionJob
