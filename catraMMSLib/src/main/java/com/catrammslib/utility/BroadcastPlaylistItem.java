@@ -50,6 +50,21 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
         return getStart().compareTo(broadcastPlaylistItem.getStart());
 	}
 
+	@Override
+	public String toString() 
+	{
+		String str = "";
+
+		if (mediaType.equals("Live Channel"))
+			str = channelConfigurationLabel;
+		else if (mediaType.equals("Media"))
+			str = physicalPathKey.toString();
+		else if (mediaType.equals("Countdown"))
+			str = physicalPathKey.toString() + " - " + text;
+
+		return str;
+	}
+
 	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem) 
 	{
 		try
