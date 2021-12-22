@@ -10,7 +10,7 @@ import com.catrammslib.entity.ChannelConf;
 
 public class BroadcastPlaylistItem implements Serializable, Comparable<BroadcastPlaylistItem> {
 
-    private final Logger mLogger = Logger.getLogger(this.getClass());
+    static private final Logger mLogger = Logger.getLogger(BroadcastPlaylistItem.class);
 
 	private List<String> mediaTypeList = new ArrayList<>();
 
@@ -119,9 +119,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		return joBroadcastPlaylistItem;
 	}
-	public BroadcastPlaylistItem fromJson(JSONObject joBroadcastPlaylistItem)
+	static public BroadcastPlaylistItem fromJson(JSONObject joBroadcastPlaylistItem,
+		List<ChannelConf> localChannelConfigurationList)
 	{
-		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(channelConfigurationList);
+		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(localChannelConfigurationList);
 
 		try
 		{
@@ -137,12 +138,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			}
 			else
 			{
-				// mLogger.error("Unknown mediaType: " + broadcastPlaylistItem.getMediaType());
+				mLogger.error("Unknown mediaType: " + broadcastPlaylistItem.getMediaType());
 			}
 		}
 		catch(Exception e)
 		{
-			// mLogger.error("Exception: " + e);
+			mLogger.error("Exception: " + e);
 		}
 
 		return broadcastPlaylistItem;
