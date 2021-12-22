@@ -119,6 +119,34 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		return joBroadcastPlaylistItem;
 	}
+	public BroadcastPlaylistItem fromJson(JSONObject joBroadcastPlaylistItem)
+	{
+		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(channelConfigurationList);
+
+		try
+		{
+			broadcastPlaylistItem.setMediaType(joBroadcastPlaylistItem.getString("mediaType"));
+			if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Live Channel"))
+				broadcastPlaylistItem.setChannelConfigurationLabel(joBroadcastPlaylistItem.getString("channelConfigurationLabel"));
+			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
+				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
+			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
+			{
+				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
+				broadcastPlaylistItem.setText(joBroadcastPlaylistItem.getString("text"));
+			}
+			else
+			{
+				// mLogger.error("Unknown mediaType: " + broadcastPlaylistItem.getMediaType());
+			}
+		}
+		catch(Exception e)
+		{
+			// mLogger.error("Exception: " + e);
+		}
+
+		return broadcastPlaylistItem;
+	}
 
 	public void setChannelConfigurationLabel(String channelConfigurationLabel) 
 	{
