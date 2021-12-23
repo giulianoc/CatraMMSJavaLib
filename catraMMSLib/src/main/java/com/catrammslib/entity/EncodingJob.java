@@ -70,7 +70,32 @@ public class EncodingJob implements Serializable {
     private String mediaDuration;
 
 
-    public Long getEncodingJobKey() {
+    @Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((encodingJobKey == null) ? 0 : encodingJobKey.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EncodingJob other = (EncodingJob) obj;
+		if (encodingJobKey == null) {
+			if (other.encodingJobKey != null)
+				return false;
+		} else if (!encodingJobKey.equals(other.encodingJobKey))
+			return false;
+		return true;
+	}
+
+	public Long getEncodingJobKey() {
         return encodingJobKey;
     }
 
