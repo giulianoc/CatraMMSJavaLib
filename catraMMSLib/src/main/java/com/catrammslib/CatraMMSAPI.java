@@ -2577,7 +2577,9 @@ public class CatraMMSAPI {
                                  String label, Long ingestionJobKey,
                                  Date start, Date end,
                                  String status,             // completed or notCompleted
-                                 String ingestionType, String jsonParametersCondition,
+                                 String ingestionType, 
+								 String configurationLabel,
+								 String jsonParametersCondition, // altamente sconsigliato perchè poco performante
                                  boolean ingestionDateAscending,
                                  boolean ingestionJobOutputs,
                                  List<IngestionJob> ingestionJobsList)
@@ -2598,8 +2600,10 @@ public class CatraMMSAPI {
                     + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
                     + "&status=" + (status == null ? "" : status)
                     + ((ingestionType == null || ingestionType.equalsIgnoreCase("all")) ? "" : ("&ingestionType=" + ingestionType))
+                    + "&configurationLabel=" + (configurationLabel == null || configurationLabel.isEmpty()
+                    	? "" : java.net.URLEncoder.encode(configurationLabel, "UTF-8")) // requires unescape server side
                     + "&jsonParametersCondition=" + (jsonParametersCondition == null || jsonParametersCondition.isEmpty()
-                        ? "" : java.net.URLEncoder.encode(jsonParametersCondition, "UTF-8")) // requires unescape server side
+                    	? "" : java.net.URLEncoder.encode(jsonParametersCondition, "UTF-8")) // requires unescape server side
                     + "&asc=" + (ingestionDateAscending ? "true" : "false")
                     + "&ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
                     + (start == null ? "" : ("&startIngestionDate=" + simpleDateFormat.format(start)))
