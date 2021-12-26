@@ -19,7 +19,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
     private Date start;
     private Date end;
 	
-	private String mediaType;					// Live Channel, Media, Countdown
+	private String mediaType;					// Live Channel, Media, Countdown, Direct URL
 
 	private ChannelConf channelConf;			// in case of Live Channel
 	// I know channelConfigurationLabel is within channelConf but we need it anyway
@@ -27,6 +27,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	private Long physicalPathKey;				// in case of Media, Countdown
 	private String text;						// in case of Countdown
+
+	private String url;							// in case of Direct URL
 
 	private List<ChannelConf> channelConfigurationList;
 
@@ -61,6 +63,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			str = physicalPathKey.toString();
 		else if (mediaType.equals("Countdown"))
 			str = physicalPathKey.toString() + " - " + text;
+		else if (mediaType.equals("Direct URL"))
+			str = url;
 
 		return str;
 	}
@@ -86,6 +90,11 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			{
 				if (physicalPathKey.longValue() != joBroadcastPlaylistItem.getLong("physicalPathKey")
 					|| !text.equals(joBroadcastPlaylistItem.getString("text")))
+					return false;
+			}
+			else if (mediaType.equals("Direct URL"))
+			{
+				if (!url.equals(joBroadcastPlaylistItem.getString("url")))
 					return false;
 			}
 			else
@@ -122,6 +131,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
 				joBroadcastPlaylistItem.put("text", text);
 			}
+			else if (mediaType.equalsIgnoreCase("Direct URL"))
+				joBroadcastPlaylistItem.put("url", url);
 			else
 			{
 				mLogger.error("Unknown mediaType: " + mediaType);
@@ -151,6 +162,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
 				broadcastPlaylistItem.setText(joBroadcastPlaylistItem.getString("text"));
 			}
+			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
+				broadcastPlaylistItem.setUrl(joBroadcastPlaylistItem.getString("url"));
 			else
 			{
 				mLogger.error("Unknown mediaType: " + broadcastPlaylistItem.getMediaType());
@@ -169,13 +182,16 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		this.channelConfigurationLabel = channelConfigurationLabel;
 
 		channelConf = null;
-		for (ChannelConf localChannelConf: channelConfigurationList)
+		if (channelConfigurationList != null)
 		{
-			if (localChannelConf.getLabel().equalsIgnoreCase(channelConfigurationLabel))
+			for (ChannelConf localChannelConf: channelConfigurationList)
 			{
-				channelConf = localChannelConf;
-
-				break;
+				if (localChannelConf.getLabel().equalsIgnoreCase(channelConfigurationLabel))
+				{
+					channelConf = localChannelConf;
+	
+					break;
+				}
 			}
 		}
 		if (channelConf == null)
@@ -187,6 +203,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public String getChannelConfigurationLabel() {
 		return channelConfigurationLabel;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 	public Date getTimestamp() {

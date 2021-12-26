@@ -2824,7 +2824,7 @@ public class CatraMMSAPI {
     }
 
     public void changeLiveProxyPlaylist(String username, String password,
-        Long ingestionJobKey,
+        Long broadcasterIngestionJobKey,
         List<BroadcastPlaylistItem> broadcastPlaylistItems)
         throws Exception
     {
@@ -2835,7 +2835,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/1.0.1/ingestionJob/liveProxy/playlist/" + ingestionJobKey;
+                    + "/catramms/1.0.1/ingestionJob/liveProxy/playlist/" + broadcasterIngestionJobKey;
 
             JSONArray jaBodyRequest = new JSONArray();
 
