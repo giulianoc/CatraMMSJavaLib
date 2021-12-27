@@ -13,6 +13,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import javax.lang.model.util.ElementScanner6;
+
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
 import com.catrammslib.entity.ChannelConf;
@@ -1118,7 +1120,8 @@ public class CatraMMSAPI {
     public Long addEncoder(String username, String password,
                            String label, boolean external,
 						   boolean enabled, String protocol,
-						   String serverName, Long port)
+						   String publicServerName, String internalServerName,
+						   Long port)
             throws Exception
     {
         Long encoderKey;
@@ -1132,7 +1135,8 @@ public class CatraMMSAPI {
 			joEncoder.put("External", external);
 			joEncoder.put("Enabled", enabled);
 			joEncoder.put("Protocol", protocol);
-			joEncoder.put("ServerName", serverName);
+			joEncoder.put("PublicServerName", publicServerName);
+			joEncoder.put("InternalServerName", internalServerName);
 			joEncoder.put("Port", port);
 
 			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
@@ -1179,7 +1183,8 @@ public class CatraMMSAPI {
                               Long encoderKey,
 							  String label, boolean external,
 							  boolean enabled, String protocol,
-							  String serverName, Long port)
+							  String publicServerName, String internalServerName,
+							  Long port)
 			   throws Exception
     {
         String mmsInfo;
@@ -1191,7 +1196,8 @@ public class CatraMMSAPI {
 			joEncoder.put("External", external);
 			joEncoder.put("Enabled", enabled);
 			joEncoder.put("Protocol", protocol);
-			joEncoder.put("ServerName", serverName);
+			joEncoder.put("PublicServerName", publicServerName);
+			joEncoder.put("InternalServerName", internalServerName);
 			joEncoder.put("Port", port);
 
 			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
@@ -2870,6 +2876,28 @@ public class CatraMMSAPI {
 					joInputRoot.put("vodInput", joVODInput);
 
 					joVODInput.put("physicalPathKey", broadcastPlaylistItem.getPhysicalPathKey());
+				}
+				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
+				{
+					JSONObject joCountdownInput = new JSONObject();
+					joInputRoot.put("countdownInput", joCountdownInput);
+
+					joCountdownInput.put("physicalPathKey", broadcastPlaylistItem.getPhysicalPathKey());
+					joCountdownInput.put("text", broadcastPlaylistItem.getText());
+				}
+				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
+				{
+					JSONObject joDirectURLInput = new JSONObject();
+					joInputRoot.put("directURLInput", joDirectURLInput);
+
+					joDirectURLInput.put("url", broadcastPlaylistItem.getUrl());
+				}
+				else
+				{
+					String errorMessage = "Unknown mediaType: " + broadcastPlaylistItem.getMediaType();
+					mLogger.error(errorMessage);
+		
+					throw new Exception(errorMessage);
 				}
 			}
 
@@ -5783,11 +5811,9 @@ public class CatraMMSAPI {
             encoder.setExternal(encoderInfo.getBoolean("external"));
             encoder.setEnabled(encoderInfo.getBoolean("enabled"));
             encoder.setProtocol(encoderInfo.getString("protocol"));
-            encoder.setServerName(encoderInfo.getString("serverName"));
+            encoder.setPublicServerName(encoderInfo.getString("publicServerName"));
+            encoder.setInternalServerName(encoderInfo.getString("internalServerName"));
             encoder.setPort(encoderInfo.getLong("port"));
-            // encoder.setMaxTranscodingCapability(encoderInfo.getLong("maxTranscodingCapability"));
-            // encoder.setMaxLiveProxiesCapabilities(encoderInfo.getLong("maxLiveProxiesCapabilities"));
-            // encoder.setMaxLiveRecordingCapabilities(encoderInfo.getLong("maxLiveRecordingCapabilities"));
         }
         catch (Exception e)
         {
@@ -6141,13 +6167,48 @@ public class CatraMMSAPI {
 						ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
                 }
                 else if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Proxy")
-                        && joMetadataContent != null)
+                    && joMetadataContent != null)
                 {
 					if (joMetadataContent.has("ConfigurationLabel") && !joMetadataContent.isNull("ConfigurationLabel"))
 						ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
 
 					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
-                        && joMetadataContent.getBoolean("TimePeriod"))
+                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("ProxyPeriod"))
+                    {
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("ProxyPeriod");
+
+                        if (joProxyPeriod.has("Start") && !joProxyPeriod.isNull("Start"))
+                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("Start")));
+
+                        if (joProxyPeriod.has("End") && !joProxyPeriod.isNull("End"))
+                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("End")));
+                    }
+                }
+                else if (ingestionJob.getIngestionType().equalsIgnoreCase("VOD-Proxy")
+                    && joMetadataContent != null)
+                {
+					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
+                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("ProxyPeriod"))
+                    {
+                        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("ProxyPeriod");
+
+                        if (joProxyPeriod.has("Start") && !joProxyPeriod.isNull("Start"))
+                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("Start")));
+
+                        if (joProxyPeriod.has("End") && !joProxyPeriod.isNull("End"))
+                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("End")));
+                    }
+                }
+                else if (ingestionJob.getIngestionType().equalsIgnoreCase("Countdown")
+                    && joMetadataContent != null)
+                {
+					if (joMetadataContent.has("ProxyPeriod"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));

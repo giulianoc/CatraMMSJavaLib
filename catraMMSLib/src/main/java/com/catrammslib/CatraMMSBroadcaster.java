@@ -29,9 +29,11 @@ public class CatraMMSBroadcaster {
 
 		try
 		{
+			mLogger.info("looking for catraMMS.getChannelConf"
+				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
+			);
 			ChannelConf broadcasterChannelConf = null;
 			String broadcastUdpURL;
-			Long broadcasterConfKey;
 			{
 				List<ChannelConf> channelConfList = new ArrayList<>();
 				catraMMS.getChannelConf(username, password, 0, 1,
@@ -49,7 +51,6 @@ public class CatraMMSBroadcaster {
 				}
 
 				broadcasterChannelConf = channelConfList.get(0);
-				broadcasterConfKey = broadcasterChannelConf.getConfKey();
 				broadcastUdpURL = broadcasterChannelConf.getPushProtocol() + "://" 
 					+ broadcasterChannelConf.getPushServerName() 
 					+ ":" + broadcasterChannelConf.getPushServerPort();
@@ -59,8 +60,20 @@ public class CatraMMSBroadcaster {
 			{
 				String broadcastIngestionJobLabel = "Broadcast: " + broadcasterName;
 
+				mLogger.info("buildBroadcastJson"
+					+ ", broadcasterStart: " + broadcasterStart
+					+ ", broadcasterEnd: " + broadcasterEnd
+					+ ", encodingProfileLabel: " + encodingProfileLabel
+					+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
+					+ ", broadcastUdpURL: " + broadcastUdpURL
+					+ ", broadcastDefaultPlaylistItem: " + broadcastDefaultPlaylistItem
+				);
 				JSONObject joWorkflow = buildBroadcastJson(
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
+
+					// 2021-12-27: we are forcing here the broadcast to use the same encodersPool of the broadcaster
+					// This is not mandatory but, since they comminicate through udp, it is recommended
+					broadcasterChannelConf.getEncodersPoolLabel(),
 					broadcastIngestionJobLabel,
 					broadcastUdpURL,
 
@@ -95,6 +108,16 @@ public class CatraMMSBroadcaster {
 			{
 				String broadcasterIngestionJobLabel = "Broadcaster: " + broadcasterName;
 
+				mLogger.info("buildBroadcasterJson"
+					+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
+					+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
+					+ ", broadcasterStart: " + broadcasterStart
+					+ ", broadcasterEnd: " + broadcasterEnd
+					+ ", encodingProfileLabel: " + encodingProfileLabel
+					+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
+					+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
+					+ ", broadcastDefaultPlaylistItem: " + broadcastDefaultPlaylistItem
+				);
 				JSONObject joWorkflow = buildBroadcasterJson(
 					broadcasterIngestionJobLabel,		
 					broadcasterConfigurationLabel,	// udp://<server>:<port>
@@ -132,6 +155,10 @@ public class CatraMMSBroadcaster {
 
 			if (broadcastPlaylistItems != null && broadcastPlaylistItems.size() > 0)
 			{
+				mLogger.info("changeLiveProxyPlaylist"
+					+ ", broadcasterIngestionJobKey: " + broadcasterIngestionJobKey
+					+ ", broadcastPlaylistItems: " + broadcastPlaylistItems
+				);
 				catraMMS.changeLiveProxyPlaylist(username, password, 
 					broadcasterIngestionJobKey, broadcastPlaylistItems);
 			}
@@ -151,6 +178,7 @@ public class CatraMMSBroadcaster {
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
+		String encodersPoolLabel,
 
 		String broadcastIngestionJobLabel,
 		String broadcastUdpURL,
@@ -179,7 +207,7 @@ public class CatraMMSBroadcaster {
 						broadcastIngestionJobLabel,
 
 						broadcastDefaultPlaylistItem.getChannelConfigurationLabel(),
-						null,	// encodersPool,
+						encodersPoolLabel,
 
 						broadcasterStart, broadcasterEnd,
 
@@ -204,7 +232,7 @@ public class CatraMMSBroadcaster {
 						broadcastIngestionJobLabel,
 
 						mediaItemReferenceList,
-						null,	// encodersPool,
+						encodersPoolLabel,
 
 						broadcasterStart, broadcasterEnd,
 
@@ -234,7 +262,7 @@ public class CatraMMSBroadcaster {
 						broadcastIngestionJobLabel,
 
 						mediaItemReferenceList,
-						null,	// encodersPool,
+						encodersPoolLabel,
 
 						broadcasterStart, broadcasterEnd,
 

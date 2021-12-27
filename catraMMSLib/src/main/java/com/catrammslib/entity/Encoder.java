@@ -12,7 +12,8 @@ public class Encoder implements Serializable{
     private Boolean external;
     private Boolean enabled;
     private String protocol;
-    private String serverName;
+    private String publicServerName;
+    private String internalServerName;
     private Long port;
 
     /*
@@ -58,47 +59,30 @@ public class Encoder implements Serializable{
         this.protocol = protocol;
     }
 
-    public String getServerName() {
-        return serverName;
-    }
 
-    public void setServerName(String serverName) {
-        this.serverName = serverName;
-    }
+    public String getPublicServerName() {
+		return publicServerName;
+	}
 
-    public Long getPort() {
+	public void setPublicServerName(String publicServerName) {
+		this.publicServerName = publicServerName;
+	}
+
+	public String getInternalServerName() {
+		return internalServerName;
+	}
+
+	public void setInternalServerName(String internalServerName) {
+		this.internalServerName = internalServerName;
+	}
+
+	public Long getPort() {
         return port;
     }
 
     public void setPort(Long port) {
         this.port = port;
     }
-
-    /*
-    public Long getMaxTranscodingCapability() {
-        return maxTranscodingCapability;
-    }
-
-    public void setMaxTranscodingCapability(Long maxTranscodingCapability) {
-        this.maxTranscodingCapability = maxTranscodingCapability;
-    }
-
-    public Long getMaxLiveProxiesCapabilities() {
-        return maxLiveProxiesCapabilities;
-    }
-
-    public void setMaxLiveProxiesCapabilities(Long maxLiveProxiesCapabilities) {
-        this.maxLiveProxiesCapabilities = maxLiveProxiesCapabilities;
-    }
-
-    public Long getMaxLiveRecordingCapabilities() {
-        return maxLiveRecordingCapabilities;
-    }
-
-    public void setMaxLiveRecordingCapabilities(Long maxLiveRecordingCapabilities) {
-        this.maxLiveRecordingCapabilities = maxLiveRecordingCapabilities;
-    }
-     */
 
     public Boolean getExternal() {
         return external;
