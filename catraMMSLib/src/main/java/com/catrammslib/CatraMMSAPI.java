@@ -6346,7 +6346,8 @@ public class CatraMMSAPI {
         }
     }
 
-    private void fillEncodingProfile(EncodingProfile encodingProfile, JSONObject encodingProfileInfo, boolean deep)
+    private void fillEncodingProfile(EncodingProfile encodingProfile, 
+		JSONObject encodingProfileInfo, boolean deep)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -6500,7 +6501,10 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "fillEncodingProfile failed. Exception: " + e;
+            String errorMessage = "fillEncodingProfile failed" 
+				+ ", Exception: " + e
+				+ ", encodingProfileInfo: " + encodingProfileInfo.toString()
+			;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);

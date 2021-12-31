@@ -248,8 +248,6 @@ public class CatraMMSBroadcaster {
 					List<MediaItemReference> mediaItemReferenceList = new ArrayList<>();
 					mediaItemReferenceList.add(mediaItemReference);
 
-					String textPosition_X_InPixel = "(video_width-text_width)/2";
-					String textPosition_Y_InPixel = "(video_height-text_height)/2";
 					String fontType = "OpenSans-ExtraBold.ttf";
 					Long fontSize = (long) 48;
 					String fontColor = "orange";
@@ -267,8 +265,8 @@ public class CatraMMSBroadcaster {
 						broadcasterStart, broadcasterEnd,
 
 						broadcastDefaultPlaylistItem.getText(),
-						textPosition_X_InPixel,
-						textPosition_Y_InPixel,
+						broadcastDefaultPlaylistItem.getTextPosition_X_InPixel(),
+						broadcastDefaultPlaylistItem.getTextPosition_Y_InPixel(),
 						fontType,
 						fontSize,
 						fontColor,
