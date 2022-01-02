@@ -13,8 +13,6 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
-import javax.lang.model.util.ElementScanner6;
-
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
 import com.catrammslib.entity.ChannelConf;

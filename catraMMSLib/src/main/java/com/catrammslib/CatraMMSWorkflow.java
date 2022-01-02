@@ -199,9 +199,7 @@ public class CatraMMSWorkflow {
 
             List<String> chunkTags, String ingester,
             String chunkRetention, JSONObject joUserData,
-            // String liveRecorderConfiguration,
             String encodingPriority,
-            // boolean highAvailability,
             Boolean autoRenew,
             Boolean monitorHLS,
             String monitorHLSEncodingProfileLabel,
@@ -260,16 +258,16 @@ public class CatraMMSWorkflow {
 
             {
                 JSONObject joRecordingPeriod = new JSONObject();
-                joParameters.put("RecordingPeriod", joRecordingPeriod);
+                joParameters.put("schedule", joRecordingPeriod);
 
                 if (autoRenew != null)
-                    joRecordingPeriod.put("AutoRenew", autoRenew);
+                    joRecordingPeriod.put("autoRenew", autoRenew);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joRecordingPeriod.put("Start", dateFormat.format(utcLiveRecorderStart));
-                joRecordingPeriod.put("End", dateFormat.format(utcLiveRecorderEnd));
+                joRecordingPeriod.put("start", dateFormat.format(utcLiveRecorderStart));
+                joRecordingPeriod.put("end", dateFormat.format(utcLiveRecorderEnd));
             }
 
             if (monitorHLS != null && monitorHLS)
@@ -549,7 +547,10 @@ public class CatraMMSWorkflow {
 
                 if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
                     joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
-            }
+
+				if (liveProxyOutput.getFadeDuration() != null)
+                    joOutput.put("fadeDuration", liveProxyOutput.getFadeDuration());
+			}
 
 
             return joTask;
@@ -682,6 +683,9 @@ public class CatraMMSWorkflow {
 
                 if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
                     joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
+
+				if (liveProxyOutput.getFadeDuration() != null)
+                    joOutput.put("fadeDuration", liveProxyOutput.getFadeDuration());
             }
 
 
