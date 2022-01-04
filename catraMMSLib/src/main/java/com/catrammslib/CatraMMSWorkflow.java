@@ -388,13 +388,13 @@ public class CatraMMSWorkflow {
                 joParameters.put("TimePeriod", true);
 
                 JSONObject joProxyPeriod = new JSONObject();
-                joParameters.put("ProxyPeriod", joProxyPeriod);
+                joParameters.put("schedule", joProxyPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joProxyPeriod.put("Start", dateFormat.format(proxyStartTime));
-                joProxyPeriod.put("End", dateFormat.format(proxyEndTime));
+                joProxyPeriod.put("start", dateFormat.format(proxyStartTime));
+                joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
             }
             else
                 joParameters.put("TimePeriod", false);
@@ -496,13 +496,13 @@ public class CatraMMSWorkflow {
                 joParameters.put("TimePeriod", true);
 
                 JSONObject joProxyPeriod = new JSONObject();
-                joParameters.put("ProxyPeriod", joProxyPeriod);
+                joParameters.put("schedule", joProxyPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joProxyPeriod.put("Start", dateFormat.format(proxyStartTime));
-                joProxyPeriod.put("End", dateFormat.format(proxyEndTime));
+                joProxyPeriod.put("start", dateFormat.format(proxyStartTime));
+                joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
             }
             else
                 joParameters.put("TimePeriod", false);
@@ -602,13 +602,13 @@ public class CatraMMSWorkflow {
 
             {
                 JSONObject joProxyPeriod = new JSONObject();
-                joParameters.put("ProxyPeriod", joProxyPeriod);
+                joParameters.put("schedule", joProxyPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joProxyPeriod.put("Start", dateFormat.format(proxyStartTime));
-                joProxyPeriod.put("End", dateFormat.format(proxyEndTime));
+                joProxyPeriod.put("start", dateFormat.format(proxyStartTime));
+                joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
             }
 
 			joParameters.put("Text", text);
@@ -831,13 +831,13 @@ public class CatraMMSWorkflow {
 
 			{
 				JSONObject joProxyPeriod = new JSONObject();
-				joParameters.put("ProxyPeriod", joProxyPeriod);
+				joParameters.put("schedule", joProxyPeriod);
 
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-				joProxyPeriod.put("Start", dateFormat.format(startTime));
-				joProxyPeriod.put("End", dateFormat.format(endTime));
+				joProxyPeriod.put("start", dateFormat.format(startTime));
+				joProxyPeriod.put("end", dateFormat.format(endTime));
 			}
 	
             return joTask;

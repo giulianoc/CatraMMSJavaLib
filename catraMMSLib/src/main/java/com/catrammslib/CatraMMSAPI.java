@@ -364,8 +364,9 @@ public class CatraMMSAPI {
             );
 
             Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+			// 2022-01-03: it has to be GET because same link is sent inside the email
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
             mLogger.info("confirmRegistration. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2802,8 +2803,8 @@ public class CatraMMSAPI {
             joBodyRequest.put("IngestionType", "Live-Recorder");
             joBodyRequest.put("IngestionJobLabel", newLabel);
             joBodyRequest.put("ChannelLabel", newChannelLabel);
-            joBodyRequest.put("RecordingPeriodStart", simpleDateFormat.format(newRecordingStart));
-            joBodyRequest.put("RecordingPeriodEnd", simpleDateFormat.format(newRecordingEnd));
+            joBodyRequest.put("scheduleStart", simpleDateFormat.format(newRecordingStart));
+            joBodyRequest.put("scheduleEnd", simpleDateFormat.format(newRecordingEnd));
             joBodyRequest.put("RecordingVirtualVOD", newRecordingVirtualVod);
 
             String bodyRequest = joBodyRequest.toString();
@@ -2849,8 +2850,8 @@ public class CatraMMSAPI {
 				jaBodyRequest.put(joInputRoot);
 
 				joInputRoot.put("timePeriod", true);
-				joInputRoot.put("utcProxyPeriodStart", broadcastPlaylistItem.getStart().getTime() / 1000);
-				joInputRoot.put("utcProxyPeriodEnd", broadcastPlaylistItem.getEnd().getTime() / 1000);
+				joInputRoot.put("utcScheduleStart", broadcastPlaylistItem.getStart().getTime() / 1000);
+				joInputRoot.put("utcScheduleEnd", broadcastPlaylistItem.getEnd().getTime() / 1000);
 
 				if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Live Channel"))
 				{
@@ -5625,8 +5626,8 @@ public class CatraMMSAPI {
                         encodingJob.setLiveURL(joParameters.getString("url"));
                     encodingJob.setOutputFileFormat(joParameters.getString("outputFileFormat"));
                     encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
-                    encodingJob.setRecordingPeriodEnd(new Date(1000 * joParameters.getLong("utcRecordingPeriodEnd")));
-                    encodingJob.setRecordingPeriodStart(new Date(1000 * joParameters.getLong("utcRecordingPeriodStart")));
+                    encodingJob.setRecordingPeriodEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
+                    encodingJob.setRecordingPeriodStart(new Date(1000 * joParameters.getLong("utcScheduleStart")));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("LiveGrid")
                 )
@@ -5651,10 +5652,10 @@ public class CatraMMSAPI {
 								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
 
 							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
-								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcProxyPeriodStart")));
+								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcScheduleStart")));
 
 							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
-								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcProxyPeriodEnd")));
+								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
 						}
 					}
 
@@ -5692,10 +5693,10 @@ public class CatraMMSAPI {
 								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
 
 							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
-								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcProxyPeriodStart")));
+								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcScheduleStart")));
 
 							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
-								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcProxyPeriodEnd")));
+								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
 						}
 					}
 
@@ -5733,10 +5734,10 @@ public class CatraMMSAPI {
 								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
 
 							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
-								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcProxyPeriodStart")));
+								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcScheduleStart")));
 
 							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
-								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcProxyPeriodEnd")));
+								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
 						}
 					}
 
@@ -6137,18 +6138,18 @@ public class CatraMMSAPI {
                 if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Recorder")
                         && joMetadataContent != null)
                 {
-                    if (joMetadataContent.has("RecordingPeriod") && !joMetadataContent.isNull("RecordingPeriod"))
+                    if (joMetadataContent.has("schedule") && !joMetadataContent.isNull("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                        JSONObject joRecordingPeriod = joMetadataContent.getJSONObject("RecordingPeriod");
+                        JSONObject joRecordingPeriod = joMetadataContent.getJSONObject("schedule");
 
-                        if (joRecordingPeriod.has("Start") && !joRecordingPeriod.isNull("Start"))
-                            ingestionJob.setRecordingPeriodStart(dateFormat.parse(joRecordingPeriod.getString("Start")));
+                        if (joRecordingPeriod.has("start") && !joRecordingPeriod.isNull("start"))
+                            ingestionJob.setRecordingPeriodStart(dateFormat.parse(joRecordingPeriod.getString("start")));
 
-                        if (joRecordingPeriod.has("End") && !joRecordingPeriod.isNull("End"))
-                            ingestionJob.setRecordingPeriodEnd(dateFormat.parse(joRecordingPeriod.getString("End")));
+                        if (joRecordingPeriod.has("end") && !joRecordingPeriod.isNull("end"))
+                            ingestionJob.setRecordingPeriodEnd(dateFormat.parse(joRecordingPeriod.getString("end")));
                     }
 
                     if (joMetadataContent.has("LiveRecorderVirtualVOD"))
@@ -6171,53 +6172,53 @@ public class CatraMMSAPI {
 						ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
 
 					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
-                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("ProxyPeriod"))
+                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("ProxyPeriod");
+                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("schedule");
 
-                        if (joProxyPeriod.has("Start") && !joProxyPeriod.isNull("Start"))
-                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("Start")));
+                        if (joProxyPeriod.has("start") && !joProxyPeriod.isNull("start"))
+                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("start")));
 
-                        if (joProxyPeriod.has("End") && !joProxyPeriod.isNull("End"))
-                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("End")));
+                        if (joProxyPeriod.has("end") && !joProxyPeriod.isNull("end"))
+                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("end")));
                     }
                 }
                 else if (ingestionJob.getIngestionType().equalsIgnoreCase("VOD-Proxy")
                     && joMetadataContent != null)
                 {
 					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
-                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("ProxyPeriod"))
+                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("ProxyPeriod");
+                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("schedule");
 
-                        if (joProxyPeriod.has("Start") && !joProxyPeriod.isNull("Start"))
-                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("Start")));
+                        if (joProxyPeriod.has("start") && !joProxyPeriod.isNull("start"))
+                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("start")));
 
-                        if (joProxyPeriod.has("End") && !joProxyPeriod.isNull("End"))
-                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("End")));
+                        if (joProxyPeriod.has("end") && !joProxyPeriod.isNull("end"))
+                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("end")));
                     }
                 }
                 else if (ingestionJob.getIngestionType().equalsIgnoreCase("Countdown")
                     && joMetadataContent != null)
                 {
-					if (joMetadataContent.has("ProxyPeriod"))
+					if (joMetadataContent.has("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("ProxyPeriod");
+                        JSONObject joProxyPeriod = joMetadataContent.getJSONObject("schedule");
 
-                        if (joProxyPeriod.has("Start") && !joProxyPeriod.isNull("Start"))
-                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("Start")));
+                        if (joProxyPeriod.has("start") && !joProxyPeriod.isNull("start"))
+                            ingestionJob.setProxyPeriodStart(dateFormat.parse(joProxyPeriod.getString("start")));
 
-                        if (joProxyPeriod.has("End") && !joProxyPeriod.isNull("End"))
-                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("End")));
+                        if (joProxyPeriod.has("end") && !joProxyPeriod.isNull("end"))
+                            ingestionJob.setProxyPeriodEnd(dateFormat.parse(joProxyPeriod.getString("end")));
                     }
                 }
             }
