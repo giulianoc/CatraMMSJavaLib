@@ -2020,6 +2020,14 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
+			if (physicalPathKey == null)
+			{
+				String errorMessage = "physicalPathKey is null";
+				mLogger.error(errorMessage);
+
+				throw new Exception(errorMessage);
+			}
+
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
 				+ "?physicalPathKey=" + physicalPathKey
 				;
