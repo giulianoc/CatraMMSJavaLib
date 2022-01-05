@@ -5634,8 +5634,10 @@ public class CatraMMSAPI {
                         encodingJob.setLiveURL(joParameters.getString("url"));
                     encodingJob.setOutputFileFormat(joParameters.getString("outputFileFormat"));
                     encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
-                    encodingJob.setRecordingPeriodEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
-                    encodingJob.setRecordingPeriodStart(new Date(1000 * joParameters.getLong("utcScheduleStart")));
+					if (joParameters.has("utcScheduleEnd"))
+                    	encodingJob.setRecordingPeriodEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
+					if (joParameters.has("utcScheduleStart"))
+						encodingJob.setRecordingPeriodStart(new Date(1000 * joParameters.getLong("utcScheduleStart")));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("LiveGrid")
                 )
@@ -5659,10 +5661,12 @@ public class CatraMMSAPI {
 							if (joFirstInputRoot.has("url"))
 								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
 
-							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
+							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod")
+								&& joFirstInputRoot.has("utcScheduleStart"))
 								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcScheduleStart")));
 
-							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
+								&& joLastInputRoot.has("utcScheduleEnd"))
 								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
 						}
 					}
@@ -5700,10 +5704,12 @@ public class CatraMMSAPI {
 							if (joFirstInputRoot.has("url"))
 								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
 
-							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
+							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod")
+								&& joFirstInputRoot.has("utcScheduleStart"))
 								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcScheduleStart")));
 
-							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
+								&& joLastInputRoot.has("utcScheduleEnd"))
 								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
 						}
 					}
@@ -5741,10 +5747,12 @@ public class CatraMMSAPI {
 							if (joFirstInputRoot.has("url"))
 								encodingJob.setLiveURL(joFirstInputRoot.getString("url"));
 
-							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod"))
+							if (joFirstInputRoot.has("timePeriod") && joFirstInputRoot.getBoolean("timePeriod")
+								&& joFirstInputRoot.has("utcScheduleStart"))
 								encodingJob.setProxyPeriodStart(new Date(1000 * joFirstInputRoot.getLong("utcScheduleStart")));
 
-							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod"))
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
+								&& joLastInputRoot.has("utcScheduleEnd"))
 								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
 						}
 					}
