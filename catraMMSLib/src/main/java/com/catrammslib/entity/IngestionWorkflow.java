@@ -19,7 +19,14 @@ public class IngestionWorkflow implements Serializable {
     private String status;
     private List<IngestionJob> ingestionJobList = new ArrayList<>();
 
-    public Long getIngestionRootKey() {
+    @Override
+	public String toString() {
+		return "IngestionWorkflow [ingestionDate=" + ingestionDate + ", ingestionJobList=" + ingestionJobList
+				+ ", ingestionRootKey=" + ingestionRootKey + ", label=" + label + ", lastUpdate=" + lastUpdate
+				+ ", status=" + status + ", userKey=" + userKey + ", userName=" + userName + "]";
+	}
+
+	public Long getIngestionRootKey() {
         return ingestionRootKey;
     }
 

@@ -16,6 +16,9 @@ public class Encoder implements Serializable{
     private String internalServerName;
     private Long port;
 
+	private Boolean running;
+	private Long cpuUsage;
+
     /*
     private Long maxTranscodingCapability;
     private Long maxLiveProxiesCapabilities;
@@ -43,7 +46,23 @@ public class Encoder implements Serializable{
         this.encoderKey = encoderKey;
     }
 
-    public String getLabel() {
+    public Long getCpuUsage() {
+		return cpuUsage;
+	}
+
+	public void setCpuUsage(Long cpuUsage) {
+		this.cpuUsage = cpuUsage;
+	}
+
+	public Boolean getRunning() {
+		return running;
+	}
+
+	public void setRunning(Boolean running) {
+		this.running = running;
+	}
+
+	public String getLabel() {
         return label;
     }
 

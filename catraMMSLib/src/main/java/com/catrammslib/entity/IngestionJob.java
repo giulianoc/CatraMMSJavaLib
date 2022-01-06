@@ -35,6 +35,7 @@ public class IngestionJob implements Serializable {
     private Long ingestionRootKey;
 
 	private Boolean selected;
+    private Date ingestionDate;	// it is not filled by the server, it has to be filled by java client (may be calling getIngestionWorkflow)
 	
     private Long dependOnIngestionJobKey;
     private int dependOnSuccess;
@@ -146,6 +147,14 @@ public class IngestionJob implements Serializable {
 		} else if (!ingestionJobKey.equals(other.ingestionJobKey))
 			return false;
 		return true;
+	}
+
+	public Date getIngestionDate() {
+		return ingestionDate;
+	}
+
+	public void setIngestionDate(Date ingestionDate) {
+		this.ingestionDate = ingestionDate;
 	}
 
 	public String getHtmlErrorMessage() {
