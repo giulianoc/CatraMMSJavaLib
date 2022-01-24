@@ -2590,6 +2590,7 @@ public class CatraMMSAPI {
                                  long startIndex, long pageSize,
                                  String label, Long ingestionJobKey,
                                  Date start, Date end,
+								 Date startScheduleDate,
                                  String status,             // completed or notCompleted
                                  String ingestionType, 
 								 String configurationLabel,	// used in case of Live-Proxy
@@ -2631,6 +2632,7 @@ public class CatraMMSAPI {
                     + "&ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
                     + (start == null ? "" : ("&startIngestionDate=" + simpleDateFormat.format(start)))
                     + (end == null ? "" : ("&endIngestionDate=" + simpleDateFormat.format(end)))
+                    + (startScheduleDate == null ? "" : ("&startScheduleDate=" + simpleDateFormat.format(startScheduleDate)))
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -3607,6 +3609,7 @@ public class CatraMMSAPI {
             JSONObject joMMSInfo = new JSONObject(mmsInfo);
 
             deliveryURL = joMMSInfo.getString("deliveryURL");
+			mLogger.info("deliveryURL: " + deliveryURL);
         }
         catch (Exception e)
         {
