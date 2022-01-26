@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.catrammslib.entity.ChannelConf;
+import com.catrammslib.entity.Stream;
 import com.catrammslib.utility.BroadcastPlaylistItem;
 import com.catrammslib.utility.IngestionResult;
 import com.catrammslib.utility.LiveProxyOutput;
@@ -32,28 +32,28 @@ public class CatraMMSBroadcaster {
 			mLogger.info("looking for catraMMS.getChannelConf"
 				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
 			);
-			ChannelConf broadcasterChannelConf = null;
+			Stream broadcasterStream = null;
 			String broadcastUdpURL;
 			{
-				List<ChannelConf> channelConfList = new ArrayList<>();
-				catraMMS.getChannelConf(username, password, 0, 1,
+				List<Stream> streamList = new ArrayList<>();
+				catraMMS.getStream(username, password, 0, 1,
 						null, broadcasterConfigurationLabel, null, null,
 						null, null, null, null, null,
-						channelConfList);
+						streamList);
 
-				if (channelConfList.size() != 1)
+				if (streamList.size() != 1)
 				{
-					mLogger.error("catraMMS.getChannelConf failed"
+					mLogger.error("catraMMS.getStream failed"
 							+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
 					);
 
-					throw new Exception("catraMMS.getChannelConf failed");
+					throw new Exception("catraMMS.getStream failed");
 				}
 
-				broadcasterChannelConf = channelConfList.get(0);
-				broadcastUdpURL = broadcasterChannelConf.getPushProtocol() + "://" 
-					+ broadcasterChannelConf.getPushServerName() 
-					+ ":" + broadcasterChannelConf.getPushServerPort();
+				broadcasterStream = streamList.get(0);
+				broadcastUdpURL = broadcasterStream.getPushProtocol() + "://" 
+					+ broadcasterStream.getPushServerName() 
+					+ ":" + broadcasterStream.getPushServerPort();
 			}
 
 			Long broadcastIngestionJobKey = null;
@@ -73,7 +73,7 @@ public class CatraMMSBroadcaster {
 
 					// 2021-12-27: we are forcing here the broadcast to use the same encodersPool of the broadcaster
 					// This is not mandatory but, since they comminicate through udp, it is recommended
-					broadcasterChannelConf.getEncodersPoolLabel(),
+					broadcasterStream.getEncodersPoolLabel(),
 					broadcastIngestionJobLabel,
 					broadcastUdpURL,
 
@@ -202,11 +202,11 @@ public class CatraMMSBroadcaster {
 
 					liveProxyOutputList.add(liveProxyOutput);
 				}
-				if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Live Channel"))
+				if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
 	                joBroadcast = CatraMMSWorkflow.buildLiveProxyJson(
 						broadcastIngestionJobLabel,
 
-						broadcastDefaultPlaylistItem.getChannelConfigurationLabel(),
+						broadcastDefaultPlaylistItem.getStreamConfigurationLabel(),
 						encodersPoolLabel,
 
 						broadcasterStart, broadcasterEnd,
@@ -303,7 +303,7 @@ public class CatraMMSBroadcaster {
 
 	private static JSONObject buildBroadcasterJson(
 		String broadcasterIngestionJobLabel,
-		String broadcasterChannelConfigurationLabel,	// udp://<server>:<port>
+		String broadcasterStreamConfigurationLabel,	// udp://<server>:<port>
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
@@ -361,7 +361,7 @@ public class CatraMMSBroadcaster {
 					broadcasterIngestionJobLabel,
 
 					// i prossimi due parametri sono legati tra loro
-					broadcasterChannelConfigurationLabel,
+					broadcasterStreamConfigurationLabel,
 					null,	// encodersPool,
 
 					broadcasterStart, broadcasterEnd,

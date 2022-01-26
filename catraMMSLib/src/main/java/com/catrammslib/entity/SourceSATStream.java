@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Created by multi on 08.06.18.
  */
-public class SourceSATChannelConf implements Serializable{
+public class SourceSATStream implements Serializable{
 
     private Long confKey;
     private Long serviceId;
@@ -31,7 +31,7 @@ public class SourceSATChannelConf implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SourceSATChannelConf that = (SourceSATChannelConf) o;
+        SourceSATStream that = (SourceSATStream) o;
         return Objects.equals(confKey, that.confKey);
     }
 

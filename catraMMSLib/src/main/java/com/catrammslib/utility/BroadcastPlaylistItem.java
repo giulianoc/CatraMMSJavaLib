@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.*;
 
 import com.catrammslib.CatraMMSAPI;
-import com.catrammslib.entity.ChannelConf;
+import com.catrammslib.entity.Stream;
 import com.catrammslib.entity.MediaItem;
 
 public class BroadcastPlaylistItem implements Serializable, Comparable<BroadcastPlaylistItem> {
@@ -21,10 +21,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
     private Date start;
     private Date end;
 	
-	private String mediaType;					// Live Channel, Media, Countdown, Direct URL
+	private String mediaType;					// Stream, Media, Countdown, Direct URL
 
-	private String channelConfigurationLabel;	// in case of Live Channel
-	private ChannelConf channelConf;			// got from channelConfigurationLabel
+	private String streamConfigurationLabel;	// in case of Stream
+	private Stream stream;			// got from streamConfigurationLabel
 
 	private Long physicalPathKey;				// in case of Media, Countdown
 	private MediaItem mediaItem;				// got from physicalPathKey
@@ -46,11 +46,11 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		timestamp = new Date();
 		
-		mediaTypeList.add("Live Channel");
+		mediaTypeList.add("Stream");
 		mediaTypeList.add("Media");
 		mediaTypeList.add("Countdown");
 
-		mediaType = "Live Channel";
+		mediaType = "Stream";
 
 		text = "days_counter days hours_counter:mins_counter:secs_counter.cents_counter";
 		textPosition_X_InPixel = "(video_width-text_width)/2";
@@ -67,8 +67,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		String str = "";
 
-		if (mediaType.equals("Live Channel"))
-			str = channelConfigurationLabel;
+		if (mediaType.equals("Stream"))
+			str = streamConfigurationLabel;
 		else if (mediaType.equals("Media"))
 			str = physicalPathKey.toString() + (mediaItem != null ? (" - " + mediaItem.getTitle()) : "");
 		else if (mediaType.equals("Countdown"))
@@ -86,9 +86,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			if (!mediaType.equals(joBroadcastPlaylistItem.getString("mediaType")))
 				return false;
 
-			if (mediaType.equals("Live Channel"))
+			if (mediaType.equals("Stream"))
 			{
-				if (!channelConfigurationLabel.equals(joBroadcastPlaylistItem.getString("channelConfigurationLabel")))
+				if (!streamConfigurationLabel.equals(joBroadcastPlaylistItem.getString("streamConfigurationLabel")))
 					return false;
 			}
 			else if (mediaType.equals("Media"))
@@ -135,8 +135,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		try
 		{
 			joBroadcastPlaylistItem.put("mediaType", mediaType);
-			if (mediaType.equalsIgnoreCase("Live Channel"))
-				joBroadcastPlaylistItem.put("channelConfigurationLabel", channelConfigurationLabel);
+			if (mediaType.equalsIgnoreCase("Stream"))
+				joBroadcastPlaylistItem.put("streamConfigurationLabel", streamConfigurationLabel);
 			else if (mediaType.equalsIgnoreCase("Media"))
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
 			else if (mediaType.equalsIgnoreCase("Countdown"))
@@ -169,8 +169,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		try
 		{
 			broadcastPlaylistItem.setMediaType(joBroadcastPlaylistItem.getString("mediaType"));
-			if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Live Channel"))
-				broadcastPlaylistItem.setChannelConfigurationLabel(joBroadcastPlaylistItem.getString("channelConfigurationLabel"));
+			if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
+				broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
@@ -195,17 +195,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return broadcastPlaylistItem;
 	}
 
-	public void setChannelConfigurationLabel(String channelConfigurationLabel) 
+	public void setStreamConfigurationLabel(String streamConfigurationLabel) 
 	{
-		this.channelConfigurationLabel = channelConfigurationLabel;
+		this.streamConfigurationLabel = streamConfigurationLabel;
 
 		try
 		{
-			List<ChannelConf> channelConfList = new ArrayList<>();
-			catraMMS.getChannelConf(username, password, 0, 1, null, channelConfigurationLabel, 
-				null, null, null, null, null, null, null, channelConfList);
-			if (channelConfList.size() > 0)
-				channelConf = channelConfList.get(0);
+			List<Stream> streamList = new ArrayList<>();
+			catraMMS.getStream(username, password, 0, 1, null, streamConfigurationLabel, 
+				null, null, null, null, null, null, null, streamList);
+			if (streamList.size() > 0)
+				stream = streamList.get(0);
 		}
 		catch (Exception e)
 		{
@@ -226,8 +226,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public String getChannelConfigurationLabel() {
-		return channelConfigurationLabel;
+	public String getStreamConfigurationLabel() {
+		return streamConfigurationLabel;
 	}
 
 	public String getUrl() {
@@ -274,12 +274,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		this.textPosition_Y_InPixel = textPosition_Y_InPixel;
 	}
 
-	public ChannelConf getChannelConf() {
-		return channelConf;
+
+	public Stream getStream() {
+		return stream;
 	}
 
-	public void setChannelConf(ChannelConf channelConf) {
-		this.channelConf = channelConf;
+	public void setStream(Stream stream) {
+		this.stream = stream;
 	}
 
 	public Date getStart() {
@@ -317,6 +318,4 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	public Long getPhysicalPathKey() {
 		return physicalPathKey;
 	}
-
-
 }

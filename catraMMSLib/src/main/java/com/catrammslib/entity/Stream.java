@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Created by multi on 08.06.18.
  */
-public class ChannelConf implements Serializable{
+public class Stream implements Serializable{
 
     private Long confKey;
     private String label;
@@ -20,7 +20,7 @@ public class ChannelConf implements Serializable{
     private Long imageMediaItemKey;
     private String imageUniqueName;
     private Long position;
-    private String channelData;
+    private String userData;
 
 	private String sourceType;
 
@@ -44,7 +44,7 @@ public class ChannelConf implements Serializable{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ChannelConf that = (ChannelConf) o;
+        Stream that = (Stream) o;
         return Objects.equals(confKey, that.confKey);
     }
 
@@ -117,15 +117,15 @@ public class ChannelConf implements Serializable{
         this.position = position;
     }
 
-    public String getChannelData() {
-        return channelData;
-    }
+	public String getUserData() {
+		return userData;
+	}
 
-    public void setChannelData(String channelData) {
-        this.channelData = channelData;
-    }
+	public void setUserData(String userData) {
+		this.userData = userData;
+	}
 
-    public String getDescription() {
+	public String getDescription() {
         return description;
     }
 
