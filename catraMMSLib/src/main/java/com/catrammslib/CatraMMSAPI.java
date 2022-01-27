@@ -2865,19 +2865,19 @@ public class CatraMMSAPI {
 
 				if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
 				{
-					JSONObject joChannelInput = new JSONObject();
-					joInputRoot.put("streamInput", joChannelInput);
+					JSONObject joStreamInput = new JSONObject();
+					joInputRoot.put("streamInput", joStreamInput);
 
-					joChannelInput.put("streamConfKey", broadcastPlaylistItem.getStream().getConfKey());
-					joChannelInput.put("streamConfigurationLabel", broadcastPlaylistItem.getStream().getLabel());
+					joStreamInput.put("streamConfKey", broadcastPlaylistItem.getStream().getConfKey());
+					joStreamInput.put("streamConfigurationLabel", broadcastPlaylistItem.getStream().getLabel());
 
 					if (broadcastPlaylistItem.getStream().getEncodersPoolLabel() != null 
 						&& !broadcastPlaylistItem.getStream().getEncodersPoolLabel().isEmpty())
-						joChannelInput.put("encodersPoolLabel", broadcastPlaylistItem.getStream().getEncodersPoolLabel());
+						joStreamInput.put("encodersPoolLabel", broadcastPlaylistItem.getStream().getEncodersPoolLabel());
 
-					joChannelInput.put("streamSourceType", broadcastPlaylistItem.getStream().getSourceType());
+					joStreamInput.put("streamSourceType", broadcastPlaylistItem.getStream().getSourceType());
 					if (broadcastPlaylistItem.getStream().getSourceType().equalsIgnoreCase("IP_PULL"))
-						joChannelInput.put("url", broadcastPlaylistItem.getStream().getUrl());
+						joStreamInput.put("url", broadcastPlaylistItem.getStream().getUrl());
 				}
 				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 				{
