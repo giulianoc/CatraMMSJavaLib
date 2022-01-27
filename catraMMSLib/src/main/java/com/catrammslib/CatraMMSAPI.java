@@ -6661,7 +6661,7 @@ public class CatraMMSAPI {
 
             if (streamInfo.has("position") && !streamInfo.isNull("position"))
                 stream.setPosition(streamInfo.getLong("position"));
-            if (streamInfo.has("channelData") && !streamInfo.isNull("channelData"))
+            if (streamInfo.has("userData") && !streamInfo.isNull("userData"))
                 stream.setUserData(streamInfo.getString("userData"));
         }
         catch (Exception e)
