@@ -1272,7 +1272,8 @@ public class CatraMMSAPI {
     }
 
     public void getEncoders(String username, String password,
-                            Boolean allEncoders, Long workspaceKey,
+                            Boolean runningInfo,	// running and cpu usage info 
+							Boolean allEncoders, Long workspaceKey,
                             List<Encoder> encoderList)
             throws Exception
     {
@@ -1296,7 +1297,8 @@ public class CatraMMSAPI {
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                 + "/catramms/1.0.1/encoder?labelOrder=" + "asc"
-                    + urlAdminParameters
+				+ (runningInfo == null ? "" : ("&runningInfo=" + runningInfo))
+                + urlAdminParameters
             ;
 
             mLogger.info("mmsURL: " + mmsURL);
