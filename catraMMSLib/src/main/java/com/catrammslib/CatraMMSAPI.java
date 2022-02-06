@@ -366,7 +366,7 @@ public class CatraMMSAPI {
             Date now = new Date();
 			// 2022-01-03: it has to be GET because same link is sent inside the email
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("confirmRegistration. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -861,7 +861,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             metaDataContent = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getMetaDataContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1305,7 +1305,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncoders. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1384,7 +1384,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncoder. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1442,7 +1442,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodersPool. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1744,7 +1744,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getWorkspaceList. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1900,7 +1900,7 @@ public class CatraMMSAPI {
 			else
 			{
 				mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-						username, password);
+						username, password, null);
 			}
             mLogger.info("getMediaItems. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
@@ -1966,7 +1966,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getMediaItemByMediaItemKey. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2037,7 +2037,8 @@ public class CatraMMSAPI {
             mLogger.info("mmsURL: " + mmsURL);
 
             Date now = new Date();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber, username, password);
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber, 
+				username, password, null);
             mLogger.info("getMediaItemByPhysicalPathKey. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2101,7 +2102,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getMediaItemByUniqueName. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2346,7 +2347,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getWorkspaceUsageInMB. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2398,7 +2399,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getTags. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2473,7 +2474,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getIngestionWorkflows. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2543,7 +2544,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getIngestionWorkflow. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2646,7 +2647,7 @@ public class CatraMMSAPI {
              */
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getIngestionJobs. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
 
             if (mmsInfo == null || mmsInfo.isEmpty())
@@ -2723,7 +2724,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getIngestionJob. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -2970,7 +2971,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodingJobs. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3030,7 +3031,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodingJob. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3090,7 +3091,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodingProfile. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3158,7 +3159,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodingProfiles. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3218,7 +3219,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodingProfilesSet. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3280,7 +3281,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEncodingProfilesSets. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3594,7 +3595,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getVODDeliveryURL. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3672,7 +3673,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getLiveDeliveryURL. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3778,7 +3779,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getWorkflowsLibrary. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -3846,7 +3847,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getWorkflowLibraryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -4055,7 +4056,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getYouTubeConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4222,7 +4223,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getFacebookConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4575,7 +4576,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -4639,7 +4640,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -4929,7 +4930,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getSourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -4993,7 +4994,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getSourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -5181,7 +5182,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getFTPConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
@@ -5354,7 +5355,7 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password);
+                    username, password, null);
             mLogger.info("getEMailConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)

@@ -33,7 +33,7 @@ public class HttpFeedFetcher {
     public static final String configFileName = "mpCommon.properties";
 
     static public String fetchGetHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
-                                            String user, String password)
+                                            String user, String password, String authorizationHeader)
             throws Exception
     {
         // fetchWebPage
@@ -90,7 +90,12 @@ public class HttpFeedFetcher {
                     conn.setConnectTimeout(timeoutInSeconds * 1000);
                     conn.setReadTimeout(timeoutInSeconds * 1000);
 
-                    if (user != null && password != null)
+                    if (authorizationHeader != null)
+                    {
+                        conn.setRequestProperty("Authorization", authorizationHeader);
+                        mLogger.info("Add Header, Authorization: " + authorizationHeader);
+                    }
+                    else if (user != null && password != null)
                     {
                         // String encoded = DatatypeConverter.printBase64Binary((user + ":" + password).getBytes("utf-8"));
                         String encoded = Base64.getEncoder().encodeToString((user + ":" + password).getBytes("utf-8"));
