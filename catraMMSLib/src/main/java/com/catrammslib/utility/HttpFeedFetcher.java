@@ -461,11 +461,13 @@ public class HttpFeedFetcher {
     }
 
     static public String fetchPutHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
-                                            String user, String password, String putBodyRequest)
+                                            String user, String password, String authorizationHeader,
+											String putBodyRequest)
             throws Exception
     {
         String contentType = null;
-        return fetchBodyHttpsJson("PUT", url, contentType, timeoutInSeconds, maxRetriesNumber, user, password, null, putBodyRequest);
+        return fetchBodyHttpsJson("PUT", url, contentType, timeoutInSeconds, maxRetriesNumber, 
+			user, password, authorizationHeader, putBodyRequest);
     }
 
     static public String fetchDeleteHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
