@@ -1722,7 +1722,7 @@ public class CatraMMSWorkflow {
             String contentType,
             String encodingPriority,	// Low, Medium, High 
 			// encodingProfileLabel or encodingProfileSetLabel has to be present
-			String encodingProfileLabel, String encodingProfileSetLabel,
+			String encodingProfileLabel, String encodingProfilesSetLabel,
             String encodersPool,
             Long videoTrackIndex, Long audioTrackIndex,
             List<MediaItemReference> mediaItemReferenceList,
@@ -1748,8 +1748,8 @@ public class CatraMMSWorkflow {
             joParameters.put("EncodingPriority", encodingPriority);
             if (encodingProfileLabel != null)
                 joParameters.put("EncodingProfileLabel", encodingProfileLabel);
-			else if (encodingProfileSetLabel != null)
-                joParameters.put("EncodingProfileSetLabel", encodingProfileSetLabel);
+			else if (encodingProfilesSetLabel != null)
+                joParameters.put("EncodingProfilesSetLabel", encodingProfilesSetLabel);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
