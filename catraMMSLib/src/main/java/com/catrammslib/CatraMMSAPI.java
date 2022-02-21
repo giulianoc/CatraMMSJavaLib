@@ -298,12 +298,16 @@ public class CatraMMSAPI {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
 
+			// only email and password are mandatory
 			JSONObject joObject = new JSONObject();
-			joObject.put("name", userNameToRegister);
+			if (userNameToRegister != null && !userNameToRegister.isEmpty())
+				joObject.put("name", userNameToRegister);
 			joObject.put("email", emailAddressToRegister);
 			joObject.put("password", passwordToRegister);
-			joObject.put("country", countryToRegister);
-			joObject.put("workspaceName", workspaceNameToRegister);
+			if (countryToRegister != null && !countryToRegister.isEmpty())
+				joObject.put("country", countryToRegister);
+			if (workspaceNameToRegister != null && !workspaceNameToRegister.isEmpty())
+				joObject.put("workspaceName", workspaceNameToRegister);
 
 			String postBodyRequest = joObject.toString();
 
