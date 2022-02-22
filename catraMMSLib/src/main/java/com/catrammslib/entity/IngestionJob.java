@@ -124,6 +124,20 @@ public class IngestionJob implements Serializable {
         return playable;
     }
 
+	public boolean isRunning()
+	{
+		Date now = new Date();
+
+		if (status != null && status.equalsIgnoreCase("EncodingQueued")
+			&& startProcessing != null && startProcessing.getTime() <= now.getTime()
+			&& (endProcessing == null 
+				|| now.getTime() < endProcessing.getTime())	// in case endProcessingEstimate is true
+		)
+			return true;
+		else
+			return false;
+	}
+
     @Override
 	public int hashCode() {
 		final int prime = 31;
