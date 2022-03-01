@@ -3631,6 +3631,7 @@ public class CatraMMSAPI {
 
     public String getLiveDeliveryURL(String username, String password,
                                     Long ingestionJobKey,
+                                    Long deliveryCode,
                                     Long ttlInSeconds, // if null -> 3600 * 24
                                     Long maxRetries    // if null -> 3600 * 24 / 5
     )
@@ -3670,6 +3671,7 @@ public class CatraMMSAPI {
                     + "?ttlInSeconds=" + lTtlInSeconds
                     + "&maxRetries=" + lMaxRetries
                     + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+                    + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + "&redirect=false"
                     ;
 
