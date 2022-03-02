@@ -3335,12 +3335,21 @@ public class CatraMMSAPI {
             throws Exception
     {
         String mmsInfo;
-        Map<String, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMap = new HashMap<>();
-        Map<Long, BulkOfDeliveryURLData> liveBulkOfDeliveryURLDataMap = new HashMap<>();
+        Map<String, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByUniqueName = new HashMap<>();
+        Map<Long, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByMediaItemKey = new HashMap<>();
+        Map<Long, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByLiveIngestionJobKey = new HashMap<>();
         try
         {
             /*
             {
+                "mediaItemKeyList" : [
+                    {
+                        "mediaItemKey": 123,
+                        "encodingProfileKey": 123,
+						"encodingProfileLabel": "..."
+                    },
+                    ...
+                ],
                 "uniqueNameList" : [
                     {
                         "uniqueName": "...",
@@ -3360,7 +3369,10 @@ public class CatraMMSAPI {
 
             JSONObject joDeliveryAuthorizationDetails = new JSONObject();
             {
-                JSONArray jaUniqueNameList = new JSONArray();
+                JSONArray jaMediaItemList = new JSONArray();
+                joDeliveryAuthorizationDetails.put("mediaItemKeyList", jaMediaItemList);
+
+				JSONArray jaUniqueNameList = new JSONArray();
                 joDeliveryAuthorizationDetails.put("uniqueNameList", jaUniqueNameList);
 
                 JSONArray jaLiveIngestionJobKeyList = new JSONArray();
@@ -3368,7 +3380,21 @@ public class CatraMMSAPI {
 
                 for (BulkOfDeliveryURLData bulkOfDeliveryURLData: bulkOfDeliveryURLDataList)
                 {
-                    if (bulkOfDeliveryURLData.getUniqueName() != null)
+                    if (bulkOfDeliveryURLData.getMediaItemKey() != null)
+                    {
+                        JSONObject joMediaItemKey = new JSONObject();
+                        jaMediaItemList.put(joMediaItemKey);
+
+                        joMediaItemKey.put("mediaItemKey", bulkOfDeliveryURLData.getMediaItemKey());
+						if (bulkOfDeliveryURLData.getEncodingProfileKey() != null
+							&& bulkOfDeliveryURLData.getEncodingProfileKey() != -1)
+							joMediaItemKey.put("encodingProfileKey", bulkOfDeliveryURLData.getEncodingProfileKey());
+						else
+							joMediaItemKey.put("encodingProfileLabel", bulkOfDeliveryURLData.getEncodingProfileLabel());
+
+                        bulkOfDeliveryURLDataMapByMediaItemKey.put(bulkOfDeliveryURLData.getMediaItemKey(), bulkOfDeliveryURLData);
+                    }
+                    else if (bulkOfDeliveryURLData.getUniqueName() != null)
                     {
                         JSONObject joUniqueName = new JSONObject();
                         jaUniqueNameList.put(joUniqueName);
@@ -3380,7 +3406,7 @@ public class CatraMMSAPI {
 						else
 							joUniqueName.put("encodingProfileLabel", bulkOfDeliveryURLData.getEncodingProfileLabel());
 
-                        bulkOfDeliveryURLDataMap.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
+                        bulkOfDeliveryURLDataMapByUniqueName.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
                     }
                     else if (bulkOfDeliveryURLData.getLiveIngestionJobKey() != null)
                     {
@@ -3391,7 +3417,7 @@ public class CatraMMSAPI {
                         if (bulkOfDeliveryURLData.getLiveDeliveryCode() != null)
                             joLiveIngestionJobKey.put("deliveryCode", bulkOfDeliveryURLData.getLiveDeliveryCode());
 
-                        liveBulkOfDeliveryURLDataMap.put(bulkOfDeliveryURLData.getLiveIngestionJobKey(), bulkOfDeliveryURLData);
+                        bulkOfDeliveryURLDataMapByLiveIngestionJobKey.put(bulkOfDeliveryURLData.getLiveIngestionJobKey(), bulkOfDeliveryURLData);
                     }
                 }
             }
@@ -3446,7 +3472,24 @@ public class CatraMMSAPI {
              }
              */
 
-            if (joDeliveryURLList.has("uniqueNameList"))
+            if (joDeliveryURLList.has("mediaItemKeyList"))
+            {
+                JSONArray jaMediaItemKeyList = joDeliveryURLList.getJSONArray("mediaItemKeyList");
+                for (int mediaItemKeyIndex = 0; mediaItemKeyIndex < jaMediaItemKeyList.length(); mediaItemKeyIndex++)
+                {
+                    JSONObject joMediaItemKey = jaMediaItemKeyList.getJSONObject(mediaItemKeyIndex);
+
+                    if (joMediaItemKey.has("mediaItemKey") && joMediaItemKey.has("deliveryURL")
+                        && !joMediaItemKey.isNull("mediaItemKey") && !joMediaItemKey.isNull("deliveryURL"))
+                    {
+                        BulkOfDeliveryURLData bulkOfDeliveryURLData
+                                = bulkOfDeliveryURLDataMapByMediaItemKey.get(joMediaItemKey.getLong("mediaItemKey"));
+                        bulkOfDeliveryURLData.setDeliveryURL(joMediaItemKey.getString("deliveryURL"));
+                    }
+                }
+            }
+
+			if (joDeliveryURLList.has("uniqueNameList"))
             {
                 JSONArray jaUniqueNameList = joDeliveryURLList.getJSONArray("uniqueNameList");
                 for (int uniqueNameIndex = 0; uniqueNameIndex < jaUniqueNameList.length(); uniqueNameIndex++)
@@ -3457,7 +3500,7 @@ public class CatraMMSAPI {
                         && !joUniqueName.isNull("uniqueName") && !joUniqueName.isNull("deliveryURL"))
                     {
                         BulkOfDeliveryURLData bulkOfDeliveryURLData
-                                = bulkOfDeliveryURLDataMap.get(joUniqueName.getString("uniqueName"));
+                                = bulkOfDeliveryURLDataMapByUniqueName.get(joUniqueName.getString("uniqueName"));
                         bulkOfDeliveryURLData.setDeliveryURL(joUniqueName.getString("deliveryURL"));
                     }
                 }
@@ -3474,7 +3517,7 @@ public class CatraMMSAPI {
                             && !joLiveIngestionJobKey.isNull("ingestionJobKey") && !joLiveIngestionJobKey.isNull("deliveryURL"))
                     {
                         BulkOfDeliveryURLData bulkOfDeliveryURLData
-                                = liveBulkOfDeliveryURLDataMap.get(joLiveIngestionJobKey.getLong("ingestionJobKey"));
+                                = bulkOfDeliveryURLDataMapByLiveIngestionJobKey.get(joLiveIngestionJobKey.getLong("ingestionJobKey"));
                         bulkOfDeliveryURLData.setDeliveryURL(joLiveIngestionJobKey.getString("deliveryURL"));
                     }
                 }
