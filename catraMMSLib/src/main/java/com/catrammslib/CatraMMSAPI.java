@@ -2384,7 +2384,7 @@ public class CatraMMSAPI {
 
     public Long getTags(String username, String password,
                         long startIndex, long pageSize, String contentType,
-                        List<String> tagsList)
+                        String tagNameFilter, List<String> tagsList)
             throws Exception
     {
         Long numFound;
@@ -2392,12 +2392,12 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/tag"
-                    + "?start=" + startIndex
-                    + "&rows=" + pageSize
-                    + "&contentType=" + (contentType == null ? "" : contentType)
-                    ;
+				+ "?start=" + startIndex
+				+ "&rows=" + pageSize
+				+ "&contentType=" + (contentType == null ? "" : contentType)
+				+ (tagNameFilter != null ? ("&tagNameFilter=" + tagNameFilter) : "")
+            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
