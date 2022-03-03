@@ -2384,7 +2384,7 @@ public class CatraMMSAPI {
 
     public Long getTags(String username, String password,
                         long startIndex, long pageSize, String contentType,
-                        String tagNameFilter, List<String> tagsList)
+                        Boolean bLiveRecordingChunk, String tagNameFilter, List<String> tagsList)
             throws Exception
     {
         Long numFound;
@@ -2392,9 +2392,19 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/tag"
+            String liveRecordingChunkParameter = "";
+            if (bLiveRecordingChunk != null)
+            {
+                if (bLiveRecordingChunk == true)
+                    liveRecordingChunkParameter = "&liveRecordingChunk=true";
+                else
+                    liveRecordingChunkParameter = "&liveRecordingChunk=false";
+            }
+
+			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/tag"
 				+ "?start=" + startIndex
 				+ "&rows=" + pageSize
+				+ liveRecordingChunkParameter
 				+ "&contentType=" + (contentType == null ? "" : contentType)
 				+ (tagNameFilter != null ? ("&tagNameFilter=" + tagNameFilter) : "")
             ;
