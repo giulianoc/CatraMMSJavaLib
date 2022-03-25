@@ -399,7 +399,78 @@ public class CatraMMSAPI {
         return apiKey;
     }
 
-    public List<Object> login(boolean ldapEnabled, String username, String password, String remoteClientIPAddress)
+    public void forgotPassword(String email)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+            	+ "/catramms/1.0.1/user/password/reset"
+				+ "?email=" + java.net.URLEncoder.encode(email, "UTF-8") // requires unescape server side
+			;
+
+            String username = null;
+            String password = null;
+
+            mLogger.info("forgotPassword"
+                + ", mmsURL: " + mmsURL
+            );
+
+            Date now = new Date();
+            String contentType = null;
+			// 2022-01-03: it has to be GET because same link is sent inside the email
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, null);
+            mLogger.info("forgotPassword. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "forgotPassword failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void resetPassword(String resetPasswordToken, String newPassword)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+            	+ "/catramms/1.0.1/user/password/reset"
+			;
+
+			JSONObject joObject = new JSONObject();
+			joObject.put("resetPasswordToken", resetPasswordToken);
+			joObject.put("newPassword", newPassword);
+
+			String postBodyRequest = joObject.toString();
+
+			String username = null;
+            String password = null;
+
+            mLogger.info("forgotPassword"
+                + ", mmsURL: " + mmsURL
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, postBodyRequest);
+            mLogger.info("resetPassword. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "resetPassword failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+	public List<Object> login(boolean ldapEnabled, String username, String password, String remoteClientIPAddress)
             throws Exception
     {
         String mmsInfo;
@@ -497,12 +568,13 @@ public class CatraMMSAPI {
     }
 
     public UserProfile updateUserProfile(String username, String password,
-                                         String newName,
-                                         String newEmailAddress,
-                                         String newCountry,
-                                         String oldPassword,
-                                         String newPassword)
-            throws Exception
+		String newName,
+		String newEmailAddress,
+		String newCountry,
+		Date newExpirationDate,	// backend update this field only if you are an admin
+		String oldPassword,
+		String newPassword)
+		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -523,6 +595,8 @@ public class CatraMMSAPI {
 				joUser.put("oldPassword", oldPassword);
 			if (newCountry != null)
 				joUser.put("country", newCountry);
+			if (newExpirationDate != null)
+				joUser.put("expirationDate", simpleDateFormat.format(newExpirationDate));
 
 			String bodyRequest = joUser.toString();
 

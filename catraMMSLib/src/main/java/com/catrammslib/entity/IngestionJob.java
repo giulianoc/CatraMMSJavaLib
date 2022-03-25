@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.lang.model.util.ElementScanner6;
+
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -12,7 +14,7 @@ import org.json.JSONObject;
 /**
  * Created by multi on 09.06.18.
  */
-public class IngestionJob implements Serializable {
+public class IngestionJob implements Serializable, Comparable {
 
     private final Logger mLogger = Logger.getLogger(IngestionJob.class);
 
@@ -161,6 +163,35 @@ public class IngestionJob implements Serializable {
 		} else if (!ingestionJobKey.equals(other.ingestionJobKey))
 			return false;
 		return true;
+	}
+
+	@Override
+	public int compareTo(Object obj) 
+	{
+		IngestionJob other = (IngestionJob) obj;
+
+		if (recordingPeriodStart != null 
+			&& other.getRecordingPeriodStart() != null)
+		{
+			if (recordingPeriodStart.getTime() < other.getRecordingPeriodStart().getTime())
+				return -1;
+			else if (recordingPeriodStart.getTime() > other.getRecordingPeriodStart().getTime())
+				return 1;
+			else
+				return 0;
+		}
+		else if (proxyPeriodStart != null 
+			&& other.getProxyPeriodStart() != null)
+		{
+			if (proxyPeriodStart.getTime() < other.getProxyPeriodStart().getTime())
+				return -1;
+			else if (proxyPeriodStart.getTime() > other.getProxyPeriodStart().getTime())
+				return 1;
+			else
+				return 0;
+		}
+		else
+			return 0;
 	}
 
 	public Date getIngestionDate() {
