@@ -1,9 +1,14 @@
 package com.catrammslib.utility;
 
 import java.io.Serializable;
+import org.apache.log4j.Logger;
+
+import org.json.JSONObject;
 
 public class LiveProxyOutput implements Serializable {
     
+    private static final Logger mLogger = Logger.getLogger(LiveProxyOutput.class);
+
 	// RTMP_Stream, HLS, UDP_Stream
 	private String outputType;
 	// RTMP_Stream
@@ -34,6 +39,50 @@ public class LiveProxyOutput implements Serializable {
 		fadeDuration = null;
 	}
 	
+	public JSONObject toJson()
+	{
+		JSONObject joOutput = new JSONObject();
+
+		try
+		{
+			joOutput.put("OutputType", getOutputType());
+			if (getOutputType().equalsIgnoreCase("RTMP_Stream"))
+			{
+				joOutput.put("RtmpUrl", getRtmpURL());
+				if (getPlayURL() != null && !getPlayURL().isEmpty())
+					joOutput.put("PlayUrl", getPlayURL());
+				if (getAwsChannelIdToBeManaged() != null && !getAwsChannelIdToBeManaged().isEmpty())
+					joOutput.put("awsChannelIdToBeManaged", getAwsChannelIdToBeManaged());
+			}
+			else if (getOutputType().equalsIgnoreCase("UDP_Stream"))
+				joOutput.put("udpUrl", getUdpURL());
+			else
+			{
+				joOutput.put("DeliveryCode", getDeliveryCode());
+				if (getSegmentDurationInSeconds() != null)
+					joOutput.put("SegmentDurationInSeconds", getSegmentDurationInSeconds());
+			}
+	
+			if (getEncodingProfileLabel() != null)
+				joOutput.put("EncodingProfileLabel", getEncodingProfileLabel());
+	
+			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
+				joOutput.put("OtherOutputOptions", getOtherOutputOptions());
+	
+			if (getAudioVolumeChange() != null && !getAudioVolumeChange().isEmpty())
+				joOutput.put("AudioVolumeChange", getAudioVolumeChange());
+
+			if (getFadeDuration() != null)
+				joOutput.put("fadeDuration", getFadeDuration());
+		}
+		catch(Exception e)
+		{
+			mLogger.error("Exception: " + e);
+		}
+		
+		return joOutput;
+	}
+
     public String getOutputType() {
         return outputType;
     }

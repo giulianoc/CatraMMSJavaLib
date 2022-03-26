@@ -296,33 +296,8 @@ public class CatraMMSWorkflow {
 
                 for(LiveProxyOutput liveProxyOutput: liveRecorderOutputList)
                 {
-                    JSONObject joOutput = new JSONObject();
+                    JSONObject joOutput = liveProxyOutput.toJson();
                     jaOutputs.put(joOutput);
-
-                    joOutput.put("OutputType", liveProxyOutput.getOutputType());
-                    if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
-					{
-                        joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
-						if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
-    	                	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
-					}
-					else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
-	                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
-                    else
-                    {
-                        joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
-                        if (liveProxyOutput.getSegmentDurationInSeconds() != null)
-                            joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
-                    }
-
-                    if (liveProxyOutput.getEncodingProfileLabel() != null)
-                        joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
-
-                    if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
-                        joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
-
-                    if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
-                        joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
                 }
             }
 
@@ -412,36 +387,8 @@ public class CatraMMSWorkflow {
 
             for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
             {
-                JSONObject joOutput = new JSONObject();
+				JSONObject joOutput = liveProxyOutput.toJson();
                 jaOutputs.put(joOutput);
-
-                joOutput.put("OutputType", liveProxyOutput.getOutputType());
-                if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
-				{
-                    joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
-					if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
-                    	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
-				}
-				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
-                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
-                else
-                {
-                    joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
-                    if (liveProxyOutput.getSegmentDurationInSeconds() != null)
-                        joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
-                }
-
-                if (liveProxyOutput.getEncodingProfileLabel() != null)
-                    joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
-
-                if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
-                    joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
-
-                if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
-                    joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
-
-				if (liveProxyOutput.getFadeDuration() != null)
-                    joOutput.put("fadeDuration", liveProxyOutput.getFadeDuration());
             }
 
 			if (joInternalMMSParameters != null)
@@ -520,36 +467,8 @@ public class CatraMMSWorkflow {
 
             for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
             {
-                JSONObject joOutput = new JSONObject();
+				JSONObject joOutput = liveProxyOutput.toJson();
                 jaOutputs.put(joOutput);
-
-                joOutput.put("OutputType", liveProxyOutput.getOutputType());
-                if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
-				{
-                    joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
-					if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
-                    	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
-				}
-				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
-                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
-                else
-                {
-                    joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
-                    if (liveProxyOutput.getSegmentDurationInSeconds() != null)
-                        joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
-                }
-
-                if (liveProxyOutput.getEncodingProfileLabel() != null)
-                    joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
-
-                if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
-                    joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
-
-                if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
-                    joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
-
-				if (liveProxyOutput.getFadeDuration() != null)
-                    joOutput.put("fadeDuration", liveProxyOutput.getFadeDuration());
 			}
 
 
@@ -656,36 +575,8 @@ public class CatraMMSWorkflow {
 
             for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
             {
-                JSONObject joOutput = new JSONObject();
+				JSONObject joOutput = liveProxyOutput.toJson();
                 jaOutputs.put(joOutput);
-
-                joOutput.put("OutputType", liveProxyOutput.getOutputType());
-                if (liveProxyOutput.getOutputType().equalsIgnoreCase("RTMP_Stream"))
-				{
-                    joOutput.put("RtmpUrl", liveProxyOutput.getRtmpURL());
-					if (liveProxyOutput.getPlayURL() != null && !liveProxyOutput.getPlayURL().isEmpty())
-                    	joOutput.put("PlayUrl", liveProxyOutput.getPlayURL());
-				}
-				else if (liveProxyOutput.getOutputType().equalsIgnoreCase("UDP_Stream"))
-                    joOutput.put("udpUrl", liveProxyOutput.getUdpURL());
-                else
-                {
-                    joOutput.put("DeliveryCode", liveProxyOutput.getDeliveryCode());
-                    if (liveProxyOutput.getSegmentDurationInSeconds() != null)
-                        joOutput.put("SegmentDurationInSeconds", liveProxyOutput.getSegmentDurationInSeconds());
-                }
-
-                if (liveProxyOutput.getEncodingProfileLabel() != null)
-                    joOutput.put("EncodingProfileLabel", liveProxyOutput.getEncodingProfileLabel());
-
-                if (liveProxyOutput.getOtherOutputOptions() != null && !liveProxyOutput.getOtherOutputOptions().isEmpty())
-                    joOutput.put("OtherOutputOptions", liveProxyOutput.getOtherOutputOptions());
-
-                if (liveProxyOutput.getAudioVolumeChange() != null && !liveProxyOutput.getAudioVolumeChange().isEmpty())
-                    joOutput.put("AudioVolumeChange", liveProxyOutput.getAudioVolumeChange());
-
-				if (liveProxyOutput.getFadeDuration() != null)
-                    joOutput.put("fadeDuration", liveProxyOutput.getFadeDuration());
             }
 
 
