@@ -17,6 +17,9 @@ public class LiveProxyOutput implements Serializable {
 	// HLS
     private Long segmentDurationInSeconds;
 
+	// RTMP_Stream
+	private String awsChannelIdToBeManaged;	// to be started/stopped
+
 	// RTMP_Stream, HLS
 	private String otherOutputOptions;
 	// RTMP_Stream, HLS
@@ -53,6 +56,14 @@ public class LiveProxyOutput implements Serializable {
 
 	public void setUdpURL(String udpURL) {
 		this.udpURL = udpURL;
+	}
+
+	public String getAwsChannelIdToBeManaged() {
+		return awsChannelIdToBeManaged;
+	}
+
+	public void setAwsChannelIdToBeManaged(String awsChannelIdToBeManaged) {
+		this.awsChannelIdToBeManaged = awsChannelIdToBeManaged;
 	}
 
 	public String getRtmpURL() {
