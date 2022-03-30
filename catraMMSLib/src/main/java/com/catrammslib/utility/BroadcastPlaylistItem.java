@@ -1,6 +1,7 @@
 package com.catrammslib.utility;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -26,8 +27,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private String streamConfigurationLabel;	// in case of Stream
 	private Stream stream;			// got from streamConfigurationLabel
 
-	private Long physicalPathKey;				// in case of Media, Countdown
-	private MediaItem mediaItem;				// got from physicalPathKey
+	private List<Long> physicalPathKeys = new ArrayList<>();		// in case of Media
+	private Long physicalPathKey;									// in case of Countdown
+	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
 	private String text;						// in case of Countdown
 	private String textPosition_X_InPixel;		// in case of Countdown
 	private String textPosition_Y_InPixel;		// in case of Countdown
@@ -70,9 +72,21 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		if (mediaType.equals("Stream"))
 			str = streamConfigurationLabel;
 		else if (mediaType.equals("Media"))
-			str = physicalPathKey.toString() + (mediaItem != null ? (" - " + mediaItem.getTitle()) : "");
+		{
+			for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < physicalPathKeys.size(); physicalPathKeyIndex++)
+			{
+				Long localPhysicalPathKey = physicalPathKeys.get(physicalPathKeyIndex);
+				MediaItem mediaItem = mediaItems.get(physicalPathKeyIndex);
+
+				if (str != "")
+					str += " / ";
+				str += (localPhysicalPathKey.toString() + (mediaItem != null ? (": " + mediaItem.getTitle()) : ""));
+			}
+		}
 		else if (mediaType.equals("Countdown"))
+		{
 			str = physicalPathKey.toString() + " - " + text;
+		}
 		else if (mediaType.equals("Direct URL"))
 			str = url;
 
@@ -93,12 +107,31 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			}
 			else if (mediaType.equals("Media"))
 			{
-				if (physicalPathKey.longValue() != joBroadcastPlaylistItem.getLong("physicalPathKey"))
+				if (!joBroadcastPlaylistItem.has("physicalPathKeys"))
 					return false;
+
+				JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
+
+				if (physicalPathKeys.size() != jaPhysicalPathKeys.length())
+					return false;
+
+				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < physicalPathKeys.size(); physicalPathKeyIndex++)
+				{
+					Long physicalPathKey_1 = physicalPathKeys.get(physicalPathKeyIndex);
+					Long physicalPathKey_2 = jaPhysicalPathKeys.getLong(physicalPathKeyIndex);
+
+					if (physicalPathKey_1.longValue() != physicalPathKey_2.longValue())
+						return false;
+				}
 			}
 			else if (mediaType.equals("Countdown"))
 			{
-				if (physicalPathKey.longValue() != joBroadcastPlaylistItem.getLong("physicalPathKey")
+				if (!joBroadcastPlaylistItem.has("physicalPathKey"))
+					return false;
+
+				Long localPhysicalPathKey = joBroadcastPlaylistItem.getLong("physicalPathKey");
+
+				if (physicalPathKey.longValue() != localPhysicalPathKey.longValue()
 					|| !text.equals(joBroadcastPlaylistItem.getString("text"))
 					|| !textPosition_X_InPixel.equals(joBroadcastPlaylistItem.getString("textPosition_X_InPixel"))
 					|| !textPosition_Y_InPixel.equals(joBroadcastPlaylistItem.getString("textPosition_Y_InPixel"))
@@ -138,7 +171,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			if (mediaType.equalsIgnoreCase("Stream"))
 				joBroadcastPlaylistItem.put("streamConfigurationLabel", streamConfigurationLabel);
 			else if (mediaType.equalsIgnoreCase("Media"))
-				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
+			{
+				JSONArray jaPhysicalPathKeys = new JSONArray();
+				joBroadcastPlaylistItem.put("physicalPathKeys", jaPhysicalPathKeys);
+
+				for (Long localPhysicalPathKey: physicalPathKeys)
+					jaPhysicalPathKeys.put(localPhysicalPathKey);
+			}
 			else if (mediaType.equalsIgnoreCase("Countdown"))
 			{
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
@@ -172,7 +211,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
 				broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
-				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
+			{
+				if (joBroadcastPlaylistItem.has("physicalPathKeys"))
+				{
+					JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
+					for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaPhysicalPathKeys.length(); physicalPathKeyIndex++)
+						broadcastPlaylistItem.addPhysicalPathKey(jaPhysicalPathKeys.getLong(physicalPathKeyIndex));
+				}
+			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
 			{
 				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
@@ -213,17 +259,24 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public void setPhysicalPathKey(Long physicalPathKey) {
-		this.physicalPathKey = physicalPathKey;
+	public void addPhysicalPathKey(Long physicalPathKey)
+	{
+		physicalPathKeys.add(physicalPathKey);
 
 		try
 		{
-			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
+			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
+			mediaItems.add(mediaItem);
 		}
 		catch (Exception e)
 		{
 			mLogger.error("Exception: " + e.getMessage());
 		}
+	}
+
+	public void setPhysicalPathKey(Long physicalPathKey) 
+	{
+		this.physicalPathKey = physicalPathKey;
 	}
 
 	public String getStreamConfigurationLabel() {
@@ -247,6 +300,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		this.timestamp = timestamp;
 	}
 
+
+	public List<Long> getPhysicalPathKeys() {
+		return physicalPathKeys;
+	}
+
+	public void setPhysicalPathKeys(List<Long> physicalPathKeys) {
+		this.physicalPathKeys = physicalPathKeys;
+	}
 
 	public String getText() {
 		return text;
