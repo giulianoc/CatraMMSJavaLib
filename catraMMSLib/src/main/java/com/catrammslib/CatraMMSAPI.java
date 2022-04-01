@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import com.catrammslib.entity.AWSChannelConf;
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
 import com.catrammslib.entity.Stream;
@@ -5181,6 +5182,177 @@ public class CatraMMSAPI {
         return stream;
     }
 
+    public void addAWSChannelConf(String username, String password,
+        String label, String channelId, String rtmpURL, String playURL, String type)
+ 		throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonAWSChannelConf;
+            {
+                JSONObject joAWSChannelConf = new JSONObject();
+
+                joAWSChannelConf.put("label", label);
+                joAWSChannelConf.put("channelId", channelId);
+                joAWSChannelConf.put("rtmpURL", rtmpURL);
+                joAWSChannelConf.put("playURL", playURL);
+                joAWSChannelConf.put("type", type);
+
+                jsonAWSChannelConf = joAWSChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel";
+
+            mLogger.info("addAWSChannelConf"
+                            + ", mmsURL: " + mmsURL
+                            + ", jsonAWSChannelConf: " + jsonAWSChannelConf
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonAWSChannelConf);
+            mLogger.info("addAWSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addAWSChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifyAWSChannelConf(String username, String password,
+        Long confKey, String label, String channelId, String rtmpURL, String playURL, String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonAWSChannelConf;
+            {
+                JSONObject joAWSChannelConf = new JSONObject();
+
+                joAWSChannelConf.put("label", label);
+                joAWSChannelConf.put("channelId", channelId);
+                joAWSChannelConf.put("rtmpURL", rtmpURL);
+                joAWSChannelConf.put("playURL", playURL);
+                joAWSChannelConf.put("type", type);
+
+                jsonAWSChannelConf = joAWSChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel/" + confKey;
+
+            mLogger.info("modifyAWSChannelConf"
+                            + ", mmsURL: " + mmsURL
+                            + ", jsonAWSChannelConf: " + jsonAWSChannelConf
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonAWSChannelConf);
+            mLogger.info("modifyAWSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyAWSChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeAWSChannelConf(String username, String password,
+        Long confKey)
+        throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel/" + confKey;
+
+            mLogger.info("removeAWSChannelConf"
+                + ", mmsURL: " + mmsURL
+                + ", confKey: " + confKey
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("removeAWSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeAWSChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<AWSChannelConf> getAWSChannelConf(String username, String password)
+            throws Exception
+    {
+        List<AWSChannelConf> awsChannelConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel";
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("getAWSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaAWSChannelConf = joResponse.getJSONArray("awsChannelConf");
+
+            mLogger.info("jaAWSChannelConf.length(): " + jaAWSChannelConf.length());
+
+            awsChannelConfList.clear();
+
+            for (int confIndex = 0; confIndex < jaAWSChannelConf.length(); confIndex++)
+            {
+                AWSChannelConf awsChannelConf = new AWSChannelConf();
+
+                JSONObject awsChannelConfInfo = jaAWSChannelConf.getJSONObject(confIndex);
+
+                fillAWSChannelConf(awsChannelConf, awsChannelConfInfo);
+
+                awsChannelConfList.add(awsChannelConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing awsChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return awsChannelConfList;
+    }
+
     public void addFTPConf(String username, String password,
                                String label, String ftpServer,
                            Long ftpPort, String ftpUserName, String ftpPassword,
@@ -6952,6 +7124,30 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "fillWorkflowLibrary failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillAWSChannelConf(AWSChannelConf awsChannelConf, JSONObject awsChannelConfInfo)
+            throws Exception
+    {
+        try {
+            awsChannelConf.setConfKey(awsChannelConfInfo.getLong("confKey"));
+            awsChannelConf.setLabel(awsChannelConfInfo.getString("label"));
+            awsChannelConf.setChannelId(awsChannelConfInfo.getString("channelId"));
+            awsChannelConf.setRtmpURL(awsChannelConfInfo.getString("rtmpURL"));
+            awsChannelConf.setPlayURL(awsChannelConfInfo.getString("playURL"));
+            awsChannelConf.setType(awsChannelConfInfo.getString("type"));
+			if (awsChannelConfInfo.isNull("reservedByIngestionJobKey"))
+				awsChannelConf.setReservedByIngestionJobKey(null);
+			else
+				awsChannelConf.setReservedByIngestionJobKey(awsChannelConfInfo.getLong("reservedByIngestionJobKey"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillAWSChannelConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
