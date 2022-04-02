@@ -101,7 +101,9 @@ public class IngestionJob implements Serializable, Comparable {
 
 								break;
 							}
-							else if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream")
+							else if (joOutput.has("OutputType") && 
+								(joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream") 
+									|| joOutput.getString("OutputType").equalsIgnoreCase("AWS_CHANNEL"))
 								&& joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
 								)
 							{
