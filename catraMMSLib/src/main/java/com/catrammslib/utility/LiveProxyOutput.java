@@ -9,7 +9,7 @@ public class LiveProxyOutput implements Serializable {
     
     private static final Logger mLogger = Logger.getLogger(LiveProxyOutput.class);
 
-	// RTMP_Stream, HLS, UDP_Stream
+	// RTMP_Stream, AWS_CHANNEL, HLS, UDP_Stream
 	private String outputType;
 	// RTMP_Stream
     private String rtmpURL;
@@ -22,8 +22,10 @@ public class LiveProxyOutput implements Serializable {
 	// HLS
     private Long segmentDurationInSeconds;
 
-	// RTMP_Stream
-	private String awsChannelIdToBeManaged;	// to be started/stopped
+	// AWS_CHANNEL
+	private String awsChannelConfigurationLabel;	// to be started/stopped
+	// AWS_CHANNEL
+	private Boolean awsSignedURL;
 
 	// RTMP_Stream, HLS
 	private String otherOutputOptions;
@@ -51,8 +53,13 @@ public class LiveProxyOutput implements Serializable {
 				joOutput.put("RtmpUrl", getRtmpURL());
 				if (getPlayURL() != null && !getPlayURL().isEmpty())
 					joOutput.put("PlayUrl", getPlayURL());
-				if (getAwsChannelIdToBeManaged() != null && !getAwsChannelIdToBeManaged().isEmpty())
-					joOutput.put("awsChannelIdToBeManaged", getAwsChannelIdToBeManaged());
+			}
+			else if (getOutputType().equalsIgnoreCase("AWS_CHANNEL"))
+			{
+				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isEmpty())
+					joOutput.put("awsChannelConfigurationLabel", getAwsChannelConfigurationLabel());
+				if (getAwsSignedURL() != null)
+					joOutput.put("awsSignedURL", getAwsSignedURL());
 			}
 			else if (getOutputType().equalsIgnoreCase("UDP_Stream"))
 				joOutput.put("udpUrl", getUdpURL());
@@ -107,12 +114,22 @@ public class LiveProxyOutput implements Serializable {
 		this.udpURL = udpURL;
 	}
 
-	public String getAwsChannelIdToBeManaged() {
-		return awsChannelIdToBeManaged;
+
+	public String getAwsChannelConfigurationLabel() {
+		return awsChannelConfigurationLabel;
 	}
 
-	public void setAwsChannelIdToBeManaged(String awsChannelIdToBeManaged) {
-		this.awsChannelIdToBeManaged = awsChannelIdToBeManaged;
+	public void setAwsChannelConfigurationLabel(String awsChannelConfigurationLabel) {
+		this.awsChannelConfigurationLabel = awsChannelConfigurationLabel;
+	}
+
+
+	public Boolean getAwsSignedURL() {
+		return awsSignedURL;
+	}
+
+	public void setAwsSignedURL(Boolean awsSignedURL) {
+		this.awsSignedURL = awsSignedURL;
 	}
 
 	public String getRtmpURL() {
