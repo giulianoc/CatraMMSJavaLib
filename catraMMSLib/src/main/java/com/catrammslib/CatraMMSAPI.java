@@ -5869,29 +5869,7 @@ public class CatraMMSAPI {
             else
                 encodingJob.setProgress(encodingJobInfo.getLong("progress"));
 
-            // end processing estimation
-            {
-                encodingJob.setEndEstimate(false);
-
-                Date now = new Date();
-
-                if (encodingJob.getEnd() == null
-                        && encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
-                        && encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
-                {
-                    Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
-
-                    // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-                    Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
-
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(encodingJob.getStart());
-                    calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
-
-                    encodingJob.setEndEstimate(true);
-                    encodingJob.setEnd(calendar.getTime());
-                }
-            }
+			encodingJob.setEndEstimate(false);
 
             if (encodingJobInfo.isNull("failuresNumber"))
                 encodingJob.setFailuresNumber(null);
@@ -5906,6 +5884,28 @@ public class CatraMMSAPI {
                 if (encodingJob.getType().equalsIgnoreCase("EncodeVideoAudio")
                         || encodingJob.getType().equalsIgnoreCase("EncodeImage"))
                 {
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
                     if (joParameters.getJSONArray("sourcesToBeEncodedRoot").length() > 0)
                         encodingJob.setSourcePhysicalPathKey(
@@ -5914,50 +5914,273 @@ public class CatraMMSAPI {
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("OverlayImageOnVideo"))
                 {
-                    encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
                     encodingJob.setSourceImagePhysicalPathKey(joParameters.getLong("sourceImagePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("OverlayTextOnVideo"))
                 {
-                    encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("GenerateFrames")
                         )
                 {
-                    encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("FaceRecognition")
                 )
                 {
-                    if (joParameters.has("sourceVideoPhysicalPathKey"))
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					if (joParameters.has("sourceVideoPhysicalPathKey"))
                         encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("LiveGrid")
+                )
+                {
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setInputChannels(joParameters.getJSONArray("inputChannels").toString());
+                    encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
+                    // encodingJob.setDeliveryCode(joParameters.getLong("deliveryCode"));
+                    encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("VideoSpeed")
+                )
+                {
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("PictureInPicture"))
+                {
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
+                    encodingJob.setOverlayVideoPhysicalPathKey(joParameters.getLong("overlayVideoPhysicalPathKey"));
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("IntroOutroOverlay"))
+                {
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setIntroVideoPhysicalPathKey(joParameters.getLong("introVideoPhysicalPathKey"));
+                    encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
+                    encodingJob.setOutroVideoPhysicalPathKey(joParameters.getLong("outroVideoPhysicalPathKey"));
+                }
+                else if (encodingJob.getType().equalsIgnoreCase("CutFrameAccurate"))
+                {
+					// end processing estimation
+					{
+						Date now = new Date();
+
+						if (encodingJob.getEnd() == null
+								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
+
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(encodingJob.getStart());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+							encodingJob.setEndEstimate(true);
+							encodingJob.setEnd(calendar.getTime());
+						}
+					}
+
+					encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
+                    encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("LiveRecorder")
                 )
                 {
-                    if (joParameters.has("liveURL"))    // previous one
+					if (joParameters.has("liveURL"))    // previous one
                         encodingJob.setLiveURL(joParameters.getString("liveURL"));
                     else if (joParameters.has("url"))   // new one
                         encodingJob.setLiveURL(joParameters.getString("url"));
                     encodingJob.setOutputFileFormat(joParameters.getString("outputFileFormat"));
                     encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
+					
 					if (joParameters.has("utcScheduleEnd"))
                     	encodingJob.setRecordingPeriodEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
 					if (joParameters.has("utcScheduleStart"))
 						encodingJob.setRecordingPeriodStart(new Date(1000 * joParameters.getLong("utcScheduleStart")));
-                }
-                else if (encodingJob.getType().equalsIgnoreCase("LiveGrid")
-                )
-                {
-                    encodingJob.setInputChannels(joParameters.getJSONArray("inputChannels").toString());
-                    encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    // encodingJob.setDeliveryCode(joParameters.getLong("deliveryCode"));
-                    encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
+
+					encodingJob.setEndEstimate(true);
+					encodingJob.setEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("LiveProxy")
                 )
                 {
-                    if (joParameters.has("inputsRoot"))
+					if (joParameters.has("inputsRoot"))
 					{
 						JSONArray jaInputsRoot = joParameters.getJSONArray("inputsRoot");
 						if (jaInputsRoot.length() > 0)
@@ -5975,6 +6198,13 @@ public class CatraMMSAPI {
 							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
 								&& joLastInputRoot.has("utcScheduleEnd"))
 								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
+
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
+								&& joLastInputRoot.has("utcScheduleEnd"))
+							{
+								encodingJob.setEndEstimate(true);
+								encodingJob.setEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
+							}
 						}
 					}
 
@@ -6000,7 +6230,7 @@ public class CatraMMSAPI {
                 else if (encodingJob.getType().equalsIgnoreCase("VODProxy")
                 )
                 {
-                    if (joParameters.has("inputsRoot"))
+					if (joParameters.has("inputsRoot"))
 					{
 						JSONArray jaInputsRoot = joParameters.getJSONArray("inputsRoot");
 						if (jaInputsRoot.length() > 0)
@@ -6018,6 +6248,13 @@ public class CatraMMSAPI {
 							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
 								&& joLastInputRoot.has("utcScheduleEnd"))
 								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
+
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
+								&& joLastInputRoot.has("utcScheduleEnd"))
+							{
+								encodingJob.setEndEstimate(true);
+								encodingJob.setEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
+							}
 						}
 					}
 
@@ -6043,7 +6280,7 @@ public class CatraMMSAPI {
                 else if (encodingJob.getType().equalsIgnoreCase("Countdown")
                 )
                 {
-                    if (joParameters.has("inputsRoot"))
+					if (joParameters.has("inputsRoot"))
 					{
 						JSONArray jaInputsRoot = joParameters.getJSONArray("inputsRoot");
 						if (jaInputsRoot.length() > 0)
@@ -6061,6 +6298,13 @@ public class CatraMMSAPI {
 							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
 								&& joLastInputRoot.has("utcScheduleEnd"))
 								encodingJob.setProxyPeriodEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
+
+							if (joLastInputRoot.has("timePeriod") && joLastInputRoot.getBoolean("timePeriod")
+								&& joLastInputRoot.has("utcScheduleEnd"))
+							{
+								encodingJob.setEndEstimate(true);
+								encodingJob.setEnd(new Date(1000 * joLastInputRoot.getLong("utcScheduleEnd")));
+							}
 						}
 					}
 
@@ -6082,27 +6326,6 @@ public class CatraMMSAPI {
                         encodingJob.setLiveProxyOutputTypes(outputTypes);
                         encodingJob.setLiveProxySegmentsDurationInSeconds(segmentsDurationInSeconds);
                     }
-                }
-                else if (encodingJob.getType().equalsIgnoreCase("VideoSpeed")
-                )
-                {
-                    encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
-                }
-                else if (encodingJob.getType().equalsIgnoreCase("PictureInPicture"))
-                {
-                    encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
-                    encodingJob.setOverlayVideoPhysicalPathKey(joParameters.getLong("overlayVideoPhysicalPathKey"));
-                }
-                else if (encodingJob.getType().equalsIgnoreCase("IntroOutroOverlay"))
-                {
-                    encodingJob.setIntroVideoPhysicalPathKey(joParameters.getLong("introVideoPhysicalPathKey"));
-                    encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
-                    encodingJob.setOutroVideoPhysicalPathKey(joParameters.getLong("outroVideoPhysicalPathKey"));
-                }
-                else if (encodingJob.getType().equalsIgnoreCase("CutFrameAccurate"))
-                {
-                    encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
                 }
                 else
                 {
