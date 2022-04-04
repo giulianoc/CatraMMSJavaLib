@@ -1,6 +1,11 @@
 package com.catrammslib;
 
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.security.spec.InvalidKeySpecException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,6 +18,8 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.TimeZone;
 
+import com.amazonaws.services.cloudfront.CloudFrontUrlSigner;
+import com.amazonaws.services.cloudfront.util.SignerUtils.Protocol;
 import com.catrammslib.entity.AWSChannelConf;
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
@@ -157,8 +164,8 @@ public class CatraMMSAPI {
 
                     return;
                 }
-                mmsBinaryPort = Integer.parseInt(tmpMmsBinaryPort);
-                }
+                mmsBinaryPort = Integer.parseInt(tmpMmsBinaryPort);				
+            }
         }
         catch (Exception e)
         {
@@ -172,6 +179,39 @@ public class CatraMMSAPI {
     public String getMmsAPIHostName() {
         return mmsAPIHostName;
     }
+
+	public String getAWSSignedURLWithCustomPolicy(
+		// the DNS name of your CloudFront distribution, or a registered alias
+		String cloudFrontHostName,	// i.e.: ddkdknki5kdya.cloudfront.net
+		final String uri,			// i.e.: out/v1/444d83fd79124a55be06bd9489134652/index.m3u8
+		final Date expirationDate,
+		String awsCloudFrontKeyPairId,
+		File cloudFrontPrivateKeyFile) 
+		throws URISyntaxException, InvalidKeySpecException, IOException
+	{
+		// the unique ID assigned to your CloudFront key pair in the console
+		// String cloudFrontKeyPairId = "APKAUYWFOBAADUMU4IGK";
+		// the private key you created in the AWS Management Console
+		// URL resource = CiborTVService_v1.class.getClassLoader().getResource("pk-APKAUYWFOBAADUMU4IGK.pem");
+		// File cloudFrontPrivateKeyFile = new File(resource.toURI());
+
+        mLogger.info("Received getAWSSignedURLWithCustomPolicy"
+			+ ", cloudFrontHostName: " + cloudFrontHostName
+			+ ", uri: " + uri
+			+ ", expirationDate: " + expirationDate
+			+ ", awsCloudFrontKeyPairId: " + awsCloudFrontKeyPairId
+        );
+
+		String signedUrl = CloudFrontUrlSigner.getSignedURLWithCannedPolicy(
+           Protocol.https, 
+           cloudFrontHostName, 
+           cloudFrontPrivateKeyFile,   
+           uri,
+           awsCloudFrontKeyPairId,
+           expirationDate);
+
+		return signedUrl;
+	}
 
     public Long shareWorkspace(String username, String password,
                                Boolean userAlreadyPresent,
