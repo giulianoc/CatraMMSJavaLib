@@ -26,6 +26,8 @@ public class LiveProxyOutput implements Serializable {
 	private String awsChannelConfigurationLabel;	// to be started/stopped
 	// AWS_CHANNEL
 	private Boolean awsSignedURL;
+	// AWS_CHANNEL
+	private Long awsExpirationInMinutes;
 
 	// RTMP_Stream, HLS
 	private String otherOutputOptions;
@@ -60,6 +62,8 @@ public class LiveProxyOutput implements Serializable {
 					joOutput.put("awsChannelConfigurationLabel", getAwsChannelConfigurationLabel());
 				if (getAwsSignedURL() != null)
 					joOutput.put("awsSignedURL", getAwsSignedURL());
+				if (getAwsExpirationInMinutes() != null)
+					joOutput.put("awsExpirationInMinutes", getAwsExpirationInMinutes());
 			}
 			else if (getOutputType().equalsIgnoreCase("UDP_Stream"))
 				joOutput.put("udpUrl", getUdpURL());
@@ -180,7 +184,15 @@ public class LiveProxyOutput implements Serializable {
         this.audioVolumeChange = audioVolumeChange;
     }
 
-    public String getOtherOutputOptions() {
+    public Long getAwsExpirationInMinutes() {
+		return awsExpirationInMinutes;
+	}
+
+	public void setAwsExpirationInMinutes(Long awsExpirationInMinutes) {
+		this.awsExpirationInMinutes = awsExpirationInMinutes;
+	}
+
+	public String getOtherOutputOptions() {
         return otherOutputOptions;
     }
 
