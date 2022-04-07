@@ -198,7 +198,7 @@ public class CatraMMSAPI {
         mLogger.info("Received getAWSSignedURLWithCustomPolicy"
 			+ ", cloudFrontHostName: " + cloudFrontHostName
 			+ ", uri: " + uri
-			+ ", expirationDate: " + expirationDate
+			+ ", expirationDate: " + expirationDate + " (" + expirationDate.getTime() + ")"
 			+ ", awsCloudFrontKeyPairId: " + awsCloudFrontKeyPairId
         );
 
