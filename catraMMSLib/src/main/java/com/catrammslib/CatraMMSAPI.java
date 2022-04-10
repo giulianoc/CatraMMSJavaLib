@@ -70,7 +70,6 @@ public class CatraMMSAPI {
     private String mmsBinaryProtocol;
     private String mmsBinaryHostName;
     private int mmsBinaryPort;
-    private Boolean authorizationThroughPath;
 
     public CatraMMSAPI(Properties configurationProperties)
     {
@@ -99,16 +98,6 @@ public class CatraMMSAPI {
                     return;
                 }
                 maxRetriesNumber = Integer.parseInt(tmpMaxRetriesNumber);
-
-                String tmpAuthorizationThroughPath = configurationProperties.getProperty("catramms.mms.delivery.authorizationThroughPath");
-                if (tmpAuthorizationThroughPath == null)
-                {
-                    String errorMessage = "No catramms.mms.authorizationThroughPath configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
-                authorizationThroughPath = Boolean.parseBoolean(tmpAuthorizationThroughPath);
 
                 mmsAPIProtocol = configurationProperties.getProperty("catramms.mms.api.protocol");
                 if (mmsAPIProtocol == null)
@@ -3453,10 +3442,14 @@ public class CatraMMSAPI {
     }
 
     public void getBulkOfDeliveryURL(
-            String username, String password,
-            List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataList,  // IN and OUT (deliveryURL)
-            long ttlInSeconds, int maxRetries
-    )
+		String username, String password,
+		List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataList,  // IN and OUT (deliveryURL)
+		long ttlInSeconds, int maxRetries,
+		// MMS_Token: delivery by MMS with a Token
+		// MMS_SignedToken: delivery by MMS with a signed URL
+		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
+		String deliveryType
+	)
             throws Exception
     {
         String mmsInfo;
@@ -3551,7 +3544,7 @@ public class CatraMMSAPI {
                     + "/catramms/1.0.1/delivery/bulk"
                     + "?ttlInSeconds=" + ttlInSeconds
                     + "&maxRetries=" + maxRetries
-                    + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+                    + "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
             ;
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -3659,13 +3652,20 @@ public class CatraMMSAPI {
 
     public String getVODDeliveryURL(String username, String password,
 
-                                    // first option (encodingProfileKey or encodingProfileLabel)
-                                    Long mediaItemKey, String uniqueName, Long encodingProfileKey, String encodingProfileLabel,
+        // first option (encodingProfileKey or encodingProfileLabel)
+        Long mediaItemKey, String uniqueName, Long encodingProfileKey, String encodingProfileLabel,
 
-                                    // second option
-                                    PhysicalPath physicalPath,
-                                 long ttlInSeconds, int maxRetries, Boolean save)
-            throws Exception
+        // second option
+        PhysicalPath physicalPath,
+                                 
+		long ttlInSeconds, int maxRetries,
+		// MMS_Token: delivery by MMS with a Token
+		// MMS_SignedToken: delivery by MMS with a signed URL
+		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
+		String deliveryType,
+
+		Boolean save)
+		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -3700,7 +3700,7 @@ public class CatraMMSAPI {
                         + "?ttlInSeconds=" + ttlInSeconds
                         + "&maxRetries=" + maxRetries
                         + "&save=" + save.toString()
-                        + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+						+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                         + "&redirect=false"
                 ;
             }
@@ -3718,7 +3718,7 @@ public class CatraMMSAPI {
                                 + "&ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
-                                + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                                 + "&redirect=false"
                         ;
                     }
@@ -3730,7 +3730,7 @@ public class CatraMMSAPI {
                                 + "&ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
-                                + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                                 + "&redirect=false"
                         ;
                     }
@@ -3745,7 +3745,7 @@ public class CatraMMSAPI {
                             + "&ttlInSeconds=" + ttlInSeconds
                             + "&maxRetries=" + maxRetries
                             + "&save=" + save.toString()
-                            + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+							+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                             + "&redirect=false"
                         ;
                     }
@@ -3756,7 +3756,7 @@ public class CatraMMSAPI {
                                 + "?ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
-                                + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                                 + "&redirect=false"
                         ;
                     }
@@ -3798,10 +3798,14 @@ public class CatraMMSAPI {
     }
 
     public String getLiveDeliveryURL(String username, String password,
-                                    Long ingestionJobKey,
-                                    Long deliveryCode,
-                                    Long ttlInSeconds, // if null -> 3600 * 24
-                                    Long maxRetries    // if null -> 3600 * 24 / 5
+		Long ingestionJobKey,
+		Long deliveryCode,
+		Long ttlInSeconds, // if null -> 3600 * 24
+		Long maxRetries,    // if null -> 3600 * 24 / 5
+		// MMS_Token: delivery by MMS with a Token
+		// MMS_SignedToken: delivery by MMS with a signed URL
+		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
+		String deliveryType
     )
             throws Exception
     {
@@ -3838,7 +3842,7 @@ public class CatraMMSAPI {
                     + "/catramms/1.0.1/delivery/live/" + ingestionJobKey
                     + "?ttlInSeconds=" + lTtlInSeconds
                     + "&maxRetries=" + lMaxRetries
-                    + "&authorizationThroughPath=" + (authorizationThroughPath != null ? authorizationThroughPath : "true")
+					+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                     + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + "&redirect=false"
                     ;
@@ -3875,36 +3879,6 @@ public class CatraMMSAPI {
 
         return deliveryURL;
     }
-
-    /*
-    public void ingestBinaryContent(String username, String password,
-                                    File binaryPathName, Long ingestionJobKey)
-            throws Exception
-    {
-        try
-        {
-            String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
-                    + "/catramms/1.0.1/binary/" + ingestionJobKey;
-
-            mLogger.info("ingestBinaryContentAndRemoveLocalFile"
-                            + ", mmsURL: " + mmsURL
-                            + ", binaryPathName: " + binaryPathName
-            );
-
-            Date now = new Date();
-            HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, binaryPathName);
-            mLogger.info("ingestBinaryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "ingestWorkflow MMS failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-    }
-    */
 
     public void ingestBinaryContent(String username, String password,
                                     InputStream fileInputStream, long contentSize,
