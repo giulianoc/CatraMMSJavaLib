@@ -249,7 +249,7 @@ public class CatraMMSAPI {
             mLogger.info("base64HashStr 2: " + base64HashStr);
 
             // the URL is however, intensionaly returned with the previously stripped parts (eg. playlist/{chunk}..)
-            String signedURL = "http://" + cdnResourceUrl + "/" + base64HashStr + sExpiryTimestamp + filePath;
+            String signedURL = "https://" + cdnResourceUrl + "/" + base64HashStr + sExpiryTimestamp + filePath;
             mLogger.info("getCDN77SignedUrlPath"
 				+ ", signedURL: " + signedURL);
 
