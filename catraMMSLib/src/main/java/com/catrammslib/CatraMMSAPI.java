@@ -5,10 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -201,6 +204,85 @@ public class CatraMMSAPI {
 
 		return signedUrl;
 	}
+
+	public String getCDN77SignedUrlPath(
+		String cdnResourceUrl, String filePath,
+        String secureToken, Long expiryTimestamp)
+    {
+        try {
+            mLogger.info("Received getCDN77SignedUrlPath"
+                    + ", cdnResourceUrl: " + cdnResourceUrl	// i.e.: 1011683079.rsc.cdn77.org
+                    + ", filePath: " + filePath				// i.e.: /1011683079/1/index.m3u8
+                    + ", secureToken: " + secureToken		// i.e.: dp4h5ek2mx5tmcsf
+                    + ", expiryTimestamp: " + expiryTimestamp
+            );
+
+            // because of hls/dash, anything included after the last slash (e.g. playlist/{chunk}) shouldn't be part of the path string,
+            // for which we generate the secure token. Because of that, everything included after the last slash is stripped.
+            // PHP:         $strippedPath = substr($filePath, 0, strrpos($filePath, '/'));
+            String strippedPath = filePath.substring(0, filePath.lastIndexOf("/"));
+
+            if (strippedPath.charAt(0) != '/')
+                strippedPath = "/" + strippedPath;
+
+            int pos;
+            if ((pos = strippedPath.indexOf("?")) != -1)
+                filePath = strippedPath.substring(0, pos);
+
+            mLogger.info("strippedPath: " + strippedPath);
+            String hashStr = strippedPath + secureToken;
+
+            String sExpiryTimestamp;
+            if (expiryTimestamp != null)
+            {
+                hashStr = expiryTimestamp + hashStr;
+                sExpiryTimestamp = "," + expiryTimestamp;
+            }
+            else
+                sExpiryTimestamp = expiryTimestamp.toString();
+
+            mLogger.info("sExpiryTimestamp: " + sExpiryTimestamp);
+
+            String base64HashStr = Base64.getEncoder().encodeToString(md5(hashStr));
+            mLogger.info("base64HashStr 1: " + base64HashStr);
+            base64HashStr = base64HashStr.replace("+", "-").replace("/", "_");
+            mLogger.info("base64HashStr 2: " + base64HashStr);
+
+            // the URL is however, intensionaly returned with the previously stripped parts (eg. playlist/{chunk}..)
+            String signedURL = "http://" + cdnResourceUrl + "/" + base64HashStr + sExpiryTimestamp + filePath;
+            mLogger.info("getCDN77SignedUrlPath"
+				+ ", signedURL: " + signedURL);
+
+            return signedURL;
+        }
+        catch (Exception e)
+        {
+            mLogger.error("getCDN77SignedUrlPath"
+				+ ", exception: " + e);
+
+            return null;
+        }
+    }
+
+	private byte[] md5(String text)
+    {
+        try
+        {
+            MessageDigest digester = MessageDigest.getInstance("MD5");
+            digester.update(text.getBytes());
+            byte[] md5Bytes = digester.digest();
+            String md5Text = new String(md5Bytes); // if you need in String format
+            // better use md5Bytes if applying further processing to the generated md5.
+            // Otherwise it may give undesired results.
+            return md5Bytes;
+            // return md5Text;
+
+        }
+        // For specifying wrong message digest algorithms
+        catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public Long shareWorkspace(String username, String password,
                                Boolean userAlreadyPresent,
