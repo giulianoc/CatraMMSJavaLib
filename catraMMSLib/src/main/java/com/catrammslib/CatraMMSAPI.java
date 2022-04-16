@@ -3444,11 +3444,7 @@ public class CatraMMSAPI {
     public void getBulkOfDeliveryURL(
 		String username, String password,
 		List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataList,  // IN and OUT (deliveryURL)
-		long ttlInSeconds, int maxRetries,
-		// MMS_Token: delivery by MMS with a Token
-		// MMS_SignedToken: delivery by MMS with a signed URL
-		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
-		String deliveryType
+		long ttlInSeconds, int maxRetries
 	)
             throws Exception
     {
@@ -3510,7 +3506,10 @@ public class CatraMMSAPI {
 						else
 							joMediaItemKey.put("encodingProfileLabel", bulkOfDeliveryURLData.getEncodingProfileLabel());
 
-                        bulkOfDeliveryURLDataMapByMediaItemKey.put(bulkOfDeliveryURLData.getMediaItemKey(), bulkOfDeliveryURLData);
+						if (bulkOfDeliveryURLData.getDeliveryType() != null)
+							joMediaItemKey.put("deliveryType", bulkOfDeliveryURLData.getDeliveryType());
+
+						bulkOfDeliveryURLDataMapByMediaItemKey.put(bulkOfDeliveryURLData.getMediaItemKey(), bulkOfDeliveryURLData);
                     }
                     else if (bulkOfDeliveryURLData.getUniqueName() != null)
                     {
@@ -3524,7 +3523,10 @@ public class CatraMMSAPI {
 						else
 							joUniqueName.put("encodingProfileLabel", bulkOfDeliveryURLData.getEncodingProfileLabel());
 
-                        bulkOfDeliveryURLDataMapByUniqueName.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
+						if (bulkOfDeliveryURLData.getDeliveryType() != null)
+							joUniqueName.put("deliveryType", bulkOfDeliveryURLData.getDeliveryType());
+
+						bulkOfDeliveryURLDataMapByUniqueName.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
                     }
                     else if (bulkOfDeliveryURLData.getLiveIngestionJobKey() != null)
                     {
@@ -3535,6 +3537,9 @@ public class CatraMMSAPI {
                         if (bulkOfDeliveryURLData.getLiveDeliveryCode() != null)
                             joLiveIngestionJobKey.put("deliveryCode", bulkOfDeliveryURLData.getLiveDeliveryCode());
 
+						if (bulkOfDeliveryURLData.getDeliveryType() != null)
+							joLiveIngestionJobKey.put("deliveryType", bulkOfDeliveryURLData.getDeliveryType());
+
                         bulkOfDeliveryURLDataMapByLiveIngestionJobKey.put(bulkOfDeliveryURLData.getLiveIngestionJobKey(), bulkOfDeliveryURLData);
                     }
                 }
@@ -3544,7 +3549,6 @@ public class CatraMMSAPI {
                     + "/catramms/1.0.1/delivery/bulk"
                     + "?ttlInSeconds=" + ttlInSeconds
                     + "&maxRetries=" + maxRetries
-                    + "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
             ;
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -3661,6 +3665,7 @@ public class CatraMMSAPI {
 		long ttlInSeconds, int maxRetries,
 		// MMS_Token: delivery by MMS with a Token
 		// MMS_SignedToken: delivery by MMS with a signed URL
+		// AWSCloudFront: delivery by AWS CloudFront without a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
 		String deliveryType,
 
@@ -3804,6 +3809,7 @@ public class CatraMMSAPI {
 		Long maxRetries,    // if null -> 3600 * 24 / 5
 		// MMS_Token: delivery by MMS with a Token
 		// MMS_SignedToken: delivery by MMS with a signed URL
+		// AWSCloudFront: delivery by AWS CloudFront with a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
 		String deliveryType
     )

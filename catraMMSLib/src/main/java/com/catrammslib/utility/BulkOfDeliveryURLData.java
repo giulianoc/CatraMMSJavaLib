@@ -4,18 +4,20 @@ import java.io.Serializable;
 
 public class BulkOfDeliveryURLData implements Serializable  {
 
-    Long mediaItemKey;
-    String uniqueName;
-    Long encodingProfileKey;
-	String encodingProfileLabel;
+    private Long mediaItemKey;
+    private String uniqueName;
+    private Long encodingProfileKey;
+	private String encodingProfileLabel;
 
-    Long liveIngestionJobKey;
-    Long liveDeliveryCode;
+    private Long liveIngestionJobKey;
+    private Long liveDeliveryCode;
+
+	private String deliveryType;
 
 	// often, it is useful a pointer to the user object referring the mediaItemKey/uniqueName/liveIngestionJobKey
-	Object userReference;
+	private Object userReference;
 
-    String deliveryURL;             // OUT
+    private String deliveryURL;             // OUT
 
     public BulkOfDeliveryURLData()
     {
@@ -26,6 +28,8 @@ public class BulkOfDeliveryURLData implements Serializable  {
 
         liveIngestionJobKey = null;
         liveDeliveryCode = null;
+
+		deliveryType = null;
 
 		userReference = null;
 		
@@ -46,6 +50,14 @@ public class BulkOfDeliveryURLData implements Serializable  {
 
 	public void setUserReference(Object userReference) {
 		this.userReference = userReference;
+	}
+
+	public String getDeliveryType() {
+		return deliveryType;
+	}
+
+	public void setDeliveryType(String deliveryType) {
+		this.deliveryType = deliveryType;
 	}
 
 	public Long getMediaItemKey() {
