@@ -3807,6 +3807,12 @@ public class CatraMMSAPI {
 		Long deliveryCode,
 		Long ttlInSeconds, // if null -> 3600 * 24
 		Long maxRetries,    // if null -> 3600 * 24 / 5
+
+		// IN REALTA' deliveryType nel caso di live viene utilizzato parzialmente perchè:
+		//	- in caso di RTMP, il campo PlayURL nell'IngestionJob decide l'utl di delivery.
+		//		Infatti in questo scenario, solo chi crea il Task può sapere la deliveryURL  
+		//	- in caso di HLS viene invece utilizzato questo campo che potrà variare tra
+		//		tra MMS_Token o MMS_SignedToken
 		// MMS_Token: delivery by MMS with a Token
 		// MMS_SignedToken: delivery by MMS with a signed URL
 		// AWSCloudFront: delivery by AWS CloudFront with a signed URL
