@@ -13,6 +13,7 @@ public class BulkOfDeliveryURLData implements Serializable  {
     private Long liveDeliveryCode;
 
 	private String deliveryType;
+	private Boolean filteredByStatistic;
 
 	// often, it is useful a pointer to the user object referring the mediaItemKey/uniqueName/liveIngestionJobKey
 	private Object userReference;
@@ -30,6 +31,7 @@ public class BulkOfDeliveryURLData implements Serializable  {
         liveDeliveryCode = null;
 
 		deliveryType = null;
+		filteredByStatistic = null;
 
 		userReference = null;
 		
@@ -44,7 +46,15 @@ public class BulkOfDeliveryURLData implements Serializable  {
         this.liveDeliveryCode = liveDeliveryCode;
     }
 
-    public Object getUserReference() {
+    public Boolean getFilteredByStatistic() {
+		return filteredByStatistic;
+	}
+
+	public void setFilteredByStatistic(Boolean filteredByStatistic) {
+		this.filteredByStatistic = filteredByStatistic;
+	}
+
+	public Object getUserReference() {
 		return userReference;
 	}
 
