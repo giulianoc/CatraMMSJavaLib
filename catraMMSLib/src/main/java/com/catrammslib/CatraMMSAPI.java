@@ -41,6 +41,7 @@ import com.catrammslib.entity.IngestionWorkflow;
 import com.catrammslib.entity.MediaItem;
 import com.catrammslib.entity.MediaItemCrossReference;
 import com.catrammslib.entity.PhysicalPath;
+import com.catrammslib.entity.RequestPerContentStatistic;
 import com.catrammslib.entity.RequestStatistic;
 import com.catrammslib.entity.SourceSATStream;
 import com.catrammslib.entity.UserProfile;
@@ -5955,7 +5956,75 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "getEncodingJobs failed. Exception: " + e;
+            String errorMessage = "getRequestStatistics failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return numFound;
+    }
+
+    public Long getRequestPerContentStatistics(String username, String password,
+		String title, Date startStatisticDate, Date endStatisticDate,
+		long startIndex, long pageSize,
+		List<RequestPerContentStatistic> requestPerContentStatisticsList)
+		throws Exception
+    {
+		Long numFound;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perContent"
+				+ "?start=" + startIndex
+				+ "&rows=" + pageSize
+				+ (title != null ? ("&title=" + title) : "")
+				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
+				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
+			;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+				username, password, null);
+            mLogger.info("getRequestPerContentStatistics. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getRequestPerContentStatistics MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            requestPerContentStatisticsList.clear();
+
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            numFound = joResponse.getLong("numFound");
+            JSONArray jaRequestStatistics = joResponse.getJSONArray("requestStatistics");
+
+            for (int requestStatisticIndex = 0; requestStatisticIndex < jaRequestStatistics.length(); requestStatisticIndex++)
+            {
+                JSONObject requestPerContentStatisticInfo = jaRequestStatistics.getJSONObject(requestStatisticIndex);
+
+                RequestPerContentStatistic requestPerContentStatistic = new RequestPerContentStatistic();
+
+                fillRequestPerContentStatistic(requestPerContentStatistic, requestPerContentStatisticInfo);
+
+                requestPerContentStatisticsList.add(requestPerContentStatistic);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getRequestPerContentStatistics failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -6623,6 +6692,29 @@ public class CatraMMSAPI {
         {
             String errorMessage = "fillRequestStatistic failed. Exception: " + e
 				+ ", requestStatisticInfo: " + requestStatisticInfo.toString()
+			;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillRequestPerContentStatistic(RequestPerContentStatistic requestPerContentStatistic, 
+		JSONObject requestPerContentStatisticInfo)
+		throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try
+        {
+			requestPerContentStatistic.setTitle(requestPerContentStatisticInfo.getString("title"));
+            requestPerContentStatistic.setCount(requestPerContentStatisticInfo.getLong("count"));
+		}
+        catch (Exception e)
+        {
+            String errorMessage = "fillRequestPerContentStatistic failed. Exception: " + e
+				+ ", requestPerContentStatisticInfo: " + requestPerContentStatisticInfo.toString()
 			;
             mLogger.error(errorMessage);
 
