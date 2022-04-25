@@ -6600,7 +6600,7 @@ public class CatraMMSAPI {
 			if (requestStatisticInfo.has("confStreamKey") && !requestStatisticInfo.isNull("confStreamKey"))
 				requestStatistic.setConfStreamKey(requestStatisticInfo.getLong("confStreamKey"));
 			requestStatistic.setRequestTimestamp(simpleDateFormat.parse(requestStatisticInfo.getString("requestTimestamp")));
-			requestStatistic.setUserId(requestStatisticInfo.getString("userId"));
+			requestStatistic.setTitle(requestStatisticInfo.getString("title"));
 			}
         catch (Exception e)
         {
