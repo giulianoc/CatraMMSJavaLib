@@ -41,6 +41,7 @@ import com.catrammslib.entity.IngestionWorkflow;
 import com.catrammslib.entity.MediaItem;
 import com.catrammslib.entity.MediaItemCrossReference;
 import com.catrammslib.entity.PhysicalPath;
+import com.catrammslib.entity.RequestStatistic;
 import com.catrammslib.entity.SourceSATStream;
 import com.catrammslib.entity.UserProfile;
 import com.catrammslib.entity.VideoBitRate;
@@ -5813,7 +5814,140 @@ public class CatraMMSAPI {
         return emailConfList;
     }
 
-    private void fillUserProfile(UserProfile userProfile, JSONObject joUserProfileInfo)
+	public Long addRequestStatistic(String username, String password,
+		String userId, 
+		// physicalPathKey or confStreamKey has to be present
+		Long physicalPathKey, Long confStreamKey,
+		String title
+	)
+        throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonStatistic;
+            {
+                JSONObject joStatistic = new JSONObject();
+
+                joStatistic.put("userId", userId);
+				if (physicalPathKey != null)
+					joStatistic.put("physicalPathKey", physicalPathKey);
+				if (confStreamKey != null)
+					joStatistic.put("confStreamKey", confStreamKey);
+				joStatistic.put("title", title);
+
+				jsonStatistic = joStatistic.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request";
+
+            mLogger.info("addRequestStatistic"
+                + ", mmsURL: " + mmsURL
+                + ", jsonStatistic: " + jsonStatistic
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonStatistic);
+            mLogger.info("addRequestStatistic. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addRequestStatistic MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        Long requestStatisticKey;
+        try {
+            JSONObject jsonObject = new JSONObject(mmsInfo);
+
+            requestStatisticKey = jsonObject.getLong("requestStatisticKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "retrieving requestStatisticKey failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return requestStatisticKey;
+    }
+
+    public Long getRequestStatistics(String username, String password,
+		String userId, String title, Date startStatisticDate, Date endStatisticDate,
+		long startIndex, long pageSize,
+		List<RequestStatistic> requestStatisticsList)
+		throws Exception
+    {
+		Long numFound;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request"
+				+ "?start=" + startIndex
+				+ "&rows=" + pageSize
+				+ (userId != null ? ("&userId=" + userId) : "")
+				+ (title != null ? ("&title=" + title) : "")
+				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
+				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
+			;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+				username, password, null);
+            mLogger.info("getRequestStatistics. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getRequestStatistics MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            requestStatisticsList.clear();
+
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            numFound = joResponse.getLong("numFound");
+            JSONArray jaRequestStatistics = joResponse.getJSONArray("requestStatistics");
+
+            for (int requestStatisticIndex = 0; requestStatisticIndex < jaRequestStatistics.length(); requestStatisticIndex++)
+            {
+                JSONObject requestStatisticInfo = jaRequestStatistics.getJSONObject(requestStatisticIndex);
+
+                RequestStatistic requestStatistic = new RequestStatistic();
+
+                fillRequestStatistic(requestStatistic, requestStatisticInfo);
+
+                requestStatisticsList.add(requestStatistic);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getEncodingJobs failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return numFound;
+    }
+
+	private void fillUserProfile(UserProfile userProfile, JSONObject joUserProfileInfo)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -6451,7 +6585,35 @@ public class CatraMMSAPI {
         }
     }
 
-    private void fillEncoder(Encoder encoder, JSONObject encoderInfo)
+    private void fillRequestStatistic(RequestStatistic requestStatistic, JSONObject requestStatisticInfo)
+		throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try
+        {
+            requestStatistic.setRequestStatisticKey(requestStatisticInfo.getLong("requestStatisticKey"));
+            requestStatistic.setUserId(requestStatisticInfo.getString("userId"));
+            if (requestStatisticInfo.has("physicalPathKey") && !requestStatisticInfo.isNull("physicalPathKey"))
+				requestStatistic.setPhysicalPathKey(requestStatisticInfo.getLong("physicalPathKey"));
+			if (requestStatisticInfo.has("confStreamKey") && !requestStatisticInfo.isNull("confStreamKey"))
+				requestStatistic.setConfStreamKey(requestStatisticInfo.getLong("confStreamKey"));
+			requestStatistic.setRequestTimestamp(simpleDateFormat.parse(requestStatisticInfo.getString("requestTimestamp")));
+			requestStatistic.setUserId(requestStatisticInfo.getString("userId"));
+			}
+        catch (Exception e)
+        {
+            String errorMessage = "fillRequestStatistic failed. Exception: " + e
+				+ ", requestStatisticInfo: " + requestStatisticInfo.toString()
+			;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+	private void fillEncoder(Encoder encoder, JSONObject encoderInfo)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
