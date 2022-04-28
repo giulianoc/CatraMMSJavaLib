@@ -1344,16 +1344,16 @@ public class CatraMMSWorkflow {
                     null,
                     waitForGlobalIngestionLabel);
 
-            joParameters.put("InputType", inputType);
+            joParameters.put("inputType", inputType);
 
             if (inputType != null && inputType.equalsIgnoreCase("Channel"))
             {
-                joParameters.put("ConfigurationLabel", configurationLabel);
+                joParameters.put("channelConfigurationLabel", configurationLabel);
             }
             else
             {
-                joParameters.put("StreamingName", streamingName);
-                joParameters.put("StreamingUrl", streamingUrl);
+                joParameters.put("streamingName", streamingName);
+                joParameters.put("streamingUrl", streamingUrl);
 
             }
 
@@ -1362,7 +1362,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;
