@@ -1362,7 +1362,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;
