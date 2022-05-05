@@ -8,13 +8,13 @@ import java.util.Objects;
  * Created by multi on 09.06.18.
  */
 public class RequestStatistic implements Serializable{
-    private Long requestStatisticKey;
     private String userId;
     private Long physicalPathKey;
     private Long confStreamKey;
 	private String title;
     private Date requestTimestamp;
 
+	/*
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -39,6 +39,7 @@ public class RequestStatistic implements Serializable{
 			return false;
 		return true;
 	}
+	*/
 
 	public String getTitle() {
 		return title;
@@ -48,12 +49,6 @@ public class RequestStatistic implements Serializable{
 		this.title = title;
 	}
 
-	public Long getRequestStatisticKey() {
-		return requestStatisticKey;
-	}
-	public void setRequestStatisticKey(Long requestStatisticKey) {
-		this.requestStatisticKey = requestStatisticKey;
-	}
 	public String getUserId() {
 		return userId;
 	}
