@@ -5835,7 +5835,7 @@ public class CatraMMSAPI {
         return emailConfList;
     }
 
-	public Long addRequestStatistic(String username, String password,
+	public void addRequestStatistic(String username, String password,
 		String userId, 
 		// physicalPathKey or confStreamKey has to be present
 		Long physicalPathKey, Long confStreamKey,
@@ -5881,22 +5881,6 @@ public class CatraMMSAPI {
 
             throw new Exception(errorMessage);
         }
-
-        Long requestStatisticKey;
-        try {
-            JSONObject jsonObject = new JSONObject(mmsInfo);
-
-            requestStatisticKey = jsonObject.getLong("requestStatisticKey");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "retrieving requestStatisticKey failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        return requestStatisticKey;
     }
 
     public Long getRequestStatistics(String username, String password,
