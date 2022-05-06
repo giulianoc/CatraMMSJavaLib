@@ -6870,7 +6870,8 @@ public class CatraMMSAPI {
 
         try
         {
-            requestStatistic.setUserId(requestStatisticInfo.getString("userId"));
+			requestStatistic.setRequestStatisticKey(requestStatisticInfo.getLong("requestStatisticKey"));
+			requestStatistic.setUserId(requestStatisticInfo.getString("userId"));
             if (requestStatisticInfo.has("physicalPathKey") && !requestStatisticInfo.isNull("physicalPathKey"))
 				requestStatistic.setPhysicalPathKey(requestStatisticInfo.getLong("physicalPathKey"));
 			if (requestStatisticInfo.has("confStreamKey") && !requestStatisticInfo.isNull("confStreamKey"))
