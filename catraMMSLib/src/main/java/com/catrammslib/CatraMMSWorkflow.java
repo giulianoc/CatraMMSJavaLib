@@ -1861,6 +1861,77 @@ public class CatraMMSWorkflow {
             throw e;
         }
     }
+    
+	static public JSONObject buildOverlayTextOnVideo(
+            String label, String ingester,
+
+			String text,
+			String textPosition_X_InPixel,
+			String textPosition_Y_InPixel,
+			String fontType,
+			Long fontSize,
+			String fontColor,
+			Long textPercentageOpacity,
+
+			String encodingPriority,	// Low, Medium, High 
+            String encodersPool,
+
+			List<MediaItemReference> mediaItemReferenceList,
+            Long utcProcessingStartingFrom
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Overlay-Text-On-Video");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+            joParameters.put("Ingester", ingester);
+
+			joParameters.put("Text", text);
+
+            joParameters.put("TextPosition_X_InPixel", textPosition_X_InPixel);
+            joParameters.put("TextPosition_Y_InPixel", textPosition_Y_InPixel);
+
+            joParameters.put("FontType", fontType);
+            joParameters.put("FontSize", fontSize);
+            joParameters.put("FontColor", fontColor);
+
+            joParameters.put("TextPercentageOpacity", textPercentageOpacity);
+
+			joParameters.put("EncodingPriority", encodingPriority);
+
+            if (encodersPool != null && !encodersPool.isEmpty())
+                joParameters.put("EncodersPool", encodersPool);
+
+            if (utcProcessingStartingFrom != null)
+            {
+                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+            }
+
+            setCommonParameters(joParameters,
+                    null,
+                    mediaItemReferenceList,
+                    null);
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildOverlayTextOnVideo failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
 
     static private void setContentParameters(
             JSONObject joParameters,
