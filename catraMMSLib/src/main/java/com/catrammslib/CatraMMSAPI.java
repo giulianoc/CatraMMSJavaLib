@@ -7058,20 +7058,26 @@ public class CatraMMSAPI {
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         try {
-            mediaItem.setMediaItemKey(mediaItemInfo.getLong("mediaItemKey"));
-            // mLogger.info("fillMediaItem. mediaItemKey: " + mediaItem.getMediaItemKey());
-            mediaItem.setContentType(mediaItemInfo.getString("contentType"));
-            mediaItem.setTitle(mediaItemInfo.getString("title"));
-            if (!mediaItemInfo.isNull("deliveryFileName"))
+            if (mediaItemInfo.has("mediaItemKey") && !mediaItemInfo.isNull("mediaItemKey"))
+            	mediaItem.setMediaItemKey(mediaItemInfo.getLong("mediaItemKey"));
+			if (mediaItemInfo.has("contentType") && !mediaItemInfo.isNull("contentType"))
+				mediaItem.setContentType(mediaItemInfo.getString("contentType"));
+			if (mediaItemInfo.has("title") && !mediaItemInfo.isNull("title"))
+				mediaItem.setTitle(mediaItemInfo.getString("title"));
+            if (mediaItemInfo.has("deliveryFileName") && !mediaItemInfo.isNull("deliveryFileName"))
                 mediaItem.setDeliveryFileName(mediaItemInfo.getString("deliveryFileName"));
-            mediaItem.setIngestionDate(simpleDateFormat.parse(mediaItemInfo.getString("ingestionDate")));
-            mediaItem.setStartPublishing(simpleDateFormat.parse(mediaItemInfo.getString("startPublishing")));
-            mediaItem.setEndPublishing(simpleDateFormat.parse(mediaItemInfo.getString("endPublishing")));
-            if (!mediaItemInfo.isNull("uniqueName"))
+			if (mediaItemInfo.has("ingestionDate") && !mediaItemInfo.isNull("ingestionDate"))
+				mediaItem.setIngestionDate(simpleDateFormat.parse(mediaItemInfo.getString("ingestionDate")));
+			if (mediaItemInfo.has("startPublishing") && !mediaItemInfo.isNull("startPublishing"))
+				mediaItem.setStartPublishing(simpleDateFormat.parse(mediaItemInfo.getString("startPublishing")));
+			if (mediaItemInfo.has("endPublishing") && !mediaItemInfo.isNull("endPublishing"))
+				mediaItem.setEndPublishing(simpleDateFormat.parse(mediaItemInfo.getString("endPublishing")));
+            if (mediaItemInfo.has("uniqueName") && !mediaItemInfo.isNull("uniqueName"))
                 mediaItem.setUniqueName(mediaItemInfo.getString("uniqueName"));
-            if (!mediaItemInfo.isNull("ingester"))
+            if (mediaItemInfo.has("ingester") && !mediaItemInfo.isNull("ingester"))
                 mediaItem.setIngester(mediaItemInfo.getString("ingester"));
-            {
+			if (mediaItemInfo.has("tags"))
+			{
                 JSONArray jaTags = mediaItemInfo.getJSONArray("tags");
 
                 for (int tagIndex = 0; tagIndex < jaTags.length(); tagIndex++)
@@ -7106,10 +7112,12 @@ public class CatraMMSAPI {
             }
             if (mediaItemInfo.has("userData") && !mediaItemInfo.isNull("userData"))
                 mediaItem.setUserData(mediaItemInfo.getString("userData"));
-            mediaItem.setProviderName(mediaItemInfo.getString("providerName"));
-            mediaItem.setRetentionInMinutes(mediaItemInfo.getLong("retentionInMinutes"));
+			if (mediaItemInfo.has("providerName") && !mediaItemInfo.isNull("providerName"))
+				mediaItem.setProviderName(mediaItemInfo.getString("providerName"));
+			if (mediaItemInfo.has("retentionInMinutes") && !mediaItemInfo.isNull("retentionInMinutes"))
+				mediaItem.setRetentionInMinutes(mediaItemInfo.getLong("retentionInMinutes"));
 
-            if (deep)
+            if (deep && mediaItemInfo.has("physicalPaths"))
             {
                 JSONArray jaPhysicalPaths = mediaItemInfo.getJSONArray("physicalPaths");
 
