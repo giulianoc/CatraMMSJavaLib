@@ -1992,6 +1992,7 @@ public class CatraMMSAPI {
                               List<String> tagsIn, List<String> tagsNotIn,
                               Long deliveryCode, String jsonCondition,
                               String orderBy, String jsonOrderBy,
+							  JSONObject joResponseFields,
                               List<MediaItem> mediaItemsList    // has to be initialized (new ArrayList<>())
     )
             throws Exception
@@ -2042,8 +2043,9 @@ public class CatraMMSAPI {
                     ;
 
 			String body = null;
-			if (tagsIn != null && tagsIn.size() > 0
-				|| (tagsNotIn != null && tagsNotIn.size() > 0))
+			// if ((tagsIn != null && tagsIn.size() > 0)
+			//	|| (tagsNotIn != null && tagsNotIn.size() > 0)
+			//	|| joResponseFields != null)
 			{
 				JSONObject joOtherInputs = new JSONObject();
 				{
@@ -2076,6 +2078,9 @@ public class CatraMMSAPI {
 						}
 					}
 					joOtherInputs.put("otherMediaItemsKey", jaOtherMediaItemsKey);
+
+					if (joResponseFields != null)
+						joOtherInputs.put("responseFields", joResponseFields);
 				}
 				body = joOtherInputs.toString(4);
 			}

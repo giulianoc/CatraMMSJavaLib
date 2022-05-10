@@ -1893,21 +1893,21 @@ public class CatraMMSWorkflow {
 
             joParameters.put("Ingester", ingester);
 
-			joParameters.put("Text", text);
+			joParameters.put("text", text);
 
-            joParameters.put("TextPosition_X_InPixel", textPosition_X_InPixel);
-            joParameters.put("TextPosition_Y_InPixel", textPosition_Y_InPixel);
+            joParameters.put("textPosition_X_InPixel", textPosition_X_InPixel);
+            joParameters.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
 
-            joParameters.put("FontType", fontType);
-            joParameters.put("FontSize", fontSize);
-            joParameters.put("FontColor", fontColor);
+            joParameters.put("fontType", fontType);
+            joParameters.put("fontSize", fontSize);
+            joParameters.put("fontColor", fontColor);
 
-            joParameters.put("TextPercentageOpacity", textPercentageOpacity);
+            joParameters.put("textPercentageOpacity", textPercentageOpacity);
 
-			joParameters.put("EncodingPriority", encodingPriority);
+			joParameters.put("encodingPriority", encodingPriority);
 
             if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
             if (utcProcessingStartingFrom != null)
             {
