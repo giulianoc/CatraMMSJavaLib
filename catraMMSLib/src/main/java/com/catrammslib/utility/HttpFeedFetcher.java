@@ -1,5 +1,7 @@
 package com.catrammslib.utility;
 
+import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 // import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,6 +11,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.zip.GZIPInputStream;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -17,6 +20,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.TrustManager;
 
+import org.apache.commons.compress.compressors.deflate.DeflateCompressorInputStream;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpStatus;
 import org.apache.commons.io.IOUtils;
@@ -33,7 +37,8 @@ public class HttpFeedFetcher {
     public static final String configFileName = "mpCommon.properties";
 
     static public String fetchGetHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
-                                            String user, String password, String authorizationHeader)
+                                            String user, String password, String authorizationHeader,
+											boolean outputToBeCompressed)
             throws Exception
     {
         // fetchWebPage
@@ -104,22 +109,29 @@ public class HttpFeedFetcher {
                         // mLogger.info("Add Header (password " + password + "). " + "Authorization: " + "Basic " + encoded);
                     }
 
+					mLogger.info("outputToBeCompressed: " + outputToBeCompressed);
+					if (outputToBeCompressed)
+					{
+						conn.setRequestProperty("X-ResponseBodyCompressed", "true");
+						mLogger.info("Add Header, X-ResponseBodyCompressed: " + "true");
+					}
+	
                     mLogger.info("conn.getResponseCode...");
                     int statusCode;
-                    int contentLength;
+                    long responseContentLength;
                     if (url.startsWith("https"))
                     {
                         statusCode = ((HttpsURLConnection) conn).getResponseCode();
-                        contentLength = ((HttpsURLConnection) conn).getContentLength();
+                        responseContentLength = ((HttpsURLConnection) conn).getContentLength();
                     }
                     else
                     {
                         statusCode = ((HttpURLConnection) conn).getResponseCode();
-                        contentLength = ((HttpURLConnection) conn).getContentLength();
+                        responseContentLength = ((HttpURLConnection) conn).getContentLength();
                     }
 
                     mLogger.info("conn.getResponseCode. statusCode: " + statusCode
-                            + ", contentLength: " + contentLength
+                            + ", responseContentLength: " + responseContentLength
                     );
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
@@ -183,25 +195,11 @@ public class HttpFeedFetcher {
 
                     // Read the response body.
                     // result = method.getResponseBodyAsString();
-                    InputStream is = conn.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-
-                    int numCharsRead;
-                    int totalCharsRead = 0;
-                    char[] charArray = new char[1024 * 10];
-                    StringBuffer sb = new StringBuffer();
-                    while ((numCharsRead = isr.read(charArray)) != -1)
-                    {
-                        sb.append(charArray, 0, numCharsRead);
-                        totalCharsRead += numCharsRead;
-                        // mLogger.info("content read: " + totalCharsRead + "/" + contentLength + "(" + (contentLength - totalCharsRead) + ")");
-                    }
-
-                    result = sb.toString();
+					result = getResponseBody(conn, responseContentLength);
 
                     mLogger.info("Response"
                             + ", url: " + url
-                            + ", contentLength: " + contentLength
+                            + ", responseContentLength: " + responseContentLength
                             + ", result.length: " + result.length()
                     );
 
@@ -453,21 +451,22 @@ public class HttpFeedFetcher {
     }
 
     static public String fetchPostHttpsJson(String url, String contentType, int timeoutInSeconds, int maxRetriesNumber,
-                                            String user, String password, String authorizationHeader, String postBodyRequest)
+                                            String user, String password, String authorizationHeader, String postBodyRequest,
+											boolean outputToBeCompressed)
             throws Exception
     {
         return fetchBodyHttpsJson("POST", url, contentType, timeoutInSeconds, maxRetriesNumber,
-                user, password, authorizationHeader, postBodyRequest);
+                user, password, authorizationHeader, postBodyRequest, outputToBeCompressed);
     }
 
     static public String fetchPutHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
                                             String user, String password, String authorizationHeader,
-											String putBodyRequest)
+											String putBodyRequest, boolean outputToBeCompressed)
             throws Exception
     {
         String contentType = null;
         return fetchBodyHttpsJson("PUT", url, contentType, timeoutInSeconds, maxRetriesNumber, 
-			user, password, authorizationHeader, putBodyRequest);
+			user, password, authorizationHeader, putBodyRequest, outputToBeCompressed);
     }
 
     static public String fetchDeleteHttpsJson(String url, int timeoutInSeconds, int maxRetriesNumber,
@@ -477,13 +476,15 @@ public class HttpFeedFetcher {
         String contentType = null;
         // String deleteBodyRequest = null;
         return fetchBodyHttpsJson("DELETE", url, contentType, timeoutInSeconds, maxRetriesNumber,
-                user, password, null, deleteBodyRequest);
+                user, password, null, deleteBodyRequest, 
+				false	// it will not be used
+		);
     }
 
     static private String fetchBodyHttpsJson(String httpMethod, String url, String contentType,
                                              int timeoutInSeconds, int maxRetriesNumber,
                                              String user, String password, String authorizationHeader,
-                                             String postBodyRequest)
+                                             String postBodyRequest, boolean outputToBeCompressed)
             throws Exception
     {
         // fetchWebPage
@@ -568,7 +569,13 @@ public class HttpFeedFetcher {
                         mLogger.info("Add Header (user " + user + ", password " + "..." + "). " + "Authorization: " + "Basic " + encoded);
                     }
 
-                    conn.setDoOutput(true); // false because I do not need to append any data to this request
+					if (outputToBeCompressed)
+					{
+						conn.setRequestProperty("X-ResponseBodyCompressed", "true");
+						mLogger.info("Add Header, X-ResponseBodyCompressed: " + "true");
+					}
+
+					conn.setDoOutput(true); // false because I do not need to append any data to this request
                     if (url.startsWith("https"))
                         ((HttpsURLConnection) conn).setRequestMethod(httpMethod);
                     else
@@ -617,10 +624,17 @@ public class HttpFeedFetcher {
 
                     mLogger.info("conn.getResponseCode...");
                     int statusCode;
+                    long responseContentLength;
                     if (url.startsWith("https"))
+					{
                         statusCode = ((HttpsURLConnection) conn).getResponseCode();
-                    else
+						responseContentLength = ((HttpsURLConnection) conn).getContentLength();
+					}
+					else
+					{
                         statusCode = ((HttpURLConnection) conn).getResponseCode();
+						responseContentLength = ((HttpURLConnection) conn).getContentLength();
+					}
 
                     mLogger.info("conn.getResponseCode. statusCode: " + statusCode);
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
@@ -667,16 +681,7 @@ public class HttpFeedFetcher {
 
                     // Read the response body.
                     // result = method.getResponseBodyAsString();
-                    InputStream is = conn.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(is);
-
-                    int numCharsRead;
-                    char[] charArray = new char[1024 * 10];
-                    StringBuffer sb = new StringBuffer();
-                    while ((numCharsRead = isr.read(charArray)) > 0)
-                        sb.append(charArray, 0, numCharsRead);
-
-                    result = sb.toString();
+					result = getResponseBody(conn, responseContentLength);
 
                     mLogger.debug("result: " + result);
 
@@ -832,7 +837,8 @@ public class HttpFeedFetcher {
 
                         OutputStream outputStream = null;
                         // InputStream inputStream = null;
-                        try {
+                        try 
+						{
                             outputStream = conn.getOutputStream();
                             // inputStream = new FileInputStream(binaryPathName);
 
@@ -930,4 +936,90 @@ public class HttpFeedFetcher {
         // elapsed time saved in the calling method
         // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
     }
+
+	static private String getResponseBody(URLConnection conn, long responseContentLength)
+	throws Exception
+	{
+		String body;
+
+		try
+		{
+			Boolean bodyCompressed = false;
+			mLogger.info("X-CompressedBody: " + conn.getHeaderField("X-CompressedBody"));
+			if (conn.getHeaderField("X-CompressedBody") != null && conn.getHeaderField("X-CompressedBody").equals("true"))
+				bodyCompressed = true;
+
+			if (bodyCompressed)
+			{
+				/*
+				InputStream is = conn.getInputStream();
+
+				final GZIPInputStream gzipInputStream = new GZIPInputStream(is);
+				final BufferedReader bufferedReader = new BufferedReader(
+					new InputStreamReader(gzipInputStream, "UTF-8"));
+
+				final StringBuilder outStr = new StringBuilder();
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					outStr.append(line);
+				}
+
+				result = outStr.toString();
+	
+				gzipInputStream.close();
+				*/
+	
+				InputStream is = conn.getInputStream();
+	
+				final StringBuilder outStr = new StringBuilder();
+	
+				int buffersize = 1024 * 20;
+				BufferedInputStream in = new BufferedInputStream(is);
+				DeflateCompressorInputStream defIn = new DeflateCompressorInputStream(in);
+				final byte[] buffer = new byte[buffersize];
+				long uncompressedLength = 0;
+				int n = 0;
+				while (-1 != (n = defIn.read(buffer))) {
+					outStr.append(new String(buffer, 0, n));
+	
+					uncompressedLength += n;
+				}
+				defIn.close();
+	
+				body = outStr.toString();
+				mLogger.info("getResponseBody"
+					+ ", responseContentLength: " + responseContentLength 
+					+ ", uncompressedLength: " + uncompressedLength);
+			}
+			else
+			{
+				InputStream is = conn.getInputStream();
+				InputStreamReader isr = new InputStreamReader(is);
+	
+				int numCharsRead;
+				int totalCharsRead = 0;
+				char[] charArray = new char[1024 * 40];
+				StringBuffer sb = new StringBuffer();
+				while ((numCharsRead = isr.read(charArray)) != -1)
+				{
+					sb.append(charArray, 0, numCharsRead);
+					totalCharsRead += numCharsRead;
+					// mLogger.info("content read: " + totalCharsRead + "/" + contentLength + "(" + (contentLength - totalCharsRead) + ")");
+				}
+	
+				body = sb.toString();
+			}
+		}
+		catch(Exception e)
+		{
+			String errorMessage = "getResponseBody"
+				+ ", exception: " + e
+			;
+			mLogger.error(errorMessage);
+
+			throw new Exception(errorMessage);
+		}
+
+		return body;
+	}
 }
