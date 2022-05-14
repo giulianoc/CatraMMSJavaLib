@@ -1872,6 +1872,7 @@ public class CatraMMSWorkflow {
 			Long fontSize,
 			String fontColor,
 			Long textPercentageOpacity,
+			Long shadowX, Long shadowY,
 
 			String encodingPriority,	// Low, Medium, High 
             String encodersPool,
@@ -1903,6 +1904,8 @@ public class CatraMMSWorkflow {
             joParameters.put("fontColor", fontColor);
 
             joParameters.put("textPercentageOpacity", textPercentageOpacity);
+            joParameters.put("shadowX", shadowX);
+            joParameters.put("shadowY", shadowY);
 
 			joParameters.put("encodingPriority", encodingPriority);
 
