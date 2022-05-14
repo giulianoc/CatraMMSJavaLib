@@ -1878,7 +1878,11 @@ public class CatraMMSWorkflow {
             String encodersPool,
 
 			List<MediaItemReference> mediaItemReferenceList,
-            Long utcProcessingStartingFrom
+
+            String title,
+            String mediaItemRetention,
+
+			Long utcProcessingStartingFrom
     )
             throws Exception
     {
@@ -1911,6 +1915,9 @@ public class CatraMMSWorkflow {
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("encodersPool", encodersPool);
+
+			joParameters.put("Title", title);
+			joParameters.put("Retention", mediaItemRetention);
 
             if (utcProcessingStartingFrom != null)
             {
