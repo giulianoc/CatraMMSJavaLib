@@ -6498,7 +6498,7 @@ public class CatraMMSAPI {
 						}
 					}
 
-					encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+					// encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("GenerateFrames")
                         )

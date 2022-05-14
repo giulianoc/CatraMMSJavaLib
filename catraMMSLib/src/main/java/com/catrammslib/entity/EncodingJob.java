@@ -34,7 +34,6 @@ public class EncodingJob implements Serializable {
     private Long sourceImagePhysicalPathKey;
 
     // type is 'OverlayTextOnVideo'
-    // private Long sourceVideoPhysicalPathKey; already present
 
     // type is 'FaceRecognition'
 
