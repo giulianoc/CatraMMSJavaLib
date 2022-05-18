@@ -4554,6 +4554,7 @@ public class CatraMMSAPI {
 		String encodersPoolLabel,
 		String url, 
 		String pushProtocol,
+		Long pushEncoderKey,
 		String pushServerName,
 		Long pushServerPort,
 		String pushURI,
@@ -4588,6 +4589,8 @@ public class CatraMMSAPI {
                 	joStreamConf.put("url", url);
 				if (pushProtocol != null)
                 	joStreamConf.put("pushProtocol", pushProtocol);
+				if (pushEncoderKey != null)
+                	joStreamConf.put("pushEncoderKey", pushEncoderKey);
 				if (pushServerName != null)
                 	joStreamConf.put("pushServerName", pushServerName);
 				if (pushServerPort != null)
@@ -4678,6 +4681,7 @@ public class CatraMMSAPI {
 								  String encodersPoolLabel,
 								  String url, 
 								  String pushProtocol,
+								  Long pushEncoderKey,
 								  String pushServerName,
 								  Long pushServerPort,
 								  String pushURI,
@@ -4727,6 +4731,8 @@ public class CatraMMSAPI {
                 	joStreamConf.put("url", url);
 				if (pushProtocol != null)
                 	joStreamConf.put("pushProtocol", pushProtocol);
+				if (pushEncoderKey != null)
+                	joStreamConf.put("pushEncoderKey", pushEncoderKey);
 				if (pushServerName != null)
                 	joStreamConf.put("pushServerName", pushServerName);
 				if (pushServerPort != null)
@@ -7811,6 +7817,8 @@ public class CatraMMSAPI {
             	stream.setUrl(streamInfo.getString("url"));
 			if (streamInfo.has("pushProtocol") && !streamInfo.isNull("pushProtocol"))
             	stream.setPushProtocol(streamInfo.getString("pushProtocol"));
+			if (streamInfo.has("pushEncoderKey") && !streamInfo.isNull("pushEncoderKey"))
+                stream.setPushEncoderKey(streamInfo.getLong("pushEncoderKey"));
 			if (streamInfo.has("pushServerName") && !streamInfo.isNull("pushServerName"))
             	stream.setPushServerName(streamInfo.getString("pushServerName"));
 			if (streamInfo.has("pushServerPort") && !streamInfo.isNull("pushServerPort"))

@@ -25,6 +25,7 @@ public class Stream implements Serializable{
 	private String sourceType;
 
 	private String pushProtocol;
+	private Long pushEncoderKey;
 	private String pushServerName;
 	private Long pushServerPort;
 	private String pushURI;
@@ -61,7 +62,15 @@ public class Stream implements Serializable{
         this.confKey = confKey;
     }
 
-    public String getLabel() {
+    public Long getPushEncoderKey() {
+		return pushEncoderKey;
+	}
+
+	public void setPushEncoderKey(Long pushEncoderKey) {
+		this.pushEncoderKey = pushEncoderKey;
+	}
+
+	public String getLabel() {
         return label;
     }
 
