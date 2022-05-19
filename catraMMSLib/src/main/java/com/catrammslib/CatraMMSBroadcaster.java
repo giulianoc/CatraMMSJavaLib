@@ -72,8 +72,10 @@ public class CatraMMSBroadcaster {
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 
 					// 2021-12-27: we are forcing here the broadcast to use the same encodersPool of the broadcaster
-					// This is not mandatory but, since they comminicate through udp, it is recommended
-					broadcasterStream.getEncodersPoolLabel(),
+					// This is not mandatory but, since they communicate through udp, it is recommended
+					// 2022-05-18: encoderspool removed because the broadcaster channel is IP_PUSH, for this reason it does not use
+					//		the encoderspool but only pushServerName
+					null,	// broadcasterStream.getEncodersPoolLabel(),
 					broadcastIngestionJobLabel,
 					broadcastUdpURL,
 
@@ -203,6 +205,7 @@ public class CatraMMSBroadcaster {
 					liveProxyOutputList.add(liveProxyOutput);
 				}
 				if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
+				{
 	                joBroadcast = CatraMMSWorkflow.buildLiveProxyJson(
 						broadcastIngestionJobLabel,
 
@@ -218,8 +221,10 @@ public class CatraMMSBroadcaster {
 						null,
 
 						liveProxyOutputList,
-						null
+						null,
+						true
         	        );
+				}
 				else if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 				{
 					MediaItemReference mediaItemReference = new MediaItemReference();
@@ -237,7 +242,8 @@ public class CatraMMSBroadcaster {
 						broadcasterStart, broadcasterEnd,
 
 						null,
-						liveProxyOutputList
+						liveProxyOutputList,
+						true
         	        );
 				}
 				else if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
@@ -275,7 +281,8 @@ public class CatraMMSBroadcaster {
 						boxColor,
 						boxPercentageOpacity,
 
-						liveProxyOutputList
+						liveProxyOutputList,
+						true
         	        );
 				}
 				else
@@ -373,7 +380,8 @@ public class CatraMMSBroadcaster {
 					null,
 
 					liveProxyOutputList,
-					joExtraLiveProxyInternalMMSParameters
+					joExtraLiveProxyInternalMMSParameters,
+					null
                 );
                 joWorkflow.put("Task", joBroadcaster);
             }

@@ -325,7 +325,8 @@ public class CatraMMSWorkflow {
             Long maxAttemptsNumberInCaseOfErrors,
             Long waitingSecondsBetweenAttemptsInCaseOfErrors,
             List<LiveProxyOutput> liveProxyOutputList,
-			JSONObject joInternalMMSParameters
+			JSONObject joInternalMMSParameters,
+			Boolean defaultBroadcast
     )
             throws Exception
     {
@@ -340,6 +341,10 @@ public class CatraMMSWorkflow {
             joTask.put("Parameters", joParameters);
 
 			joParameters.put("ConfigurationLabel", liveConfigurationLabel);
+
+			// this is a parameter used ONLY for the 'live channel/broadcaster' application.
+			if (defaultBroadcast != null && defaultBroadcast)
+				joParameters.put("defaultBroadcast", defaultBroadcast);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
@@ -413,7 +418,8 @@ public class CatraMMSWorkflow {
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
             String otherInputOptions,
-            List<LiveProxyOutput> liveProxyOutputList
+            List<LiveProxyOutput> liveProxyOutputList,
+			Boolean defaultBroadcast
     )
             throws Exception
     {
@@ -432,7 +438,11 @@ public class CatraMMSWorkflow {
 				mediaItemReferenceList,
 				null);
 
-            if (encodersPool != null && !encodersPool.isEmpty())
+			// this is a parameter used ONLY for the 'live channel/broadcaster' application.
+			if (defaultBroadcast != null && defaultBroadcast)
+				joParameters.put("defaultBroadcast", defaultBroadcast);
+
+			if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
 
             if (otherInputOptions != null && !otherInputOptions.isEmpty())
@@ -500,7 +510,8 @@ public class CatraMMSWorkflow {
             Boolean boxEnable,
             String boxColor,
             Long boxPercentageOpacity,
-            List<LiveProxyOutput> liveProxyOutputList
+            List<LiveProxyOutput> liveProxyOutputList,
+			Boolean defaultBroadcast
     )
             throws Exception
     {
@@ -530,6 +541,10 @@ public class CatraMMSWorkflow {
                 joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
             }
 
+			// this is a parameter used ONLY for the 'live channel/broadcaster' application.
+			if (defaultBroadcast != null && defaultBroadcast)
+				joParameters.put("defaultBroadcast", defaultBroadcast);
+				
 			joParameters.put("Text", text);
 
 			if (textPosition_X_InPixel != null && !textPosition_X_InPixel.isEmpty())
