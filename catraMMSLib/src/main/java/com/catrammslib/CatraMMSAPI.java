@@ -3079,60 +3079,7 @@ public class CatraMMSAPI {
             JSONArray jaBodyRequest = new JSONArray();
 
 			for (BroadcastPlaylistItem broadcastPlaylistItem: broadcastPlaylistItems)
-			{
-				JSONObject joInputRoot = new JSONObject();
-				jaBodyRequest.put(joInputRoot);
-
-				joInputRoot.put("timePeriod", true);
-				joInputRoot.put("utcScheduleStart", broadcastPlaylistItem.getStart().getTime() / 1000);
-				joInputRoot.put("utcScheduleEnd", broadcastPlaylistItem.getEnd().getTime() / 1000);
-
-				if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
-				{
-					JSONObject joStreamInput = new JSONObject();
-					joInputRoot.put("streamInput", joStreamInput);
-
-					joStreamInput.put("streamConfKey", broadcastPlaylistItem.getStream().getConfKey());
-					joStreamInput.put("streamConfigurationLabel", broadcastPlaylistItem.getStream().getLabel());
-
-					if (broadcastPlaylistItem.getStream().getEncodersPoolLabel() != null 
-						&& !broadcastPlaylistItem.getStream().getEncodersPoolLabel().isEmpty())
-						joStreamInput.put("encodersPoolLabel", broadcastPlaylistItem.getStream().getEncodersPoolLabel());
-
-					joStreamInput.put("streamSourceType", broadcastPlaylistItem.getStream().getSourceType());
-					if (broadcastPlaylistItem.getStream().getSourceType().equalsIgnoreCase("IP_PULL"))
-						joStreamInput.put("url", broadcastPlaylistItem.getStream().getUrl());
-				}
-				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
-				{
-					JSONObject joVODInput = new JSONObject();
-					joInputRoot.put("vodInput", joVODInput);
-
-					joVODInput.put("physicalPathKey", broadcastPlaylistItem.getPhysicalPathKey());
-				}
-				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
-				{
-					JSONObject joCountdownInput = new JSONObject();
-					joInputRoot.put("countdownInput", joCountdownInput);
-
-					joCountdownInput.put("physicalPathKey", broadcastPlaylistItem.getPhysicalPathKey());
-					joCountdownInput.put("text", broadcastPlaylistItem.getText());
-				}
-				else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
-				{
-					JSONObject joDirectURLInput = new JSONObject();
-					joInputRoot.put("directURLInput", joDirectURLInput);
-
-					joDirectURLInput.put("url", broadcastPlaylistItem.getUrl());
-				}
-				else
-				{
-					String errorMessage = "Unknown mediaType: " + broadcastPlaylistItem.getMediaType();
-					mLogger.error(errorMessage);
-		
-					throw new Exception(errorMessage);
-				}
-			}
+				jaBodyRequest.put(broadcastPlaylistItem.getJson2());
 
             String bodyRequest = jaBodyRequest.toString();
 

@@ -241,6 +241,75 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return broadcastPlaylistItem;
 	}
 
+	public JSONObject getJson2()
+	throws Exception
+	{
+		try
+		{
+			JSONObject joInputRoot = new JSONObject();
+
+			joInputRoot.put("timePeriod", true);
+			joInputRoot.put("utcScheduleStart", getStart().getTime() / 1000);
+			joInputRoot.put("utcScheduleEnd", getEnd().getTime() / 1000);
+	
+			if (getMediaType().equalsIgnoreCase("Stream"))
+			{
+				JSONObject joStreamInput = new JSONObject();
+				joInputRoot.put("streamInput", joStreamInput);
+	
+				joStreamInput.put("streamConfKey", getStream().getConfKey());
+				joStreamInput.put("streamConfigurationLabel", getStream().getLabel());
+	
+				if (getStream().getEncodersPoolLabel() != null 
+					&& !getStream().getEncodersPoolLabel().isEmpty())
+					joStreamInput.put("encodersPoolLabel", getStream().getEncodersPoolLabel());
+	
+				joStreamInput.put("streamSourceType", getStream().getSourceType());
+				if (getStream().getSourceType().equalsIgnoreCase("IP_PULL"))
+					joStreamInput.put("url", getStream().getUrl());
+			}
+			else if (getMediaType().equalsIgnoreCase("Media"))
+			{
+				JSONObject joVODInput = new JSONObject();
+				joInputRoot.put("vodInput", joVODInput);
+	
+				joVODInput.put("physicalPathKey", getPhysicalPathKey());
+			}
+			else if (getMediaType().equalsIgnoreCase("Countdown"))
+			{
+				JSONObject joCountdownInput = new JSONObject();
+				joInputRoot.put("countdownInput", joCountdownInput);
+	
+				joCountdownInput.put("physicalPathKey", getPhysicalPathKey());
+				joCountdownInput.put("text", getText());
+			}
+			else if (getMediaType().equalsIgnoreCase("Direct URL"))
+			{
+				JSONObject joDirectURLInput = new JSONObject();
+				joInputRoot.put("directURLInput", joDirectURLInput);
+	
+				joDirectURLInput.put("url", getUrl());
+			}
+			else
+			{
+				String errorMessage = "Unknown mediaType: " + getMediaType();
+				mLogger.error(errorMessage);
+	
+				throw new Exception(errorMessage);
+			}
+	
+			return joInputRoot;	
+		}
+		catch (Exception e)
+		{
+			mLogger.error("getJson2" 
+				+ ", exception: " + e
+			);
+
+			throw e;
+		}
+	}
+
 	public void setStreamConfigurationLabel(String streamConfigurationLabel) 
 	{
 		this.streamConfigurationLabel = streamConfigurationLabel;

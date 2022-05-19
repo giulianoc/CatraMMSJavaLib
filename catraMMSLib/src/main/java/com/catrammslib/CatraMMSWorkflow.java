@@ -1756,6 +1756,7 @@ public class CatraMMSWorkflow {
             String label,
             String method, // GET, POST
             String protocol, String hostName, String uri, String parameters,
+			String httpBody,
             Long timeoutInSeconds, Long maxRetries,
             List<MediaItemReference> mediaItemReferenceList
     )
@@ -1777,6 +1778,8 @@ public class CatraMMSWorkflow {
             if (parameters != null)
                 joParameters.put("Parameters", parameters);
             joParameters.put("Method", method);
+			if (httpBody != null && httpBody.length() > 0)
+	            joParameters.put("httpBody", httpBody);
             joParameters.put("Timeout", timeoutInSeconds);
             joParameters.put("MaxRetries", maxRetries);
 
