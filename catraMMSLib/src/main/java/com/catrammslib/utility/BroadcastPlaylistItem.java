@@ -273,7 +273,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONObject joVODInput = new JSONObject();
 				joInputRoot.put("vodInput", joVODInput);
 	
-				joVODInput.put("physicalPathKey", getPhysicalPathKey());
+				JSONArray jaSources = new JSONArray();
+				joVODInput.put("sources", jaSources);
+
+				JSONObject joSource = new JSONObject();
+				jaSources.put(joSource);
+
+				joSource.put("physicalPathKey", getPhysicalPathKey());
 			}
 			else if (getMediaType().equalsIgnoreCase("Countdown"))
 			{
