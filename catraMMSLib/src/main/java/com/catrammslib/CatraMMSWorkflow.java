@@ -1772,16 +1772,16 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
 
-            joParameters.put("Protocol", protocol);
-            joParameters.put("HostName", hostName);
-            joParameters.put("URI", uri);
+            joParameters.put("protocol", protocol);
+            joParameters.put("hostName", hostName);
+            joParameters.put("uri", uri);
             if (parameters != null)
-                joParameters.put("Parameters", parameters);
-            joParameters.put("Method", method);
+                joParameters.put("parameters", parameters);
+            joParameters.put("method", method);
 			if (httpBody != null && httpBody.length() > 0)
 	            joParameters.put("httpBody", httpBody);
-            joParameters.put("Timeout", timeoutInSeconds);
-            joParameters.put("MaxRetries", maxRetries);
+            joParameters.put("timeout", timeoutInSeconds);
+            joParameters.put("maxRetries", maxRetries);
 
             setCommonParameters(joParameters,
                     null,
