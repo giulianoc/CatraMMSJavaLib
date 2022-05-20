@@ -20,6 +20,7 @@ public class CatraMMSBroadcaster {
 	static public Long addBroadcaster(String broadcasterConfigurationLabel,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
+		String broadcastEncodersPool,
 		String broadcasterCdnRtmp, String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
 		CatraMMSAPI catraMMS, String username, String password)
@@ -75,7 +76,8 @@ public class CatraMMSBroadcaster {
 					// This is not mandatory but, since they communicate through udp, it is recommended
 					// 2022-05-18: encoderspool removed because the broadcaster channel is IP_PUSH, for this reason it does not use
 					//		the encoderspool but only pushServerName
-					null,	// broadcasterStream.getEncodersPoolLabel(),
+					// 2022-05-20: added the broadcastEncodersPool parameter
+					broadcastEncodersPool,
 					broadcastIngestionJobLabel,
 					broadcastUdpURL,
 
