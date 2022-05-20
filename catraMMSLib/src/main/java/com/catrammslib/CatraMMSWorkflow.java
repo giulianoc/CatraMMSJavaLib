@@ -1754,7 +1754,8 @@ public class CatraMMSWorkflow {
 
     static public JSONObject buildHTTPCallback(
             String label,
-            String method, // GET, POST
+			String userName, String password,
+            String method, // GET, POST, PUT
             String protocol, String hostName, String uri, String parameters,
 			String httpBody,
             Long timeoutInSeconds, Long maxRetries,
@@ -1772,7 +1773,14 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
 
-            joParameters.put("protocol", protocol);
+			if (userName != null && !userName.isEmpty()
+				&& password != null && !password.isEmpty())
+			{
+				joParameters.put("userName", userName);
+				joParameters.put("password", password);	
+			}
+
+			joParameters.put("protocol", protocol);
             joParameters.put("hostName", hostName);
             joParameters.put("uri", uri);
             if (parameters != null)
