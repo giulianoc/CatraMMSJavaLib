@@ -34,12 +34,13 @@ public class LiveProxyOutput implements Serializable {
 	// RTMP_Stream, HLS
     private String encodingProfileLabel;
 	// RTMP_Stream, HLS
-    private String audioVolumeChange;
+	private JSONObject joFilters;
 	// RTMP_Stream, HLS
     private Long fadeDuration;
 
 	void LiveProxyOutput()
 	{
+		joFilters = null;
 		fadeDuration = null;
 	}
 	
@@ -80,8 +81,8 @@ public class LiveProxyOutput implements Serializable {
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
 				joOutput.put("OtherOutputOptions", getOtherOutputOptions());
 	
-			if (getAudioVolumeChange() != null && !getAudioVolumeChange().isEmpty())
-				joOutput.put("AudioVolumeChange", getAudioVolumeChange());
+			if (getJoFilters() != null)
+				joOutput.put("filters", getJoFilters());
 
 			if (getFadeDuration() != null)
 				joOutput.put("fadeDuration", getFadeDuration());
@@ -176,15 +177,16 @@ public class LiveProxyOutput implements Serializable {
         this.deliveryCode = deliveryCode;
     }
 
-    public String getAudioVolumeChange() {
-        return audioVolumeChange;
-    }
 
-    public void setAudioVolumeChange(String audioVolumeChange) {
-        this.audioVolumeChange = audioVolumeChange;
-    }
+    public JSONObject getJoFilters() {
+		return joFilters;
+	}
 
-    public Long getAwsExpirationInMinutes() {
+	public void setJoFilters(JSONObject joFilters) {
+		this.joFilters = joFilters;
+	}
+
+	public Long getAwsExpirationInMinutes() {
 		return awsExpirationInMinutes;
 	}
 
