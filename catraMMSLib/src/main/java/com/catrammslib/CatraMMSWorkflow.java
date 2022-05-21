@@ -201,6 +201,7 @@ public class CatraMMSWorkflow {
             String chunkRetention, JSONObject joUserData,
             String encodingPriority,
             Boolean autoRenew,
+			JSONObject joFilters,
             Boolean monitorHLS,
             String monitorHLSEncodingProfileLabel,
             String outputFileFormat,
@@ -269,6 +270,9 @@ public class CatraMMSWorkflow {
                 joRecordingPeriod.put("start", dateFormat.format(utcLiveRecorderStart));
                 joRecordingPeriod.put("end", dateFormat.format(utcLiveRecorderEnd));
             }
+
+			if (joFilters != null)
+				joParameters.put("filters", joFilters);
 
             if (monitorHLS != null && monitorHLS)
             {
