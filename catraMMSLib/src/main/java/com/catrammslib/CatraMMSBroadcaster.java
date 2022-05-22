@@ -202,7 +202,19 @@ public class CatraMMSBroadcaster {
 					liveProxyOutput.setOutputType("UDP_Stream");
 					liveProxyOutput.setUdpURL(broadcastUdpURL);
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
-					liveProxyOutput.setFadeDuration((long) 3);	// seconds
+					{
+						JSONObject joFilters = new JSONObject();
+						
+						JSONObject joVideo = new JSONObject();
+						joFilters.put("video", joVideo);
+
+						JSONObject joFade = new JSONObject();
+						joVideo.put("fade", joFade);
+
+						joFade.put("duration", 3);
+
+						liveProxyOutput.setFilters(joFilters);
+					}
 
 					liveProxyOutputList.add(liveProxyOutput);
 				}

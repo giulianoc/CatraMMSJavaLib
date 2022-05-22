@@ -34,14 +34,11 @@ public class LiveProxyOutput implements Serializable {
 	// RTMP_Stream, HLS
     private String encodingProfileLabel;
 	// RTMP_Stream, HLS
-	private JSONObject joFilters;
-	// RTMP_Stream, HLS
-    private Long fadeDuration;
+	private JSONObject filters;
 
 	void LiveProxyOutput()
 	{
-		joFilters = null;
-		fadeDuration = null;
+		filters = null;
 	}
 	
 	public JSONObject toJson()
@@ -81,11 +78,8 @@ public class LiveProxyOutput implements Serializable {
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
 				joOutput.put("OtherOutputOptions", getOtherOutputOptions());
 	
-			if (getJoFilters() != null)
-				joOutput.put("filters", getJoFilters());
-
-			if (getFadeDuration() != null)
-				joOutput.put("fadeDuration", getFadeDuration());
+			if (getFilters() != null)
+				joOutput.put("filters", getFilters());
 		}
 		catch(Exception e)
 		{
@@ -102,14 +96,6 @@ public class LiveProxyOutput implements Serializable {
     public void setOutputType(String outputType) {
         this.outputType = outputType;
     }
-
-    public Long getFadeDuration() {
-		return fadeDuration;
-	}
-
-	public void setFadeDuration(Long fadeDuration) {
-		this.fadeDuration = fadeDuration;
-	}
 
 	public String getUdpURL() {
 		return udpURL;
@@ -177,13 +163,12 @@ public class LiveProxyOutput implements Serializable {
         this.deliveryCode = deliveryCode;
     }
 
-
-    public JSONObject getJoFilters() {
-		return joFilters;
+	public JSONObject getFilters() {
+		return filters;
 	}
 
-	public void setJoFilters(JSONObject joFilters) {
-		this.joFilters = joFilters;
+	public void setFilters(JSONObject filters) {
+		this.filters = filters;
 	}
 
 	public Long getAwsExpirationInMinutes() {
