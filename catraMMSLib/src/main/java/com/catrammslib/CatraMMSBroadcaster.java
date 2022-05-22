@@ -11,6 +11,7 @@ import com.catrammslib.utility.LiveProxyOutput;
 import com.catrammslib.utility.MediaItemReference;
 
 import org.apache.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CatraMMSBroadcaster {
@@ -205,12 +206,13 @@ public class CatraMMSBroadcaster {
 					{
 						JSONObject joFilters = new JSONObject();
 						
-						JSONObject joVideo = new JSONObject();
-						joFilters.put("video", joVideo);
+						JSONArray jaVideo = new JSONArray();
+						joFilters.put("video", jaVideo);
 
 						JSONObject joFade = new JSONObject();
-						joVideo.put("fade", joFade);
+						jaVideo.put(joFade);
 
+						joFade.put("type", "fade");
 						joFade.put("duration", 3);
 
 						liveProxyOutput.setFilters(joFilters);
