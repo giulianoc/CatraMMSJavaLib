@@ -212,7 +212,8 @@ public class CatraMMSWorkflow {
             Long utcLiveRecorderEnd,
             String encodersPool,
             String userAgent,
-            List<LiveProxyOutput> liveRecorderOutputList
+            List<LiveProxyOutput> liveRecorderOutputList,
+			JSONArray jaFramesToBeDetected
     )
             throws Exception
     {
@@ -301,7 +302,10 @@ public class CatraMMSWorkflow {
                 }
             }
 
-            return joTask;
+			if (jaFramesToBeDetected != null)
+				joParameters.put("framesToBeDetected", jaFramesToBeDetected);
+
+			return joTask;
         }
         catch (Exception e)
         {
