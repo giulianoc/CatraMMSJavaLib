@@ -201,6 +201,7 @@ public class CatraMMSWorkflow {
             String chunkRetention, JSONObject joUserData,
             String encodingPriority,
             Boolean autoRenew,
+			String otherInputOptions,
             Boolean monitorHLS,
             String monitorHLSEncodingProfileLabel,
             String outputFileFormat,
@@ -250,6 +251,9 @@ public class CatraMMSWorkflow {
             // joParameters.put("HighAvailability", highAvailability);
             joParameters.put("OutputFileFormat", outputFileFormat);
             joParameters.put("SegmentDuration", segmentDurationInSeconds);
+
+            if (otherInputOptions != null && !otherInputOptions.isEmpty())
+                joParameters.put("otherInputOptions", otherInputOptions);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
