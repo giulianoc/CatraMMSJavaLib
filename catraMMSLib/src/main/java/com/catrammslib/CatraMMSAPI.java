@@ -2102,7 +2102,7 @@ public class CatraMMSAPI {
             );
 
             Date now = new Date();
-			if (body != null && body.length() > 0)
+			if (newMediaItemKey == null && body != null && body.length() > 0)
 			{
 				String postContentType = null;
 				mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
