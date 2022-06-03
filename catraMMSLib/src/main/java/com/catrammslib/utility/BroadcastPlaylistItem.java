@@ -338,15 +338,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		physicalPathKeys.add(physicalPathKey);
 
+		MediaItem mediaItem = null;
 		try
 		{
-			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
-			mediaItems.add(mediaItem);
+			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
 		}
 		catch (Exception e)
 		{
 			mLogger.error("Exception: " + e.getMessage());
 		}
+
+		mediaItems.add(mediaItem);
 	}
 
 	public void setPhysicalPathKey(Long physicalPathKey) 
