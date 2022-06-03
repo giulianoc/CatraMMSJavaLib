@@ -201,6 +201,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		return joBroadcastPlaylistItem;
 	}
+	
 	static public BroadcastPlaylistItem fromJson(JSONObject joBroadcastPlaylistItem,
 		CatraMMSAPI localCatraMMS, String localUsername, String localPassword)
 	{
@@ -339,9 +340,27 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public void addPhysicalPathKey(Long localPhysicalPathKey)
+	public void setPhysicalPathKeys(List<Long> physicalPathKeys) 
 	{
+		physicalPathKeys.clear();
+		for(Long localPhysicalPathKey: physicalPathKeys)
+		{
+			addPhysicalPathKey(localPhysicalPathKey);
+		}
+	}
+
+	public void setPhysicalPathKey(Long localPhysicalPathKey) 
+	{
+		this.physicalPathKey = localPhysicalPathKey;
+	}
+
+	public int addPhysicalPathKey(Long localPhysicalPathKey)
+	{
+		int positionIndex;
+
 		physicalPathKeys.add(localPhysicalPathKey);
+
+		positionIndex = physicalPathKeys.size() - 1;
 
 		MediaItem mediaItem = null;
 		try
@@ -353,12 +372,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			mLogger.error("Exception: " + e.getMessage());
 		}
 
-		mediaItems.add(mediaItem);
-	}
+		if (mediaItems.size() <= positionIndex)
+			mediaItems.add(mediaItem);
+		else
+			mediaItems.set(positionIndex, mediaItem);
 
-	public void setPhysicalPathKey(Long localPhysicalPathKey) 
-	{
-		this.physicalPathKey = localPhysicalPathKey;
+		return positionIndex;
 	}
 
 	public String getStreamConfigurationLabel() {
@@ -385,10 +404,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public List<Long> getPhysicalPathKeys() {
 		return physicalPathKeys;
-	}
-
-	public void setPhysicalPathKeys(List<Long> physicalPathKeys) {
-		this.physicalPathKeys = physicalPathKeys;
 	}
 
 	public String getText() {
