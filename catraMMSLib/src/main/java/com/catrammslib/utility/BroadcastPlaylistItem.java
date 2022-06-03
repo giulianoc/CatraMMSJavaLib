@@ -76,7 +76,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < physicalPathKeys.size(); physicalPathKeyIndex++)
 			{
 				Long localPhysicalPathKey = physicalPathKeys.get(physicalPathKeyIndex);
-				MediaItem mediaItem = mediaItems.get(physicalPathKeyIndex);
+				MediaItem mediaItem = null;
+				if (mediaItems.size() > physicalPathKeyIndex)
+					mediaItem = mediaItems.get(physicalPathKeyIndex);
 
 				if (str != "")
 					str += " / ";
