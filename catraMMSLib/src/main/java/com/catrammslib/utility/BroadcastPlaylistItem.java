@@ -276,12 +276,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONArray jaSources = new JSONArray();
 				joVODInput.put("sources", jaSources);
 
-				for (Long physicalPathKey: getPhysicalPathKeys())
+				for (Long localPhysicalPathKey: getPhysicalPathKeys())
 				{
 					JSONObject joSource = new JSONObject();
 					jaSources.put(joSource);
 	
-					joSource.put("physicalPathKey", physicalPathKey);
+					joSource.put("physicalPathKey", localPhysicalPathKey);
 				}
 			}
 			else if (getMediaType().equalsIgnoreCase("Countdown"))
@@ -337,14 +337,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public void addPhysicalPathKey(Long physicalPathKey)
+	public void addPhysicalPathKey(Long localPhysicalPathKey)
 	{
-		physicalPathKeys.add(physicalPathKey);
+		physicalPathKeys.add(localPhysicalPathKey);
 
 		MediaItem mediaItem = null;
 		try
 		{
-			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
+			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey);
 		}
 		catch (Exception e)
 		{
@@ -354,9 +354,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaItems.add(mediaItem);
 	}
 
-	public void setPhysicalPathKey(Long physicalPathKey) 
+	public void setPhysicalPathKey(Long localPhysicalPathKey) 
 	{
-		this.physicalPathKey = physicalPathKey;
+		this.physicalPathKey = localPhysicalPathKey;
 	}
 
 	public String getStreamConfigurationLabel() {

@@ -243,11 +243,15 @@ public class CatraMMSBroadcaster {
 				}
 				else if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 				{
-					MediaItemReference mediaItemReference = new MediaItemReference();
-					mediaItemReference.setPhysicalPathKey(broadcastDefaultPlaylistItem.getPhysicalPathKey());
-
 					List<MediaItemReference> mediaItemReferenceList = new ArrayList<>();
-					mediaItemReferenceList.add(mediaItemReference);
+
+					for(Long physicalPathKey: broadcastDefaultPlaylistItem.getPhysicalPathKeys())
+					{
+						MediaItemReference mediaItemReference = new MediaItemReference();
+						mediaItemReference.setPhysicalPathKey(physicalPathKey);
+	
+						mediaItemReferenceList.add(mediaItemReference);	
+					}
 
 	                joBroadcast = CatraMMSWorkflow.buildVODProxyJson(
 						broadcastIngestionJobLabel,
