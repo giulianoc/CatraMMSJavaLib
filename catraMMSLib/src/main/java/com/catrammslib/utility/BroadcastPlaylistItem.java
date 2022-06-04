@@ -81,13 +81,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					mediaItem = mediaItems.get(physicalPathKeyIndex);
 
 				if (str != "")
-					str += " / ";
-				str += (localPhysicalPathKey.toString() + (mediaItem != null ? (": " + mediaItem.getTitle()) : ""));
+					str += "</br>";	// str += " / ";
+				str += ("<b>" + localPhysicalPathKey.toString() + "</b>" + (mediaItem != null ? (": " + mediaItem.getTitle()) : ""));
 			}
 		}
 		else if (mediaType.equals("Countdown"))
 		{
-			str = physicalPathKey.toString() + " - " + text;
+			MediaItem mediaItem = null;
+			if (mediaItems.size() > 0)
+				mediaItem = mediaItems.get(0);
+
+			str = "<b>" + physicalPathKey.toString() + "</b>" + (mediaItem != null ? (": " + mediaItem.getTitle()) : "");
 		}
 		else if (mediaType.equals("Direct URL"))
 			str = url;
@@ -342,16 +346,36 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public void setPhysicalPathKeys(List<Long> physicalPathKeys) 
 	{
-		physicalPathKeys.clear();
-		for(Long localPhysicalPathKey: physicalPathKeys)
+		if (physicalPathKeys != null)
 		{
-			addPhysicalPathKey(localPhysicalPathKey);
+			for(Long localPhysicalPathKey: physicalPathKeys)
+				addPhysicalPathKey(localPhysicalPathKey);
 		}
 	}
 
 	public void setPhysicalPathKey(Long localPhysicalPathKey) 
 	{
 		this.physicalPathKey = localPhysicalPathKey;
+
+		if (localPhysicalPathKey != null)
+		{
+			int positionIndex = 0;
+
+			MediaItem mediaItem = null;
+			try
+			{
+				mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey);
+			}
+			catch (Exception e)
+			{
+				mLogger.error("Exception: " + e.getMessage());
+			}
+	
+			if (mediaItems.size() <= positionIndex)
+				mediaItems.add(mediaItem);
+			else
+				mediaItems.set(positionIndex, mediaItem);	
+		}
 	}
 
 	public int addPhysicalPathKey(Long localPhysicalPathKey)
