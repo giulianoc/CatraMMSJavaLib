@@ -4720,6 +4720,8 @@ public class CatraMMSAPI {
                     joStreamConf.put("imageUniqueName", imageUniqueName);
                 if (position != null)
                     joStreamConf.put("position", position);
+				else	// in order to be able to set position as null into DB
+					joStreamConf.put("position", JSONObject.NULL);
                 if (userData != null && !userData.isEmpty())
                     joStreamConf.put("userData", new JSONObject(userData));
 
