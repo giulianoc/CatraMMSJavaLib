@@ -4656,6 +4656,7 @@ public class CatraMMSAPI {
                     + ", label: " + label
                     + ", url: " + url
                     + ", type: " + type
+                    + ", sourceType: " + sourceType
                     + ", description: " + description
                     + ", name: " + name
                     + ", region: " + region
@@ -5023,7 +5024,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            mLogger.info("modifyStream"
+            mLogger.info("modifySourceSATStream"
                     + ", username: " + username
                     + ", serviceId: " + serviceId
                     + ", networkId: " + networkId
