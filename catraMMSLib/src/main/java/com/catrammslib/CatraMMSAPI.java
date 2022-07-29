@@ -4670,8 +4670,10 @@ public class CatraMMSAPI {
             {
                 JSONObject joStreamConf = new JSONObject();
 
-                joStreamConf.put("label", label);
-                joStreamConf.put("sourceType", sourceType);
+				if (label != null)
+					joStreamConf.put("label", label);
+				if (sourceType != null)
+					joStreamConf.put("sourceType", sourceType);
 				if (encodersPoolLabel != null)
                 	joStreamConf.put("encodersPoolLabel", encodersPoolLabel);
                 if (url != null)
