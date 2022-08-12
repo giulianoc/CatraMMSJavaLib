@@ -214,7 +214,8 @@ public class CatraMMSWorkflow {
             String encodersPool,
             String userAgent,
             List<LiveProxyOutput> liveRecorderOutputList,
-			JSONArray jaFramesToBeDetected
+			JSONArray jaFramesToBeDetected,
+			Boolean monitoringFrameIncreasingEnabled
     )
             throws Exception
     {
@@ -308,6 +309,9 @@ public class CatraMMSWorkflow {
 
 			if (jaFramesToBeDetected != null)
 				joParameters.put("framesToBeDetected", jaFramesToBeDetected);
+
+			if (monitoringFrameIncreasingEnabled != null)
+				joParameters.put("monitoringFrameIncreasingEnabled", monitoringFrameIncreasingEnabled);
 
 			return joTask;
         }
