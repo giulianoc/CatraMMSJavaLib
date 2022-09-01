@@ -29,6 +29,9 @@ public class LiveProxyOutput implements Serializable {
 	// AWS_CHANNEL
 	private Long awsExpirationInMinutes;
 
+	private Long videoTrackIndexToBeUsed;
+	private Long audioTrackIndexToBeUsed;
+
 	// RTMP_Stream, HLS
 	private String otherOutputOptions;
 	// RTMP_Stream, HLS
@@ -39,6 +42,8 @@ public class LiveProxyOutput implements Serializable {
 	void LiveProxyOutput()
 	{
 		filters = null;
+		videoTrackIndexToBeUsed = (long) -1;
+		audioTrackIndexToBeUsed = (long) -1;
 	}
 	
 	public JSONObject toJson()
@@ -78,6 +83,12 @@ public class LiveProxyOutput implements Serializable {
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
 				joOutput.put("OtherOutputOptions", getOtherOutputOptions());
 	
+			if (getVideoTrackIndexToBeUsed() != null && getVideoTrackIndexToBeUsed() != -1)
+				joOutput.put("videoTrackIndexToBeUsed",  getVideoTrackIndexToBeUsed());
+
+			if (getAudioTrackIndexToBeUsed() != null && getAudioTrackIndexToBeUsed() != -1)
+				joOutput.put("audioTrackIndexToBeUsed",  getAudioTrackIndexToBeUsed());
+
 			if (getFilters() != null)
 				joOutput.put("filters", getFilters());
 		}
@@ -105,6 +116,22 @@ public class LiveProxyOutput implements Serializable {
 		this.udpURL = udpURL;
 	}
 
+
+	public Long getVideoTrackIndexToBeUsed() {
+		return videoTrackIndexToBeUsed;
+	}
+
+	public void setVideoTrackIndexToBeUsed(Long videoTrackIndexToBeUsed) {
+		this.videoTrackIndexToBeUsed = videoTrackIndexToBeUsed;
+	}
+
+	public Long getAudioTrackIndexToBeUsed() {
+		return audioTrackIndexToBeUsed;
+	}
+
+	public void setAudioTrackIndexToBeUsed(Long audioTrackIndexToBeUsed) {
+		this.audioTrackIndexToBeUsed = audioTrackIndexToBeUsed;
+	}
 
 	public String getAwsChannelConfigurationLabel() {
 		return awsChannelConfigurationLabel;
