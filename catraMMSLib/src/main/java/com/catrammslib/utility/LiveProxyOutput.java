@@ -72,7 +72,7 @@ public class LiveProxyOutput implements Serializable {
 					joOutput.put("SegmentDurationInSeconds", getSegmentDurationInSeconds());
 			}
 	
-			if (getEncodingProfileLabel() != null)
+			if (getEncodingProfileLabel() != null && !getEncodingProfileLabel().isEmpty())
 				joOutput.put("EncodingProfileLabel", getEncodingProfileLabel());
 	
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
