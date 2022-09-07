@@ -7839,7 +7839,8 @@ public class CatraMMSAPI {
             if (streamInfo.has("transportStreamId") && !streamInfo.isNull("transportStreamId"))
                 stream.setTransportStreamId(streamInfo.getLong("transportStreamId"));
             stream.setName(streamInfo.getString("name"));
-            stream.setSatellite(streamInfo.getString("satellite"));
+            if (streamInfo.has("satellite") && !streamInfo.isNull("satellite"))
+	            stream.setSatellite(streamInfo.getString("satellite"));
             stream.setFrequency(streamInfo.getLong("frequency"));
             if (streamInfo.has("lnb") && !streamInfo.isNull("lnb"))
                 stream.setLnb(streamInfo.getString("lnb"));
