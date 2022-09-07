@@ -46,7 +46,7 @@ import com.catrammslib.entity.RequestPerMonthStatistic;
 import com.catrammslib.entity.RequestPerDayStatistic;
 import com.catrammslib.entity.RequestPerHourStatistic;
 import com.catrammslib.entity.RequestStatistic;
-import com.catrammslib.entity.SourceSATStream;
+import com.catrammslib.entity.SourceTVStream;
 import com.catrammslib.entity.UserProfile;
 import com.catrammslib.entity.VideoBitRate;
 import com.catrammslib.entity.VideoTrack;
@@ -4513,7 +4513,7 @@ public class CatraMMSAPI {
 		Long captureLiveHeight,
 		Long captureLiveAudioDeviceNumber,
 		Long captureLiveChannelsNumber,
-		Long sourceSATConfKey,
+		Long sourceTVConfKey,
 		String type, String description,
         String name, String region, String country,
         Long imageMediaItemKey, String imageUniqueName, Long position,
@@ -4560,8 +4560,8 @@ public class CatraMMSAPI {
                 	joStreamConf.put("captureLiveAudioDeviceNumber", captureLiveAudioDeviceNumber);
 				if (captureLiveChannelsNumber != null)
                 	joStreamConf.put("captureLiveChannelsNumber", captureLiveChannelsNumber);
-				if (sourceSATConfKey != null)
-                	joStreamConf.put("sourceSATConfKey", sourceSATConfKey);
+				if (sourceTVConfKey != null)
+                	joStreamConf.put("sourceTVConfKey", sourceTVConfKey);
 				if (type != null)
                     joStreamConf.put("type", type);
                 if (description != null)
@@ -4640,7 +4640,7 @@ public class CatraMMSAPI {
 								  Long captureLiveHeight,
 								  Long captureLiveAudioDeviceNumber,
 								  Long captureLiveChannelsNumber,
-								  Long sourceSATConfKey,
+								  Long sourceTVConfKey,
 								String type, String description,
                                   String name, String region, String country,
                                   Long imageMediaItemKey, String imageUniqueName, Long position,
@@ -4705,8 +4705,8 @@ public class CatraMMSAPI {
                 	joStreamConf.put("captureLiveAudioDeviceNumber", captureLiveAudioDeviceNumber);
 				if (captureLiveChannelsNumber != null)
                 	joStreamConf.put("captureLiveChannelsNumber", captureLiveChannelsNumber);
-				if (sourceSATConfKey != null)
-                	joStreamConf.put("sourceSATConfKey", sourceSATConfKey);
+				if (sourceTVConfKey != null)
+                	joStreamConf.put("sourceTVConfKey", sourceTVConfKey);
                 if (type != null)
                     joStreamConf.put("type", type);
                 if (description != null)
@@ -4932,7 +4932,7 @@ public class CatraMMSAPI {
         return stream;
     }
 
-    public Long addSourceSATStream(String username, String password,
+    public Long addSourceTVStream(String username, String password,
                                         Long serviceId, Long networkId, Long transportStreamId,
                                         String name, String satellite, Long frequency, String lnb,
                                         Long videoPid, String audioPids, Long audioItalianPid, Long audioEnglishPid, Long teletextPid,
@@ -4974,9 +4974,9 @@ public class CatraMMSAPI {
                 jsonStream = joStream.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatStream";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceTVStream";
 
-            mLogger.info("addSourceSATStream"
+            mLogger.info("addSourceTVStream"
                     + ", mmsURL: " + mmsURL
                     + ", jsonStream: " + jsonStream
             );
@@ -4985,11 +4985,11 @@ public class CatraMMSAPI {
             String contentType = null;
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
                     username, password, null, jsonStream, outputToBeCompressed);
-            mLogger.info("addSourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("addSourceTVStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "addSourceSATStream MMS failed. Exception: " + e;
+            String errorMessage = "addSourceTVStream MMS failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -5012,7 +5012,7 @@ public class CatraMMSAPI {
         return confKey;
     }
 
-    public void modifySourceSATStream(String username, String password,
+    public void modifySourceTVStream(String username, String password,
                                            Long confKey, Long serviceId, Long networkId, Long transportStreamId,
                                            String name, String satellite, Long frequency, String lnb,
                                            Long videoPid, String audioPids, Long audioItalianPid, Long audioEnglishPid, Long teletextPid,
@@ -5024,7 +5024,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            mLogger.info("modifySourceSATStream"
+            mLogger.info("modifySourceTVStream"
                     + ", username: " + username
                     + ", serviceId: " + serviceId
                     + ", networkId: " + networkId
@@ -5087,9 +5087,9 @@ public class CatraMMSAPI {
                 jsonStream = joStream.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatStream/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceTVStream/" + confKey;
 
-            mLogger.info("modifySourceSATStream"
+            mLogger.info("modifySourceTVStream"
                     + ", mmsURL: " + mmsURL
                     + ", jsonStream: " + jsonStream
             );
@@ -5097,18 +5097,18 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, null, jsonStream, outputToBeCompressed);
-            mLogger.info("modifySourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("modifySourceTVStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "modifySourceSATStream MMS failed. Exception: " + e;
+            String errorMessage = "modifySourceTVStream MMS failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
         }
     }
 
-    public void removeSourceSATStream(String username, String password,
+    public void removeSourceTVStream(String username, String password,
                                      Long confKey)
             throws Exception
     {
@@ -5116,9 +5116,9 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatStream/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceTVStream/" + confKey;
 
-            mLogger.info("removeSATStream"
+            mLogger.info("removeTVStream"
                     + ", mmsURL: " + mmsURL
                     + ", confKey: " + confKey
             );
@@ -5126,24 +5126,24 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, null);
-            mLogger.info("removeSourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("removeSourceTVStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "removeSourceSATStream MMS failed. Exception: " + e;
+            String errorMessage = "removeSourceTVStream MMS failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
         }
     }
 
-    public Long getSourceSATStream(String username, String password,
+    public Long getSourceTVStreams(String username, String password,
                                   long startIndex, long pageSize,
                                   Long confKey,
                                   Long serviceId, String name, Long frequency, String lnb,
                                   Long videoPid, String audioPids,
                                   String nameOrder,   // asc or desc
-                                  List<SourceSATStream> sourceSATStream)
+                                  List<SourceTVStream> sourceTVStreams)
             throws Exception
     {
         Long numFound;
@@ -5151,7 +5151,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatStream"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceTVStream"
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
@@ -5169,7 +5169,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, null, outputToBeCompressed);
-            mLogger.info("getSourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("getSourceTVStreams. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
         catch (Exception e)
@@ -5186,27 +5186,27 @@ public class CatraMMSAPI {
             JSONObject joResponse = joMMSInfo.getJSONObject("response");
             numFound = joResponse.getLong("numFound");
 
-            JSONArray jaStreams = joResponse.getJSONArray("sourceSATStreams");
+            JSONArray jaStreams = joResponse.getJSONArray("sourceTVStreams");
 
             mLogger.info("jaStreams.length(): " + jaStreams.length()
             );
 
-            sourceSATStream.clear();
+            sourceTVStreams.clear();
 
             for (int streamIndex = 0; streamIndex < jaStreams.length(); streamIndex++)
             {
-                SourceSATStream sourceSatStream = new SourceSATStream();
+                SourceTVStream sourceTVStream = new SourceTVStream();
 
                 JSONObject streamInfo = jaStreams.getJSONObject(streamIndex);
 
-                fillSourceSATStream(sourceSatStream, streamInfo);
+                fillSourceTVStream(sourceTVStream, streamInfo);
 
-                sourceSATStream.add(sourceSatStream);
+                sourceTVStreams.add(sourceTVStream);
             }
         }
         catch (Exception e)
         {
-            String errorMessage = "Parsing sourceSATStreams failed. Exception: " + e;
+            String errorMessage = "Parsing sourceTVStreams failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -5215,16 +5215,16 @@ public class CatraMMSAPI {
         return numFound;
     }
 
-    public SourceSATStream getSourceSATStream(String username, String password,
+    public SourceTVStream getSourceTVStream(String username, String password,
                                             Long serviceId)
             throws Exception
     {
-        SourceSATStream stream = null;
+        SourceTVStream stream = null;
 
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceSatStream"
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/sourceTVStream"
                     + "/" + serviceId
                     ;
 
@@ -5233,7 +5233,7 @@ public class CatraMMSAPI {
             Date now = new Date();
             mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, null, outputToBeCompressed);
-            mLogger.info("getSourceSATStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("getSourceTVStream. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
         catch (Exception e)
@@ -5250,7 +5250,7 @@ public class CatraMMSAPI {
             JSONObject joResponse = joMMSInfo.getJSONObject("response");
             Long numFound = joResponse.getLong("numFound");
 
-            JSONArray jaStreams = joResponse.getJSONArray("sourceSATStreams");
+            JSONArray jaStreams = joResponse.getJSONArray("sourceTVStreams");
 
             mLogger.info("jaStreams.length(): " + jaStreams.length()
             );
@@ -5268,16 +5268,16 @@ public class CatraMMSAPI {
 
             if (jaStreams.length() == 1)
             {
-                stream = new SourceSATStream();
+                stream = new SourceTVStream();
 
                 JSONObject streamInfo = jaStreams.getJSONObject(0);
 
-                fillSourceSATStream(stream, streamInfo);
+                fillSourceTVStream(stream, streamInfo);
             }
         }
         catch (Exception e)
         {
-            String errorMessage = "Parsing sourceSATStreams failed. Exception: " + e;
+            String errorMessage = "Parsing sourceTVStreams failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -7793,8 +7793,8 @@ public class CatraMMSAPI {
             	stream.setCaptureLiveAudioDeviceNumber(streamInfo.getLong("captureLiveAudioDeviceNumber"));
 			if (streamInfo.has("captureLiveChannelsNumber") && !streamInfo.isNull("captureLiveChannelsNumber"))
             	stream.setCaptureLiveChannelsNumber(streamInfo.getLong("captureLiveChannelsNumber"));
-			if (streamInfo.has("satSourceSATConfKey") && !streamInfo.isNull("satSourceSATConfKey"))
-            	stream.setSourceSATConfKey(streamInfo.getLong("satSourceSATConfKey"));
+			if (streamInfo.has("sourceTVConfKey") && !streamInfo.isNull("sourceTVConfKey"))
+            	stream.setSourceTVConfKey(streamInfo.getLong("sourceTVConfKey"));
 			if (streamInfo.has("type") && !streamInfo.isNull("type"))
                 stream.setType(streamInfo.getString("type"));
             if (streamInfo.has("description") && !streamInfo.isNull("description"))
@@ -7827,7 +7827,7 @@ public class CatraMMSAPI {
         }
     }
 
-    private void fillSourceSATStream(SourceSATStream stream, JSONObject streamInfo)
+    private void fillSourceTVStream(SourceTVStream stream, JSONObject streamInfo)
             throws Exception
     {
         try {
@@ -7866,7 +7866,7 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "fillSourceSATStream failed. Exception: " + e;
+            String errorMessage = "fillSourceTVStream failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);

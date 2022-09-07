@@ -37,7 +37,7 @@ public class Stream implements Serializable{
 	private Long captureLiveHeight;
 	private Long captureLiveAudioDeviceNumber;
 	private Long captureLiveChannelsNumber;
-	private Long sourceSATConfKey;
+	private Long sourceTVConfKey;
 
 	private Boolean selected;
 
@@ -254,12 +254,12 @@ public class Stream implements Serializable{
 		this.captureLiveChannelsNumber = captureLiveChannelsNumber;
 	}
 
-	public Long getSourceSATConfKey() {
-		return sourceSATConfKey;
+	public Long getSourceTVConfKey() {
+		return sourceTVConfKey;
 	}
 
-	public void setSourceSATConfKey(Long sourceSATConfKey) {
-		this.sourceSATConfKey = sourceSATConfKey;
+	public void setSourceTVConfKey(Long sourceTVConfKey) {
+		this.sourceTVConfKey = sourceTVConfKey;
 	}
 
 	public String getPushServerName() {
