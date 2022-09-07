@@ -7793,8 +7793,8 @@ public class CatraMMSAPI {
             	stream.setCaptureLiveAudioDeviceNumber(streamInfo.getLong("captureLiveAudioDeviceNumber"));
 			if (streamInfo.has("captureLiveChannelsNumber") && !streamInfo.isNull("captureLiveChannelsNumber"))
             	stream.setCaptureLiveChannelsNumber(streamInfo.getLong("captureLiveChannelsNumber"));
-			if (streamInfo.has("sourceTVConfKey") && !streamInfo.isNull("sourceTVConfKey"))
-            	stream.setSourceTVConfKey(streamInfo.getLong("sourceTVConfKey"));
+			if (streamInfo.has("tvSourceTVConfKey") && !streamInfo.isNull("tvSourceTVConfKey"))
+            	stream.setTvSourceTVConfKey(streamInfo.getLong("tvSourceTVConfKey"));
 			if (streamInfo.has("type") && !streamInfo.isNull("type"))
                 stream.setType(streamInfo.getString("type"));
             if (streamInfo.has("description") && !streamInfo.isNull("description"))
