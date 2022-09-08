@@ -4933,10 +4933,11 @@ public class CatraMMSAPI {
     }
 
     public Long addSourceTVStream(String username, String password,
-                                        Long serviceId, Long networkId, Long transportStreamId,
+                                        String type, Long serviceId, Long networkId, Long transportStreamId,
                                         String name, String satellite, Long frequency, String lnb,
                                         Long videoPid, String audioPids, Long audioItalianPid, Long audioEnglishPid, Long teletextPid,
-                                        String modulation, String polarization, Long symbolRate, String country, String deliverySystem)
+                                        String modulation, String polarization, Long symbolRate, Long bandwidthInHz,
+										String country, String deliverySystem)
             throws Exception
     {
 
@@ -4947,6 +4948,7 @@ public class CatraMMSAPI {
             {
                 JSONObject joStream = new JSONObject();
 
+                joStream.put("type", type);
                 joStream.put("serviceId", serviceId);
                 joStream.put("networkId", networkId);
                 joStream.put("transportStreamId", transportStreamId);
@@ -4966,6 +4968,7 @@ public class CatraMMSAPI {
                     joStream.put("modulation", modulation);
                 joStream.put("polarization", polarization);
                 joStream.put("symbolRate", symbolRate);
+                joStream.put("bandwidthInHz", bandwidthInHz);
                 if (country != null && !country.isEmpty())
                     joStream.put("country", country);
                 if (deliverySystem != null && !deliverySystem.isEmpty())
@@ -5013,10 +5016,10 @@ public class CatraMMSAPI {
     }
 
     public void modifySourceTVStream(String username, String password,
-                                           Long confKey, Long serviceId, Long networkId, Long transportStreamId,
+                                           Long confKey, String type, Long serviceId, Long networkId, Long transportStreamId,
                                            String name, String satellite, Long frequency, String lnb,
                                            Long videoPid, String audioPids, Long audioItalianPid, Long audioEnglishPid, Long teletextPid,
-                                           String modulation, String polarization, Long symbolRate, String country, String deliverySystem
+                                           String modulation, String polarization, Long symbolRate, Long bandwidthInHz, String country, String deliverySystem
     )
             throws Exception
     {
@@ -5049,6 +5052,8 @@ public class CatraMMSAPI {
             {
                 JSONObject joStream = new JSONObject();
 
+                if (type != null)
+                    joStream.put("type", type);
                 if (serviceId != null)
                     joStream.put("serviceId", serviceId);
                 if (networkId != null)
@@ -5079,6 +5084,8 @@ public class CatraMMSAPI {
                     joStream.put("polarization", polarization);
                 if (symbolRate != null)
                     joStream.put("symbolRate", symbolRate);
+				if (bandwidthInHz != null)
+                    joStream.put("bandwidthInHz", bandwidthInHz);
                 if (country != null && !country.isEmpty())
                     joStream.put("country", country);
                 if (deliverySystem != null && !deliverySystem.isEmpty())
@@ -5140,7 +5147,7 @@ public class CatraMMSAPI {
     public Long getSourceTVStreams(String username, String password,
                                   long startIndex, long pageSize,
                                   Long confKey,
-                                  Long serviceId, String name, Long frequency, String lnb,
+                                  String type, Long serviceId, String name, Long frequency, String lnb,
                                   Long videoPid, String audioPids,
                                   String nameOrder,   // asc or desc
                                   List<SourceTVStream> sourceTVStreams)
@@ -5155,6 +5162,7 @@ public class CatraMMSAPI {
                     + (confKey == null ? "" : ("/" + confKey))
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
+                    + (type == null  ? "" : ("&type=" + type))
                     + (serviceId == null  ? "" : ("&serviceId=" + serviceId))
                     + (name == null || name.isEmpty() ? "" : ("&name=" + java.net.URLEncoder.encode(name, "UTF-8"))) // requires unescape server side
                     + (frequency == null  ? "" : ("&frequency=" + frequency))
@@ -7832,6 +7840,7 @@ public class CatraMMSAPI {
     {
         try {
             stream.setConfKey(streamInfo.getLong("confKey"));
+            stream.setType(streamInfo.getString("type"));
             if (streamInfo.has("serviceId") && !streamInfo.isNull("serviceId"))
                 stream.setServiceId(streamInfo.getLong("serviceId"));
             if (streamInfo.has("networkId") && !streamInfo.isNull("networkId"))
@@ -7860,6 +7869,8 @@ public class CatraMMSAPI {
                 stream.setPolarization(streamInfo.getString("polarization"));
             if (streamInfo.has("symbolRate") && !streamInfo.isNull("symbolRate"))
                 stream.setSymbolRate(streamInfo.getLong("symbolRate"));
+			if (streamInfo.has("bandwidthInHz") && !streamInfo.isNull("bandwidthInHz"))
+                stream.setBandwidthInHz(streamInfo.getLong("bandwidthInHz"));
             if (streamInfo.has("country") && !streamInfo.isNull("country"))
                 stream.setCountry(streamInfo.getString("country"));
             if (streamInfo.has("deliverySystem") && !streamInfo.isNull("deliverySystem"))

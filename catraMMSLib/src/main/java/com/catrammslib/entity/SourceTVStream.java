@@ -9,6 +9,7 @@ import java.util.Objects;
 public class SourceTVStream implements Serializable{
 
     private Long confKey;
+	private String type;
     private Long serviceId;
     private Long networkId;
     private Long transportStreamId;
@@ -24,6 +25,7 @@ public class SourceTVStream implements Serializable{
     private String modulation;
     private String polarization;
     private Long symbolRate;
+    private Long bandwidthInHz;
     private String country;
     private String deliverySystem;
 
@@ -48,7 +50,23 @@ public class SourceTVStream implements Serializable{
         this.confKey = confKey;
     }
 
-    public String getName() {
+    public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	public Long getBandwidthInHz() {
+		return bandwidthInHz;
+	}
+
+	public void setBandwidthInHz(Long bandwidthInHz) {
+		this.bandwidthInHz = bandwidthInHz;
+	}
+
+	public String getName() {
         return name;
     }
 
