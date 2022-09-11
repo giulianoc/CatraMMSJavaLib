@@ -32,6 +32,8 @@ public class LiveProxyOutput implements Serializable {
 	private Long videoTrackIndexToBeUsed;
 	private Long audioTrackIndexToBeUsed;
 
+	private DrawTextDetails drawTextDetails;
+
 	// RTMP_Stream, HLS
 	private String otherOutputOptions;
 	// RTMP_Stream, HLS
@@ -41,6 +43,7 @@ public class LiveProxyOutput implements Serializable {
 
 	void LiveProxyOutput()
 	{
+		drawTextDetails = null;
 		filters = null;
 		videoTrackIndexToBeUsed = (long) -1;
 		audioTrackIndexToBeUsed = (long) -1;
@@ -91,6 +94,9 @@ public class LiveProxyOutput implements Serializable {
 
 			if (getFilters() != null)
 				joOutput.put("filters", getFilters());
+			
+			if (drawTextDetails != null)
+				joOutput.put("drawTextDetails", drawTextDetails.toJson());
 		}
 		catch(Exception e)
 		{
