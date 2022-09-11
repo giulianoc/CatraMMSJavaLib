@@ -34,7 +34,7 @@ public class DrawTextDetails implements Serializable {
 		try
 		{
 			if (text != null && !text.isEmpty())
-				joOutput.put("text", true);
+				joOutput.put("text", text);
 
 			if (positionXInPixel != null && !positionXInPixel.isEmpty())
 				joOutput.put("textPosition_X_InPixel", positionXInPixel);
