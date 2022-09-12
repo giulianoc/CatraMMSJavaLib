@@ -32,6 +32,16 @@ public class CatraMMSBroadcaster {
 
 		try
 		{
+			mLogger.info("Received addBroadcaster"
+				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
+				+ ", broadcasterName: " + broadcasterName
+				+ ", broadcasterStart: " + broadcasterStart
+				+ ", broadcasterEnd: " + broadcasterEnd
+				+ ", broadcastEncodersPool: " + broadcastEncodersPool
+				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
+				+ ", encodingProfileLabel: " + encodingProfileLabel
+			);
+
 			mLogger.info("looking for catraMMS.getChannelConf"
 				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
 			);
@@ -194,6 +204,15 @@ public class CatraMMSBroadcaster {
     {
 		try
         {
+			mLogger.info("Received buildBroadcastJson"
+				+ ", broadcasterStart: " + broadcasterStart
+				+ ", broadcasterEnd: " + broadcasterEnd
+				+ ", encodingProfileLabel: " + encodingProfileLabel
+				+ ", encodersPoolLabel: " + encodersPoolLabel
+				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
+				+ ", broadcastUdpURL: " + broadcastUdpURL
+			);
+
             JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcastIngestionJobLabel);
 
             JSONObject joBroadcast = null;
@@ -331,7 +350,7 @@ public class CatraMMSBroadcaster {
 
 	private static JSONObject buildBroadcasterJson(
 		String broadcasterIngestionJobLabel,
-		String broadcasterStreamConfigurationLabel,	// udp://<server>:<port>
+		String broadcasterStreamConfigurationLabel,	
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
@@ -344,6 +363,16 @@ public class CatraMMSBroadcaster {
     {
 		try
         {
+			mLogger.info("Received buildBroadcasterJson"
+				+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
+				+ ", broadcasterStreamConfigurationLabel: " + broadcasterStreamConfigurationLabel
+				+ ", broadcasterStart: " + broadcasterStart
+				+ ", broadcasterEnd: " + broadcasterEnd
+				+ ", encodingProfileLabel: " + encodingProfileLabel
+				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
+				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
+			);
+
             JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcasterIngestionJobLabel);
 
             JSONObject joBroadcaster;
