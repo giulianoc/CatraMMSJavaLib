@@ -212,6 +212,14 @@ public class LiveProxyOutput implements Serializable {
 		this.awsExpirationInMinutes = awsExpirationInMinutes;
 	}
 
+	public DrawTextDetails getDrawTextDetails() {
+		return drawTextDetails;
+	}
+
+	public void setDrawTextDetails(DrawTextDetails drawTextDetails) {
+		this.drawTextDetails = drawTextDetails;
+	}
+
 	public String getOtherOutputOptions() {
         return otherOutputOptions;
     }

@@ -295,22 +295,24 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			{
 				JSONObject joCountdownInput = new JSONObject();
 				joInputRoot.put("countdownInput", joCountdownInput);
-	
+
 				joCountdownInput.put("physicalPathKey", getPhysicalPathKey());
 				joCountdownInput.put("text", getText());
+				joCountdownInput.put("textPosition_X_InPixel", textPosition_X_InPixel);
+				joCountdownInput.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
 			}
 			else if (getMediaType().equalsIgnoreCase("Direct URL"))
 			{
 				JSONObject joDirectURLInput = new JSONObject();
 				joInputRoot.put("directURLInput", joDirectURLInput);
-	
+
 				joDirectURLInput.put("url", getUrl());
 			}
 			else
 			{
 				String errorMessage = "Unknown mediaType: " + getMediaType();
 				mLogger.error(errorMessage);
-	
+
 				throw new Exception(errorMessage);
 			}
 	
@@ -430,33 +432,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return physicalPathKeys;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-
-	public String getTextPosition_X_InPixel() {
-		return textPosition_X_InPixel;
-	}
-
-	public void setTextPosition_X_InPixel(String textPosition_X_InPixel) {
-		this.textPosition_X_InPixel = textPosition_X_InPixel;
-	}
-
-	public String getTextPosition_Y_InPixel() {
-		return textPosition_Y_InPixel;
-	}
-
-	public void setTextPosition_Y_InPixel(String textPosition_Y_InPixel) {
-		this.textPosition_Y_InPixel = textPosition_Y_InPixel;
-	}
-
-
 	public Stream getStream() {
 		return stream;
 	}
@@ -491,6 +466,30 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public String getMediaType() {
 		return mediaType;
+	}
+
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public String getTextPosition_X_InPixel() {
+		return textPosition_X_InPixel;
+	}
+
+	public void setTextPosition_X_InPixel(String textPosition_X_InPixel) {
+		this.textPosition_X_InPixel = textPosition_X_InPixel;
+	}
+
+	public String getTextPosition_Y_InPixel() {
+		return textPosition_Y_InPixel;
+	}
+
+	public void setTextPosition_Y_InPixel(String textPosition_Y_InPixel) {
+		this.textPosition_Y_InPixel = textPosition_Y_InPixel;
 	}
 
 	public void setMediaType(String mediaType) {

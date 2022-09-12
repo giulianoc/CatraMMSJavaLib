@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.catrammslib.entity.Stream;
 import com.catrammslib.utility.BroadcastPlaylistItem;
+import com.catrammslib.utility.DrawTextDetails;
 import com.catrammslib.utility.IngestionResult;
 import com.catrammslib.utility.LiveProxyOutput;
 import com.catrammslib.utility.MediaItemReference;
@@ -282,7 +283,7 @@ public class CatraMMSBroadcaster {
 					String boxColor = null;
 					Long boxPercentageOpacity = null;
 
-					joBroadcast = CatraMMSWorkflow.buildCountdownJson(
+					joBroadcast = CatraMMSWorkflow.buildCountdownJsonForBroadcast(
 						broadcastIngestionJobLabel,
 
 						mediaItemReferenceList,

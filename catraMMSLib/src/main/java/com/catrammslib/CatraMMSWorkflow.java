@@ -512,16 +512,7 @@ public class CatraMMSWorkflow {
 
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
-            String text,
-            String textPosition_X_InPixel,
-            String textPosition_Y_InPixel,
-            String fontType,
-            Long fontSize,
-            String fontColor,
-            Long textPercentageOpacity,
-            Boolean boxEnable,
-            String boxColor,
-            Long boxPercentageOpacity,
+
             List<LiveProxyOutput> liveProxyOutputList,
 			Boolean defaultBroadcast
     )
@@ -556,36 +547,7 @@ public class CatraMMSWorkflow {
 			// this is a parameter used ONLY for the 'live channel/broadcaster' application.
 			if (defaultBroadcast != null && defaultBroadcast)
 				joParameters.put("defaultBroadcast", defaultBroadcast);
-				
-			joParameters.put("Text", text);
-
-			if (textPosition_X_InPixel != null && !textPosition_X_InPixel.isEmpty())
-                joParameters.put("TextPosition_X_InPixel", textPosition_X_InPixel);
-
-			if (textPosition_Y_InPixel != null && !textPosition_Y_InPixel.isEmpty())
-                joParameters.put("TextPosition_Y_InPixel", textPosition_Y_InPixel);
-
-			if (fontType != null && !fontType.isEmpty())
-                joParameters.put("FontType", fontType);
-
-			if (fontSize != null)
-                joParameters.put("FontSize", fontSize);
-
-			if (fontColor != null && !fontColor.isEmpty())
-                joParameters.put("FontColor", fontColor);
-
-			if (textPercentageOpacity != null)
-                joParameters.put("TextPercentageOpacity", textPercentageOpacity);
-
-			if (boxEnable != null)
-                joParameters.put("BoxEnable", boxEnable);
-
-			if (boxColor != null && !boxColor.isEmpty())
-                joParameters.put("BoxColor", boxColor);
-
-			if (boxPercentageOpacity != null)
-                joParameters.put("BoxPercentageOpacity", boxPercentageOpacity);
-
+			
 			if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("EncodersPool", encodersPool);
 
@@ -612,6 +574,91 @@ public class CatraMMSWorkflow {
         catch (Exception e)
         {
             String errorMessage = "buildCountdownJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+	static public JSONObject buildCountdownJsonForBroadcast(
+            String label,
+
+            List<MediaItemReference> mediaItemReferenceList,
+
+            String encodersPool,
+            Date proxyStartTime, Date proxyEndTime,
+
+			// 2022-09-12: in genere i parametri del 'draw text' vengono inizializzati
+			//		all'interno di LiveProxyOutput.
+			//		Nel caso del Broadcast (Live Channel), LiveProxyOutput è comune a tutta la playlist,
+			//		per cui non possiamo utilizzare LiveProxyOutput altrimenti avremmo il draw text
+			//		anche per gli altri item della playlist quali LiveProxy, VODProxy, ...
+			//		Per questo motivo:
+			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
+			//			2. questi parametri saranno gestiti dall'engine
+
+            String text,
+            String textPosition_X_InPixel,
+            String textPosition_Y_InPixel,
+            String fontType,
+            Long fontSize,
+            String fontColor,
+            Long textPercentageOpacity,
+            Boolean boxEnable,
+            String boxColor,
+            Long boxPercentageOpacity,
+
+			List<LiveProxyOutput> liveProxyOutputList,
+			Boolean defaultBroadcast
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = buildCountdownJson(label, mediaItemReferenceList, encodersPool, 
+				proxyStartTime, proxyEndTime, liveProxyOutputList, defaultBroadcast);
+
+            JSONObject joParameters = joTask.getJSONObject("Parameters");
+
+            {
+                JSONObject joBroadcastDrawTextDetails = new JSONObject();
+                joParameters.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
+
+				joBroadcastDrawTextDetails.put("Text", text);
+
+				if (textPosition_X_InPixel != null && !textPosition_X_InPixel.isEmpty())
+					joBroadcastDrawTextDetails.put("TextPosition_X_InPixel", textPosition_X_InPixel);
+
+				if (textPosition_Y_InPixel != null && !textPosition_Y_InPixel.isEmpty())
+					joBroadcastDrawTextDetails.put("TextPosition_Y_InPixel", textPosition_Y_InPixel);
+
+				if (fontType != null && !fontType.isEmpty())
+					joBroadcastDrawTextDetails.put("FontType", fontType);
+
+				if (fontSize != null)
+					joBroadcastDrawTextDetails.put("FontSize", fontSize);
+
+				if (fontColor != null && !fontColor.isEmpty())
+					joBroadcastDrawTextDetails.put("FontColor", fontColor);
+
+				if (textPercentageOpacity != null)
+					joBroadcastDrawTextDetails.put("TextPercentageOpacity", textPercentageOpacity);
+
+				if (boxEnable != null)
+					joBroadcastDrawTextDetails.put("BoxEnable", boxEnable);
+
+				if (boxColor != null && !boxColor.isEmpty())
+					joBroadcastDrawTextDetails.put("BoxColor", boxColor);
+
+				if (boxPercentageOpacity != null)
+					joBroadcastDrawTextDetails.put("BoxPercentageOpacity", boxPercentageOpacity);
+			}
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildCountdownJsonForBroadcast failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
