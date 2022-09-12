@@ -624,34 +624,34 @@ public class CatraMMSWorkflow {
                 JSONObject joBroadcastDrawTextDetails = new JSONObject();
                 joParameters.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
 
-				joBroadcastDrawTextDetails.put("Text", text);
+				joBroadcastDrawTextDetails.put("text", text);
 
 				if (textPosition_X_InPixel != null && !textPosition_X_InPixel.isEmpty())
-					joBroadcastDrawTextDetails.put("TextPosition_X_InPixel", textPosition_X_InPixel);
+					joBroadcastDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
 
 				if (textPosition_Y_InPixel != null && !textPosition_Y_InPixel.isEmpty())
-					joBroadcastDrawTextDetails.put("TextPosition_Y_InPixel", textPosition_Y_InPixel);
+					joBroadcastDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
 
 				if (fontType != null && !fontType.isEmpty())
-					joBroadcastDrawTextDetails.put("FontType", fontType);
+					joBroadcastDrawTextDetails.put("fontType", fontType);
 
 				if (fontSize != null)
-					joBroadcastDrawTextDetails.put("FontSize", fontSize);
+					joBroadcastDrawTextDetails.put("fontSize", fontSize);
 
 				if (fontColor != null && !fontColor.isEmpty())
-					joBroadcastDrawTextDetails.put("FontColor", fontColor);
+					joBroadcastDrawTextDetails.put("fontColor", fontColor);
 
 				if (textPercentageOpacity != null)
-					joBroadcastDrawTextDetails.put("TextPercentageOpacity", textPercentageOpacity);
+					joBroadcastDrawTextDetails.put("textPercentageOpacity", textPercentageOpacity);
 
 				if (boxEnable != null)
-					joBroadcastDrawTextDetails.put("BoxEnable", boxEnable);
+					joBroadcastDrawTextDetails.put("boxEnable", boxEnable);
 
 				if (boxColor != null && !boxColor.isEmpty())
-					joBroadcastDrawTextDetails.put("BoxColor", boxColor);
+					joBroadcastDrawTextDetails.put("boxColor", boxColor);
 
 				if (boxPercentageOpacity != null)
-					joBroadcastDrawTextDetails.put("BoxPercentageOpacity", boxPercentageOpacity);
+					joBroadcastDrawTextDetails.put("boxPercentageOpacity", boxPercentageOpacity);
 			}
 
             return joTask;
