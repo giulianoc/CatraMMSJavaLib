@@ -4502,7 +4502,7 @@ public class CatraMMSAPI {
 		String url, 
 		String pushProtocol,
 		Long pushEncoderKey,
-		String pushServerName,
+		String pushServerName,	// indica il nome del server (public or internal)
 		Long pushServerPort,
 		String pushURI,
 		Long pushListenTimeout,
@@ -4623,28 +4623,28 @@ public class CatraMMSAPI {
     }
 
     public void modifyStream(String username, String password,
-                                  Long confKey, String label, 
-								  String sourceType,
-								  String encodersPoolLabel,
-								  String url, 
-								  String pushProtocol,
-								  Long pushEncoderKey,
-								  String pushServerName,
-								  Long pushServerPort,
-								  String pushURI,
-								  Long pushListenTimeout,
-								  Long captureLiveVideoDeviceNumber,
-								  String captureLiveVideoInputFormat,
-								  Long captureLiveFrameRate,
-								  Long captureLiveWidth,
-								  Long captureLiveHeight,
-								  Long captureLiveAudioDeviceNumber,
-								  Long captureLiveChannelsNumber,
-								  Long sourceTVConfKey,
-								String type, String description,
-                                  String name, String region, String country,
-                                  Long imageMediaItemKey, String imageUniqueName, Long position,
-                                  String userData)
+		Long confKey, String label, 
+		String sourceType,
+		String encodersPoolLabel,
+		String url, 
+		String pushProtocol,
+		Long pushEncoderKey,
+		String pushServerName,	// indica il nome del server (public or internal)
+		Long pushServerPort,
+		String pushURI,
+		Long pushListenTimeout,
+		Long captureLiveVideoDeviceNumber,
+		String captureLiveVideoInputFormat,
+		Long captureLiveFrameRate,
+		Long captureLiveWidth,
+		Long captureLiveHeight,
+		Long captureLiveAudioDeviceNumber,
+		Long captureLiveChannelsNumber,
+		Long sourceTVConfKey,
+		String type, String description,
+		String name, String region, String country,
+		Long imageMediaItemKey, String imageUniqueName, Long position,
+		String userData)
             throws Exception
     {
 
@@ -7779,6 +7779,8 @@ public class CatraMMSAPI {
             	stream.setPushProtocol(streamInfo.getString("pushProtocol"));
 			if (streamInfo.has("pushEncoderKey") && !streamInfo.isNull("pushEncoderKey"))
                 stream.setPushEncoderKey(streamInfo.getLong("pushEncoderKey"));
+			if (streamInfo.has("pushEncoderLabel") && !streamInfo.isNull("pushEncoderLabel"))
+                stream.setPushEncoderLabel(streamInfo.getString("pushEncoderLabel"));
 			if (streamInfo.has("pushServerName") && !streamInfo.isNull("pushServerName"))
             	stream.setPushServerName(streamInfo.getString("pushServerName"));
 			if (streamInfo.has("pushServerPort") && !streamInfo.isNull("pushServerPort"))

@@ -26,7 +26,8 @@ public class Stream implements Serializable{
 
 	private String pushProtocol;
 	private Long pushEncoderKey;
-	private String pushServerName;
+	private String pushEncoderLabel;	// this is a calculated field
+	private String pushServerName;	// encoderKey non è sufficiente, pushServerName indica il nome del server (public or internal)
 	private Long pushServerPort;
 	private String pushURI;
 	private Long pushListenTimeout;
@@ -284,5 +285,13 @@ public class Stream implements Serializable{
 
 	public void setTvSourceTVConfKey(Long tvSourceTVConfKey) {
 		this.tvSourceTVConfKey = tvSourceTVConfKey;
+	}
+
+	public String getPushEncoderLabel() {
+		return pushEncoderLabel;
+	}
+
+	public void setPushEncoderLabel(String pushEncoderLabel) {
+		this.pushEncoderLabel = pushEncoderLabel;
 	}
 }
