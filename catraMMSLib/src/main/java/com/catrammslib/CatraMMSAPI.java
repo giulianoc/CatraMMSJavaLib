@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
@@ -3720,7 +3719,7 @@ public class CatraMMSAPI {
 
         // second option
         PhysicalPath physicalPath,
-                                 
+
 		long ttlInSeconds, int maxRetries,
 		// MMS_Token: delivery by MMS with a Token
 		// MMS_SignedToken: delivery by MMS with a signed URL
@@ -3728,8 +3727,9 @@ public class CatraMMSAPI {
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
 		String deliveryType,
 
-		Boolean save,
-		Boolean filteredByStatistic)
+		Boolean save,					// true: file name will be the title of the Media
+		Boolean filteredByStatistic		// true: not saved as statistic
+	)
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -3858,7 +3858,7 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "getDeliveryURL failed. Exception: " + e;
+            String errorMessage = "getVODDeliveryURL failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -3950,7 +3950,7 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "getDeliveryURL failed. Exception: " + e;
+            String errorMessage = "getLiveDeliveryURL failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
