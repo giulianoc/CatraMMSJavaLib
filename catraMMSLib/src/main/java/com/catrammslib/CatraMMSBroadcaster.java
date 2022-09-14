@@ -387,6 +387,8 @@ public class CatraMMSBroadcaster {
 				joExtraLiveProxyBroadcasterParameters.put("broadcastIngestionJobKey", broadcastIngestionJobKey);
 				if (broadcasterCdnRtmp != null && !broadcasterCdnRtmp.isEmpty())
 					joExtraLiveProxyBroadcasterParameters.put("cdnRtmp", broadcasterCdnRtmp);
+				if (broadcasterCdnPlayURL != null && !broadcasterCdnPlayURL.isEmpty())
+					joExtraLiveProxyBroadcasterParameters.put("cdnPlayURL", broadcasterCdnPlayURL);
 
 				JSONObject joExtraLiveProxyInternalMMSParameters = new JSONObject();
 				joExtraLiveProxyInternalMMSParameters.put("broadcaster", joExtraLiveProxyBroadcasterParameters);
