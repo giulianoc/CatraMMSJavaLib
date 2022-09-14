@@ -388,6 +388,9 @@ public class CatraMMSBroadcaster {
 				joExtraLiveProxyInternalMMSParameters.put("broadcaster", joExtraLiveProxyBroadcasterParameters);
 
                 List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
+				
+				// 2022-09-14: l'output HLS crea problemi nel caso di encoder esterno.
+				if (broadcasterCdnRtmp == null || broadcasterCdnRtmp.isEmpty())
 				{
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 
@@ -401,7 +404,7 @@ public class CatraMMSBroadcaster {
 
 					liveProxyOutputList.add(liveProxyOutput);
 				}
-				if (broadcasterCdnRtmp != null && !broadcasterCdnRtmp.isEmpty())
+				else
 				{
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 
