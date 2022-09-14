@@ -23,7 +23,8 @@ public class CatraMMSBroadcaster {
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPool,
-		String broadcasterCdnRtmp, String encodingProfileLabel,
+		String broadcasterCdnRtmp, String broadcasterCdnPlayURL, 
+		String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
 		CatraMMSAPI catraMMS, String username, String password)
 		throws Exception
@@ -39,6 +40,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterEnd: " + broadcasterEnd
 				+ ", broadcastEncodersPool: " + broadcastEncodersPool
 				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
+				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 			);
 
@@ -131,6 +133,7 @@ public class CatraMMSBroadcaster {
 					+ ", broadcasterEnd: " + broadcasterEnd
 					+ ", encodingProfileLabel: " + encodingProfileLabel
 					+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
+					+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 					+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 					+ ", broadcastDefaultPlaylistItem: " + broadcastDefaultPlaylistItem
 				);
@@ -138,7 +141,7 @@ public class CatraMMSBroadcaster {
 					broadcasterIngestionJobLabel,		
 					broadcasterConfigurationLabel,	// udp://<server>:<port>
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
-					broadcasterCdnRtmp,
+					broadcasterCdnRtmp, broadcasterCdnPlayURL,
 
 					broadcastIngestionJobKey,
 					broadcastDefaultPlaylistItem
@@ -354,7 +357,7 @@ public class CatraMMSBroadcaster {
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
-		String broadcasterCdnRtmp,
+		String broadcasterCdnRtmp, String broadcasterCdnPlayURL,
 
 		Long broadcastIngestionJobKey,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem
@@ -370,6 +373,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterEnd: " + broadcasterEnd
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
+				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 			);
 
@@ -388,7 +392,7 @@ public class CatraMMSBroadcaster {
 				joExtraLiveProxyInternalMMSParameters.put("broadcaster", joExtraLiveProxyBroadcasterParameters);
 
                 List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
-				
+
 				// 2022-09-14: l'output HLS crea problemi nel caso di encoder esterno.
 				if (broadcasterCdnRtmp == null || broadcasterCdnRtmp.isEmpty())
 				{
@@ -410,7 +414,7 @@ public class CatraMMSBroadcaster {
 
 					liveProxyOutput.setOutputType("RTMP_Stream");
 					liveProxyOutput.setRtmpURL(broadcasterCdnRtmp);
-					// liveProxyOutput.setPlayURL("https://1909844812.rsc.cdn77.org/1909844812/12376543/index.m3u8");
+					liveProxyOutput.setPlayURL(broadcasterCdnPlayURL);
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 
