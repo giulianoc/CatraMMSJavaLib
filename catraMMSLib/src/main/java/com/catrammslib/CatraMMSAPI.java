@@ -4783,7 +4783,7 @@ public class CatraMMSAPI {
 
     public Long getStream(String username, String password,
                                long startIndex, long pageSize,
-                               Long confKey, String label,
+                               Long confKey, String label, Boolean labelLike,
                                String url,
                                String sourceType, String type, 
 							   String name, String region, String country,
@@ -4801,6 +4801,7 @@ public class CatraMMSAPI {
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
                     + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
+                    + (labelLike == null ? "" : ("&labelLike=" + labelLike.toString().toLowerCase()))
                     + "&url=" + (url == null ? "" : java.net.URLEncoder.encode(url, "UTF-8"))
                     + "&sourceType=" + (sourceType == null ? "" : sourceType)
                     + "&type=" + (type == null ? "" : java.net.URLEncoder.encode(type, "UTF-8"))

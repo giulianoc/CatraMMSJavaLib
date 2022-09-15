@@ -335,7 +335,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		try
 		{
 			List<Stream> streamList = new ArrayList<>();
-			catraMMS.getStream(username, password, 0, 1, null, streamConfigurationLabel, 
+			catraMMS.getStream(username, password, 0, 1, null, 
+				streamConfigurationLabel, false,
 				null, null, null, null, null, null, null, streamList);
 			if (streamList.size() > 0)
 				stream = streamList.get(0);

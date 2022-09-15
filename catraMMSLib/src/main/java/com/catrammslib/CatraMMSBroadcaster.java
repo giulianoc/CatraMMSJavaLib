@@ -52,7 +52,7 @@ public class CatraMMSBroadcaster {
 			{
 				List<Stream> streamList = new ArrayList<>();
 				catraMMS.getStream(username, password, 0, 1,
-						null, broadcasterConfigurationLabel, null, null,
+						null, broadcasterConfigurationLabel, false, null, null,
 						null, null, null, null, null,
 						streamList);
 
