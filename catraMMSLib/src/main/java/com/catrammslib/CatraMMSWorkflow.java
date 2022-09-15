@@ -1983,18 +1983,23 @@ public class CatraMMSWorkflow {
 
             joParameters.put("Ingester", ingester);
 
-			joParameters.put("text", text);
+			{
+				JSONObject joDrawTextDetails = new JSONObject();
+				joParameters.put("drawTextDetails", joDrawTextDetails);
 
-            joParameters.put("textPosition_X_InPixel", textPosition_X_InPixel);
-            joParameters.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
+				joDrawTextDetails.put("text", text);
 
-            joParameters.put("fontType", fontType);
-            joParameters.put("fontSize", fontSize);
-            joParameters.put("fontColor", fontColor);
-
-            joParameters.put("textPercentageOpacity", textPercentageOpacity);
-            joParameters.put("shadowX", shadowX);
-            joParameters.put("shadowY", shadowY);
+				joDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
+				joDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
+	
+				joDrawTextDetails.put("fontType", fontType);
+				joDrawTextDetails.put("fontSize", fontSize);
+				joDrawTextDetails.put("fontColor", fontColor);
+	
+				joDrawTextDetails.put("textPercentageOpacity", textPercentageOpacity);
+				joDrawTextDetails.put("shadowX", shadowX);
+				joDrawTextDetails.put("shadowY", shadowY);
+			}
 
 			joParameters.put("encodingPriority", encodingPriority);
 
