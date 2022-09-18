@@ -1267,13 +1267,15 @@ public class CatraMMSAPI {
         }
     }
 
-    public void killEncodingJob(String username, String password, Long encodingJobKey)
+    public void killEncodingJob(String username, String password, Long encodingJobKey, Boolean lightKill)
             throws Exception
     {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/1.0.1/encodingJob/" + encodingJobKey;
+				+ "/catramms/1.0.1/encodingJob/" + encodingJobKey
+				+ "?lightKill=" + (lightKill == null ? "false" : lightKill.toString())
+			;
 
             mLogger.info("killEncodingJob"
                     + ", mmsURL: " + mmsURL
@@ -4498,7 +4500,7 @@ public class CatraMMSAPI {
 	public Long addStream(String username, String password,
 		String label, 
 		String sourceType,
-		String encodersPoolLabel,
+		Long encodersPoolKey,
 		String url, 
 		String pushProtocol,
 		Long pushEncoderKey,
@@ -4530,8 +4532,8 @@ public class CatraMMSAPI {
 
                 joStreamConf.put("label", label);
                 joStreamConf.put("sourceType", sourceType);
-				if (encodersPoolLabel != null)
-                	joStreamConf.put("encodersPoolLabel", encodersPoolLabel);
+				if (encodersPoolKey != null)
+                	joStreamConf.put("encodersPoolKey", encodersPoolKey);
                 if (url != null)
                 	joStreamConf.put("url", url);
 				if (pushProtocol != null)
@@ -4625,7 +4627,7 @@ public class CatraMMSAPI {
     public void modifyStream(String username, String password,
 		Long confKey, String label, 
 		String sourceType,
-		String encodersPoolLabel,
+		Long encodersPoolKey,
 		String url, 
 		String pushProtocol,
 		Long pushEncoderKey,
@@ -4675,8 +4677,8 @@ public class CatraMMSAPI {
 					joStreamConf.put("label", label);
 				if (sourceType != null)
 					joStreamConf.put("sourceType", sourceType);
-				if (encodersPoolLabel != null)
-                	joStreamConf.put("encodersPoolLabel", encodersPoolLabel);
+				if (encodersPoolKey != null)
+                	joStreamConf.put("encodersPoolKey", encodersPoolKey);
                 if (url != null)
                 	joStreamConf.put("url", url);
 				if (pushProtocol != null)
@@ -7772,6 +7774,8 @@ public class CatraMMSAPI {
             stream.setConfKey(streamInfo.getLong("confKey"));
             stream.setLabel(streamInfo.getString("label"));
             stream.setSourceType(streamInfo.getString("sourceType"));
+			if (streamInfo.has("encodersPoolKey") && !streamInfo.isNull("encodersPoolKey"))
+            	stream.setEncodersPoolKey(streamInfo.getLong("encodersPoolKey"));
 			if (streamInfo.has("encodersPoolLabel") && !streamInfo.isNull("encodersPoolLabel"))
             	stream.setEncodersPoolLabel(streamInfo.getString("encodersPoolLabel"));
             if (streamInfo.has("url") && !streamInfo.isNull("url"))

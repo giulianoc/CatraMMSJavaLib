@@ -10,7 +10,8 @@ public class Stream implements Serializable{
 
     private Long confKey;
     private String label;
-	private String encodersPoolLabel;
+	private Long encodersPoolKey;
+	private String encodersPoolLabel;	// calcolato
     private String url;
     private String type;
     private String description;
@@ -293,5 +294,13 @@ public class Stream implements Serializable{
 
 	public void setPushEncoderLabel(String pushEncoderLabel) {
 		this.pushEncoderLabel = pushEncoderLabel;
+	}
+
+	public Long getEncodersPoolKey() {
+		return encodersPoolKey;
+	}
+
+	public void setEncodersPoolKey(Long encodersPoolKey) {
+		this.encodersPoolKey = encodersPoolKey;
 	}
 }
