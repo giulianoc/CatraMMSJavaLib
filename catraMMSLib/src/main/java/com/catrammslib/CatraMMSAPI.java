@@ -6282,6 +6282,10 @@ public class CatraMMSAPI {
             workspaceDetails.setUsageInMB(jaWorkspaceInfo.getLong("workSpaceUsageInMB"));
             workspaceDetails.setLanguageCode(jaWorkspaceInfo.getString("languageCode"));
             workspaceDetails.setCreationDate(simpleDateFormat.parse(jaWorkspaceInfo.getString("creationDate")));
+			if (jaWorkspaceInfo.has("workspaceOwnerUserKey"))
+	            workspaceDetails.setWorkspaceOwnerUserKey(jaWorkspaceInfo.getLong("workspaceOwnerUserKey"));
+			if (jaWorkspaceInfo.has("workspaceOwnerUserName"))
+	            workspaceDetails.setWorkspaceOwnerUserName(jaWorkspaceInfo.getString("workspaceOwnerUserName"));
 
             if(jaWorkspaceInfo.has("userAPIKey"))
             {

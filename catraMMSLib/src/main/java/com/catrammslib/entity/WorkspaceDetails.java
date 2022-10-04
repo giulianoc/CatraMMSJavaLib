@@ -1,9 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -17,6 +15,9 @@ public class WorkspaceDetails implements Serializable {
     private String encodingPeriod;
     private Long maxIngestionsNumber;
     private Long maxStorageInMB;
+
+	private Long workspaceOwnerUserKey;	// filled only if user is admin
+	private String workspaceOwnerUserName; // filled only if user is admin
 
     private Long usageInMB;
     private Date lastUsageInMBUpdate;
@@ -52,6 +53,8 @@ public class WorkspaceDetails implements Serializable {
                 ", encodingPeriod='" + encodingPeriod + '\'' +
                 ", maxIngestionsNumber=" + maxIngestionsNumber +
                 ", maxStorageInMB=" + maxStorageInMB +
+                ", workspaceOwnerUserKey=" + workspaceOwnerUserKey +
+                ", workspaceOwnerUserName=" + workspaceOwnerUserName +
                 ", usageInMB=" + usageInMB +
                 ", lastUsageInMBUpdate=" + lastUsageInMBUpdate +
                 ", languageCode='" + languageCode + '\'' +
@@ -200,7 +203,23 @@ public class WorkspaceDetails implements Serializable {
         isEnabled = enabled;
     }
 
-    public String getMaxEncodingPriority() {
+    public Long getWorkspaceOwnerUserKey() {
+		return workspaceOwnerUserKey;
+	}
+
+	public void setWorkspaceOwnerUserKey(Long workspaceOwnerUserKey) {
+		this.workspaceOwnerUserKey = workspaceOwnerUserKey;
+	}
+
+	public String getWorkspaceOwnerUserName() {
+		return workspaceOwnerUserName;
+	}
+
+	public void setWorkspaceOwnerUserName(String workspaceOwnerUserName) {
+		this.workspaceOwnerUserName = workspaceOwnerUserName;
+	}
+
+	public String getMaxEncodingPriority() {
         return maxEncodingPriority;
     }
 
