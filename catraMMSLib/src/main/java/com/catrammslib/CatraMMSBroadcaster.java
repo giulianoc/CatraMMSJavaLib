@@ -4,16 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.catrammslib.entity.Stream;
-import com.catrammslib.utility.BroadcastPlaylistItem;
-import com.catrammslib.utility.DrawTextDetails;
-import com.catrammslib.utility.IngestionResult;
-import com.catrammslib.utility.LiveProxyOutput;
-import com.catrammslib.utility.MediaItemReference;
-
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import com.catrammslib.entity.IngestionJob;
+import com.catrammslib.entity.Stream;
+import com.catrammslib.utility.BroadcastPlaylistItem;
+import com.catrammslib.utility.IngestionResult;
+import com.catrammslib.utility.LiveProxyOutput;
+import com.catrammslib.utility.MediaItemReference;
 
 public class CatraMMSBroadcaster {
 
@@ -192,6 +192,111 @@ public class CatraMMSBroadcaster {
 			throw e;
         }
 	}
+
+    static public void killBroadcaster(IngestionJob broadcasterIngestionJob,
+		CatraMMSAPI catraMMS, String username, String password)
+		throws Exception
+    {
+        try
+        {
+            mLogger.info("Received killBroadcaster"
+				+ ", broadcasterIngestionJob: " + broadcasterIngestionJob
+			);
+
+			if (broadcasterIngestionJob == null)
+            {
+                String errorMessage = "No IngestionJob found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+            else if (broadcasterIngestionJob.getEncodingJob() == null)
+            {
+                String errorMessage = "No EncodingJob found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+            else if (broadcasterIngestionJob.getEncodingJob().getEncodingJobKey() == null
+            )
+            {
+                String errorMessage = "No EncodingJob found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+            else if (broadcasterIngestionJob.getMetaDataContent() == null
+				|| broadcasterIngestionJob.getMetaDataContent().isEmpty()
+            )
+            {
+                String errorMessage = "No Broadcaster MetaDataContent found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+
+			JSONObject joBroadcasterMetadataContent = new JSONObject(broadcasterIngestionJob.getMetaDataContent());
+			if (!joBroadcasterMetadataContent.has("internalMMS"))
+			{
+                String errorMessage = "No Broadcaster internalMMS found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+			}
+			JSONObject joBroadcasterInternalMMS = joBroadcasterMetadataContent.getJSONObject("internalMMS");
+
+			if (!joBroadcasterInternalMMS.has("broadcaster"))
+			{
+                String errorMessage = "No Broadcaster internalMMS->broadcaster found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+			}
+			JSONObject joBroadcaster = joBroadcasterInternalMMS.getJSONObject("broadcaster");
+
+			if (!joBroadcaster.has("broadcastIngestionJobKey"))
+			{
+                String errorMessage = "No Broadcaster internalMMS->broadcaster->broadcastIngestionJobKey found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+			}
+			Long broadcastIngestionJobKey = joBroadcaster.getLong("broadcastIngestionJobKey");
+
+			mLogger.info("catraMMS.getIngestionJob"
+				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
+			);
+
+			boolean ingestionJobOutputs = false;
+			IngestionJob broadcastIngestionJob = catraMMS.getIngestionJob(username, password,
+				broadcastIngestionJobKey, ingestionJobOutputs);
+
+			if (broadcastIngestionJob.getEncodingJob() == null
+				|| broadcastIngestionJob.getEncodingJob().getEncodingJobKey() == null
+			)
+			{
+                String errorMessage = "No Broadcast EncodingJobKey found";
+				mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+			}
+
+			catraMMS.killEncodingJob(username, password,
+				broadcastIngestionJob.getEncodingJob().getEncodingJobKey(),
+				false);
+
+            catraMMS.killEncodingJob(username, password,
+                broadcasterIngestionJob.getEncodingJob().getEncodingJobKey(),
+				false);
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Exception: " + e;
+            mLogger.error(errorMessage);
+
+			throw e;
+        }
+    }
 
     private static JSONObject buildBroadcastJson(
 		Date broadcasterStart, 
