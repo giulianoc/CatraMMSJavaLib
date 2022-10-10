@@ -2824,7 +2824,7 @@ public class CatraMMSAPI {
 								 Boolean broadcastIngestionJobKeyNotNull,	// used in case of Broadcaster
 								 // String jsonParametersCondition, // altamente sconsigliato perchè poco performante
                                  boolean ingestionDateAscending,
-                                 boolean dependencyInfo,
+                                 boolean dependencyInfo,	// if true adds: dependOnIngestionJobKey, dependOnSuccess, dependencyIngestionStatus				 
                                  boolean ingestionJobOutputs,
                                  List<IngestionJob> ingestionJobsList)
             throws Exception

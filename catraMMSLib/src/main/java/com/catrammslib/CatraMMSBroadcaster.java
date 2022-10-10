@@ -21,6 +21,8 @@ public class CatraMMSBroadcaster {
 
 	static public Long addBroadcaster(String broadcasterConfigurationLabel,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
+		String broadcasterIngestionJobLabel,
+		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPool,
 		String broadcasterCdnRtmp, String broadcasterCdnPlayURL, 
@@ -38,6 +40,8 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterName: " + broadcasterName
 				+ ", broadcasterStart: " + broadcasterStart
 				+ ", broadcasterEnd: " + broadcasterEnd
+				+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
+				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
 				+ ", broadcastEncodersPool: " + broadcastEncodersPool
 				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
 				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
@@ -73,7 +77,7 @@ public class CatraMMSBroadcaster {
 
 			Long broadcastIngestionJobKey = null;
 			{
-				String broadcastIngestionJobLabel = "Broadcast: " + broadcasterName;
+				// String broadcastIngestionJobLabel = "Broadcast: " + broadcasterName;
 
 				mLogger.info("buildBroadcastJson"
 					+ ", broadcasterStart: " + broadcasterStart
@@ -124,7 +128,7 @@ public class CatraMMSBroadcaster {
 			}
 
 			{
-				String broadcasterIngestionJobLabel = "Broadcaster: " + broadcasterName;
+				// String broadcasterIngestionJobLabel = "Broadcaster: " + broadcasterName;
 
 				mLogger.info("buildBroadcasterJson"
 					+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
