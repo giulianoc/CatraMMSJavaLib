@@ -333,10 +333,14 @@ public class CatraMMSBroadcaster {
 				{
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 					if (broadcastURL.startsWith("udp://"))
+					{
 						liveProxyOutput.setOutputType("UDP_Stream");
+					}
 					else // if (broadcastURL.startsWith("rtmp://"))
+					{
 						liveProxyOutput.setOutputType("RTMP_Stream");
-					liveProxyOutput.setUdpURL(broadcastURL);
+						liveProxyOutput.setRtmpURL(broadcastURL);
+					}
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 					{
 						JSONObject joFilters = new JSONObject();
