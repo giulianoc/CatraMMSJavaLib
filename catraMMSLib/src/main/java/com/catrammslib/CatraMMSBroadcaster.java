@@ -309,7 +309,7 @@ public class CatraMMSBroadcaster {
 		String encodersPoolLabel,
 
 		String broadcastIngestionJobLabel,
-		String broadcastUdpURL,
+		String broadcastURL,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem
     )
 	throws Exception
@@ -322,7 +322,7 @@ public class CatraMMSBroadcaster {
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 				+ ", encodersPoolLabel: " + encodersPoolLabel
 				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
-				+ ", broadcastUdpURL: " + broadcastUdpURL
+				+ ", broadcastURL: " + broadcastURL
 			);
 
             JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcastIngestionJobLabel);
@@ -332,8 +332,11 @@ public class CatraMMSBroadcaster {
                 List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
 				{
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
-					liveProxyOutput.setOutputType("UDP_Stream");
-					liveProxyOutput.setUdpURL(broadcastUdpURL);
+					if (broadcastURL.startsWith("udp://"))
+						liveProxyOutput.setOutputType("UDP_Stream");
+					else // if (broadcastURL.startsWith("rtmp://"))
+						liveProxyOutput.setOutputType("RTMP_Stream");
+					liveProxyOutput.setUdpURL(broadcastURL);
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 					{
 						JSONObject joFilters = new JSONObject();
