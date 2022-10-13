@@ -347,13 +347,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public void setPhysicalPathKeys(List<Long> physicalPathKeys) 
+	public void setPhysicalPathKeys(List<Long> localPhysicalPathKeys) 
 	{
-		if (physicalPathKeys != null)
+		physicalPathKeys.clear();
+
+		if (localPhysicalPathKeys != null)
 		{
-			physicalPathKeys.clear();
-			
-			for(Long localPhysicalPathKey: physicalPathKeys)
+			for(Long localPhysicalPathKey: localPhysicalPathKeys)
 				addPhysicalPathKey(localPhysicalPathKey);
 		}
 	}
