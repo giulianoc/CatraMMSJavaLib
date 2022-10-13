@@ -52,7 +52,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
 			);
 			Stream broadcasterStream = null;
-			String broadcastUdpURL;
+			String broadcastURL;
 			{
 				List<Stream> streamList = new ArrayList<>();
 				catraMMS.getStream(username, password, 0, 1,
@@ -70,7 +70,8 @@ public class CatraMMSBroadcaster {
 				}
 
 				broadcasterStream = streamList.get(0);
-				broadcastUdpURL = broadcasterStream.getPushProtocol() + "://" 
+				// it could be udp:// (we might have corrupt packets) or better rtmp://
+				broadcastURL = broadcasterStream.getPushProtocol() + "://" 
 					+ broadcasterStream.getPushServerName() 
 					+ ":" + broadcasterStream.getPushServerPort();
 			}
@@ -84,7 +85,7 @@ public class CatraMMSBroadcaster {
 					+ ", broadcasterEnd: " + broadcasterEnd
 					+ ", encodingProfileLabel: " + encodingProfileLabel
 					+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
-					+ ", broadcastUdpURL: " + broadcastUdpURL
+					+ ", broadcastURL: " + broadcastURL
 					+ ", broadcastDefaultPlaylistItem: " + broadcastDefaultPlaylistItem
 				);
 				JSONObject joWorkflow = buildBroadcastJson(
@@ -97,7 +98,7 @@ public class CatraMMSBroadcaster {
 					// 2022-05-20: added the broadcastEncodersPool parameter
 					broadcastEncodersPool,
 					broadcastIngestionJobLabel,
-					broadcastUdpURL,
+					broadcastURL,
 
 					broadcastDefaultPlaylistItem
 				);

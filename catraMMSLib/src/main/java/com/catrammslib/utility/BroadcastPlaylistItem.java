@@ -351,6 +351,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		if (physicalPathKeys != null)
 		{
+			physicalPathKeys.clear();
+			
 			for(Long localPhysicalPathKey: physicalPathKeys)
 				addPhysicalPathKey(localPhysicalPathKey);
 		}
