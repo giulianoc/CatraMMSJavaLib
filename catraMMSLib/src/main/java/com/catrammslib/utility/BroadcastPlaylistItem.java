@@ -91,7 +91,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			if (mediaItems.size() > 0)
 				mediaItem = mediaItems.get(0);
 
-			str = "<b>" + physicalPathKey.toString() + "</b>" + (mediaItem != null ? (": " + mediaItem.getTitle()) : "");
+			str = "<b>" + (physicalPathKey == null ? "" : physicalPathKey.toString()) + "</b>" 
+				+ (mediaItem != null ? (": " + mediaItem.getTitle()) : "");
 		}
 		else if (mediaType.equals("Direct URL"))
 			str = url;
@@ -108,7 +109,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			if (mediaType.equals("Stream"))
 			{
-				if (!streamConfigurationLabel.equals(joBroadcastPlaylistItem.getString("streamConfigurationLabel")))
+				if (streamConfigurationLabel != null 
+					&& !streamConfigurationLabel.equals(joBroadcastPlaylistItem.getString("streamConfigurationLabel")))
 					return false;
 			}
 			else if (mediaType.equals("Media"))
@@ -137,7 +139,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				Long localPhysicalPathKey = joBroadcastPlaylistItem.getLong("physicalPathKey");
 
-				if (physicalPathKey.longValue() != localPhysicalPathKey.longValue()
+				if (physicalPathKey == null 
+					|| physicalPathKey.longValue() != localPhysicalPathKey.longValue()
 					|| !text.equals(joBroadcastPlaylistItem.getString("text"))
 					|| !textPosition_X_InPixel.equals(joBroadcastPlaylistItem.getString("textPosition_X_InPixel"))
 					|| !textPosition_Y_InPixel.equals(joBroadcastPlaylistItem.getString("textPosition_Y_InPixel"))
@@ -175,7 +178,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		{
 			joBroadcastPlaylistItem.put("mediaType", mediaType);
 			if (mediaType.equalsIgnoreCase("Stream"))
-				joBroadcastPlaylistItem.put("streamConfigurationLabel", streamConfigurationLabel);
+			{
+				if (streamConfigurationLabel != null)
+					joBroadcastPlaylistItem.put("streamConfigurationLabel", streamConfigurationLabel);
+			}
 			else if (mediaType.equalsIgnoreCase("Media"))
 			{
 				JSONArray jaPhysicalPathKeys = new JSONArray();
@@ -264,16 +270,23 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONObject joStreamInput = new JSONObject();
 				joInputRoot.put("streamInput", joStreamInput);
 	
-				joStreamInput.put("streamConfKey", getStream().getConfKey());
-				joStreamInput.put("streamConfigurationLabel", getStream().getLabel());
-	
-				if (getStream().getEncodersPoolLabel() != null 
-					&& !getStream().getEncodersPoolLabel().isEmpty())
-					joStreamInput.put("encodersPoolLabel", getStream().getEncodersPoolLabel());
-	
-				joStreamInput.put("streamSourceType", getStream().getSourceType());
-				if (getStream().getSourceType().equalsIgnoreCase("IP_PULL"))
-					joStreamInput.put("url", getStream().getUrl());
+				if (getStream() != null)
+				{
+					joStreamInput.put("streamConfKey", getStream().getConfKey());
+					joStreamInput.put("streamConfigurationLabel", getStream().getLabel());
+		
+					if (getStream().getEncodersPoolLabel() != null 
+						&& !getStream().getEncodersPoolLabel().isEmpty())
+						joStreamInput.put("encodersPoolLabel", getStream().getEncodersPoolLabel());
+		
+					joStreamInput.put("streamSourceType", getStream().getSourceType());
+					if (getStream().getSourceType().equalsIgnoreCase("IP_PULL"))
+						joStreamInput.put("url", getStream().getUrl());	
+				}
+				else
+				{
+					mLogger.info("getStream() is null!!!");
+				}
 			}
 			else if (getMediaType().equalsIgnoreCase("Media"))
 			{
@@ -334,12 +347,15 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		try
 		{
-			List<Stream> streamList = new ArrayList<>();
-			catraMMS.getStream(username, password, 0, 1, null, 
-				streamConfigurationLabel, false,
-				null, null, null, null, null, null, null, streamList);
-			if (streamList.size() > 0)
-				stream = streamList.get(0);
+			if (streamConfigurationLabel != null)
+			{
+				List<Stream> streamList = new ArrayList<>();
+				catraMMS.getStream(username, password, 0, 1, null, 
+					streamConfigurationLabel, false,
+					null, null, null, null, null, null, null, streamList);
+				if (streamList.size() > 0)
+					stream = streamList.get(0);	
+			}
 		}
 		catch (Exception e)
 		{
