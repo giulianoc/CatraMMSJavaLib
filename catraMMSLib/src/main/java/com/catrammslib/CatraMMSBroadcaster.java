@@ -24,7 +24,7 @@ public class CatraMMSBroadcaster {
 		String broadcasterIngestionJobLabel,
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
-		String broadcastEncodersPool,
+		String broadcastEncodersPoolLabel,
 		String broadcasterCdnRtmp, String broadcasterCdnPlayURL, 
 		String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
@@ -42,7 +42,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterEnd: " + broadcasterEnd
 				+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
 				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
-				+ ", broadcastEncodersPool: " + broadcastEncodersPool
+				+ ", broadcastEncodersPoolLabel: " + broadcastEncodersPoolLabel
 				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
 				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 				+ ", encodingProfileLabel: " + encodingProfileLabel
@@ -110,7 +110,7 @@ public class CatraMMSBroadcaster {
 					// 2022-05-18: encoderspool removed because the broadcaster channel is IP_PUSH, for this reason it does not use
 					//		the encoderspool but only pushServerName
 					// 2022-05-20: added the broadcastEncodersPool parameter
-					broadcastEncodersPool,
+					broadcastEncodersPoolLabel,
 					broadcastIngestionJobLabel,
 					broadcastURL,
 
