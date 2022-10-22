@@ -198,7 +198,8 @@ public class CatraMMSBroadcaster {
 					+ ", broadcastPlaylistItems: " + broadcastPlaylistItems
 				);
 				catraMMS.changeLiveProxyPlaylist(username, password, 
-					broadcasterIngestionJobKey, broadcastPlaylistItems);
+					broadcasterIngestionJobKey, broadcastPlaylistItems,
+					"applyNewPlaylistNow");
 			}
 
 			return broadcasterIngestionJobKey;
