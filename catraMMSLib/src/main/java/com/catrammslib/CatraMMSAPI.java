@@ -1693,10 +1693,22 @@ public class CatraMMSAPI {
     }
 
     public Long addEncodersPool(String username, String password,
-		String label, List<Encoder> encoderList)
+		String label, List<Encoder> encoders)
 	throws Exception
     {
-        Long encoderKey;
+		List<Long> encoderKeys = new ArrayList<>();
+		
+		for(Encoder encoder: encoders)
+			encoderKeys.add(encoder.getEncoderKey());
+
+		return addEncodersPoolByKeys(username, password, label, encoderKeys);
+    }
+
+    public Long addEncodersPoolByKeys(String username, String password,
+		String label, List<Long> encoderListKeys)
+	throws Exception
+    {
+        Long encoderPoolsKey;
 
         String mmsInfo;
         try
@@ -1707,8 +1719,8 @@ public class CatraMMSAPI {
             JSONArray jaEncoderKeys = new JSONArray();
             joEncodersPool.put("encoderKeys", jaEncoderKeys);
 
-            for (Encoder encoder: encoderList)
-                jaEncoderKeys.put(encoder.getEncoderKey());
+            for (Long encoderKey: encoderListKeys)
+                jaEncoderKeys.put(encoderKey);
 
 			String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/encodersPool";
@@ -1723,11 +1735,11 @@ public class CatraMMSAPI {
             mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
                     timeoutInSeconds, maxRetriesNumber,
                     username, password, null, joEncodersPool.toString(), outputToBeCompressed);
-            mLogger.info("addEncodersPool. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("addEncodersPoolByKeys. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "addEncodersPool MMS failed. Exception: " + e;
+            String errorMessage = "addEncodersPoolByKeys MMS failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -1737,17 +1749,17 @@ public class CatraMMSAPI {
         {
             JSONObject joWMMSInfo = new JSONObject(mmsInfo);
 
-            encoderKey = joWMMSInfo.getLong("EncodersPoolKey");
+            encoderPoolsKey = joWMMSInfo.getLong("EncodersPoolKey");
         }
         catch (Exception e)
         {
-            String errorMessage = "addEncodersPool failed. Exception: " + e;
+            String errorMessage = "addEncodersPoolByKeys failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
         }
 
-        return encoderKey;
+        return encoderPoolsKey;
     }
 
     public void modifyEncodersPool(String username, String password,

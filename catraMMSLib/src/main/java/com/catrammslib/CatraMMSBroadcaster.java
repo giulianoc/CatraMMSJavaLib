@@ -71,6 +71,20 @@ public class CatraMMSBroadcaster {
 
 				broadcasterStream = streamList.get(0);
 				// it could be udp:// (we might have corrupt packets) or better rtmp://
+				// 2022-10-22: it cannot be rtmp because rtmp is tcp protocol and the ffmpeg server command
+				//	will disconnect at every playlist change causing
+				//	- player disconnect
+				//	- ffmpeg server exit causing time to reactivate
+				//	So it HAS to be UDP
+				if (!broadcasterStream.getPushProtocol().toLowerCase().equals("udp"))
+				{
+					String errorMessage = "Stream Push Protocol has to be 'udp'"
+						+ ", broadcasterStream.getPushProtocol: " + broadcasterStream.getPushProtocol()
+					;
+					mLogger.error(errorMessage);
+
+					throw new Exception(errorMessage);
+				}
 				broadcastURL = broadcasterStream.getPushProtocol() + "://" 
 					+ broadcasterStream.getPushServerName() 
 					+ ":" + broadcasterStream.getPushServerPort();
@@ -310,7 +324,7 @@ public class CatraMMSBroadcaster {
 		String encodersPoolLabel,
 
 		String broadcastIngestionJobLabel,
-		String broadcastURL,
+		String broadcastUdpURL,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem
     )
 	throws Exception
@@ -323,7 +337,7 @@ public class CatraMMSBroadcaster {
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 				+ ", encodersPoolLabel: " + encodersPoolLabel
 				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
-				+ ", broadcastURL: " + broadcastURL
+				+ ", broadcastUdpURL: " + broadcastUdpURL
 			);
 
             JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcastIngestionJobLabel);
@@ -333,15 +347,18 @@ public class CatraMMSBroadcaster {
                 List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
 				{
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
-					if (broadcastURL.startsWith("udp://"))
+					// if (broadcastURL.startsWith("udp://"))
 					{
 						liveProxyOutput.setOutputType("UDP_Stream");
+						liveProxyOutput.setUdpURL(broadcastUdpURL);
 					}
+					/*
 					else // if (broadcastURL.startsWith("rtmp://"))
 					{
 						liveProxyOutput.setOutputType("RTMP_Stream");
 						liveProxyOutput.setRtmpURL(broadcastURL);
 					}
+					*/
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 					{
 						JSONObject joFilters = new JSONObject();
