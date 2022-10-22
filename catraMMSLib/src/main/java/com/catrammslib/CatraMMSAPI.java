@@ -3077,7 +3077,9 @@ public class CatraMMSAPI {
 
     public void changeLiveProxyPlaylist(String username, String password,
         Long broadcasterIngestionJobKey,
-        List<BroadcastPlaylistItem> broadcastPlaylistItems)
+        List<BroadcastPlaylistItem> broadcastPlaylistItems,
+		String switchBehaviour	// applyNewPlaylistNow or applyNewPlaylistAtTheEndOfCurrentMedia
+	)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -3087,7 +3089,8 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/1.0.1/ingestionJob/liveProxy/playlist/" + broadcasterIngestionJobKey;
+                    + "/catramms/1.0.1/ingestionJob/liveProxy/playlist/" + broadcasterIngestionJobKey
+					+ "?switchBehaviour=" + switchBehaviour;
 
             JSONArray jaBodyRequest = new JSONArray();
 
