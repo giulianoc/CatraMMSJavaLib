@@ -2017,7 +2017,7 @@ public class CatraMMSAPI {
                               Long deliveryCode, String jsonCondition,
                               String orderBy, String jsonOrderBy,
 							  JSONObject joResponseFields,
-                              List<MediaItem> mediaItemsList    // has to be initialized (new ArrayList<>())
+                              List<MediaItem> mediaItemsList    // has to be already initialized (new ArrayList<>())
     )
             throws Exception
     {

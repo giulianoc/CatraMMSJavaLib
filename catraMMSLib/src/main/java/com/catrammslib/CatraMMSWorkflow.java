@@ -1815,7 +1815,8 @@ public class CatraMMSWorkflow {
             String label,
 			String userName, String password,
             String method, // GET, POST, PUT
-            String protocol, String hostName, String uri, String parameters,
+            String protocol, String hostName, String uri, 
+			String parameters,	// ?param1=value1&....
 			String httpBody,
             Long timeoutInSeconds, Long maxRetries,
             List<MediaItemReference> mediaItemReferenceList

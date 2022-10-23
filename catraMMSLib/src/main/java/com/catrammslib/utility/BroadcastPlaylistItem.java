@@ -52,7 +52,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaTypeList.add("Media");
 		mediaTypeList.add("Countdown");
 
-		mediaType = "Stream";
+		mediaType = "Media";
 
 		text = "days_counter days hours_counter:mins_counter:secs_counter.cents_counter";
 		textPosition_X_InPixel = "(video_width-text_width)/2";
