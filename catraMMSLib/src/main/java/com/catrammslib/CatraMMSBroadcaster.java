@@ -448,9 +448,9 @@ public class CatraMMSBroadcaster {
 
 						broadcasterStart, broadcasterEnd,
 
-						broadcastDefaultPlaylistItem.getText(),
-						broadcastDefaultPlaylistItem.getTextPosition_X_InPixel(),
-						broadcastDefaultPlaylistItem.getTextPosition_Y_InPixel(),
+						broadcastDefaultPlaylistItem.getDrawTextDetails().getText(),
+						broadcastDefaultPlaylistItem.getDrawTextDetails().getPositionXInPixel(),
+						broadcastDefaultPlaylistItem.getDrawTextDetails().getPositionYInPixel(),
 						fontType,
 						fontSize,
 						fontColor,

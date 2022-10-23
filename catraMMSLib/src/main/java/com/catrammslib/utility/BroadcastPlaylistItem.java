@@ -31,9 +31,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private Long physicalPathKey;									// in case of Countdown
 	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
 	private Boolean endBasedOnMediaDuration; // in case of Media
-	private String text;						// in case of Countdown
-	private String textPosition_X_InPixel;		// in case of Countdown
-	private String textPosition_Y_InPixel;		// in case of Countdown
+	private DrawTextDetails drawTextDetails = new DrawTextDetails();
 
 	private String url;							// in case of Direct URL
 
@@ -55,9 +53,18 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		mediaType = "Media";
 
-		text = "days_counter days hours_counter:mins_counter:secs_counter.cents_counter";
-		textPosition_X_InPixel = "(video_width-text_width)/2";
-		textPosition_Y_InPixel = "(video_height-text_height)/2";
+		drawTextDetails.setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
+		drawTextDetails.setPositionXInPixel("(video_width-text_width)/2");
+		drawTextDetails.setPositionYInPixel("(video_height-text_height)/2");
+		drawTextDetails.setFontType("OpenSans-ExtraBold.ttf");
+		drawTextDetails.setFontSize((long) 48);
+		drawTextDetails.setFontColor("orange");
+		drawTextDetails.setTextPercentageOpacity((long) 100);
+		drawTextDetails.setShadowX((long) 0);
+		drawTextDetails.setShadowY((long) 0);
+		drawTextDetails.setBoxEnable(false);
+		drawTextDetails.setBoxColor("black");
+		drawTextDetails.setBoxPercentageOpacity((long) 20);
 
 		endBasedOnMediaDuration = true;
 	}
@@ -106,8 +113,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			if (mediaItems.size() > 0)
 				mediaItem = mediaItems.get(0);
 
+			String mediaItemDetails = "";
+			if (mediaItem != null)
+			{
+				mediaItemDetails = ": " + mediaItem.getTitle();
+
+				if (mediaItem.getSourcePhysicalPath() != null)
+					mediaItemDetails += (", <b>Dur (secs)</b>: " + (mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() / 1000));
+			}
+			
 			str = "<b>" + (physicalPathKey == null ? "" : physicalPathKey.toString()) + "</b>" 
-				+ (mediaItem != null ? (": " + mediaItem.getTitle()) : "");
+				+ mediaItemDetails;
 		}
 		else if (mediaType.equals("Direct URL"))
 			str = url;
@@ -156,9 +172,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				if (physicalPathKey == null 
 					|| physicalPathKey.longValue() != localPhysicalPathKey.longValue()
-					|| !text.equals(joBroadcastPlaylistItem.getString("text"))
-					|| !textPosition_X_InPixel.equals(joBroadcastPlaylistItem.getString("textPosition_X_InPixel"))
-					|| !textPosition_Y_InPixel.equals(joBroadcastPlaylistItem.getString("textPosition_Y_InPixel"))
+					|| !drawTextDetails.getText().equals(joBroadcastPlaylistItem.getString("text"))
+					|| !drawTextDetails.getPositionXInPixel().equals(joBroadcastPlaylistItem.getString("textPosition_X_InPixel"))
+					|| !drawTextDetails.getPositionYInPixel().equals(joBroadcastPlaylistItem.getString("textPosition_Y_InPixel"))
 				)
 					return false;
 			}
@@ -209,12 +225,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			{
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
 
-				JSONObject joBroadcastDrawTextDetails = new JSONObject();
-				joBroadcastPlaylistItem.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
-
-				joBroadcastDrawTextDetails.put("text", text);
-				joBroadcastDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
-				joBroadcastDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
+				joBroadcastPlaylistItem.put("broadcastDrawTextDetails", drawTextDetails.toJson());
 			}
 			else if (mediaType.equalsIgnoreCase("Direct URL"))
 				joBroadcastPlaylistItem.put("url", url);
@@ -262,11 +273,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				if (joBroadcastPlaylistItem.has("broadcastDrawTextDetails"))
 				{
-					JSONObject joBroadcastDrawTextDetails = joBroadcastPlaylistItem.getJSONObject("broadcastDrawTextDetails");
-
-					broadcastPlaylistItem.setText(joBroadcastDrawTextDetails.getString("text"));
-					broadcastPlaylistItem.setTextPosition_X_InPixel(joBroadcastDrawTextDetails.getString("textPosition_X_InPixel"));
-					broadcastPlaylistItem.setTextPosition_Y_InPixel(joBroadcastDrawTextDetails.getString("textPosition_Y_InPixel"));
+					broadcastPlaylistItem.getDrawTextDetails().setData(joBroadcastPlaylistItem.getJSONObject("broadcastDrawTextDetails"));
 				}
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
@@ -341,12 +348,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				joCountdownInput.put("physicalPathKey", getPhysicalPathKey());
 
-				JSONObject joBroadcastDrawTextDetails = new JSONObject();
-				joCountdownInput.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
-
-				joBroadcastDrawTextDetails.put("text", getText());
-				joBroadcastDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
-				joBroadcastDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
+				joCountdownInput.put("broadcastDrawTextDetails", drawTextDetails.toJson());
 			}
 			else if (getMediaType().equalsIgnoreCase("Direct URL"))
 			{
@@ -572,36 +574,20 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return mediaType;
 	}
 
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	public String getTextPosition_X_InPixel() {
-		return textPosition_X_InPixel;
-	}
-
-	public void setTextPosition_X_InPixel(String textPosition_X_InPixel) {
-		this.textPosition_X_InPixel = textPosition_X_InPixel;
-	}
-
-	public String getTextPosition_Y_InPixel() {
-		return textPosition_Y_InPixel;
-	}
-
-	public void setTextPosition_Y_InPixel(String textPosition_Y_InPixel) {
-		this.textPosition_Y_InPixel = textPosition_Y_InPixel;
-	}
-
 	public Boolean getEndBasedOnMediaDuration() {
 		return endBasedOnMediaDuration;
 	}
 
 	public void setEndBasedOnMediaDuration(Boolean endBasedOnMediaDuration) {
 		this.endBasedOnMediaDuration = endBasedOnMediaDuration;
+	}
+
+	public DrawTextDetails getDrawTextDetails() {
+		return drawTextDetails;
+	}
+
+	public void setDrawTextDetails(DrawTextDetails drawTextDetails) {
+		this.drawTextDetails = drawTextDetails;
 	}
 
 	public void setMediaType(String mediaType) {
