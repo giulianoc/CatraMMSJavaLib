@@ -425,11 +425,16 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		else
 			mediaItems.set(positionIndex, mediaItem);
 		
-		if (endBasedOnMediaDuration)
+		if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
+			&& mediaItems != null && start != null)
 		{
 			Long durationInMilliSeconds = (long) 0;
 			for(MediaItem localMediaItem: mediaItems)
-				durationInMilliSeconds += localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds();
+			{
+				if (localMediaItem.getSourcePhysicalPath() != null
+					&& localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
+					durationInMilliSeconds += localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds();
+			}
 
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(start);
