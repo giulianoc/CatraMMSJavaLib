@@ -208,9 +208,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			else if (mediaType.equalsIgnoreCase("Countdown"))
 			{
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
-				joBroadcastPlaylistItem.put("text", text);
-				joBroadcastPlaylistItem.put("textPosition_X_InPixel", textPosition_X_InPixel);
-				joBroadcastPlaylistItem.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
+
+				JSONObject joBroadcastDrawTextDetails = new JSONObject();
+				joBroadcastPlaylistItem.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
+
+				joBroadcastDrawTextDetails.put("text", text);
+				joBroadcastDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
+				joBroadcastDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
 			}
 			else if (mediaType.equalsIgnoreCase("Direct URL"))
 				joBroadcastPlaylistItem.put("url", url);
@@ -255,9 +259,15 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
 			{
 				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
-				broadcastPlaylistItem.setText(joBroadcastPlaylistItem.getString("text"));
-				broadcastPlaylistItem.setTextPosition_X_InPixel(joBroadcastPlaylistItem.getString("textPosition_X_InPixel"));
-				broadcastPlaylistItem.setTextPosition_Y_InPixel(joBroadcastPlaylistItem.getString("textPosition_Y_InPixel"));
+
+				if (joBroadcastPlaylistItem.has("broadcastDrawTextDetails"))
+				{
+					JSONObject joBroadcastDrawTextDetails = joBroadcastPlaylistItem.getJSONObject("broadcastDrawTextDetails");
+
+					broadcastPlaylistItem.setText(joBroadcastDrawTextDetails.getString("text"));
+					broadcastPlaylistItem.setTextPosition_X_InPixel(joBroadcastDrawTextDetails.getString("textPosition_X_InPixel"));
+					broadcastPlaylistItem.setTextPosition_Y_InPixel(joBroadcastDrawTextDetails.getString("textPosition_Y_InPixel"));
+				}
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
 				broadcastPlaylistItem.setUrl(joBroadcastPlaylistItem.getString("url"));
@@ -330,9 +340,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				joInputRoot.put("countdownInput", joCountdownInput);
 
 				joCountdownInput.put("physicalPathKey", getPhysicalPathKey());
-				joCountdownInput.put("text", getText());
-				joCountdownInput.put("textPosition_X_InPixel", textPosition_X_InPixel);
-				joCountdownInput.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
+
+				JSONObject joBroadcastDrawTextDetails = new JSONObject();
+				joCountdownInput.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
+
+				joBroadcastDrawTextDetails.put("text", getText());
+				joBroadcastDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
+				joBroadcastDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
 			}
 			else if (getMediaType().equalsIgnoreCase("Direct URL"))
 			{
