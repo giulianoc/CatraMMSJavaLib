@@ -30,6 +30,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private List<Long> physicalPathKeys = new ArrayList<>();		// in case of Media
 	private Long physicalPathKey;									// in case of Countdown
 	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
+	private Boolean endBasedOnMediaDuration; // in case of Media
 	private String text;						// in case of Countdown
 	private String textPosition_X_InPixel;		// in case of Countdown
 	private String textPosition_Y_InPixel;		// in case of Countdown
@@ -57,6 +58,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		text = "days_counter days hours_counter:mins_counter:secs_counter.cents_counter";
 		textPosition_X_InPixel = "(video_width-text_width)/2";
 		textPosition_Y_InPixel = "(video_height-text_height)/2";
+
+		endBasedOnMediaDuration = true;
 	}
 
 	@Override
@@ -421,6 +424,18 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			mediaItems.add(mediaItem);
 		else
 			mediaItems.set(positionIndex, mediaItem);
+		
+		if (endBasedOnMediaDuration)
+		{
+			Long durationInMilliSeconds = (long) 0;
+			for(MediaItem localMediaItem: mediaItems)
+				durationInMilliSeconds += localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds();
+
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(start);
+			calendar.add(Calendar.MILLISECOND, durationInMilliSeconds.intValue());
+			end = calendar.getTime();
+		}
 
 		return positionIndex;
 	}
@@ -509,6 +524,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public void setTextPosition_Y_InPixel(String textPosition_Y_InPixel) {
 		this.textPosition_Y_InPixel = textPosition_Y_InPixel;
+	}
+
+	public Boolean getEndBasedOnMediaDuration() {
+		return endBasedOnMediaDuration;
+	}
+
+	public void setEndBasedOnMediaDuration(Boolean endBasedOnMediaDuration) {
+		this.endBasedOnMediaDuration = endBasedOnMediaDuration;
 	}
 
 	public void setMediaType(String mediaType) {
