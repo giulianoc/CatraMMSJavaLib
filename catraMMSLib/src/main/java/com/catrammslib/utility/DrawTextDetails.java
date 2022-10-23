@@ -25,6 +25,26 @@ public class DrawTextDetails implements Serializable {
 
 	void DrawTextDetails()
 	{
+		setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
+
+		setPositionXInPixel("(video_width-text_width)/2");
+		setPositionYInPixel("(video_height-text_height)/2");
+
+		setFontType("OpenSans-ExtraBold.ttf");
+
+		setsFontSize("48");
+
+		setFontColor("orange");
+
+		setTextPercentageOpacity((long) 100);
+		setShadowX((long) 0);
+		setShadowY((long) 0);
+
+		setBoxEnable(false);
+
+		setBoxColor("black");
+
+		setBoxPercentageOpacity((long) 20);
 	}
 	
 	public JSONObject toJson()
