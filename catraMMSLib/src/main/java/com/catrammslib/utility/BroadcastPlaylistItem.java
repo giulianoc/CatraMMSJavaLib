@@ -68,7 +68,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	}
 
 	@Override
-	public String toString() // used by the broadcastPlaylistTable table in broadcasterEditorPlaylist.xhtml
+	public String toString() // used in broadcasterEditorPlaylist.xhtml and broadcaster.xhtml
 	{
 		String str = "";
 
@@ -83,9 +83,21 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				if (mediaItems.size() > physicalPathKeyIndex)
 					mediaItem = mediaItems.get(physicalPathKeyIndex);
 
+				String mediaItemDetails = "";
+				if (mediaItem != null)
+				{
+					mediaItemDetails = ": " + mediaItem.getTitle();
+
+					if (mediaItem.getSourcePhysicalPath() != null)
+						mediaItemDetails += (", Dur (secs): " + (mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() / 1000));
+				}
+
 				if (str != "")
-					str += "</br>";	// str += " / ";
-				str += ("<b>" + localPhysicalPathKey.toString() + "</b>" + (mediaItem != null ? (": " + mediaItem.getTitle()) : ""));
+					str += "</br>";
+				str += (
+					"<b>" + localPhysicalPathKey.toString() + "</b>"
+					+ mediaItemDetails
+				);
 			}
 		}
 		else if (mediaType.equals("Countdown"))
