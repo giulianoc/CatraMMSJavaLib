@@ -68,7 +68,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	}
 
 	@Override
-	public String toString() 
+	public String toString() // used by the broadcastPlaylistTable table in broadcasterEditorPlaylist.xhtml
 	{
 		String str = "";
 
@@ -232,7 +232,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				{
 					JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
 					for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaPhysicalPathKeys.length(); physicalPathKeyIndex++)
+					{
+						mLogger.info("addPhysicalPathKey"
+							+ ", jaPhysicalPathKeys.getLong(physicalPathKeyIndex): " + jaPhysicalPathKeys.getLong(physicalPathKeyIndex)
+						);
 						broadcastPlaylistItem.addPhysicalPathKey(jaPhysicalPathKeys.getLong(physicalPathKeyIndex));
+					}
 				}
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
@@ -369,42 +374,70 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	public void setPhysicalPathKeys(List<Long> localPhysicalPathKeys) 
 	{
 		physicalPathKeys.clear();
+		mediaItems.clear();
 
 		if (localPhysicalPathKeys != null)
 		{
 			for(Long localPhysicalPathKey: localPhysicalPathKeys)
+			{
+				mLogger.info("addPhysicalPathKey"
+					+ ", localPhysicalPathKey: " + localPhysicalPathKey
+				);
+
 				addPhysicalPathKey(localPhysicalPathKey);
+			}
 		}
 	}
 
 	public void setPhysicalPathKey(Long localPhysicalPathKey) 
 	{
 		this.physicalPathKey = localPhysicalPathKey;
+		mediaItems.clear();
 
-		if (localPhysicalPathKey != null)
+		if (localPhysicalPathKey == null)
 		{
-			int positionIndex = 0;
+			mLogger.warn("localPhysicalPathKey is null"
+			);
 
-			MediaItem mediaItem = null;
-			try
-			{
-				mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey);
-			}
-			catch (Exception e)
-			{
-				mLogger.error("Exception: " + e.getMessage());
-			}
-	
+			return;
+		}
+
+		int positionIndex = 0;
+
+		MediaItem mediaItem = null;
+		try
+		{
+			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey);
+		}
+		catch (Exception e)
+		{
+			mLogger.error("Exception: " + e.getMessage());
+		}
+
+		if (mediaItem != null)
+		{
 			if (mediaItems.size() <= positionIndex)
 				mediaItems.add(mediaItem);
 			else
 				mediaItems.set(positionIndex, mediaItem);	
 		}
+		else
+			mLogger.error("MediaItem is not found"
+				+ ", localPhysicalPathKey: " + localPhysicalPathKey
+			);
 	}
 
 	public int addPhysicalPathKey(Long localPhysicalPathKey)
 	{
 		int positionIndex;
+
+		if (localPhysicalPathKey == null)
+		{
+			mLogger.warn("localPhysicalPathKey is null"
+			);
+
+			return 0;
+		}
 
 		physicalPathKeys.add(localPhysicalPathKey);
 
@@ -420,10 +453,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			mLogger.error("Exception: " + e.getMessage());
 		}
 
-		if (mediaItems.size() <= positionIndex)
-			mediaItems.add(mediaItem);
+		if (mediaItem != null)
+		{
+			if (mediaItems.size() <= positionIndex)
+				mediaItems.add(mediaItem);
+			else
+				mediaItems.set(positionIndex, mediaItem);
+		}
 		else
-			mediaItems.set(positionIndex, mediaItem);
+			mLogger.error("MediaItem is not found"
+				+ ", localPhysicalPathKey: " + localPhysicalPathKey
+			);
 		
 		if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
 			&& mediaItems != null && start != null)
