@@ -89,7 +89,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					mediaItemDetails = ": " + mediaItem.getTitle();
 
 					if (mediaItem.getSourcePhysicalPath() != null)
-						mediaItemDetails += (", Dur (secs): " + (mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() / 1000));
+						mediaItemDetails += (", <b>Dur (secs)</b>: " + (mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() / 1000));
 				}
 
 				if (str != "")
