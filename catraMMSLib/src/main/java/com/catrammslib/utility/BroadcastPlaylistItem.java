@@ -321,7 +321,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONObject joVODInput = new JSONObject();
 				joInputRoot.put("vodInput", joVODInput);
 	
-				joVODInput.put("endBasedOnMediaDuration", endBasedOnMediaDuration);
+				// joVODInput.put("endBasedOnMediaDuration", endBasedOnMediaDuration);
 
 				JSONArray jaSources = new JSONArray();
 				joVODInput.put("sources", jaSources);
