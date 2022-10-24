@@ -50,21 +50,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaTypeList.add("Stream");
 		mediaTypeList.add("Media");
 		mediaTypeList.add("Countdown");
-
 		mediaType = "Media";
-
-		drawTextDetails.setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
-		drawTextDetails.setPositionXInPixel("(video_width-text_width)/2");
-		drawTextDetails.setPositionYInPixel("(video_height-text_height)/2");
-		drawTextDetails.setFontType("OpenSans-ExtraBold.ttf");
-		drawTextDetails.setFontSize((long) 48);
-		drawTextDetails.setFontColor("orange");
-		drawTextDetails.setTextPercentageOpacity((long) 100);
-		drawTextDetails.setShadowX((long) 0);
-		drawTextDetails.setShadowY((long) 0);
-		drawTextDetails.setBoxEnable(false);
-		drawTextDetails.setBoxColor("black");
-		drawTextDetails.setBoxPercentageOpacity((long) 20);
 
 		endBasedOnMediaDuration = true;
 	}
