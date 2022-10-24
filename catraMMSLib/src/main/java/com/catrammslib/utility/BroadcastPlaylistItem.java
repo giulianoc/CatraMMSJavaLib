@@ -201,6 +201,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			}
 			else if (mediaType.equalsIgnoreCase("Media"))
 			{
+				joBroadcastPlaylistItem.put("endBasedOnMediaDuration", endBasedOnMediaDuration);
+
 				JSONArray jaPhysicalPathKeys = new JSONArray();
 				joBroadcastPlaylistItem.put("physicalPathKeys", jaPhysicalPathKeys);
 
@@ -241,6 +243,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 			{
+				if (joBroadcastPlaylistItem.has("endBasedOnMediaDuration"))
+					broadcastPlaylistItem.setEndBasedOnMediaDuration(joBroadcastPlaylistItem.getBoolean("endBasedOnMediaDuration"));
+
 				if (joBroadcastPlaylistItem.has("physicalPathKeys"))
 				{
 					JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
@@ -316,6 +321,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONObject joVODInput = new JSONObject();
 				joInputRoot.put("vodInput", joVODInput);
 	
+				joVODInput.put("endBasedOnMediaDuration", endBasedOnMediaDuration);
+
 				JSONArray jaSources = new JSONArray();
 				joVODInput.put("sources", jaSources);
 
