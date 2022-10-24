@@ -485,6 +485,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				+ ", localPhysicalPathKey: " + localPhysicalPathKey
 			);
 		
+		mLogger.info("addPhysicalPathKey"
+			+ ", endBasedOnMediaDuration: " + endBasedOnMediaDuration
+		);
 		if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
 			&& mediaItems != null && start != null)
 		{
