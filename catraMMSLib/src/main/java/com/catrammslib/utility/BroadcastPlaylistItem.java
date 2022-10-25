@@ -201,8 +201,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			}
 			else if (mediaType.equalsIgnoreCase("Media"))
 			{
-				joBroadcastPlaylistItem.put("endBasedOnMediaDuration", endBasedOnMediaDuration);
-
 				JSONArray jaPhysicalPathKeys = new JSONArray();
 				joBroadcastPlaylistItem.put("physicalPathKeys", jaPhysicalPathKeys);
 
@@ -230,6 +228,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return joBroadcastPlaylistItem;
 	}
 	
+	// this method is called to fill BroadcastPlaylistItem when the IngestionJob
+	// is loaded from DB
 	static public BroadcastPlaylistItem fromJson(JSONObject joBroadcastPlaylistItem,
 		CatraMMSAPI localCatraMMS, String localUsername, String localPassword)
 	{
@@ -243,9 +243,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 			{
-				if (joBroadcastPlaylistItem.has("endBasedOnMediaDuration"))
-					broadcastPlaylistItem.setEndBasedOnMediaDuration(joBroadcastPlaylistItem.getBoolean("endBasedOnMediaDuration"));
-
 				if (joBroadcastPlaylistItem.has("physicalPathKeys"))
 				{
 					JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
@@ -321,8 +318,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONObject joVODInput = new JSONObject();
 				joInputRoot.put("vodInput", joVODInput);
 	
-				// joVODInput.put("endBasedOnMediaDuration", endBasedOnMediaDuration);
-
 				JSONArray jaSources = new JSONArray();
 				joVODInput.put("sources", jaSources);
 
@@ -485,9 +480,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				+ ", localPhysicalPathKey: " + localPhysicalPathKey
 			);
 		
-		mLogger.info("addPhysicalPathKey"
-			+ ", endBasedOnMediaDuration: " + endBasedOnMediaDuration
-		);
 		if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
 			&& mediaItems != null && start != null)
 		{
