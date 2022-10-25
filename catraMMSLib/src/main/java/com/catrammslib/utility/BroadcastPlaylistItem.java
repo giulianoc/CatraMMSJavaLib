@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 import com.catrammslib.CatraMMSAPI;
@@ -85,7 +86,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					if (mediaItem.getSourcePhysicalPath() != null && mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
 					{
 
-				        DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+				        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
         				Date durationDate = new Date(mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds());
