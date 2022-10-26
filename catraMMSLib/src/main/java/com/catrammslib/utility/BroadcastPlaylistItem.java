@@ -91,7 +91,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
         				Date durationDate = new Date(mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds());
 
-						mediaItemDetails += ("</br><b>Duration</b>: " + dateFormat.format(durationDate));
+						mediaItemDetails += (" - <b>Duration</b>: " + dateFormat.format(durationDate));
 					}
 				}
 
