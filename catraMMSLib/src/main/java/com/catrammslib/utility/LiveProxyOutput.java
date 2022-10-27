@@ -41,7 +41,7 @@ public class LiveProxyOutput implements Serializable {
 	// RTMP_Stream, HLS
 	private JSONObject filters;
 
-	void LiveProxyOutput()
+	public LiveProxyOutput()
 	{
 		drawTextDetails = null;
 		filters = null;
