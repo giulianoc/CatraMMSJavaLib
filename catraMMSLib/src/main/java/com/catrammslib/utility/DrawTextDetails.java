@@ -23,7 +23,7 @@ public class DrawTextDetails implements Serializable {
     private String boxColor;
     private Long boxPercentageOpacity;
 
-	void DrawTextDetails()
+	public void DrawTextDetails()
 	{
 		setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
 
