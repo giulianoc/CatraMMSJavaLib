@@ -129,7 +129,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		if (start != null && end != null)
 		{
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 	
 			Date durationDate = new Date(end.getTime() - start.getTime());
