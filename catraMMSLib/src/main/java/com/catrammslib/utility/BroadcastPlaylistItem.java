@@ -128,21 +128,33 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public String durationAsString()
 	{
-		if (start != null && end != null)
+		try
 		{
-			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-			dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+			if (start != null && end != null)
+			{
+				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+				Date durationDate = new Date(end.getTime() - start.getTime());	// 1970-01-01 + (end-start)
 	
-			Date durationDate = new Date(end.getTime() - start.getTime());	// 1970-01-01 + (end-start)
+				Date epochDate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
+	
+				Long days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
+	
+				if (TimeZone.getDefault().inDaylightTime(new Date()))
+					durationDate = new Date(durationDate.getTime() - (3600 * 1000));
 
-			Date epochDate = new Date(0);	// 1970-01-01
-
-			Long days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
-
-			return (days + " days " + dateFormat.format(durationDate));
+				return (days + " days " + dateFormat.format(durationDate));
+			}
+	
+			return "";	
 		}
+		catch (Exception e)
+		{
+			mLogger.error("Exception: " + e);
 
-		return "";
+			return "";	
+		}
 	}
 
 	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem) 
