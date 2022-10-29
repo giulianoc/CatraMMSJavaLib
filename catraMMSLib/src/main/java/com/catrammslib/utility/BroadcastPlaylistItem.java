@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.*;
 
 import com.catrammslib.CatraMMSAPI;
@@ -132,9 +133,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 	
-			Date durationDate = new Date(end.getTime() - start.getTime());
-	
-			return dateFormat.format(durationDate);
+			Date durationDate = new Date(end.getTime() - start.getTime());	// 1970-01-01 + (end-start)
+
+			Date epochDate = new Date(0);	// 1970-01-01
+
+			float days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
+
+			return (days + " days " + dateFormat.format(durationDate));
 		}
 
 		return "";
