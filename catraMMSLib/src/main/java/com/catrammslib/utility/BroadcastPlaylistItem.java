@@ -137,7 +137,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			Date epochDate = new Date(0);	// 1970-01-01
 
-			float days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
+			Long days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
 
 			return (days + " days " + dateFormat.format(durationDate));
 		}
