@@ -85,7 +85,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 					if (mediaItem.getSourcePhysicalPath() != null && mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
 					{
-
 				        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
         				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
@@ -125,6 +124,21 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			str = url;
 
 		return str;
+	}
+
+	public String durationAsString()
+	{
+		if (start != null && end != null)
+		{
+			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+			dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+	
+			Date durationDate = new Date(end.getTime() - start.getTime());
+	
+			return dateFormat.format(durationDate);
+		}
+
+		return "";
 	}
 
 	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem) 
