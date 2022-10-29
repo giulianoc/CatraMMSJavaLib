@@ -5,7 +5,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -130,7 +129,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		if (start != null && end != null)
 		{
-			SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+			SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 	
 			Date durationDate = new Date(end.getTime() - start.getTime());
