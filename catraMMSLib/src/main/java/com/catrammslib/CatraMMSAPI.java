@@ -5954,7 +5954,7 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerContentStatistics(String username, String password,
-		String title, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerContentStatistic> requestPerContentStatisticsList)
 		throws Exception
@@ -5970,7 +5970,8 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perContent"
 				+ "?start=" + startIndex
 				+ "&rows=" + pageSize
-				+ (title != null ? ("&title=" + title) : "")
+				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
+				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6038,7 +6039,8 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perUser"
 				+ "?start=" + startIndex
 				+ "&rows=" + pageSize
-				+ (title != null ? ("&title=" + title) : "")
+				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
+				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6090,7 +6092,7 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerMonthStatistics(String username, String password,
-		String title, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerMonthStatistic> requestPerMonthStatisticsList)
 		throws Exception
@@ -6106,7 +6108,8 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perMonth"
 				+ "?start=" + startIndex
 				+ "&rows=" + pageSize
-				+ (title != null ? ("&title=" + title) : "")
+				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
+				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6158,7 +6161,7 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerDayStatistics(String username, String password,
-		String title, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerDayStatistic> requestPerDayStatisticsList)
 		throws Exception
@@ -6174,7 +6177,8 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perDay"
 				+ "?start=" + startIndex
 				+ "&rows=" + pageSize
-				+ (title != null ? ("&title=" + title) : "")
+				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
+				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6226,7 +6230,7 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerHourStatistics(String username, String password,
-		String title, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerHourStatistic> requestPerHourStatisticsList)
 		throws Exception
@@ -6242,7 +6246,8 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perHour"
 				+ "?start=" + startIndex
 				+ "&rows=" + pageSize
-				+ (title != null ? ("&title=" + title) : "")
+				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
+				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
