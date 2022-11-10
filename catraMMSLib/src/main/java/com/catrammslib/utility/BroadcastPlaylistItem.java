@@ -140,7 +140,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				Date epochDate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
 	
 				Long days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
-	
+
 				if (TimeZone.getDefault().inDaylightTime(new Date()))
 					durationDate = new Date(durationDate.getTime() - (3600 * 1000));
 
