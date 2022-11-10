@@ -3578,6 +3578,8 @@ public class CatraMMSAPI {
 
 						if (bulkOfDeliveryURLData.getFilteredByStatistic() != null)
 							joMediaItemKey.put("filteredByStatistic", bulkOfDeliveryURLData.getFilteredByStatistic());
+						if (bulkOfDeliveryURLData.getUserId() != null && !bulkOfDeliveryURLData.getUserId().isEmpty())
+							joMediaItemKey.put("userId", bulkOfDeliveryURLData.getUserId());
 
 						bulkOfDeliveryURLDataMapByMediaItemKey.put(bulkOfDeliveryURLData.getMediaItemKey(), bulkOfDeliveryURLData);
                     }
@@ -3598,6 +3600,8 @@ public class CatraMMSAPI {
 
 						if (bulkOfDeliveryURLData.getFilteredByStatistic() != null)
 							joUniqueName.put("filteredByStatistic", bulkOfDeliveryURLData.getFilteredByStatistic());
+						if (bulkOfDeliveryURLData.getUserId() != null && !bulkOfDeliveryURLData.getUserId().isEmpty())
+							joUniqueName.put("userId", bulkOfDeliveryURLData.getUserId());
 
 						bulkOfDeliveryURLDataMapByUniqueName.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
                     }
@@ -3615,6 +3619,8 @@ public class CatraMMSAPI {
 
 						if (bulkOfDeliveryURLData.getFilteredByStatistic() != null)
 							joLiveIngestionJobKey.put("filteredByStatistic", bulkOfDeliveryURLData.getFilteredByStatistic());
+						if (bulkOfDeliveryURLData.getUserId() != null && !bulkOfDeliveryURLData.getUserId().isEmpty())
+							joLiveIngestionJobKey.put("userId", bulkOfDeliveryURLData.getUserId());
 
                         bulkOfDeliveryURLDataMapByLiveIngestionJobKey.put(bulkOfDeliveryURLData.getLiveIngestionJobKey(), bulkOfDeliveryURLData);
                     }
@@ -3625,7 +3631,7 @@ public class CatraMMSAPI {
                     + "/catramms/1.0.1/delivery/bulk"
                     + "?ttlInSeconds=" + ttlInSeconds
                     + "&maxRetries=" + maxRetries
-            ;
+			;
             mLogger.info("mmsURL: " + mmsURL);
 
             Date now = new Date();
@@ -3746,7 +3752,8 @@ public class CatraMMSAPI {
 		String deliveryType,
 
 		Boolean save,					// true: file name will be the title of the Media
-		Boolean filteredByStatistic		// true: not saved as statistic
+		Boolean filteredByStatistic,		// true: not saved as statistic
+		String userId		// used only in case filteredByStatistic is false
 	)
 		throws Exception
     {
@@ -3784,6 +3791,7 @@ public class CatraMMSAPI {
                         + "&maxRetries=" + maxRetries
                         + "&save=" + save.toString()
                         + "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
+						+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
 						+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                         + "&redirect=false"
                 ;
@@ -3803,6 +3811,7 @@ public class CatraMMSAPI {
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
+								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
 								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                                 + "&redirect=false"
                         ;
@@ -3816,6 +3825,7 @@ public class CatraMMSAPI {
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
+								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
 								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                                 + "&redirect=false"
                         ;
@@ -3832,6 +3842,7 @@ public class CatraMMSAPI {
                             + "&maxRetries=" + maxRetries
                             + "&save=" + save.toString()
 							+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
+							+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
 							+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                             + "&redirect=false"
                         ;
@@ -3844,6 +3855,7 @@ public class CatraMMSAPI {
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
+								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
 								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
                                 + "&redirect=false"
                         ;
@@ -3901,7 +3913,8 @@ public class CatraMMSAPI {
 		// AWSCloudFront: delivery by AWS CloudFront with a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
 		String deliveryType,
-		Boolean filteredByStatistic
+		Boolean filteredByStatistic,
+		String userId		// used only in case filteredByStatistic is false
     )
             throws Exception
     {
@@ -3942,6 +3955,7 @@ public class CatraMMSAPI {
                     + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + "&redirect=false"
 					+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
+					+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
 					;
 
             mLogger.info("mmsURL: " + mmsURL);
