@@ -5968,7 +5968,8 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerContentStatistics(String username, String password,
-		String title, String userId, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Long minimalNextRequestDistanceInSeconds,
+		Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerContentStatistic> requestPerContentStatisticsList)
 		throws Exception
@@ -5986,6 +5987,7 @@ public class CatraMMSAPI {
 				+ "&rows=" + pageSize
 				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
 				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
+				+ (minimalNextRequestDistanceInSeconds != null ? ("&minimalNextRequestDistanceInSeconds=" + minimalNextRequestDistanceInSeconds) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6037,7 +6039,8 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerUserStatistics(String username, String password,
-		String title, String userId, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Long minimalNextRequestDistanceInSeconds,
+		Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerUserStatistic> requestPerUserStatisticsList)
 		throws Exception
@@ -6055,6 +6058,7 @@ public class CatraMMSAPI {
 				+ "&rows=" + pageSize
 				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
 				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
+				+ (minimalNextRequestDistanceInSeconds != null ? ("&minimalNextRequestDistanceInSeconds=" + minimalNextRequestDistanceInSeconds) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6106,7 +6110,8 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerMonthStatistics(String username, String password,
-		String title, String userId, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Long minimalNextRequestDistanceInSeconds,
+		Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerMonthStatistic> requestPerMonthStatisticsList)
 		throws Exception
@@ -6124,6 +6129,7 @@ public class CatraMMSAPI {
 				+ "&rows=" + pageSize
 				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
 				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
+				+ (minimalNextRequestDistanceInSeconds != null ? ("&minimalNextRequestDistanceInSeconds=" + minimalNextRequestDistanceInSeconds) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6175,7 +6181,8 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerDayStatistics(String username, String password,
-		String title, String userId, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Long minimalNextRequestDistanceInSeconds,
+		Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerDayStatistic> requestPerDayStatisticsList)
 		throws Exception
@@ -6193,6 +6200,7 @@ public class CatraMMSAPI {
 				+ "&rows=" + pageSize
 				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
 				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
+				+ (minimalNextRequestDistanceInSeconds != null ? ("&minimalNextRequestDistanceInSeconds=" + minimalNextRequestDistanceInSeconds) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
@@ -6244,7 +6252,8 @@ public class CatraMMSAPI {
     }
 
     public Long getRequestPerHourStatistics(String username, String password,
-		String title, String userId, Date startStatisticDate, Date endStatisticDate,
+		String title, String userId, Long minimalNextRequestDistanceInSeconds,
+		Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
 		List<RequestPerHourStatistic> requestPerHourStatisticsList)
 		throws Exception
@@ -6262,6 +6271,7 @@ public class CatraMMSAPI {
 				+ "&rows=" + pageSize
 				+ (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
 				+ (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
+				+ (minimalNextRequestDistanceInSeconds != null ? ("&minimalNextRequestDistanceInSeconds=" + minimalNextRequestDistanceInSeconds) : "")
 				+ (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
 				+ (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
 			;
