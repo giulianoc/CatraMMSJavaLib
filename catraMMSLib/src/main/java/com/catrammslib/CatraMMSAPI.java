@@ -7636,21 +7636,42 @@ public class CatraMMSAPI {
                     Date now = new Date();
 
                     if (ingestionJob.getEndProcessing() == null
-                            && ingestionJob.getStartProcessing() != null && ingestionJob.getStartProcessing().getTime() < now.getTime()
-                            && encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
-                    {
-                        Long elapsedInMillisecs = now.getTime() - ingestionJob.getStartProcessing().getTime();
-
-                        // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-                        Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
-
-                        Calendar calendar = Calendar.getInstance();
-                        calendar.setTime(ingestionJob.getStartProcessing());
-                        calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
-
-                        ingestionJob.setEndProcessingEstimate(true);
-                        ingestionJob.setEndProcessing(calendar.getTime());
-                    }
+                            && ingestionJob.getStartProcessing() != null && ingestionJob.getStartProcessing().getTime() < now.getTime())
+					{
+						if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Recorder"))
+						{
+                            if (ingestionJob.getRecordingPeriodEnd() != null)
+							{
+								ingestionJob.setEndProcessingEstimate(true);
+								ingestionJob.setEndProcessing(ingestionJob.getRecordingPeriodEnd());
+							}
+						}
+		                else if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Proxy")
+							|| ingestionJob.getIngestionType().equalsIgnoreCase("VOD-Proxy")
+							|| ingestionJob.getIngestionType().equalsIgnoreCase("Countdown")
+						)
+						{
+                            if (ingestionJob.getProxyPeriodEnd() != null)
+							{
+								ingestionJob.setEndProcessingEstimate(true);
+								ingestionJob.setEndProcessing(ingestionJob.getProxyPeriodEnd());
+							}
+						}
+						else if (encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						{
+							Long elapsedInMillisecs = now.getTime() - ingestionJob.getStartProcessing().getTime();
+	
+							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+	
+							Calendar calendar = Calendar.getInstance();
+							calendar.setTime(ingestionJob.getStartProcessing());
+							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+	
+							ingestionJob.setEndProcessingEstimate(true);
+							ingestionJob.setEndProcessing(calendar.getTime());
+						}
+					}
                 }
 
                 ingestionJob.setEncodingJob(encodingJob);
