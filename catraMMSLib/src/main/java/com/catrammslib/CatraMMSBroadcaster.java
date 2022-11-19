@@ -593,7 +593,7 @@ public class CatraMMSBroadcaster {
                 joWorkflow.put("Task", joBroadcaster);
             }
 
-            mLogger.info("Ready for the ingest"
+            mLogger.info("buildBroadcasterJson, ready for the ingest"
                     + ", json Workflow: " + joWorkflow.toString(4));
 
             return joWorkflow;
