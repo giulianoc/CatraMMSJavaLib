@@ -9,6 +9,8 @@ public class DrawTextDetails implements Serializable {
     
     private static final Logger mLogger = Logger.getLogger(DrawTextDetails.class);
 
+	private boolean countdown;
+
     private String text;
     private String positionXInPixel;
     private String positionYInPixel;
@@ -23,9 +25,14 @@ public class DrawTextDetails implements Serializable {
     private String boxColor;
     private Long boxPercentageOpacity;
 
-	public DrawTextDetails()
+	public DrawTextDetails(boolean countdown)
 	{
-		setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
+		this.countdown = countdown;
+
+		if (countdown)
+			setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
+		else
+			setText("Hello World");
 
 		setPositionXInPixel("(video_width-text_width)/2");
 		setPositionYInPixel("(video_height-text_height)/2");
@@ -175,7 +182,7 @@ public class DrawTextDetails implements Serializable {
 
 	public DrawTextDetails clone()
 	{
-		DrawTextDetails drawTextDetails = new DrawTextDetails();
+		DrawTextDetails drawTextDetails = new DrawTextDetails(countdown);
 
 		drawTextDetails.setText(text);
 		drawTextDetails.setPositionXInPixel(positionXInPixel);

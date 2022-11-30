@@ -3076,6 +3076,36 @@ public class CatraMMSAPI {
         }
     }
 
+    public void ingestBinaryContent(String username, String password,
+                                    InputStream fileInputStream, long contentSize,
+                                    Long ingestionJobKey)
+            throws Exception
+    {
+        try
+        {
+            String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
+                    + "/catramms/1.0.1/binary/" + ingestionJobKey;
+
+            mLogger.info("ingestBinaryContent"
+                            + ", mmsURL: " + mmsURL
+                            + ", contentSize: " + contentSize
+                            + ", ingestionJobKey: " + ingestionJobKey
+            );
+
+            Date now = new Date();
+            HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, fileInputStream, contentSize);
+            mLogger.info("ingestBinaryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "ingestWorkflow MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public void changeLiveProxyPlaylist(String username, String password,
         Long broadcasterIngestionJobKey,
         List<BroadcastPlaylistItem> broadcastPlaylistItems,
@@ -3989,36 +4019,6 @@ public class CatraMMSAPI {
         }
 
         return deliveryURL;
-    }
-
-    public void ingestBinaryContent(String username, String password,
-                                    InputStream fileInputStream, long contentSize,
-                                    Long ingestionJobKey)
-            throws Exception
-    {
-        try
-        {
-            String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
-                    + "/catramms/1.0.1/binary/" + ingestionJobKey;
-
-            mLogger.info("ingestBinaryContent"
-                            + ", mmsURL: " + mmsURL
-                            + ", contentSize: " + contentSize
-                            + ", ingestionJobKey: " + ingestionJobKey
-            );
-
-            Date now = new Date();
-            HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, fileInputStream, contentSize);
-            mLogger.info("ingestBinaryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "ingestWorkflow MMS failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
     }
 
     public Long getWorkflowsLibrary(String username, String password,
