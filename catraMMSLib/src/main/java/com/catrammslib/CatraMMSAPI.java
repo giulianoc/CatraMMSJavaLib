@@ -6696,7 +6696,7 @@ public class CatraMMSAPI {
 						}
 					}
 
-					encodingJob.setSourceVideoPhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+					encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourcePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("PictureInPicture"))
                 {

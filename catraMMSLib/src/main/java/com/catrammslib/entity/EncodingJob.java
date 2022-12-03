@@ -27,7 +27,7 @@ public class EncodingJob implements Serializable {
 
     // type is 'EncodeVideoAudio' or 'EncodeImage' or 'CutFrameAccurate'
     private Long encodingProfileKey;    // type is also LiveGrid
-    private Long sourcePhysicalPathKey;
+    private Long sourcePhysicalPathKey;	// type is also videoSpeed
 
     // type is 'OverlayImageOnVideo'
     private Long sourceVideoPhysicalPathKey;
