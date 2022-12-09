@@ -55,8 +55,8 @@ public class EncodingJob implements Serializable {
     private Date proxyPeriodEnd;
 
     // type is 'PictureInPicture'
-    private Long mainVideoPhysicalPathKey;
-    private Long overlayVideoPhysicalPathKey;
+    private Long mainSourcePhysicalPathKey;
+    private Long overlaySourcePhysicalPathKey;
 
     // type is 'IntroOutroOverlay'
     private Long introVideoPhysicalPathKey;
@@ -270,15 +270,23 @@ public class EncodingJob implements Serializable {
         this.processorMMS = processorMMS;
     }
 
-    public Long getMainVideoPhysicalPathKey() {
-        return mainVideoPhysicalPathKey;
-    }
+    public Long getMainSourcePhysicalPathKey() {
+		return mainSourcePhysicalPathKey;
+	}
 
-    public void setMainVideoPhysicalPathKey(Long mainVideoPhysicalPathKey) {
-        this.mainVideoPhysicalPathKey = mainVideoPhysicalPathKey;
-    }
+	public void setMainSourcePhysicalPathKey(Long mainSourcePhysicalPathKey) {
+		this.mainSourcePhysicalPathKey = mainSourcePhysicalPathKey;
+	}
 
-    public Long getOverlayVideoPhysicalPathKey() {
+	public Long getOverlaySourcePhysicalPathKey() {
+		return overlaySourcePhysicalPathKey;
+	}
+
+	public void setOverlaySourcePhysicalPathKey(Long overlaySourcePhysicalPathKey) {
+		this.overlaySourcePhysicalPathKey = overlaySourcePhysicalPathKey;
+	}
+
+	public Long getOverlayVideoPhysicalPathKey() {
         return overlayVideoPhysicalPathKey;
     }
 

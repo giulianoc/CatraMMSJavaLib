@@ -6722,8 +6722,8 @@ public class CatraMMSAPI {
 						}
 					}
 
-					encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
-                    encodingJob.setOverlayVideoPhysicalPathKey(joParameters.getLong("overlayVideoPhysicalPathKey"));
+					encodingJob.setMainSourcePhysicalPathKey(joParameters.getLong("mainSourcePhysicalPathKey"));
+                    encodingJob.setOverlaySourcePhysicalPathKey(joParameters.getLong("overlaySourcePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("IntroOutroOverlay"))
                 {
