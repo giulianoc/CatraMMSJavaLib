@@ -6749,9 +6749,9 @@ public class CatraMMSAPI {
 						}
 					}
 
-					encodingJob.setIntroVideoPhysicalPathKey(joParameters.getLong("introVideoPhysicalPathKey"));
-                    encodingJob.setMainVideoPhysicalPathKey(joParameters.getLong("mainVideoPhysicalPathKey"));
-                    encodingJob.setOutroVideoPhysicalPathKey(joParameters.getLong("outroVideoPhysicalPathKey"));
+					encodingJob.setIntroSourcePhysicalPathKey(joParameters.getLong("introSourcePhysicalPathKey"));
+                    encodingJob.setMainSourcePhysicalPathKey(joParameters.getLong("mainSourcePhysicalPathKey"));
+                    encodingJob.setOutroSourcePhysicalPathKey(joParameters.getLong("outroSourcePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("CutFrameAccurate"))
                 {

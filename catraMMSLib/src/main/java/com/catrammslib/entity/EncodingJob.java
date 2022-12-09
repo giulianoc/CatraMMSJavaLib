@@ -55,13 +55,12 @@ public class EncodingJob implements Serializable {
     private Date proxyPeriodEnd;
 
     // type is 'PictureInPicture'
-    private Long mainSourcePhysicalPathKey;
+    private Long mainSourcePhysicalPathKey;		// type is also IntroOutroOverlay
     private Long overlaySourcePhysicalPathKey;
 
     // type is 'IntroOutroOverlay'
-    private Long introVideoPhysicalPathKey;
-    // private Long mainVideoPhysicalPathKey;   already present in PictureInPicture
-    private Long outroVideoPhysicalPathKey;
+    private Long introSourcePhysicalPathKey;
+    private Long outroSourcePhysicalPathKey;
 
 
     // filled by GUI
@@ -286,14 +285,6 @@ public class EncodingJob implements Serializable {
 		this.overlaySourcePhysicalPathKey = overlaySourcePhysicalPathKey;
 	}
 
-	public Long getOverlayVideoPhysicalPathKey() {
-        return overlayVideoPhysicalPathKey;
-    }
-
-    public void setOverlayVideoPhysicalPathKey(Long overlayVideoPhysicalPathKey) {
-        this.overlayVideoPhysicalPathKey = overlayVideoPhysicalPathKey;
-    }
-
     public String getLiveProxyOutputTypes() {
         return liveProxyOutputTypes;
     }
@@ -358,23 +349,23 @@ public class EncodingJob implements Serializable {
         this.ownedByCurrentWorkspace = ownedByCurrentWorkspace;
     }
 
-    public Long getIntroVideoPhysicalPathKey() {
-        return introVideoPhysicalPathKey;
-    }
+    public Long getIntroSourcePhysicalPathKey() {
+		return introSourcePhysicalPathKey;
+	}
 
-    public void setIntroVideoPhysicalPathKey(Long introVideoPhysicalPathKey) {
-        this.introVideoPhysicalPathKey = introVideoPhysicalPathKey;
-    }
+	public void setIntroSourcePhysicalPathKey(Long introSourcePhysicalPathKey) {
+		this.introSourcePhysicalPathKey = introSourcePhysicalPathKey;
+	}
 
-    public Long getOutroVideoPhysicalPathKey() {
-        return outroVideoPhysicalPathKey;
-    }
+	public Long getOutroSourcePhysicalPathKey() {
+		return outroSourcePhysicalPathKey;
+	}
 
-    public void setOutroVideoPhysicalPathKey(Long outroVideoPhysicalPathKey) {
-        this.outroVideoPhysicalPathKey = outroVideoPhysicalPathKey;
-    }
+	public void setOutroSourcePhysicalPathKey(Long outroSourcePhysicalPathKey) {
+		this.outroSourcePhysicalPathKey = outroSourcePhysicalPathKey;
+	}
 
-    public String getMediaTitle() {
+	public String getMediaTitle() {
         return mediaTitle;
     }
 
