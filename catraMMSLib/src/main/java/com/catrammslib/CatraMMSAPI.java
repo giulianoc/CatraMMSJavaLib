@@ -6528,7 +6528,8 @@ public class CatraMMSAPI {
 					}
 
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    if (joParameters.getJSONArray("sourcesToBeEncodedRoot").length() > 0)
+                    if (joParameters.has("sourcesToBeEncodedRoot") 
+						&& joParameters.getJSONArray("sourcesToBeEncodedRoot").length() > 0)
                         encodingJob.setSourcePhysicalPathKey(
                             joParameters.getJSONArray("sourcesToBeEncodedRoot").getJSONObject(0)
                                     .getLong("sourcePhysicalPathKey"));
