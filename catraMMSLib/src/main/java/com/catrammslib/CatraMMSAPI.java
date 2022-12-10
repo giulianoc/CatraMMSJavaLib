@@ -6528,10 +6528,10 @@ public class CatraMMSAPI {
 					}
 
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    if (joParameters.has("sourcesToBeEncodedRoot") 
-						&& joParameters.getJSONArray("sourcesToBeEncodedRoot").length() > 0)
+                    if (joParameters.has("sourcesToBeEncoded") 
+						&& joParameters.getJSONArray("sourcesToBeEncoded").length() > 0)
                         encodingJob.setSourcePhysicalPathKey(
-                            joParameters.getJSONArray("sourcesToBeEncodedRoot").getJSONObject(0)
+                            joParameters.getJSONArray("sourcesToBeEncoded").getJSONObject(0)
                                     .getLong("sourcePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("OverlayImageOnVideo"))
