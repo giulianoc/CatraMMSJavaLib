@@ -39,10 +39,6 @@ public class EncodingJob implements Serializable {
 
     // type is 'LiveRecorder'
     private String liveURL;     // type is also LiveProxy
-    private String outputFileFormat;
-    private Long segmentDurationInSeconds;  // type is also LiveGrid
-    private Date recordingPeriodStart;
-    private Date recordingPeriodEnd;
 
     // type is LiveGrid
     private String inputChannels;
@@ -219,38 +215,6 @@ public class EncodingJob implements Serializable {
 
     public void setLiveURL(String liveURL) {
         this.liveURL = liveURL;
-    }
-
-    public String getOutputFileFormat() {
-        return outputFileFormat;
-    }
-
-    public void setOutputFileFormat(String outputFileFormat) {
-        this.outputFileFormat = outputFileFormat;
-    }
-
-    public Long getSegmentDurationInSeconds() {
-        return segmentDurationInSeconds;
-    }
-
-    public void setSegmentDurationInSeconds(Long segmentDurationInSeconds) {
-        this.segmentDurationInSeconds = segmentDurationInSeconds;
-    }
-
-    public Date getRecordingPeriodStart() {
-        return recordingPeriodStart;
-    }
-
-    public void setRecordingPeriodStart(Date recordingPeriodStart) {
-        this.recordingPeriodStart = recordingPeriodStart;
-    }
-
-    public Date getRecordingPeriodEnd() {
-        return recordingPeriodEnd;
-    }
-
-    public void setRecordingPeriodEnd(Date recordingPeriodEnd) {
-        this.recordingPeriodEnd = recordingPeriodEnd;
     }
 
     public Boolean getEndEstimate() {

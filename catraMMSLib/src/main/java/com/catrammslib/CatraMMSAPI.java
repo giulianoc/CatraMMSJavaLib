@@ -6669,8 +6669,6 @@ public class CatraMMSAPI {
 
 					encodingJob.setInputChannels(joParameters.getJSONArray("inputChannels").toString());
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    // encodingJob.setDeliveryCode(joParameters.getLong("deliveryCode"));
-                    encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("VideoSpeed")
                 )
@@ -6786,18 +6784,6 @@ public class CatraMMSAPI {
                 {
 					if (joParameters.has("liveURL"))    // previous one
                         encodingJob.setLiveURL(joParameters.getString("liveURL"));
-                    else if (joParameters.has("url"))   // new one
-                        encodingJob.setLiveURL(joParameters.getString("url"));
-                    encodingJob.setOutputFileFormat(joParameters.getString("outputFileFormat"));
-                    encodingJob.setSegmentDurationInSeconds(joParameters.getLong("segmentDurationInSeconds"));
-					
-					if (joParameters.has("utcScheduleEnd"))
-                    	encodingJob.setRecordingPeriodEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
-					if (joParameters.has("utcScheduleStart"))
-						encodingJob.setRecordingPeriodStart(new Date(1000 * joParameters.getLong("utcScheduleStart")));
-
-					encodingJob.setEndEstimate(true);
-					encodingJob.setEnd(new Date(1000 * joParameters.getLong("utcScheduleEnd")));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("LiveProxy")
                 )
