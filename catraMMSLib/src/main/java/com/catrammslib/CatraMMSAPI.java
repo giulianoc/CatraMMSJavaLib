@@ -6645,28 +6645,6 @@ public class CatraMMSAPI {
                 else if (encodingJob.getType().equalsIgnoreCase("LiveGrid")
                 )
                 {
-					// end processing estimation
-					{
-						Date now = new Date();
-
-						if (encodingJob.getEnd() == null
-								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
-						{
-							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
-
-							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
-
-							Calendar calendar = Calendar.getInstance();
-							calendar.setTime(encodingJob.getStart());
-							calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
-
-							encodingJob.setEndEstimate(true);
-							encodingJob.setEnd(calendar.getTime());
-						}
-					}
-
 					encodingJob.setInputChannels(joParameters.getJSONArray("inputChannels").toString());
                     encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
                 }
@@ -6759,8 +6737,8 @@ public class CatraMMSAPI {
 						Date now = new Date();
 
 						if (encodingJob.getEnd() == null
-								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+							&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now.getTime()
+							&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
 						{
 							Long elapsedInMillisecs = now.getTime() - encodingJob.getStart().getTime();
 
@@ -6777,7 +6755,7 @@ public class CatraMMSAPI {
 					}
 
 					encodingJob.setEncodingProfileKey(joParameters.getLong("encodingProfileKey"));
-                    encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourceVideoPhysicalPathKey"));
+                    encodingJob.setSourcePhysicalPathKey(joParameters.getLong("sourcePhysicalPathKey"));
                 }
                 else if (encodingJob.getType().equalsIgnoreCase("LiveRecorder")
                 )
