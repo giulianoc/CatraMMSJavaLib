@@ -411,10 +411,10 @@ public class CatraMMSAPI {
         }
     }
 
-    public Long register(String userNameToRegister, String emailAddressToRegister,
-                         String passwordToRegister, String countryToRegister,
-                         String workspaceNameToRegister)
-            throws Exception
+    public Long registerAndAddWorkspace(String userNameToRegister, String emailAddressToRegister,
+        String passwordToRegister, String countryToRegister,
+        String workspaceNameToRegister)
+        throws Exception
     {
         String mmsInfo;
         try
@@ -437,6 +437,68 @@ public class CatraMMSAPI {
             mLogger.info("register"
                             + ", mmsURL: " + mmsURL
                             + ", postBodyRequest: " + postBodyRequest
+            );
+
+            String username = null;
+            String password = null;
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, postBodyRequest, outputToBeCompressed);
+            mLogger.info("register. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "shareWorkspace failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        Long userKey;
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+            userKey = joWMMSInfo.getLong("userKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing workspaceDetails failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return userKey;
+    }
+
+    public Long registerAndShareWorkspace(String userNameToRegister, String emailAddressToRegister,
+        String passwordToRegister, String countryToRegister,
+        String shareWorkspaceCode)
+        throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/user";
+
+			// only email and password are mandatory
+			JSONObject joObject = new JSONObject();
+			joObject.put("email", emailAddressToRegister);
+			joObject.put("password", passwordToRegister);
+			joObject.put("shareWorkspaceCode", shareWorkspaceCode);
+			if (userNameToRegister != null && !userNameToRegister.isEmpty())
+				joObject.put("name", userNameToRegister);
+			if (countryToRegister != null && !countryToRegister.isEmpty())
+				joObject.put("country", countryToRegister);
+
+			String postBodyRequest = joObject.toString();
+
+            mLogger.info("register"
+                + ", mmsURL: " + mmsURL
+                + ", postBodyRequest: " + postBodyRequest
             );
 
             String username = null;
