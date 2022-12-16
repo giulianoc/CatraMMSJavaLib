@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
 import java.util.*;
 
 import com.catrammslib.CatraMMSAPI;
@@ -29,13 +28,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private String streamConfigurationLabel;	// in case of Stream
 	private Stream stream;			// got from streamConfigurationLabel
 
+	private Boolean endBasedOnMediaDuration; 						// in case of Media
 	private List<Long> physicalPathKeys = new ArrayList<>();		// in case of Media
-	private Long physicalPathKey;									// in case of Countdown
 	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
-	private Boolean endBasedOnMediaDuration; // in case of Media
+
+	private Long physicalPathKey;									// in case of Countdown
 	private DrawTextDetails drawTextDetails = new DrawTextDetails(true);	// in case of countdown
 
-	private String url;							// in case of Direct URL
+	private String url;												// in case of Direct URL
 
 	private CatraMMSAPI catraMMS;
 	private String username;

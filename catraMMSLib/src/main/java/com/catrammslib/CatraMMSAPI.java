@@ -301,33 +301,19 @@ public class CatraMMSAPI {
     }
 
     public Long shareWorkspace(String username, String password,
-                               Boolean userAlreadyPresent,
-                               String userNameToShare, String emailAddressToShare,
-                               String passwordToShare, String countryToShare,
+		Boolean userAlreadyPresent,
+        String emailAddressToShare,
 
-                               Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
-                               Boolean deliveryAuthorization, Boolean shareWorkspace,
-                               Boolean editMedia, Boolean editConfiguration, Boolean killEncoding,
-                               Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean applicationRecorder)
-            throws Exception
+        Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
+        Boolean deliveryAuthorization, Boolean shareWorkspace,
+        Boolean editMedia, Boolean editConfiguration, Boolean killEncoding,
+        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean applicationRecorder)
+        throws Exception
     {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace/share"
-                    + "?userAlreadyPresent=" + userAlreadyPresent.toString()
-                    + "&createRemoveWorkspace=" + createRemoveWorkspace.toString()
-                    + "&ingestWorkflow=" + ingestWorkflow.toString()
-                    + "&createProfiles=" + createProfiles.toString()
-                    + "&deliveryAuthorization=" + deliveryAuthorization.toString()
-                    + "&shareWorkspace=" + shareWorkspace.toString()
-                    + "&editMedia=" + editMedia.toString()
-                    + "&editConfiguration=" + editConfiguration.toString()
-                    + "&killEncoding=" + killEncoding.toString()
-                    + "&cancelIngestionJob=" + cancelIngestionJob.toString()
-                    + "&editEncodersPool=" + editEncodersPool.toString()
-                    + "&applicationRecorder=" + applicationRecorder.toString()
-            ;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace/share";
 
             String postBodyRequest;
             if (userAlreadyPresent)
@@ -340,10 +326,19 @@ public class CatraMMSAPI {
             else
 			{
 				JSONObject joObj = new JSONObject();
-				joObj.put("name", userNameToShare);
+				joObj.put("userAlreadyPresent", userAlreadyPresent);
 				joObj.put("email", emailAddressToShare);
-				joObj.put("password", passwordToShare);
-				joObj.put("country", countryToShare);
+				joObj.put("createRemoveWorkspace", createRemoveWorkspace);
+				joObj.put("ingestWorkflow", ingestWorkflow);
+				joObj.put("createProfiles", createProfiles);
+				joObj.put("deliveryAuthorization", deliveryAuthorization);
+				joObj.put("shareWorkspace", shareWorkspace);
+				joObj.put("editMedia", editMedia);
+				joObj.put("editConfiguration", editConfiguration);
+				joObj.put("killEncoding", killEncoding);
+				joObj.put("cancelIngestionJob", cancelIngestionJob);
+				joObj.put("editEncodersPool", editEncodersPool);
+				joObj.put("applicationRecorder", applicationRecorder);
 
 				postBodyRequest = joObj.toString();
 			}
