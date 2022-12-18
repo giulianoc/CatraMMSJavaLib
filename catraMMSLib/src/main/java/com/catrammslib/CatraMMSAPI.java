@@ -2998,8 +2998,9 @@ public class CatraMMSAPI {
     }
 
     public IngestionJob getIngestionJob(String username, String password,
-                                 Long ingestionJobKey, boolean ingestionJobOutputs)
-            throws Exception
+        Long ingestionJobKey, boolean ingestionJobOutputs,
+		Boolean fromMaster)
+        throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -3008,9 +3009,10 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/1.0.1/ingestionJob/" + ingestionJobKey
-                    + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
-                    ;
+                + "/catramms/1.0.1/ingestionJob/" + ingestionJobKey
+                + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
+				+ (fromMaster == null ? "" : "&fromMaster=" + fromMaster)
+            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -3286,8 +3288,8 @@ public class CatraMMSAPI {
     }
 
     public EncodingJob getEncodingJob(String username, String password,
-                                Long encodingJobKey)
-            throws Exception
+        Long encodingJobKey, Boolean fromMaster)
+        throws Exception
     {
         Long numFound;
 
@@ -3297,7 +3299,9 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingJob/" + encodingJobKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingJob/" + encodingJobKey
+				+ (fromMaster == null ? "" : "?fromMaster=" + fromMaster)
+			;
 
             mLogger.info("mmsURL: " + mmsURL);
 

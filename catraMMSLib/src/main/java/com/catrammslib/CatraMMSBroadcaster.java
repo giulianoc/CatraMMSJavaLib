@@ -291,7 +291,10 @@ public class CatraMMSBroadcaster {
 
 			boolean ingestionJobOutputs = false;
 			IngestionJob broadcastIngestionJob = catraMMS.getIngestionJob(username, password,
-				broadcastIngestionJobKey, ingestionJobOutputs);
+				broadcastIngestionJobKey, ingestionJobOutputs,
+				// 2022-12-18: Poichè si vuole killare, l'IngestionJob è già presente da un po
+				false
+			);
 
 			if (broadcastIngestionJob.getEncodingJob() == null
 				|| broadcastIngestionJob.getEncodingJob().getEncodingJobKey() == null
