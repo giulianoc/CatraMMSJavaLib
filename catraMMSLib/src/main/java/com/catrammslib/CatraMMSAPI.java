@@ -2896,6 +2896,7 @@ public class CatraMMSAPI {
                                  boolean ingestionDateAscending,
                                  boolean dependencyInfo,	// if true adds: dependOnIngestionJobKey, dependOnSuccess, dependencyIngestionStatus				 
                                  boolean ingestionJobOutputs,
+								 Boolean fromMaster,
                                  List<IngestionJob> ingestionJobsList)
             throws Exception
     {
@@ -2928,7 +2929,8 @@ public class CatraMMSAPI {
                     + (start == null ? "" : ("&startIngestionDate=" + simpleDateFormat.format(start)))
                     + (end == null ? "" : ("&endIngestionDate=" + simpleDateFormat.format(end)))
                     + (startScheduleDate == null ? "" : ("&startScheduleDate=" + simpleDateFormat.format(startScheduleDate)))
-                    ;
+					+ (fromMaster == null ? "" : "&fromMaster=" + fromMaster)
+					;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -3215,6 +3217,7 @@ public class CatraMMSAPI {
                                 Long encoderKey, Boolean alsoEncodingJobsFromOtherWorkspaces,
                                 String status, String typesCommaSeparated,
                                 boolean ascending,
+								Boolean fromMaster,
                                 List<EncodingJob> encodingJobsList)
             throws Exception
     {
@@ -3227,19 +3230,20 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingJob"
-                    + "?start=" + startIndex
-                    + "&rows=" + pageSize
-                    + "&status=" + status
-                    + "&types=" + (typesCommaSeparated == null || typesCommaSeparated.isEmpty() ? "" : typesCommaSeparated)
-                    + "&asc=" + (ascending ? "true" : "false")
-                    + (ingestionStart != null ? ("&startIngestionDate=" + simpleDateFormat.format(ingestionStart)) : "")
-                    + (ingestionEnd != null ? ("&endIngestionDate=" + simpleDateFormat.format(ingestionEnd)) : "")
-                    + (encodingStart != null ? ("&startEncodingDate=" + simpleDateFormat.format(encodingStart)) : "")
-                    + (encodingEnd != null ? ("&endEncodingDate=" + simpleDateFormat.format(encodingEnd)) : "")
-                    + (encoderKey != null ? ("&encoderKey=" + encoderKey) : "")
-                    + (alsoEncodingJobsFromOtherWorkspaces != null
-                        ? ("&alsoEncodingJobsFromOtherWorkspaces=" + alsoEncodingJobsFromOtherWorkspaces) : "")
-                    ;
+				+ "?start=" + startIndex
+				+ "&rows=" + pageSize
+				+ "&status=" + status
+				+ "&types=" + (typesCommaSeparated == null || typesCommaSeparated.isEmpty() ? "" : typesCommaSeparated)
+				+ "&asc=" + (ascending ? "true" : "false")
+				+ (ingestionStart != null ? ("&startIngestionDate=" + simpleDateFormat.format(ingestionStart)) : "")
+				+ (ingestionEnd != null ? ("&endIngestionDate=" + simpleDateFormat.format(ingestionEnd)) : "")
+				+ (encodingStart != null ? ("&startEncodingDate=" + simpleDateFormat.format(encodingStart)) : "")
+				+ (encodingEnd != null ? ("&endEncodingDate=" + simpleDateFormat.format(encodingEnd)) : "")
+				+ (encoderKey != null ? ("&encoderKey=" + encoderKey) : "")
+				+ (alsoEncodingJobsFromOtherWorkspaces != null
+					? ("&alsoEncodingJobsFromOtherWorkspaces=" + alsoEncodingJobsFromOtherWorkspaces) : "")
+				+ (fromMaster == null ? "" : "&fromMaster=" + fromMaster)
+			;
 
             mLogger.info("mmsURL: " + mmsURL);
 
