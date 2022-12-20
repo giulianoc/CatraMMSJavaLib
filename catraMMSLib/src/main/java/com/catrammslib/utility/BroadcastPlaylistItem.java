@@ -54,7 +54,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaTypeList.add("Countdown");
 		mediaType = "Media";
 
-		endBasedOnMediaDuration = true;
+		endBasedOnMediaDuration = false;
 	}
 
 	@Override
