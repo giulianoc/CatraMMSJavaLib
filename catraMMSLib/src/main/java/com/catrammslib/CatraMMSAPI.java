@@ -7167,6 +7167,8 @@ public class CatraMMSAPI {
 				encoder.setRunning(encoderInfo.getBoolean("running"));
 			if (encoderInfo.has("cpuUsage"))
 				encoder.setCpuUsage(encoderInfo.getLong("cpuUsage"));
+			if (encoderInfo.has("workspacesAssociated"))
+				encoder.setWorkspacesAssociated(encoderInfo.getJSONArray("workspacesAssociated"));
         }
         catch (Exception e)
         {

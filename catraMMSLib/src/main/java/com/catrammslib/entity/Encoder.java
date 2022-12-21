@@ -3,6 +3,8 @@ package com.catrammslib.entity;
 import java.io.Serializable;
 import java.util.Objects;
 
+import org.json.JSONArray;
+
 /**
  * Created by multi on 09.06.18.
  */
@@ -19,12 +21,9 @@ public class Encoder implements Serializable{
 	private Boolean running;
 	private Long cpuUsage;
 
-    /*
-    private Long maxTranscodingCapability;
-    private Long maxLiveProxiesCapabilities;
-    private Long maxLiveRecordingCapabilities;
-     */
+	private JSONArray workspacesAssociated;
 
+	
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,4 +117,12 @@ public class Encoder implements Serializable{
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
     }
+
+	public JSONArray getWorkspacesAssociated() {
+		return workspacesAssociated;
+	}
+
+	public void setWorkspacesAssociated(JSONArray workspacesAssociated) {
+		this.workspacesAssociated = workspacesAssociated;
+	}
 }
