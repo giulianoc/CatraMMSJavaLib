@@ -7328,10 +7328,17 @@ public class CatraMMSAPI {
                     if (physicalPathInfo.isNull("encodingProfileKey"))
                     {
                         physicalPath.setEncodingProfileKey(null);
+                        physicalPath.setEncodingProfileLabel(null);
                         mediaItem.setSourcePhysicalPath(physicalPath);
                     }
                     else
+					{
                         physicalPath.setEncodingProfileKey(physicalPathInfo.getLong("encodingProfileKey"));
+						if (physicalPathInfo.has("encodingProfileLabel") && !physicalPathInfo.isNull("encodingProfileLabel"))
+	                        physicalPath.setEncodingProfileLabel(physicalPathInfo.getString("encodingProfileLabel"));
+						else
+	                        physicalPath.setEncodingProfileLabel(null);
+					}
                     physicalPath.setSizeInBytes(physicalPathInfo.getLong("sizeInBytes"));
 
                     if (physicalPathInfo.isNull("retentionInMinutes"))

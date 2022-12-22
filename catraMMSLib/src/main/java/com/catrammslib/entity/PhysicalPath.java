@@ -21,6 +21,7 @@ public class PhysicalPath implements Serializable{
     private String fileName;
     private Date creationDate;
     private Long encodingProfileKey;
+	private String encodingProfileLabel;
     private Long sizeInBytes;
     private String externalDeliveryTechnology;
     private String externalDeliveryURL;
@@ -197,4 +198,12 @@ public class PhysicalPath implements Serializable{
     public void setExternalDeliveryURL(String externalDeliveryURL) {
         this.externalDeliveryURL = externalDeliveryURL;
     }
+
+	public String getEncodingProfileLabel() {
+		return encodingProfileLabel;
+	}
+
+	public void setEncodingProfileLabel(String encodingProfileLabel) {
+		this.encodingProfileLabel = encodingProfileLabel;
+	}
 }
