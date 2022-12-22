@@ -980,7 +980,8 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace";
+			// 2022-12-22: chenged URL from API to Binary because API could have noFileSystemAccess = true
+            String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort + "/catramms/1.0.1/workspace";
 
             mLogger.info("deleteWorkspace"
                     + ", mmsURL: " + mmsURL
