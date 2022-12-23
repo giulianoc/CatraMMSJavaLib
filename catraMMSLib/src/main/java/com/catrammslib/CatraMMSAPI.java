@@ -93,89 +93,49 @@ public class CatraMMSAPI {
             {
                 String tmpTimeoutInSeconds = configurationProperties.getProperty(prefix + ".mms.timeoutInSeconds");
                 if (tmpTimeoutInSeconds == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.timeoutInSeconds configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
-                timeoutInSeconds = Integer.parseInt(tmpTimeoutInSeconds);
+					timeoutInSeconds = 180;
+				else
+	                timeoutInSeconds = Integer.parseInt(tmpTimeoutInSeconds);
 
                 String tmpMaxRetriesNumber = configurationProperties.getProperty(prefix + ".mms.delivery.maxRetriesNumber");
                 if (tmpMaxRetriesNumber == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.delivery.maxRetriesNumber configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
-                maxRetriesNumber = Integer.parseInt(tmpMaxRetriesNumber);
+					maxRetriesNumber = 2;
+				else
+	                maxRetriesNumber = Integer.parseInt(tmpMaxRetriesNumber);
 
                 mmsAPIProtocol = configurationProperties.getProperty(prefix + ".mms.api.protocol");
                 if (mmsAPIProtocol == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.api.protocol configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
+					mmsAPIProtocol = "https";
 
                 mmsAPIHostName = configurationProperties.getProperty(prefix + ".mms.api.hostname");
                 if (mmsAPIHostName == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.api.hostname configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
+					mmsAPIHostName = "mms-api.catramms-cloud.com";
 
                 String tmpMmsAPIPort = configurationProperties.getProperty(prefix + ".mms.api.port");
                 if (tmpMmsAPIPort == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.api.port configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
-                mmsAPIPort = Integer.parseInt(tmpMmsAPIPort);
+					mmsAPIPort = 443;
+				else
+	                mmsAPIPort = Integer.parseInt(tmpMmsAPIPort);
 
                 mmsBinaryProtocol = configurationProperties.getProperty(prefix + ".mms.binary.protocol");
                 if (mmsBinaryProtocol == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.binary.protocol configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
+					mmsBinaryProtocol = "http";
 
                 mmsBinaryHostName = configurationProperties.getProperty(prefix + ".mms.binary.hostname");
                 if (mmsBinaryHostName == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.binary.hostname configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
+					mmsBinaryHostName = "mms-binary.catramms-cloud.com";
 
                 String tmpMmsBinaryPort = configurationProperties.getProperty(prefix + ".mms.binary.port");
                 if (tmpMmsBinaryPort == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.binary.port configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
-                mmsBinaryPort = Integer.parseInt(tmpMmsBinaryPort);				
+					mmsBinaryPort = 80;
+				else
+	                mmsBinaryPort = Integer.parseInt(tmpMmsBinaryPort);				
 
                 String tmpOutputToBeCompressed = configurationProperties.getProperty(prefix + ".mms.outputToBeCompressed");
                 if (tmpOutputToBeCompressed == null)
-                {
-                    String errorMessage = "No " + prefix + ".mms.outputToBeCompressed configuration found";
-                    mLogger.error(errorMessage);
-
-                    return;
-                }
-                outputToBeCompressed = Boolean.parseBoolean(tmpOutputToBeCompressed);
+					outputToBeCompressed = true;
+				else
+	                outputToBeCompressed = Boolean.parseBoolean(tmpOutputToBeCompressed);
             }
         }
         catch (Exception e)
