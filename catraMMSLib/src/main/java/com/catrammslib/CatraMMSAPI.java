@@ -80,94 +80,97 @@ public class CatraMMSAPI {
     private int mmsBinaryPort;
 	private Boolean outputToBeCompressed;
 
-    public CatraMMSAPI(Properties configurationProperties)
+    public CatraMMSAPI(Properties configurationProperties, String prefix)
     {
         try
         {
             // mLogger.info("getConfigurationParameters...");
             // Properties configurationProperties = Login.getConfigurationParameters();
 
+			if (prefix == null)
+				prefix = "catramms";
+
             {
-                String tmpTimeoutInSeconds = configurationProperties.getProperty("catramms.mms.timeoutInSeconds");
+                String tmpTimeoutInSeconds = configurationProperties.getProperty(prefix + ".mms.timeoutInSeconds");
                 if (tmpTimeoutInSeconds == null)
                 {
-                    String errorMessage = "No catramms.mms.timeoutInSeconds configuration found";
+                    String errorMessage = "No " + prefix + ".mms.timeoutInSeconds configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
                 timeoutInSeconds = Integer.parseInt(tmpTimeoutInSeconds);
 
-                String tmpMaxRetriesNumber = configurationProperties.getProperty("catramms.mms.delivery.maxRetriesNumber");
+                String tmpMaxRetriesNumber = configurationProperties.getProperty(prefix + ".mms.delivery.maxRetriesNumber");
                 if (tmpMaxRetriesNumber == null)
                 {
-                    String errorMessage = "No catramms.mms.delivery.maxRetriesNumber configuration found";
+                    String errorMessage = "No " + prefix + ".mms.delivery.maxRetriesNumber configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
                 maxRetriesNumber = Integer.parseInt(tmpMaxRetriesNumber);
 
-                mmsAPIProtocol = configurationProperties.getProperty("catramms.mms.api.protocol");
+                mmsAPIProtocol = configurationProperties.getProperty(prefix + ".mms.api.protocol");
                 if (mmsAPIProtocol == null)
                 {
-                    String errorMessage = "No catramms.mms.api.protocol configuration found";
+                    String errorMessage = "No " + prefix + ".mms.api.protocol configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
 
-                mmsAPIHostName = configurationProperties.getProperty("catramms.mms.api.hostname");
+                mmsAPIHostName = configurationProperties.getProperty(prefix + ".mms.api.hostname");
                 if (mmsAPIHostName == null)
                 {
-                    String errorMessage = "No catramms.mms.api.hostname configuration found";
+                    String errorMessage = "No " + prefix + ".mms.api.hostname configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
 
-                String tmpMmsAPIPort = configurationProperties.getProperty("catramms.mms.api.port");
+                String tmpMmsAPIPort = configurationProperties.getProperty(prefix + ".mms.api.port");
                 if (tmpMmsAPIPort == null)
                 {
-                    String errorMessage = "No catramms.mms.api.port configuration found";
+                    String errorMessage = "No " + prefix + ".mms.api.port configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
                 mmsAPIPort = Integer.parseInt(tmpMmsAPIPort);
 
-                mmsBinaryProtocol = configurationProperties.getProperty("catramms.mms.binary.protocol");
+                mmsBinaryProtocol = configurationProperties.getProperty(prefix + ".mms.binary.protocol");
                 if (mmsBinaryProtocol == null)
                 {
-                    String errorMessage = "No catramms.mms.binary.protocol configuration found";
+                    String errorMessage = "No " + prefix + ".mms.binary.protocol configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
 
-                mmsBinaryHostName = configurationProperties.getProperty("catramms.mms.binary.hostname");
+                mmsBinaryHostName = configurationProperties.getProperty(prefix + ".mms.binary.hostname");
                 if (mmsBinaryHostName == null)
                 {
-                    String errorMessage = "No catramms.mms.binary.hostname configuration found";
+                    String errorMessage = "No " + prefix + ".mms.binary.hostname configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
 
-                String tmpMmsBinaryPort = configurationProperties.getProperty("catramms.mms.binary.port");
+                String tmpMmsBinaryPort = configurationProperties.getProperty(prefix + ".mms.binary.port");
                 if (tmpMmsBinaryPort == null)
                 {
-                    String errorMessage = "No catramms.mms.binary.port configuration found";
+                    String errorMessage = "No " + prefix + ".mms.binary.port configuration found";
                     mLogger.error(errorMessage);
 
                     return;
                 }
                 mmsBinaryPort = Integer.parseInt(tmpMmsBinaryPort);				
 
-                String tmpOutputToBeCompressed = configurationProperties.getProperty("catramms.mms.outputToBeCompressed");
+                String tmpOutputToBeCompressed = configurationProperties.getProperty(prefix + ".mms.outputToBeCompressed");
                 if (tmpOutputToBeCompressed == null)
                 {
-                    String errorMessage = "No catramms.mms.outputToBeCompressed configuration found";
+                    String errorMessage = "No " + prefix + ".mms.outputToBeCompressed configuration found";
                     mLogger.error(errorMessage);
 
                     return;
