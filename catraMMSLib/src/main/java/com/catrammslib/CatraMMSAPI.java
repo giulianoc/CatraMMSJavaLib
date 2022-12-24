@@ -264,7 +264,6 @@ public class CatraMMSAPI {
     }
 
     public Long shareWorkspace(String username, String password,
-		Boolean userAlreadyPresent,
         String emailAddressToShare,
 
         Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
@@ -279,17 +278,8 @@ public class CatraMMSAPI {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace/share";
 
             String postBodyRequest;
-            if (userAlreadyPresent)
 			{
 				JSONObject joObj = new JSONObject();
-				joObj.put("email", emailAddressToShare);
-
-				postBodyRequest = joObj.toString();
-			}
-            else
-			{
-				JSONObject joObj = new JSONObject();
-				joObj.put("userAlreadyPresent", userAlreadyPresent);
 				joObj.put("email", emailAddressToShare);
 				joObj.put("createRemoveWorkspace", createRemoveWorkspace);
 				joObj.put("ingestWorkflow", ingestWorkflow);
