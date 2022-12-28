@@ -29,7 +29,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private Stream stream;			// got from streamConfigurationLabel
 
 	private Boolean endBasedOnMediaDuration; 						// in case of Media
-	// private List<Long> physicalPathKeys = new ArrayList<>();		// in case of Media
 	private StringBuilder referencePhysicalPathKeys = new StringBuilder();		// in case of Media (JSONArray of References come i Task)
 
 	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
@@ -80,7 +79,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				{
 					JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
 
-					Long localPhysicalPathKey = joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey");
+					Long localPhysicalPathKey = joReferencePhysicalPathKey.getLong("referencePhysicalPathKey");
 					MediaItem mediaItem = null;
 					if (mediaItems.size() > physicalPathKeyIndex)
 						mediaItem = mediaItems.get(physicalPathKeyIndex);
@@ -195,8 +194,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaLocalReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
 				{
-					Long physicalPathKey_1 = jaLocalReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex).getLong("ReferencePhysicalPathKey");
-					Long physicalPathKey_2 = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex).getLong("ReferencePhysicalPathKey");
+					Long physicalPathKey_1 = jaLocalReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex).getLong("referencePhysicalPathKey");
+					Long physicalPathKey_2 = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex).getLong("referencePhysicalPathKey");
 
 					if (physicalPathKey_1.longValue() != physicalPathKey_2.longValue())
 						return false;
@@ -382,7 +381,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					JSONObject joSource = new JSONObject();
 					jaSources.put(joSource);
 	
-					joSource.put("physicalPathKey", joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey"));
+					joSource.put("physicalPathKey", joReferencePhysicalPathKey.getLong("referencePhysicalPathKey"));
 					if (joReferencePhysicalPathKey.has("mediaItemTitle") && !joReferencePhysicalPathKey.isNull("mediaItemTitle"))
 						joSource.put("mediaItemTitle", joReferencePhysicalPathKey.getString("mediaItemTitle"));
 				}
@@ -519,8 +518,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			int positionIndex;
 
 			if (joReferencePhysicalPathKey == null 
-				|| !joReferencePhysicalPathKey.has("ReferencePhysicalPathKey")
-				|| joReferencePhysicalPathKey.isNull("ReferencePhysicalPathKey")
+				|| !joReferencePhysicalPathKey.has("referencePhysicalPathKey")
+				|| joReferencePhysicalPathKey.isNull("referencePhysicalPathKey")
 			)
 			{
 				mLogger.warn("localPhysicalPathKey is null"
@@ -542,7 +541,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			positionIndex = jaReferencePhysicalPathKeys.length() - 1;
 
-			Long physicalPathKey = joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey");
+			Long physicalPathKey = joReferencePhysicalPathKey.getLong("referencePhysicalPathKey");
 
 			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
 
