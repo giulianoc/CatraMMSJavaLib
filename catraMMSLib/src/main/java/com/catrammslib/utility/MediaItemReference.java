@@ -24,6 +24,7 @@ public class MediaItemReference implements Serializable {
     private String encodingProfileLabel;
     private Long encodingProfileKey;
 
+	private String title;
 
     public MediaItemReference()
     {
@@ -95,4 +96,12 @@ public class MediaItemReference implements Serializable {
     public void setEncodingProfileKey(Long encodingProfileKey) {
         this.encodingProfileKey = encodingProfileKey;
     }
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 }

@@ -29,7 +29,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private Stream stream;			// got from streamConfigurationLabel
 
 	private Boolean endBasedOnMediaDuration; 						// in case of Media
-	private List<Long> physicalPathKeys = new ArrayList<>();		// in case of Media
+	// private List<Long> physicalPathKeys = new ArrayList<>();		// in case of Media
+	private StringBuilder referencePhysicalPathKeys = new StringBuilder();		// in case of Media (JSONArray of References come i Task)
+
 	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
 
 	private Long physicalPathKey;									// in case of Countdown
@@ -71,35 +73,45 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			str = streamConfigurationLabel;
 		else if (mediaType.equals("Media"))
 		{
-			for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < physicalPathKeys.size(); physicalPathKeyIndex++)
+			try
 			{
-				Long localPhysicalPathKey = physicalPathKeys.get(physicalPathKeyIndex);
-				MediaItem mediaItem = null;
-				if (mediaItems.size() > physicalPathKeyIndex)
-					mediaItem = mediaItems.get(physicalPathKeyIndex);
-
-				String mediaItemDetails = "";
-				if (mediaItem != null)
+				JSONArray jaReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
+				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
 				{
-					mediaItemDetails = ": " + mediaItem.getTitle();
+					JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
 
-					if (mediaItem.getSourcePhysicalPath() != null && mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
+					Long localPhysicalPathKey = joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey");
+					MediaItem mediaItem = null;
+					if (mediaItems.size() > physicalPathKeyIndex)
+						mediaItem = mediaItems.get(physicalPathKeyIndex);
+	
+					String mediaItemDetails = "";
+					if (mediaItem != null)
 					{
-				        SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-        				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-
-        				Date durationDate = new Date(mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds());
-
-						mediaItemDetails += (" - <b>Duration</b>: " + dateFormat.format(durationDate));
+						mediaItemDetails = ": " + mediaItem.getTitle();
+	
+						if (mediaItem.getSourcePhysicalPath() != null && mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
+						{
+							SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+							dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+	
+							Date durationDate = new Date(mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds());
+	
+							mediaItemDetails += (" - <b>Duration</b>: " + dateFormat.format(durationDate));
+						}
 					}
+	
+					if (str != "")
+						str += "</br>";
+					str += (
+						"<b>" + localPhysicalPathKey.toString() + "</b>"
+						+ mediaItemDetails
+					);	
 				}
-
-				if (str != "")
-					str += "</br>";
-				str += (
-					"<b>" + localPhysicalPathKey.toString() + "</b>"
-					+ mediaItemDetails
-				);
+			}
+			catch(Exception e)
+			{
+				mLogger.error("Exception: " + e);
 			}
 		}
 		else if (mediaType.equals("Countdown"))
@@ -172,18 +184,19 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			}
 			else if (mediaType.equals("Media"))
 			{
-				if (!joBroadcastPlaylistItem.has("physicalPathKeys"))
+				if (!joBroadcastPlaylistItem.has("referencePhysicalPathKeys"))
 					return false;
 
-				JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
+				JSONArray jaReferencePhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("referencePhysicalPathKeys");
+				JSONArray jaLocalReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
 
-				if (physicalPathKeys.size() != jaPhysicalPathKeys.length())
+				if (jaLocalReferencePhysicalPathKeys.length() != jaReferencePhysicalPathKeys.length())
 					return false;
 
-				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < physicalPathKeys.size(); physicalPathKeyIndex++)
+				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaLocalReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
 				{
-					Long physicalPathKey_1 = physicalPathKeys.get(physicalPathKeyIndex);
-					Long physicalPathKey_2 = jaPhysicalPathKeys.getLong(physicalPathKeyIndex);
+					Long physicalPathKey_1 = jaLocalReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex).getLong("ReferencePhysicalPathKey");
+					Long physicalPathKey_2 = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex).getLong("ReferencePhysicalPathKey");
 
 					if (physicalPathKey_1.longValue() != physicalPathKey_2.longValue())
 						return false;
@@ -241,11 +254,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			}
 			else if (mediaType.equalsIgnoreCase("Media"))
 			{
-				JSONArray jaPhysicalPathKeys = new JSONArray();
-				joBroadcastPlaylistItem.put("physicalPathKeys", jaPhysicalPathKeys);
-
-				for (Long localPhysicalPathKey: physicalPathKeys)
-					jaPhysicalPathKeys.put(localPhysicalPathKey);
+				JSONArray jaLocalReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
+				joBroadcastPlaylistItem.put("referencePhysicalPathKeys", jaLocalReferencePhysicalPathKeys);
 			}
 			else if (mediaType.equalsIgnoreCase("Countdown"))
 			{
@@ -283,15 +293,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 			{
-				if (joBroadcastPlaylistItem.has("physicalPathKeys"))
+				if (joBroadcastPlaylistItem.has("referencePhysicalPathKeys"))
 				{
-					JSONArray jaPhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("physicalPathKeys");
-					for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaPhysicalPathKeys.length(); physicalPathKeyIndex++)
+					JSONArray jaReferencePhysicalPathKeys = joBroadcastPlaylistItem.getJSONArray("referencePhysicalPathKeys");
+					for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
 					{
-						mLogger.info("addPhysicalPathKey"
-							+ ", jaPhysicalPathKeys.getLong(physicalPathKeyIndex): " + jaPhysicalPathKeys.getLong(physicalPathKeyIndex)
+						JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
+
+						mLogger.info("addReferencePhysicalPathKey"
+							+ ", joReferencePhysicalPathKey.toString: " + joReferencePhysicalPathKey.toString()
 						);
-						broadcastPlaylistItem.addPhysicalPathKey(jaPhysicalPathKeys.getLong(physicalPathKeyIndex));
+						broadcastPlaylistItem.addReferencePhysicalPathKey(joReferencePhysicalPathKey);
 					}
 				}
 			}
@@ -299,9 +311,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			{
 				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
 
-				if (joBroadcastPlaylistItem.has("broadcastDrawTextDetails"))
+				if (joBroadcastPlaylistItem.has("drawTextDetails"))
 				{
-					broadcastPlaylistItem.getDrawTextDetails().setData(joBroadcastPlaylistItem.getJSONObject("broadcastDrawTextDetails"));
+					broadcastPlaylistItem.getDrawTextDetails().setData(
+						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
 				}
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
@@ -361,12 +374,17 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				JSONArray jaSources = new JSONArray();
 				joVODInput.put("sources", jaSources);
 
-				for (Long localPhysicalPathKey: getPhysicalPathKeys())
+				JSONArray jaReferencePhysicalPathKeys = new JSONArray(getReferencePhysicalPathKeys());
+				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
 				{
+					JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
+
 					JSONObject joSource = new JSONObject();
 					jaSources.put(joSource);
 	
-					joSource.put("physicalPathKey", localPhysicalPathKey);
+					joSource.put("physicalPathKey", joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey"));
+					if (joReferencePhysicalPathKey.has("mediaItemTitle") && !joReferencePhysicalPathKey.isNull("mediaItemTitle"))
+						joSource.put("mediaItemTitle", joReferencePhysicalPathKey.getString("mediaItemTitle"));
 				}
 			}
 			else if (getMediaType().equalsIgnoreCase("Countdown"))
@@ -427,20 +445,32 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public void setPhysicalPathKeys(List<Long> localPhysicalPathKeys) 
+	public void setReferencePhysicalPathKeys(String localReferencesPhysicalPathKeys) 
 	{
-		physicalPathKeys.clear();
+
+		referencePhysicalPathKeys.delete(0, referencePhysicalPathKeys.length());
 		mediaItems.clear();
 
-		if (localPhysicalPathKeys != null)
+		if (localReferencesPhysicalPathKeys != null && !localReferencesPhysicalPathKeys.isEmpty())
 		{
-			for(Long localPhysicalPathKey: localPhysicalPathKeys)
+			try
 			{
-				mLogger.info("addPhysicalPathKey"
-					+ ", localPhysicalPathKey: " + localPhysicalPathKey
-				);
+				JSONArray jaReferencePhysicalPathKeys = new JSONArray(localReferencesPhysicalPathKeys);
 
-				addPhysicalPathKey(localPhysicalPathKey);
+				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
+				{
+					JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
+				
+					mLogger.info("addReferencePhysicalPathKey"
+						+ ", joReferencePhysicalPathKey: " + joReferencePhysicalPathKey.toString()
+					);
+	
+					addReferencePhysicalPathKey(joReferencePhysicalPathKey);
+				}	
+			}
+			catch (Exception e)
+			{
+				mLogger.error("Exception: " + e.getMessage());
 			}
 		}
 	}
@@ -482,62 +512,85 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			);
 	}
 
-	public int addPhysicalPathKey(Long localPhysicalPathKey)
+	public int addReferencePhysicalPathKey(JSONObject joReferencePhysicalPathKey)
 	{
-		int positionIndex;
-
-		if (localPhysicalPathKey == null)
-		{
-			mLogger.warn("localPhysicalPathKey is null"
-			);
-
-			return 0;
-		}
-
-		physicalPathKeys.add(localPhysicalPathKey);
-
-		positionIndex = physicalPathKeys.size() - 1;
-
-		MediaItem mediaItem = null;
 		try
 		{
-			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey);
+			int positionIndex;
+
+			if (joReferencePhysicalPathKey == null 
+				|| !joReferencePhysicalPathKey.has("ReferencePhysicalPathKey")
+				|| joReferencePhysicalPathKey.isNull("ReferencePhysicalPathKey")
+			)
+			{
+				mLogger.warn("localPhysicalPathKey is null"
+				);
+
+				return 0;
+			}
+
+			// inizializzo jaReferencePhysicalPathKeys con i dati attuali (referencePhysicalPathKeys)
+			JSONArray jaReferencePhysicalPathKeys = new JSONArray();
+			if (!referencePhysicalPathKeys.toString().isEmpty())
+				jaReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
+
+			// aggiungo joReferencePhysicalPathKey
+			jaReferencePhysicalPathKeys.put(joReferencePhysicalPathKey);
+
+			referencePhysicalPathKeys.delete(0, referencePhysicalPathKeys.length());
+			referencePhysicalPathKeys.append(jaReferencePhysicalPathKeys.toString(2));
+
+			positionIndex = jaReferencePhysicalPathKeys.length() - 1;
+
+			Long physicalPathKey = joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey");
+
+			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
+
+			if (mediaItem != null)
+			{
+				if (mediaItems.size() <= positionIndex)
+					mediaItems.add(mediaItem);
+				else
+					mediaItems.set(positionIndex, mediaItem);
+			}
+			else
+				mLogger.error("MediaItem is not found"
+					+ ", physicalPathKey: " + physicalPathKey
+				);
+			
+			if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
+				&& mediaItems != null && start != null)
+			{
+				Long durationInMilliSeconds = (long) 0;
+				for(MediaItem localMediaItem: mediaItems)
+				{
+					if (localMediaItem.getSourcePhysicalPath() != null
+						&& localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
+						durationInMilliSeconds += localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds();
+				}
+
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(start);
+				calendar.add(Calendar.MILLISECOND, durationInMilliSeconds.intValue());
+				end = calendar.getTime();
+			}
+
+			return positionIndex;
 		}
 		catch (Exception e)
 		{
 			mLogger.error("Exception: " + e.getMessage());
-		}
 
-		if (mediaItem != null)
-		{
-			if (mediaItems.size() <= positionIndex)
-				mediaItems.add(mediaItem);
-			else
-				mediaItems.set(positionIndex, mediaItem);
+			return 0;
 		}
-		else
-			mLogger.error("MediaItem is not found"
-				+ ", localPhysicalPathKey: " + localPhysicalPathKey
-			);
-		
-		if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
-			&& mediaItems != null && start != null)
-		{
-			Long durationInMilliSeconds = (long) 0;
-			for(MediaItem localMediaItem: mediaItems)
-			{
-				if (localMediaItem.getSourcePhysicalPath() != null
-					&& localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
-					durationInMilliSeconds += localMediaItem.getSourcePhysicalPath().getDurationInMilliSeconds();
-			}
+	}
 
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(start);
-			calendar.add(Calendar.MILLISECOND, durationInMilliSeconds.intValue());
-			end = calendar.getTime();
-		}
+	public StringBuilder getStringBuilderReferencePhysicalPathKeys() {
+		return referencePhysicalPathKeys;
+	}
 
-		return positionIndex;
+	public String getReferencePhysicalPathKeys() {
+		return referencePhysicalPathKeys.toString();
 	}
 
 	public String getStreamConfigurationLabel() {
@@ -556,14 +609,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return timestamp;
 	}
 
-
 	public void setTimestamp(Date timestamp) {
 		this.timestamp = timestamp;
-	}
-
-
-	public List<Long> getPhysicalPathKeys() {
-		return physicalPathKeys;
 	}
 
 	public Stream getStream() {

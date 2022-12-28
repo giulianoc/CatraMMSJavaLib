@@ -408,11 +408,20 @@ public class CatraMMSBroadcaster {
 				{
 					List<MediaItemReference> mediaItemReferenceList = new ArrayList<>();
 
-					for(Long physicalPathKey: broadcastDefaultPlaylistItem.getPhysicalPathKeys())
+					JSONArray jaReferencePhysicalPathKeys = new JSONArray();
+					if (broadcastDefaultPlaylistItem.getReferencePhysicalPathKeys() != null 
+						&& !broadcastDefaultPlaylistItem.getReferencePhysicalPathKeys().isEmpty())
+						jaReferencePhysicalPathKeys = new JSONArray(broadcastDefaultPlaylistItem.getReferencePhysicalPathKeys());
+					for(int referenceIndex = 0; referenceIndex < jaReferencePhysicalPathKeys.length(); referenceIndex++)
 					{
+						JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(referenceIndex);
+
 						MediaItemReference mediaItemReference = new MediaItemReference();
-						mediaItemReference.setPhysicalPathKey(physicalPathKey);
-	
+
+						mediaItemReference.setPhysicalPathKey(joReferencePhysicalPathKey.getLong("ReferencePhysicalPathKey"));
+						if (joReferencePhysicalPathKey.has("title") && !joReferencePhysicalPathKey.isNull("title"))
+							mediaItemReference.setTitle(joReferencePhysicalPathKey.getString("title"));
+
 						mediaItemReferenceList.add(mediaItemReference);	
 					}
 
