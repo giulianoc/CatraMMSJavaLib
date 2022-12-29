@@ -1961,6 +1961,7 @@ public class CatraMMSWorkflow {
 			Long shadowX, Long shadowY,
 
 			String encodingPriority,	// Low, Medium, High 
+			String encodingProfileLabel,
             String encodersPool,
 
 			List<MediaItemReference> mediaItemReferenceList,
@@ -2003,6 +2004,9 @@ public class CatraMMSWorkflow {
 			}
 
 			joParameters.put("encodingPriority", encodingPriority);
+
+            if (encodingProfileLabel != null && !encodingProfileLabel.isEmpty())
+                joParameters.put("encodingProfileLabel", encodingProfileLabel);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("encodersPool", encodersPool);
