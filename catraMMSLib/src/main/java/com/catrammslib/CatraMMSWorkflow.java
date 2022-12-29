@@ -2132,7 +2132,7 @@ public class CatraMMSWorkflow {
 
                     if (mediaItemReference.getMediaItemKey() != null)
                     {
-                        joReference.put("referenceMediaItemKey", mediaItemReference.getMediaItemKey());
+                        joReference.put("mediaItemKey", mediaItemReference.getMediaItemKey());
                         if (mediaItemReference.getEncodingProfileKey() != null)
                             joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
@@ -2158,7 +2158,7 @@ public class CatraMMSWorkflow {
                     }
                     else if (mediaItemReference.getPhysicalPathKey() != null)
                     {
-                        joReference.put("referencePhysicalPathKey", mediaItemReference.getPhysicalPathKey());
+                        joReference.put("physicalPathKey", mediaItemReference.getPhysicalPathKey());
                     }
                     else if (mediaItemReference.getIngestionLabel() != null)
                     {

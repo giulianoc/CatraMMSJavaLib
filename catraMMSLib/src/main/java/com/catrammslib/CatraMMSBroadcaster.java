@@ -418,7 +418,7 @@ public class CatraMMSBroadcaster {
 
 						MediaItemReference mediaItemReference = new MediaItemReference();
 
-						mediaItemReference.setPhysicalPathKey(joReferencePhysicalPathKey.getLong("referencePhysicalPathKey"));
+						mediaItemReference.setPhysicalPathKey(joReferencePhysicalPathKey.getLong("physicalPathKey"));
 						if (joReferencePhysicalPathKey.has("title") && !joReferencePhysicalPathKey.isNull("title"))
 							mediaItemReference.setTitle(joReferencePhysicalPathKey.getString("title"));
 
