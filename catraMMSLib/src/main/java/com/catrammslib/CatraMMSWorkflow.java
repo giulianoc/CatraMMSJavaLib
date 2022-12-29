@@ -91,7 +91,7 @@ public class CatraMMSWorkflow {
                         JSONObject joReferenceOutput = new JSONObject();
                         jaReferencesOutput.put(joReferenceOutput);
 
-                        joReferenceOutput.put("ReferenceLabel", referenceOutput);
+                        joReferenceOutput.put("label", referenceOutput);
                     }
                 }
 
@@ -1308,14 +1308,14 @@ public class CatraMMSWorkflow {
                     JSONObject joReference = new JSONObject();
                     joReferences.put(joReference);
 
-                    joReference.put("ReferenceLabel", firstReferenceLabel);
+                    joReference.put("label", firstReferenceLabel);
                 }
 
                 {
                     JSONObject joReference = new JSONObject();
                     joReferences.put(joReference);
 
-                    joReference.put("ReferenceLabel", secondReferenceLabel);
+                    joReference.put("label", secondReferenceLabel);
                 }
             }
 
@@ -2134,27 +2134,27 @@ public class CatraMMSWorkflow {
                     {
                         joReference.put("mediaItemKey", mediaItemReference.getMediaItemKey());
                         if (mediaItemReference.getEncodingProfileKey() != null)
-                            joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
+                            joReference.put("encodingProfileKey", mediaItemReference.getEncodingProfileKey());
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
-                            joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
+                            joReference.put("encodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
 
                         Boolean stopIfReferenceProcessingError = false;
                         if (mediaItemReference.getStopIfReferenceProcessingError() != null)
                             stopIfReferenceProcessingError = mediaItemReference.getStopIfReferenceProcessingError();
-                        joReference.put("StopIfReferenceProcessingError", stopIfReferenceProcessingError);
+                        joReference.put("stopIfReferenceProcessingError", stopIfReferenceProcessingError);
                     }
                     else if (mediaItemReference.getUniqueName() != null)
                     {
-                        joReference.put("ReferenceUniqueName", mediaItemReference.getUniqueName());
+                        joReference.put("uniqueName", mediaItemReference.getUniqueName());
                         if (mediaItemReference.getEncodingProfileKey() != null)
-                            joReference.put("ReferenceEncodingProfileKey", mediaItemReference.getEncodingProfileKey());
+                            joReference.put("encodingProfileKey", mediaItemReference.getEncodingProfileKey());
                         else if (mediaItemReference.getEncodingProfileLabel() != null)
-                            joReference.put("ReferenceEncodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
+                            joReference.put("encodingProfileLabel", mediaItemReference.getEncodingProfileLabel());
 
                         Boolean stopIfReferenceProcessingError = false;
                         if (mediaItemReference.getStopIfReferenceProcessingError() != null)
                             stopIfReferenceProcessingError = mediaItemReference.getStopIfReferenceProcessingError();
-                        joReference.put("StopIfReferenceProcessingError", stopIfReferenceProcessingError);
+                        joReference.put("stopIfReferenceProcessingError", stopIfReferenceProcessingError);
                     }
                     else if (mediaItemReference.getPhysicalPathKey() != null)
                     {
@@ -2162,7 +2162,7 @@ public class CatraMMSWorkflow {
                     }
                     else if (mediaItemReference.getIngestionLabel() != null)
                     {
-                        joReference.put("ReferenceLabel", mediaItemReference.getIngestionLabel());
+                        joReference.put("label", mediaItemReference.getIngestionLabel());
                     }
                 }
             }
