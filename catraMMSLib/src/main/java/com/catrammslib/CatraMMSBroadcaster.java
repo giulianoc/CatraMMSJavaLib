@@ -11,6 +11,7 @@ import org.json.JSONObject;
 import com.catrammslib.entity.IngestionJob;
 import com.catrammslib.entity.Stream;
 import com.catrammslib.utility.BroadcastPlaylistItem;
+import com.catrammslib.utility.DrawTextDetails;
 import com.catrammslib.utility.IngestionResult;
 import com.catrammslib.utility.LiveProxyOutput;
 import com.catrammslib.utility.MediaItemReference;
@@ -22,6 +23,7 @@ public class CatraMMSBroadcaster {
 	static public Long addBroadcaster(String broadcasterConfigurationLabel,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		String broadcasterIngestionJobLabel,
+		DrawTextDetails drawTextDetails,
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
@@ -160,6 +162,7 @@ public class CatraMMSBroadcaster {
 				JSONObject joWorkflow = buildBroadcasterJson(
 					broadcasterIngestionJobLabel,		
 					broadcasterConfigurationLabel,	// udp://<server>:<port>
+					drawTextDetails,
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
 					editBroadcasterHLSDeliveryCode, broadcasterCdnRtmp, broadcasterCdnPlayURL,
@@ -503,6 +506,7 @@ public class CatraMMSBroadcaster {
 	private static JSONObject buildBroadcasterJson(
 		String broadcasterIngestionJobLabel,
 		String broadcasterStreamConfigurationLabel,	
+		DrawTextDetails drawTextDetails,
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
@@ -535,6 +539,10 @@ public class CatraMMSBroadcaster {
 				joExtraLiveProxyBroadcasterParameters.put("broadcastDefaultPlaylistItem", 
 					broadcastDefaultPlaylistItem.getJson());
 				joExtraLiveProxyBroadcasterParameters.put("broadcastIngestionJobKey", broadcastIngestionJobKey);
+
+				joExtraLiveProxyBroadcasterParameters.put("drawTextDetails", 
+					drawTextDetails == null ? JSONObject.NULL : drawTextDetails.toJson());
+
 				if (editBroadcasterDeliveryType != null && !editBroadcasterDeliveryType.isEmpty())
 					joExtraLiveProxyBroadcasterParameters.put("deliveryType", editBroadcasterDeliveryType);
 				if (editBroadcasterDeliveryType.equals("MMS HLS"))
@@ -568,6 +576,9 @@ public class CatraMMSBroadcaster {
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 
+					if (drawTextDetails != null)
+						liveProxyOutput.setDrawTextDetails(drawTextDetails);
+
 					liveProxyOutputList.add(liveProxyOutput);
 				}
 				else
@@ -579,6 +590,9 @@ public class CatraMMSBroadcaster {
 					liveProxyOutput.setPlayURL(broadcasterCdnPlayURL);
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
+
+					if (drawTextDetails != null)
+						liveProxyOutput.setDrawTextDetails(drawTextDetails);
 
 					liveProxyOutputList.add(liveProxyOutput);
 				}
