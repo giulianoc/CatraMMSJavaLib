@@ -24,6 +24,7 @@ public class DrawTextDetails implements Serializable {
     private Boolean boxEnable;
     private String boxColor;
     private Long boxPercentageOpacity;
+	private Long boxBorderW;
 
 	private Long reloadAtFrameInterval;
 
@@ -54,6 +55,8 @@ public class DrawTextDetails implements Serializable {
 		setBoxColor("black");
 
 		setBoxPercentageOpacity((long) 20);
+
+		boxBorderW = (long) 5;
 
 		this.reloadAtFrameInterval = reloadAtFrameInterval;
 	}
@@ -96,6 +99,9 @@ public class DrawTextDetails implements Serializable {
 
 			if (boxColor != null && !boxColor.isEmpty())
 				joOutput.put("boxColor", boxColor);
+
+			if (boxBorderW != null)
+				joOutput.put("boxBorderW", boxBorderW);
 
 			if (boxPercentageOpacity != null)
 				joOutput.put("boxPercentageOpacity", boxPercentageOpacity);
@@ -176,6 +182,11 @@ public class DrawTextDetails implements Serializable {
 			else
 				boxColor = "";
 
+			if (joDrawTextDetails.has("boxBorderW") && !joDrawTextDetails.isNull("boxBorderW"))
+				boxBorderW = joDrawTextDetails.getLong("boxBorderW");
+			else
+				boxBorderW = null;
+
 			if (joDrawTextDetails.has("boxPercentageOpacity") && !joDrawTextDetails.isNull("boxPercentageOpacity"))
 				boxPercentageOpacity = joDrawTextDetails.getLong("boxPercentageOpacity");
 			else
@@ -209,6 +220,7 @@ public class DrawTextDetails implements Serializable {
 		drawTextDetails.setBoxEnable(boxEnable);
 		drawTextDetails.setBoxColor(boxColor);
 		drawTextDetails.setBoxPercentageOpacity(boxPercentageOpacity);
+		drawTextDetails.setBoxBorderW(boxBorderW);
 
 		return drawTextDetails;
 	}
@@ -236,6 +248,14 @@ public class DrawTextDetails implements Serializable {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Long getBoxBorderW() {
+		return boxBorderW;
+	}
+
+	public void setBoxBorderW(Long boxBorderW) {
+		this.boxBorderW = boxBorderW;
 	}
 
 	public Long getReloadAtFrameInterval() {
