@@ -25,6 +25,8 @@ public class DrawTextDetails implements Serializable {
     private String boxColor;
     private Long boxPercentageOpacity;
 
+	private Long reloadAtFrameInterval;
+
 	public DrawTextDetails(boolean countdown)
 	{
 		this.countdown = countdown;
@@ -52,6 +54,8 @@ public class DrawTextDetails implements Serializable {
 		setBoxColor("black");
 
 		setBoxPercentageOpacity((long) 20);
+
+		reloadAtFrameInterval = null;
 	}
 	
 	public JSONObject toJson()
@@ -95,6 +99,9 @@ public class DrawTextDetails implements Serializable {
 
 			if (boxPercentageOpacity != null)
 				joOutput.put("boxPercentageOpacity", boxPercentageOpacity);
+
+			if (reloadAtFrameInterval != null)
+				joOutput.put("reloadAtFrameInterval", reloadAtFrameInterval);
 		}
 		catch(Exception e)
 		{
@@ -173,6 +180,11 @@ public class DrawTextDetails implements Serializable {
 				boxPercentageOpacity = joDrawTextDetails.getLong("boxPercentageOpacity");
 			else
 				boxPercentageOpacity = null;
+
+			if (joDrawTextDetails.has("reloadAtFrameInterval") && !joDrawTextDetails.isNull("reloadAtFrameInterval"))
+				reloadAtFrameInterval = joDrawTextDetails.getLong("reloadAtFrameInterval");
+			else
+				reloadAtFrameInterval = null;
 		}
 		catch(Exception e)
 		{
@@ -197,6 +209,7 @@ public class DrawTextDetails implements Serializable {
 		drawTextDetails.setBoxEnable(boxEnable);
 		drawTextDetails.setBoxColor(boxColor);
 		drawTextDetails.setBoxPercentageOpacity(boxPercentageOpacity);
+		drawTextDetails.setReloadAtFrameInterval(reloadAtFrameInterval);
 
 		return drawTextDetails;
 	}
@@ -224,6 +237,14 @@ public class DrawTextDetails implements Serializable {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public Long getReloadAtFrameInterval() {
+		return reloadAtFrameInterval;
+	}
+
+	public void setReloadAtFrameInterval(Long reloadAtFrameInterval) {
+		this.reloadAtFrameInterval = reloadAtFrameInterval;
 	}
 
 	public String getPositionXInPixel() {
