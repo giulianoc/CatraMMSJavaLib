@@ -34,7 +34,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private List<MediaItem> mediaItems = new ArrayList<>();			// got from physicalPathKey
 
 	private Long physicalPathKey;									// in case of Countdown
-	private DrawTextDetails drawTextDetails = new DrawTextDetails(true);	// in case of countdown
+	private DrawTextDetails drawTextDetails = new DrawTextDetails(true, null);	// in case of countdown
 
 	private String url;												// in case of Direct URL
 

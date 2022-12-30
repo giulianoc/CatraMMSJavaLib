@@ -27,7 +27,7 @@ public class DrawTextDetails implements Serializable {
 
 	private Long reloadAtFrameInterval;
 
-	public DrawTextDetails(boolean countdown)
+	public DrawTextDetails(boolean countdown, Long reloadAtFrameInterval)
 	{
 		this.countdown = countdown;
 
@@ -55,7 +55,7 @@ public class DrawTextDetails implements Serializable {
 
 		setBoxPercentageOpacity((long) 20);
 
-		reloadAtFrameInterval = null;
+		this.reloadAtFrameInterval = reloadAtFrameInterval;
 	}
 	
 	public JSONObject toJson()
@@ -194,7 +194,7 @@ public class DrawTextDetails implements Serializable {
 
 	public DrawTextDetails clone()
 	{
-		DrawTextDetails drawTextDetails = new DrawTextDetails(countdown);
+		DrawTextDetails drawTextDetails = new DrawTextDetails(countdown, reloadAtFrameInterval);
 
 		drawTextDetails.setText(text);
 		drawTextDetails.setPositionXInPixel(positionXInPixel);
@@ -209,7 +209,6 @@ public class DrawTextDetails implements Serializable {
 		drawTextDetails.setBoxEnable(boxEnable);
 		drawTextDetails.setBoxColor(boxColor);
 		drawTextDetails.setBoxPercentageOpacity(boxPercentageOpacity);
-		drawTextDetails.setReloadAtFrameInterval(reloadAtFrameInterval);
 
 		return drawTextDetails;
 	}
