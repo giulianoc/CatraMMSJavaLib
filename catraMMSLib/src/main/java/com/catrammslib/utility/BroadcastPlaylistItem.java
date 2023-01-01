@@ -307,7 +307,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	
 	// this method is called to fill BroadcastPlaylistItem when the IngestionJob
 	// is loaded from DB
-	static public BroadcastPlaylistItem fromJson(JSONObject joBroadcastPlaylistItem,
+	static public BroadcastPlaylistItem fromBroadcasterJson(JSONObject joBroadcastPlaylistItem,
 		CatraMMSAPI localCatraMMS, String localUsername, String localPassword)
 	{
 		BroadcastPlaylistItem broadcastPlaylistItem = 
@@ -322,7 +322,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				if (joBroadcastPlaylistItem.has("drawTextDetails"))
 				{
-					broadcastPlaylistItem.getDrawTextDetails().setData(
+					broadcastPlaylistItem.getDrawTextDetails().fromJson(
 						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
 					broadcastPlaylistItem.setDrawTextEnable(true);
 				}
@@ -347,7 +347,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				if (joBroadcastPlaylistItem.has("drawTextDetails"))
 				{
-					broadcastPlaylistItem.getDrawTextDetails().setData(
+					broadcastPlaylistItem.getDrawTextDetails().fromJson(
 						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
 					broadcastPlaylistItem.setDrawTextEnable(true);
 				}
@@ -360,7 +360,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				if (joBroadcastPlaylistItem.has("drawTextDetails"))
 				{
-					broadcastPlaylistItem.getDrawTextDetails().setData(
+					broadcastPlaylistItem.getDrawTextDetails().fromJson(
 						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
 				}
 			}
@@ -370,7 +370,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				if (joBroadcastPlaylistItem.has("drawTextDetails"))
 				{
-					broadcastPlaylistItem.getDrawTextDetails().setData(
+					broadcastPlaylistItem.getDrawTextDetails().fromJson(
 						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
 					broadcastPlaylistItem.setDrawTextEnable(true);
 				}
@@ -385,6 +385,134 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		catch(Exception e)
 		{
 			mLogger.error("Exception: " + e);
+		}
+
+		return broadcastPlaylistItem;
+	}
+
+	static public BroadcastPlaylistItem fromBroadcastJson(JSONObject joInputRoot,
+		Date broadcastInputStart, Date broadcastInputEnd,
+		CatraMMSAPI catraMMS, String username, String password)
+	throws Exception
+	{
+		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(catraMMS, username, password);
+
+		if (joInputRoot.has("streamInput"))
+		{
+			JSONObject joBroadcastStreamInput = joInputRoot.getJSONObject("streamInput");
+
+			broadcastPlaylistItem.setMediaType("Stream");
+
+			broadcastPlaylistItem.setStreamConfigurationLabel(
+				joBroadcastStreamInput.getString("streamConfigurationLabel"));
+
+			Stream stream = catraMMS.getStream(username, password,
+				joBroadcastStreamInput.getLong("streamConfKey"));
+			broadcastPlaylistItem.setStream(stream);
+
+			if (joBroadcastStreamInput.has("drawTextDetails") && !joBroadcastStreamInput.isNull("drawTextDetails"))
+			{
+				broadcastPlaylistItem.setDrawTextEnable(true);
+
+				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastStreamInput.getJSONObject("drawTextDetails"));
+			}
+			else
+				broadcastPlaylistItem.setDrawTextEnable(false);
+
+			broadcastPlaylistItem.setStart(broadcastInputStart);
+			broadcastPlaylistItem.setEnd(broadcastInputEnd);
+		}
+		else if (joInputRoot.has("vodInput"))
+		{
+			/*
+				{ "timePeriod": true, "utcScheduleEnd": 1654318500, "utcScheduleStart": 1654235700, 
+					"vodInput": { 
+						"sources": [{ "physicalPathKey": 339474, "sourcePhysicalPathName": "/var/catramms/storage/MMSRepository/MMS_0005/1/000/002/646/826490_overlayedtext.mp4" }], 
+						"vodContentType": "Video" 
+					} 
+				}
+			*/
+			JSONObject joBroadcastVODInput = joInputRoot.getJSONObject("vodInput");
+
+			broadcastPlaylistItem.setMediaType("Media");
+
+			if (joBroadcastVODInput.has("sources"))
+			{
+				JSONArray jaSources = joBroadcastVODInput.getJSONArray("sources");
+
+				for(int sourceIndex = 0; sourceIndex < jaSources.length(); sourceIndex++)
+				{
+					JSONObject joSource = jaSources.getJSONObject(sourceIndex);
+
+					if (joSource.has("physicalPathKey"))
+					{
+						JSONObject joReferencePhysicalPathKey = new JSONObject();
+						joReferencePhysicalPathKey.put("physicalPathKey", joSource.getLong("physicalPathKey"));
+						if (joSource.has("mediaItemTitle") && !joSource.isNull("mediaItemTitle"))
+							joReferencePhysicalPathKey.put("mediaItemTitle", joSource.getString("mediaItemTitle"));
+
+						broadcastPlaylistItem.addReferencePhysicalPathKey(joReferencePhysicalPathKey);
+					}
+				}
+			}
+
+			if (joBroadcastVODInput.has("drawTextDetails") && !joBroadcastVODInput.isNull("drawTextDetails"))
+			{
+				broadcastPlaylistItem.setDrawTextEnable(true);
+
+				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastVODInput.getJSONObject("drawTextDetails"));
+			}
+			else
+				broadcastPlaylistItem.setDrawTextEnable(false);
+
+			broadcastPlaylistItem.setStart(broadcastInputStart);
+			broadcastPlaylistItem.setEnd(broadcastInputEnd);
+		}
+		else if (joInputRoot.has("countdownInput"))
+		{
+			JSONObject joBroadcastCountdownInput = joInputRoot.getJSONObject("countdownInput");
+
+			broadcastPlaylistItem.setMediaType("Countdown");
+
+			broadcastPlaylistItem.setPhysicalPathKey(joBroadcastCountdownInput.getLong("physicalPathKey"));
+			if (joBroadcastCountdownInput.has("drawTextDetails"))
+				broadcastPlaylistItem.getDrawTextDetails().fromJson(
+					joBroadcastCountdownInput.getJSONObject("drawTextDetails"));
+
+			{
+				broadcastPlaylistItem.setDrawTextEnable(true);
+
+				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastCountdownInput.getJSONObject("drawTextDetails"));
+			}
+
+			broadcastPlaylistItem.setStart(broadcastInputStart);
+			broadcastPlaylistItem.setEnd(broadcastInputEnd);
+		}
+		else if (joInputRoot.has("directURLInput"))
+		{
+			JSONObject joBroadcastDirectURLInput = joInputRoot.getJSONObject("directURLInput");
+
+			broadcastPlaylistItem.setMediaType("Direct URL");
+
+			broadcastPlaylistItem.setUrl(joBroadcastDirectURLInput.getString("url"));
+
+			if (joBroadcastDirectURLInput.has("drawTextDetails") && !joBroadcastDirectURLInput.isNull("drawTextDetails"))
+			{
+				broadcastPlaylistItem.setDrawTextEnable(true);
+
+				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastDirectURLInput.getJSONObject("drawTextDetails"));
+			}
+			else
+				broadcastPlaylistItem.setDrawTextEnable(false);
+
+			broadcastPlaylistItem.setStart(broadcastInputStart);
+			broadcastPlaylistItem.setEnd(broadcastInputEnd);
+		}
+		else
+		{
+			mLogger.error("Unknown input type: " + joInputRoot.toString());
+
+			throw new Exception("Unknown input type: " + joInputRoot.toString());
 		}
 
 		return broadcastPlaylistItem;

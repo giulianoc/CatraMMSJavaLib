@@ -114,7 +114,7 @@ public class DrawTextDetails implements Serializable {
 		return joOutput;
 	}
 
-	public void setData(JSONObject joDrawTextDetails)
+	public void fromJson(JSONObject joDrawTextDetails)
 	{
 		try
 		{
