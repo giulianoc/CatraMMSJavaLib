@@ -463,7 +463,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastVODInput.getJSONObject("drawTextDetails"));
 			}
 			else
+			{
 				broadcastPlaylistItem.setDrawTextEnable(false);
+			}
 
 			broadcastPlaylistItem.setStart(broadcastInputStart);
 			broadcastPlaylistItem.setEnd(broadcastInputEnd);
