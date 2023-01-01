@@ -395,6 +395,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		CatraMMSAPI catraMMS, String username, String password)
 	throws Exception
 	{
+		mLogger.info("fromBroadcastJson"
+			+ ", joInputRoot: " + joInputRoot.toString()
+		);
+
 		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(catraMMS, username, password);
 
 		if (joInputRoot.has("streamInput"))
@@ -524,6 +528,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(catraMMS, username, password);
 
+		broadcastPlaylistItem.setTimestamp(getTimestamp());
 		broadcastPlaylistItem.setStart(getStart());
 		broadcastPlaylistItem.setEnd(getEnd());
 		broadcastPlaylistItem.setStreamConfigurationLabel(getStreamConfigurationLabel());
