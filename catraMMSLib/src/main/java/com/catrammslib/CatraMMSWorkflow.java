@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import com.catrammslib.entity.WorkflowVariable;
+import com.catrammslib.utility.DrawTextDetails;
 import com.catrammslib.utility.LiveProxyOutput;
 import com.catrammslib.utility.MediaItemReference;
 
@@ -422,7 +423,61 @@ public class CatraMMSWorkflow {
         }
     }
 
-    static public JSONObject buildVODProxyJson(
+    static public JSONObject buildLiveProxyJsonForBroadcast(
+            String label,
+
+            String liveConfigurationLabel,
+
+            String encodersPool,
+            Date proxyStartTime, Date proxyEndTime,
+            String userAgent,
+            Long maxWidth,
+            String otherInputOptions,
+            Long maxAttemptsNumberInCaseOfErrors,
+            Long waitingSecondsBetweenAttemptsInCaseOfErrors,
+
+			// 2022-09-12: in genere i parametri del 'draw text' vengono inizializzati
+			//		all'interno di LiveProxyOutput.
+			//		Nel caso del Broadcast (Live Channel), LiveProxyOutput è comune a tutta la playlist,
+			//		per cui non possiamo utilizzare LiveProxyOutput altrimenti avremmo il draw text
+			//		anche per gli altri item della playlist quali LiveProxy, VODProxy, ...
+			//		Per questo motivo:
+			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
+			//			2. questi parametri saranno gestiti dall'engine
+			DrawTextDetails drawTextDetails,
+
+            List<LiveProxyOutput> liveProxyOutputList,
+			JSONObject joInternalMMSParameters,
+			Boolean defaultBroadcast
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, encodersPool, 
+				proxyStartTime, proxyEndTime, userAgent, maxWidth, otherInputOptions,
+				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
+				liveProxyOutputList, joInternalMMSParameters, defaultBroadcast);
+
+			if (drawTextDetails != null)
+			{
+				JSONObject joParameters = joTask.getJSONObject("Parameters");
+
+				joParameters.put("broadcastDrawTextDetails", drawTextDetails.toJson());	
+			}
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildLiveProxyJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+	static public JSONObject buildVODProxyJson(
             String label,
 
             List<MediaItemReference> mediaItemReferenceList,
@@ -493,6 +548,53 @@ public class CatraMMSWorkflow {
                 jaOutputs.put(joOutput);
 			}
 
+
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildVODProxyJson failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+    static public JSONObject buildVODProxyJsonForBroadcast(
+            String label,
+
+            List<MediaItemReference> mediaItemReferenceList,
+
+            String encodersPool,
+            Date proxyStartTime, Date proxyEndTime,
+            String otherInputOptions,
+
+			// 2022-09-12: in genere i parametri del 'draw text' vengono inizializzati
+			//		all'interno di LiveProxyOutput.
+			//		Nel caso del Broadcast (Live Channel), LiveProxyOutput è comune a tutta la playlist,
+			//		per cui non possiamo utilizzare LiveProxyOutput altrimenti avremmo il draw text
+			//		anche per gli altri item della playlist quali LiveProxy, VODProxy, ...
+			//		Per questo motivo:
+			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
+			//			2. questi parametri saranno gestiti dall'engine
+			DrawTextDetails drawTextDetails,
+			
+            List<LiveProxyOutput> liveProxyOutputList,
+			Boolean defaultBroadcast
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = buildVODProxyJson(label, mediaItemReferenceList, encodersPool, 
+				proxyStartTime, proxyEndTime, otherInputOptions, liveProxyOutputList, defaultBroadcast);
+
+			if (drawTextDetails != null)
+			{
+				JSONObject joParameters = joTask.getJSONObject("Parameters");
+
+				joParameters.put("broadcastDrawTextDetails", drawTextDetails.toJson());	
+			}
 
             return joTask;
         }
@@ -596,17 +698,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-
-            String text,
-            String textPosition_X_InPixel,
-            String textPosition_Y_InPixel,
-            String fontType,
-            Long fontSize,
-            String fontColor,
-            Long textPercentageOpacity,
-            Boolean boxEnable,
-            String boxColor,
-            Long boxPercentageOpacity,
+			DrawTextDetails drawTextDetails,
 
 			List<LiveProxyOutput> liveProxyOutputList,
 			Boolean defaultBroadcast
@@ -618,42 +710,13 @@ public class CatraMMSWorkflow {
             JSONObject joTask = buildCountdownJson(label, mediaItemReferenceList, encodersPool, 
 				proxyStartTime, proxyEndTime, liveProxyOutputList, defaultBroadcast);
 
-            JSONObject joParameters = joTask.getJSONObject("Parameters");
+			if (drawTextDetails != null)
+			{
+				JSONObject joParameters = joTask.getJSONObject("Parameters");
 
-            {
-                JSONObject joBroadcastDrawTextDetails = new JSONObject();
-                joParameters.put("broadcastDrawTextDetails", joBroadcastDrawTextDetails);
-
-				joBroadcastDrawTextDetails.put("text", text);
-
-				if (textPosition_X_InPixel != null && !textPosition_X_InPixel.isEmpty())
-					joBroadcastDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
-
-				if (textPosition_Y_InPixel != null && !textPosition_Y_InPixel.isEmpty())
-					joBroadcastDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
-
-				if (fontType != null && !fontType.isEmpty())
-					joBroadcastDrawTextDetails.put("fontType", fontType);
-
-				if (fontSize != null)
-					joBroadcastDrawTextDetails.put("fontSize", fontSize);
-
-				if (fontColor != null && !fontColor.isEmpty())
-					joBroadcastDrawTextDetails.put("fontColor", fontColor);
-
-				if (textPercentageOpacity != null)
-					joBroadcastDrawTextDetails.put("textPercentageOpacity", textPercentageOpacity);
-
-				if (boxEnable != null)
-					joBroadcastDrawTextDetails.put("boxEnable", boxEnable);
-
-				if (boxColor != null && !boxColor.isEmpty())
-					joBroadcastDrawTextDetails.put("boxColor", boxColor);
-
-				if (boxPercentageOpacity != null)
-					joBroadcastDrawTextDetails.put("boxPercentageOpacity", boxPercentageOpacity);
+				joParameters.put("broadcastDrawTextDetails", drawTextDetails.toJson());	
 			}
-
+	
             return joTask;
         }
         catch (Exception e)

@@ -388,7 +388,7 @@ public class CatraMMSBroadcaster {
 				}
 				if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
 				{
-	                joBroadcast = CatraMMSWorkflow.buildLiveProxyJson(
+	                joBroadcast = CatraMMSWorkflow.buildLiveProxyJsonForBroadcast(
 						broadcastIngestionJobLabel,
 
 						broadcastDefaultPlaylistItem.getStreamConfigurationLabel(),
@@ -401,6 +401,9 @@ public class CatraMMSBroadcaster {
 						null,
 						null,
 						null,
+
+						broadcastDefaultPlaylistItem.getDrawTextEnable() ?
+							broadcastDefaultPlaylistItem.getDrawTextDetails() : null,
 
 						liveProxyOutputList,
 						null,
@@ -428,7 +431,7 @@ public class CatraMMSBroadcaster {
 						mediaItemReferenceList.add(mediaItemReference);	
 					}
 
-	                joBroadcast = CatraMMSWorkflow.buildVODProxyJson(
+	                joBroadcast = CatraMMSWorkflow.buildVODProxyJsonForBroadcast(
 						broadcastIngestionJobLabel,
 
 						mediaItemReferenceList,
@@ -437,6 +440,8 @@ public class CatraMMSBroadcaster {
 						broadcasterStart, broadcasterEnd,
 
 						null,
+						broadcastDefaultPlaylistItem.getDrawTextEnable() ?
+							broadcastDefaultPlaylistItem.getDrawTextDetails() : null,
 						liveProxyOutputList,
 						true
         	        );
@@ -449,14 +454,6 @@ public class CatraMMSBroadcaster {
 					List<MediaItemReference> mediaItemReferenceList = new ArrayList<>();
 					mediaItemReferenceList.add(mediaItemReference);
 
-					String fontType = "OpenSans-ExtraBold.ttf";
-					Long fontSize = (long) 48;
-					String fontColor = "orange";
-					Long textPercentageOpacity = (long) 100;
-					Boolean boxEnable = false;
-					String boxColor = null;
-					Long boxPercentageOpacity = null;
-
 					joBroadcast = CatraMMSWorkflow.buildCountdownJsonForBroadcast(
 						broadcastIngestionJobLabel,
 
@@ -465,16 +462,7 @@ public class CatraMMSBroadcaster {
 
 						broadcasterStart, broadcasterEnd,
 
-						broadcastDefaultPlaylistItem.getDrawTextDetails().getText(),
-						broadcastDefaultPlaylistItem.getDrawTextDetails().getPositionXInPixel(),
-						broadcastDefaultPlaylistItem.getDrawTextDetails().getPositionYInPixel(),
-						fontType,
-						fontSize,
-						fontColor,
-						textPercentageOpacity,
-						boxEnable,
-						boxColor,
-						boxPercentageOpacity,
+						broadcastDefaultPlaylistItem.getDrawTextDetails(),
 
 						liveProxyOutputList,
 						true
@@ -539,9 +527,6 @@ public class CatraMMSBroadcaster {
 				joExtraLiveProxyBroadcasterParameters.put("broadcastDefaultPlaylistItem", 
 					broadcastDefaultPlaylistItem.getJson());
 				joExtraLiveProxyBroadcasterParameters.put("broadcastIngestionJobKey", broadcastIngestionJobKey);
-
-				joExtraLiveProxyBroadcasterParameters.put("drawTextDetails", 
-					drawTextDetails == null ? JSONObject.NULL : drawTextDetails.toJson());
 
 				if (editBroadcasterDeliveryType != null && !editBroadcasterDeliveryType.isEmpty())
 					joExtraLiveProxyBroadcasterParameters.put("deliveryType", editBroadcasterDeliveryType);

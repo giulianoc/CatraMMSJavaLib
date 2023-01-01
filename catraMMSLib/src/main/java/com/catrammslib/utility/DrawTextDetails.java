@@ -28,14 +28,11 @@ public class DrawTextDetails implements Serializable {
 
 	private Long reloadAtFrameInterval;
 
-	public DrawTextDetails(boolean countdown, Long reloadAtFrameInterval)
+	public DrawTextDetails(Long reloadAtFrameInterval)
 	{
-		this.countdown = countdown;
+		countdown = false;
 
-		if (countdown)
-			setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
-		else
-			setText("Hello World");
+		setText("Hello World");
 
 		setPositionXInPixel("(video_width-text_width)/2");
 		setPositionYInPixel("(video_height-text_height)/2");
@@ -205,8 +202,9 @@ public class DrawTextDetails implements Serializable {
 
 	public DrawTextDetails clone()
 	{
-		DrawTextDetails drawTextDetails = new DrawTextDetails(countdown, reloadAtFrameInterval);
+		DrawTextDetails drawTextDetails = new DrawTextDetails(reloadAtFrameInterval);
 
+		drawTextDetails.setCountdown(countdown);
 		drawTextDetails.setText(text);
 		drawTextDetails.setPositionXInPixel(positionXInPixel);
 		drawTextDetails.setPositionYInPixel(positionYInPixel);
@@ -225,6 +223,14 @@ public class DrawTextDetails implements Serializable {
 		return drawTextDetails;
 	}
 
+	public void setCountdown(boolean countdown) {
+		this.countdown = countdown;
+		if (countdown)
+			setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
+		else
+			setText("Hello World");
+	}
+
 	public void setsFontSize(String sFontSize) 
 	{
 		this.sFontSize = sFontSize;
@@ -236,6 +242,10 @@ public class DrawTextDetails implements Serializable {
 		{
 
 		}
+	}
+
+	public boolean isCountdown() {
+		return countdown;
 	}
 
 	public String getsFontSize() {
