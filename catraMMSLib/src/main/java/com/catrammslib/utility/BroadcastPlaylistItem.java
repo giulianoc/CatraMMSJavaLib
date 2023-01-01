@@ -66,7 +66,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaType = "Media";
 
 		drawTextEnable = false;
-		
+
 		endBasedOnMediaDuration = false;
 	}
 
@@ -86,38 +86,41 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		{
 			try
 			{
-				JSONArray jaReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
-				for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
+				if (!referencePhysicalPathKeys.toString().trim().isEmpty())
 				{
-					JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
-
-					Long localPhysicalPathKey = joReferencePhysicalPathKey.getLong("physicalPathKey");
-					MediaItem mediaItem = null;
-					if (mediaItems.size() > physicalPathKeyIndex)
-						mediaItem = mediaItems.get(physicalPathKeyIndex);
-	
-					String mediaItemDetails = "";
-					if (mediaItem != null)
+					JSONArray jaReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
+					for (int physicalPathKeyIndex = 0; physicalPathKeyIndex < jaReferencePhysicalPathKeys.length(); physicalPathKeyIndex++)
 					{
-						mediaItemDetails = ": " + mediaItem.getTitle();
+						JSONObject joReferencePhysicalPathKey = jaReferencePhysicalPathKeys.getJSONObject(physicalPathKeyIndex);
 	
-						if (mediaItem.getSourcePhysicalPath() != null && mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
+						Long localPhysicalPathKey = joReferencePhysicalPathKey.getLong("physicalPathKey");
+						MediaItem mediaItem = null;
+						if (mediaItems.size() > physicalPathKeyIndex)
+							mediaItem = mediaItems.get(physicalPathKeyIndex);
+		
+						String mediaItemDetails = "";
+						if (mediaItem != null)
 						{
-							SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-							dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-	
-							Date durationDate = new Date(mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds());
-	
-							mediaItemDetails += (" - <b>Duration</b>: " + dateFormat.format(durationDate));
+							mediaItemDetails = ": " + mediaItem.getTitle();
+		
+							if (mediaItem.getSourcePhysicalPath() != null && mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds() != null)
+							{
+								SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+								dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+		
+								Date durationDate = new Date(mediaItem.getSourcePhysicalPath().getDurationInMilliSeconds());
+		
+								mediaItemDetails += (" - <b>Duration</b>: " + dateFormat.format(durationDate));
+							}
 						}
+		
+						if (str != "")
+							str += "</br>";
+						str += (
+							"<b>" + localPhysicalPathKey.toString() + "</b>"
+							+ mediaItemDetails
+						);	
 					}
-	
-					if (str != "")
-						str += "</br>";
-					str += (
-						"<b>" + localPhysicalPathKey.toString() + "</b>"
-						+ mediaItemDetails
-					);	
 				}
 			}
 			catch(Exception e)
@@ -383,6 +386,25 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		{
 			mLogger.error("Exception: " + e);
 		}
+
+		return broadcastPlaylistItem;
+	}
+
+	public BroadcastPlaylistItem clone()
+	{
+		BroadcastPlaylistItem broadcastPlaylistItem = new BroadcastPlaylistItem(catraMMS, username, password);
+
+		broadcastPlaylistItem.setStart(getStart());
+		broadcastPlaylistItem.setEnd(getEnd());
+		broadcastPlaylistItem.setStreamConfigurationLabel(getStreamConfigurationLabel());
+		broadcastPlaylistItem.setMediaType(getMediaType());
+		// setEndBasedOnMediaDuration deve essere prima di setPhysicalPathKeys (che usa questo flag)
+		broadcastPlaylistItem.setEndBasedOnMediaDuration(getEndBasedOnMediaDuration());
+		broadcastPlaylistItem.setReferencePhysicalPathKeys(getReferencePhysicalPathKeys());
+		broadcastPlaylistItem.setPhysicalPathKey(getPhysicalPathKey());
+		broadcastPlaylistItem.setUrl(getUrl());
+		broadcastPlaylistItem.setDrawTextEnable(getDrawTextEnable());
+		broadcastPlaylistItem.setDrawTextDetails(getDrawTextDetails());
 
 		return broadcastPlaylistItem;
 	}
