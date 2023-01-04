@@ -81,7 +81,11 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		String str = "";
 
 		if (mediaType.equals("Stream"))
-			str = streamConfigurationLabel;
+		{
+			if (stream != null)
+				str = "<b>" + stream.getConfKey() + "</b>: ";
+			str += streamConfigurationLabel;
+		}
 		else if (mediaType.equals("Media"))
 		{
 			try

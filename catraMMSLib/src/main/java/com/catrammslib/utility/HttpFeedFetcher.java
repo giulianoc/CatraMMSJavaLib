@@ -636,19 +636,20 @@ public class HttpFeedFetcher {
 						responseContentLength = ((HttpURLConnection) conn).getContentLength();
 					}
 
-                    mLogger.info("conn.getResponseCode. statusCode: " + statusCode);
+                    mLogger.info("conn.getResponseCode" 
+						+ ", statusCode: " + statusCode
+						+ ", responseContentLength: " + responseContentLength
+					);
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
-						/*
-						does not work
                         String responseMessage;
                         if (url.startsWith("https"))
                             responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
                         else
                             responseMessage = ((HttpURLConnection) conn).getResponseMessage();
+						if (responseMessage == null)
+							responseMessage = "";
 
-                        // I do not know how to read the body in case of error,
-                        // the below code does not read it
                         {
                             // Read the response body.
                             InputStream is;
@@ -671,12 +672,14 @@ public class HttpFeedFetcher {
                             }
                         }
 
-                        mLogger.debug("Method failed: " + responseMessage);
+                        mLogger.info("Method failed: " + responseMessage);
 
                         result = null;
-						*/
 
-                        throw new Exception("Method failed, statusCode: " + statusCode);
+                        throw new Exception("Method failed" 
+							+ ", statusCode: " + statusCode
+							+ ", responseMessage: " + responseMessage
+						);
                     }
 
                     // Read the response body.
