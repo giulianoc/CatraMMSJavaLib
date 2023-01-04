@@ -135,62 +135,14 @@ public class HttpFeedFetcher {
                     );
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
-						mLogger.error("Response"
-								+ ", url: " + url
-								+ ", statusCode: " + statusCode
-						);
-
-						/*
-						String responseMessage;
-
-						does not work
-						if (url.startsWith("https"))
-                            responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
-                        else
-                            responseMessage = ((HttpURLConnection) conn).getResponseMessage();
-
-						mLogger.error("Response"
-							+ ", responseMessage: " + responseMessage
-						);
+						String body = getErrorBody(conn, url);
 
                         result = null;
 
-						does not work
-						InputStream is = conn.getInputStream();
-						mLogger.error("Response"
-								+ ", is: " + is
+                        throw new Exception("Method failed" 
+							+ ", statusCode: " + statusCode
+							+ ", body: " + body
 						);
-						InputStreamReader isr = new InputStreamReader(is);
-						mLogger.error("Response"
-								+ ", isr: " + isr
-						);
-	
-						int numCharsRead;
-						int totalCharsRead = 0;
-						char[] charArray = new char[1024 * 10];
-						StringBuffer sb = new StringBuffer();
-						while ((numCharsRead = isr.read(charArray)) != -1)
-						{
-							sb.append(charArray, 0, numCharsRead);
-							totalCharsRead += numCharsRead;
-							// mLogger.info("content read: " + totalCharsRead + "/" + contentLength + "(" + (contentLength - totalCharsRead) + ")");
-						}
-	
-						mLogger.error("Response"
-								+ ", isr: " + isr
-						);
-
-						responseMessage = sb.toString();
-	
-						mLogger.error("Response"
-								+ ", url: " + url
-								+ ", statusCode: " + statusCode
-								+ ", contentLength: " + contentLength
-								+ ", responseMessage: " + responseMessage
-						);
-						*/
-		
-                        throw new Exception("Method failed, statusCode: " + statusCode);
                     }
 
                     // Read the response body.
@@ -350,20 +302,14 @@ public class HttpFeedFetcher {
                     );
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
-						/*
-						does not work
-                        String responseMessage;
-                        if (url.startsWith("https"))
-                            responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
-                        else
-                            responseMessage = ((HttpURLConnection) conn).getResponseMessage();
-
-                        mLogger.debug("Method failed: " + responseMessage);
-						*/
+						String body = getErrorBody(conn, url);
 
                         result = null;
 
-                        throw new Exception("Method failed, statusCode: " + statusCode);
+                        throw new Exception("Method failed" 
+							+ ", statusCode: " + statusCode
+							+ ", body: " + body
+						);
                     }
 
                     // Read the response body.
@@ -642,43 +588,13 @@ public class HttpFeedFetcher {
 					);
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
-                        String responseMessage;
-                        if (url.startsWith("https"))
-                            responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
-                        else
-                            responseMessage = ((HttpURLConnection) conn).getResponseMessage();
-						if (responseMessage == null)
-							responseMessage = "";
-
-                        {
-                            // Read the response body.
-                            InputStream is;
-                            if (url.startsWith("https"))
-                                is = ((HttpsURLConnection) conn).getErrorStream();
-                            else
-                                is = ((HttpURLConnection) conn).getErrorStream();
-
-                            if (is != null)
-                            {
-                                InputStreamReader isr = new InputStreamReader(is);
-
-                                int numCharsRead;
-                                char[] charArray = new char[1024 * 10];
-                                StringBuffer sb = new StringBuffer();
-                                while ((numCharsRead = isr.read(charArray)) > 0)
-                                    sb.append(charArray, 0, numCharsRead);
-
-                                responseMessage += sb.toString();
-                            }
-                        }
-
-                        mLogger.info("Method failed: " + responseMessage);
+						String body = getErrorBody(conn, url);
 
                         result = null;
 
                         throw new Exception("Method failed" 
 							+ ", statusCode: " + statusCode
-							+ ", responseMessage: " + responseMessage
+							+ ", body: " + body
 						);
                     }
 
@@ -869,18 +785,12 @@ public class HttpFeedFetcher {
                     mLogger.info("conn.getResponseCode. statusCode: " + statusCode);
                     if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
                     {
-						/*
-						does not work
-                        String responseMessage;
-                        if (url.startsWith("https"))
-                            responseMessage = ((HttpsURLConnection) conn).getResponseMessage();
-                        else
-                            responseMessage = ((HttpURLConnection) conn).getResponseMessage();
+						String body = getErrorBody(conn, url);
 
-                        mLogger.debug("Method failed: " + responseMessage);
-						*/
-
-                        throw new Exception("Method failed, statusCode: " + statusCode);
+                        throw new Exception("Method failed" 
+							+ ", statusCode: " + statusCode
+							+ ", body: " + body
+						);
                     }
 
                     mLogger.debug("POST successful. statusCode: " + statusCode);
@@ -1012,6 +922,57 @@ public class HttpFeedFetcher {
 	
 				body = sb.toString();
 			}
+		}
+		catch(Exception e)
+		{
+			String errorMessage = "getResponseBody"
+				+ ", exception: " + e
+			;
+			mLogger.error(errorMessage);
+
+			throw new Exception(errorMessage);
+		}
+
+		return body;
+	}
+
+	static private String getErrorBody(URLConnection conn, String url)
+	throws Exception
+	{
+		String body;
+
+		try
+		{
+			if (url.startsWith("https"))
+				body = ((HttpsURLConnection) conn).getResponseMessage();
+			else
+				body = ((HttpURLConnection) conn).getResponseMessage();
+			if (body == null)
+				body = "";
+
+			{
+				// Read the response body.
+				InputStream is;
+				if (url.startsWith("https"))
+					is = ((HttpsURLConnection) conn).getErrorStream();
+				else
+					is = ((HttpURLConnection) conn).getErrorStream();
+
+				if (is != null)
+				{
+					InputStreamReader isr = new InputStreamReader(is);
+
+					int numCharsRead;
+					char[] charArray = new char[1024 * 10];
+					StringBuffer sb = new StringBuffer();
+					while ((numCharsRead = isr.read(charArray)) > 0)
+						sb.append(charArray, 0, numCharsRead);
+
+					body += sb.toString();
+				}
+			}
+
+			mLogger.info("Method failed: " + body);
 		}
 		catch(Exception e)
 		{
