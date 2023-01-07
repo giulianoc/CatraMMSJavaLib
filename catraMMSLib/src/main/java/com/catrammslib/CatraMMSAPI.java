@@ -4380,7 +4380,7 @@ public class CatraMMSAPI {
     }
 
     public void addFacebookConf(String username, String password,
-                               String label, String pageToken)
+                               String label, String userAccessToken)
             throws Exception
     {
 
@@ -4392,7 +4392,7 @@ public class CatraMMSAPI {
                 JSONObject joFacebookConf = new JSONObject();
 
                 joFacebookConf.put("Label", label);
-                joFacebookConf.put("PageToken", pageToken);
+                joFacebookConf.put("UserAccessToken", userAccessToken);
 
                 jsonFacebookConf = joFacebookConf.toString(4);
             }
@@ -4420,8 +4420,8 @@ public class CatraMMSAPI {
     }
 
     public void modifyFacebookConf(String username, String password,
-                                  Long confKey, String label, String pageToken)
-            throws Exception
+        Long confKey, String label, String userAccessToken)
+        throws Exception
     {
 
         String mmsInfo;
@@ -4432,7 +4432,7 @@ public class CatraMMSAPI {
                 JSONObject joFacebookConf = new JSONObject();
 
                 joFacebookConf.put("Label", label);
-                joFacebookConf.put("PageToken", pageToken);
+                joFacebookConf.put("UserAccessToken", userAccessToken);
 
                 jsonFacebookConf = joFacebookConf.toString(4);
             }
@@ -7917,10 +7917,14 @@ public class CatraMMSAPI {
     private void fillFacebookConf(FacebookConf facebookConf, JSONObject facebookConfInfo)
             throws Exception
     {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
         try {
             facebookConf.setConfKey(facebookConfInfo.getLong("confKey"));
             facebookConf.setLabel(facebookConfInfo.getString("label"));
-            facebookConf.setPageToken(facebookConfInfo.getString("pageToken"));
+            facebookConf.setUserAccessToken(facebookConfInfo.getString("userAccessToken"));
+            facebookConf.setModificationDate(simpleDateFormat.parse(facebookConfInfo.getString("modificationDate")));
         }
         catch (Exception e)
         {

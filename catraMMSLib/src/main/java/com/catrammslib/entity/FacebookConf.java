@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by multi on 08.06.18.
@@ -9,7 +10,8 @@ public class FacebookConf implements Serializable{
 
     private Long confKey;
     private String label;
-    private String pageToken;
+    private String userAccessToken;
+	private Date modificationDate;
 
     public Long getConfKey() {
         return confKey;
@@ -27,11 +29,20 @@ public class FacebookConf implements Serializable{
         this.label = label;
     }
 
-    public String getPageToken() {
-        return pageToken;
-    }
+	public String getUserAccessToken() {
+		return userAccessToken;
+	}
 
-    public void setPageToken(String pageToken) {
-        this.pageToken = pageToken;
-    }
+	public void setUserAccessToken(String userAccessToken) {
+		this.userAccessToken = userAccessToken;
+	}
+
+	public Date getModificationDate() {
+		return modificationDate;
+	}
+
+	public void setModificationDate(Date modificationDate) {
+		this.modificationDate = modificationDate;
+	}
+
 }
