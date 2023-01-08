@@ -978,7 +978,7 @@ public class CatraMMSWorkflow {
 
 			{
 				JSONObject joProxyPeriod = new JSONObject();
-				joParameters.put("schedule", joProxyPeriod);
+				joParameters.put("facebookSchedule", joProxyPeriod);
 
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
 				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
