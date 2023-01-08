@@ -929,6 +929,7 @@ public class CatraMMSWorkflow {
             String title,
             String description,
 			String encodersPool,
+			String facebookLiveType,
 			Date startTime, Date endTime,
 
 			// only one of the two below parameters has to be initialized, the other will be null
@@ -976,6 +977,7 @@ public class CatraMMSWorkflow {
 			if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("encodersPool", encodersPool);
 
+			joParameters.put("facebookLiveType", facebookLiveType);
 			{
 				JSONObject joProxyPeriod = new JSONObject();
 				joParameters.put("facebookSchedule", joProxyPeriod);
