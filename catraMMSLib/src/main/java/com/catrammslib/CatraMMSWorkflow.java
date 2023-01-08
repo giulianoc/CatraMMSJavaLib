@@ -883,7 +883,7 @@ public class CatraMMSWorkflow {
             String label,
 
 			String facebookConfigurationLabel,
-            String pageId,
+            String destination, String nodeId,
 
             List<MediaItemReference> mediaItemReferenceList
     )
@@ -904,16 +904,94 @@ public class CatraMMSWorkflow {
                     mediaItemReferenceList,
                     null);
 
-			joParameters.put("ConfigurationLabel", facebookConfigurationLabel);
+			joParameters.put("configurationLabel", facebookConfigurationLabel);
 
-            if (pageId != null && !pageId.isEmpty())
-                joParameters.put("PageId", pageId);
+			joParameters.put("facebookDestination", destination);
+			joParameters.put("facebookNodeId", nodeId);
 
             return joTask;
         }
         catch (Exception e)
         {
             String errorMessage = "buildPostOnFacebook failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw e;
+        }
+    }
+
+    static public JSONObject buildFacebookLiveBroadcast(
+            String label,
+
+			String facebookConfigurationLabel,
+			String facebookDestination,
+			String facebookNodeId,
+            String title,
+            String description,
+			String encodersPool,
+			Date startTime, Date endTime,
+
+			// only one of the two below parameters has to be initialized, the other will be null
+			String channelConfigurationLabel,
+            List<MediaItemReference> mediaItemReferenceList
+    )
+            throws Exception
+    {
+        try
+        {
+            JSONObject joTask = new JSONObject();
+
+            joTask.put("Label", label);
+            joTask.put("Type", "Facebook-Live-Broadcast");
+
+            JSONObject joParameters = new JSONObject();
+            joTask.put("Parameters", joParameters);
+
+			joParameters.put("facebookConfigurationLabel", facebookConfigurationLabel);
+
+			joParameters.put("facebookDestination", facebookDestination);
+			joParameters.put("facebookNodeId", facebookNodeId);
+
+            if (title != null && !title.isEmpty())
+                joParameters.put("title", title);
+
+			if (description != null && !description.isEmpty())
+                joParameters.put("description", description);
+
+			if (channelConfigurationLabel != null)
+			{
+                joParameters.put("sourceType", "Live");
+                joParameters.put("configurationLabel", channelConfigurationLabel);
+			}
+			else
+			{
+                joParameters.put("sourceType", "MediaItem");
+
+				setCommonParameters(joParameters,
+					null,
+					mediaItemReferenceList,
+					null);
+			}
+
+			if (encodersPool != null && !encodersPool.isEmpty())
+                joParameters.put("encodersPool", encodersPool);
+
+			{
+				JSONObject joProxyPeriod = new JSONObject();
+				joParameters.put("schedule", joProxyPeriod);
+
+				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+				joProxyPeriod.put("start", dateFormat.format(startTime));
+				joProxyPeriod.put("end", dateFormat.format(endTime));
+			}
+	
+            return joTask;
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "buildPostOnYouTube failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw e;
