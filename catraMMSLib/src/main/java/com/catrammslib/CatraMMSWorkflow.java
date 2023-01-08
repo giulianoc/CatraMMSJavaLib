@@ -883,7 +883,7 @@ public class CatraMMSWorkflow {
             String label,
 
 			String facebookConfigurationLabel,
-            String destination, String nodeId,
+            String facebookNodeType, String facebookNodeId,
 
             List<MediaItemReference> mediaItemReferenceList
     )
@@ -906,8 +906,8 @@ public class CatraMMSWorkflow {
 
 			joParameters.put("configurationLabel", facebookConfigurationLabel);
 
-			joParameters.put("facebookDestination", destination);
-			joParameters.put("facebookNodeId", nodeId);
+			joParameters.put("facebookNodeType", facebookNodeType);
+			joParameters.put("facebookNodeId", facebookNodeId);
 
             return joTask;
         }
@@ -924,7 +924,7 @@ public class CatraMMSWorkflow {
             String label,
 
 			String facebookConfigurationLabel,
-			String facebookDestination,
+			String facebookNodeType,
 			String facebookNodeId,
             String title,
             String description,
@@ -949,7 +949,7 @@ public class CatraMMSWorkflow {
 
 			joParameters.put("facebookConfigurationLabel", facebookConfigurationLabel);
 
-			joParameters.put("facebookDestination", facebookDestination);
+			joParameters.put("facebookNodeType", facebookNodeType);
 			joParameters.put("facebookNodeId", facebookNodeId);
 
             if (title != null && !title.isEmpty())
