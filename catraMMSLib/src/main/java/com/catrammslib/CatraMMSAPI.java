@@ -3094,12 +3094,12 @@ public class CatraMMSAPI {
     }
 
     public String ingestBinaryContentSplittingInChunks(String username, String password,
-        File mediaFile, long fileSizeInBytes,
+	InputStream binaryFileInputStream, long fileSizeInBytes,
         Long ingestionJobKey)
         throws Exception
     {
 		String httpReturn = null;
-		InputStream binaryFileInputStream = null;
+		// InputStream binaryFileInputStream = null;
         try
         {
 			String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
@@ -3111,7 +3111,7 @@ public class CatraMMSAPI {
 				+ ", ingestionJobKey: " + ingestionJobKey
 			);
 
-			binaryFileInputStream = new DataInputStream(new FileInputStream(mediaFile));
+			// binaryFileInputStream = new DataInputStream(new FileInputStream(mediaFile));
 
 			int chunkSize = 100 * 1000 * 1000;
 
@@ -3150,10 +3150,12 @@ public class CatraMMSAPI {
 
             throw new Exception(errorMessage);
         }
+		/*
 		finally{
 			if (binaryFileInputStream != null)
 				binaryFileInputStream.close();
 		}
+		*/
 
 		return httpReturn;
     }
