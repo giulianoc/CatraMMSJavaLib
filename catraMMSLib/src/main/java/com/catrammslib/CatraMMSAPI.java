@@ -1,6 +1,8 @@
 package com.catrammslib;
 
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
@@ -3091,8 +3093,73 @@ public class CatraMMSAPI {
         }
     }
 
-    public void ingestBinaryContent(String username, String password,
-                                    InputStream fileInputStream, long contentSize,
+    public String ingestBinaryContentSplittingInChunks(String username, String password,
+        File mediaFile, int fileSizeInBytes,
+        Long ingestionJobKey)
+        throws Exception
+    {
+		String httpReturn = null;
+		InputStream binaryFileInputStream = null;
+        try
+        {
+			String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
+				+ "/catramms/1.0.1/binary/" + ingestionJobKey;
+			
+			mLogger.info("ingestBinaryContent"
+				+ ", mmsURL: " + mmsURL
+				+ ", fileSizeInBytes: " + fileSizeInBytes
+				+ ", ingestionJobKey: " + ingestionJobKey
+			);
+
+			binaryFileInputStream = new DataInputStream(new FileInputStream(mediaFile));
+
+			int chunkSize = 100 * 1000 * 1000;
+
+			if (fileSizeInBytes <= chunkSize)
+			{
+				Date now = new Date();
+				httpReturn = HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
+						username, password, binaryFileInputStream, fileSizeInBytes, -1, -1);
+				mLogger.info("ingestBinaryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+
+				return httpReturn;
+			}
+
+			int chunksNumber = fileSizeInBytes / chunkSize;                                                           
+			if (fileSizeInBytes % chunkSize != 0)                                                                     
+				chunksNumber++;                                                                                       
+																													  
+			for(int chunkIndex = 0; chunkIndex < chunksNumber; chunkIndex++)                                          
+			{                                                                                                         
+				int contentRangeStart = chunkIndex * chunkSize;                                                   
+				int contentRangeEnd_Excluded = chunkIndex + 1 < chunksNumber ?                                    
+					(chunkIndex + 1) * chunkSize :                                                                    
+					fileSizeInBytes;
+
+				Date now = new Date();
+				httpReturn = HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
+					username, password, binaryFileInputStream, fileSizeInBytes,
+					contentRangeStart, contentRangeEnd_Excluded);
+				mLogger.info("ingestBinaryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+			}
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "ingestWorkflow MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+		finally{
+			if (binaryFileInputStream != null)
+				binaryFileInputStream.close();
+		}
+
+		return httpReturn;
+    }
+
+	public void ingestBinaryContent(String username, String password,
+                                    InputStream fileInputStream, int contentSize,
                                     Long ingestionJobKey)
             throws Exception
     {
@@ -3109,7 +3176,8 @@ public class CatraMMSAPI {
 
             Date now = new Date();
             HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, fileInputStream, contentSize);
+                    username, password, fileInputStream, contentSize,
+					-1, -1);
             mLogger.info("ingestBinaryContent. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
         }
         catch (Exception e)

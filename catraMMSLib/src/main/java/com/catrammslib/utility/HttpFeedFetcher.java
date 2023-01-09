@@ -661,6 +661,7 @@ public class HttpFeedFetcher {
         return result;
     }
 
+	/*
     static public void fetchPostHttpBinary(String url, int timeoutInSeconds, int maxRetriesNumber,
                                             String user, String password,
                                            InputStream inputStreamBinary, long contentLength)
@@ -698,35 +699,12 @@ public class HttpFeedFetcher {
 
                 try
                 {
-                    /*
-                    method = new GetMethod(url);
-
-                    // Provide custom retry handler is necessary
-                    method.getParams().setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(3, false));
-                    // method.addRequestHeader("X-Inline", "describedby");
-                    // Credentials credentials = new UsernamePasswordCredentials("admin", "admin");
-
-                    HttpClient httpClient = new HttpClient();
-                    // httpClient.getState().setCredentials(AuthScope.ANY, credentials);
-
-                    // Execute the method.
-                    int statusCode = httpClient.executeMethod(method);
-                    */
-
                     mLogger.info("url: " + url);
                     URL uUrl = new URL(url);
                     URLConnection conn;
                     if (url.startsWith("https"))
                     {
                         conn = (HttpsURLConnection) uUrl.openConnection();
-                        /*
-                        conn.setHostnameVerifier(new HostnameVerifier() {
-                            @Override
-                            public boolean verify(String arg0, SSLSession arg1) {
-                                return true;
-                            }
-                        });
-                        */
                     }
                     else
                         conn = uUrl.openConnection();
@@ -836,6 +814,227 @@ public class HttpFeedFetcher {
                     else
                         Thread.sleep(100);  // half second
                 }
+            }
+        }
+
+        // elapsed time saved in the calling method
+        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+    }
+	*/
+
+    static public String fetchPostHttpBinary(String url, int timeoutInSeconds, int maxRetriesNumber,
+        String user, String password,
+        InputStream inputStreamBinary, int contentLength,
+		int contentRangeStart, // -1 se non deve essere usato
+		int contentRangeEnd_Excluded // -1 se non deve essere usato
+	)
+            throws Exception
+    {
+        // fetchWebPage
+        String result = "";
+        mLogger.debug(String.format("fetchWebPage(%s) ", url));
+        // Date startTimestamp = new Date();
+        if (StringUtils.isNotEmpty(url))
+        {
+            if (url.startsWith("https"))
+            {
+                SSLContext ctx = SSLContext.getInstance("SSL");
+                ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
+                SSLContext.setDefault(ctx);
+                HttpsURLConnection.setDefaultSSLSocketFactory(ctx.getSocketFactory());
+
+                // Create all-trusting host name verifier
+                HostnameVerifier allHostsValid = new HostnameVerifier() {
+                    public boolean verify(String hostname, SSLSession session) {
+                        return true;
+                    }
+                };
+
+                // Install the all-trusting host verifier
+                HttpsURLConnection.setDefaultHostnameVerifier(allHostsValid);
+            }
+
+            // GetMethod method = null;
+            int retryIndex = 0;
+
+            while(retryIndex < maxRetriesNumber)
+            {
+                retryIndex++;
+
+                try
+                {
+                    mLogger.info("url: " + url);
+                    URL uUrl = new URL(url);
+                    URLConnection conn;
+                    if (url.startsWith("https"))
+                    {
+                        conn = (HttpsURLConnection) uUrl.openConnection();
+                        /*
+                        conn.setHostnameVerifier(new HostnameVerifier() {
+                            @Override
+                            public boolean verify(String arg0, SSLSession arg1) {
+                                return true;
+                            }
+                        });
+                        */
+                    }
+                    else
+                        conn = uUrl.openConnection();
+                    conn.setConnectTimeout(timeoutInSeconds * 1000);
+                    conn.setReadTimeout(timeoutInSeconds * 1000);
+
+                    {
+                        // String encoded = DatatypeConverter.printBase64Binary((user + ":" + password).getBytes("utf-8"));
+                        String encoded = Base64.getEncoder().encodeToString((user + ":" + password).getBytes("utf-8"));
+                        conn.setRequestProperty("Authorization", "Basic " + encoded);
+                        mLogger.info("Add Header (user " + user + "). " + "Authorization: " + "Basic " + encoded);
+                        mLogger.info("Add Header (password " + password + "). " + "Authorization: " + "Basic " + encoded);
+                    }
+
+                    conn.setDoOutput(true); // false because I do not need to append any data to this request
+                    if (url.startsWith("https"))
+                        ((HttpsURLConnection) conn).setRequestMethod("POST");
+                    else
+                        ((HttpURLConnection) conn).setRequestMethod("POST");
+
+                    {
+						if (contentRangeStart >= 0 && contentRangeEnd_Excluded > 0)
+						{
+							conn.setRequestProperty("Content-Range", "bytes " + contentRangeStart + "-" + (contentRangeEnd_Excluded - 1) + "/" + contentLength);
+							mLogger.info("Header. " + "Content-Range: bytes " + contentRangeStart + "-" + (contentRangeEnd_Excluded - 1) + "/" + contentLength);
+						}
+						else
+						{
+							conn.setRequestProperty("Content-Length", String.valueOf(contentLength));
+							mLogger.info("Header. " + "Content-Length: " + String.valueOf(contentLength));	
+						}
+
+                        conn.setDoInput(true); // false means the response is ignored
+
+                        OutputStream outputStream = null;
+                        try 
+						{
+                            outputStream = conn.getOutputStream();
+
+                            // IOUtils.copy(inputStreamBinary, outputStream);
+
+							int bufferSize = 1024 * 10;
+							byte[] buffer = new byte[bufferSize];
+
+							int currentStart = 0;
+							if (contentRangeStart > 0)
+							{
+								currentStart = contentRangeStart;
+
+								inputStreamBinary.skip(currentStart);
+							}
+
+							int currentEnd = contentLength;
+							if (contentRangeEnd_Excluded > 0)
+								currentEnd = contentRangeEnd_Excluded;
+
+							while(currentStart < currentEnd)
+							{
+								int len;
+								if (currentStart + bufferSize <= currentEnd)
+									len = bufferSize;
+								else
+									len = currentEnd - currentStart;
+								int bytesRead = inputStreamBinary.read(buffer, 0, len);
+								if (bytesRead > 0)
+								{
+									currentStart += bytesRead;
+									outputStream.write(buffer, 0, bytesRead);
+								}
+							}
+                        }
+                        catch (Exception ex)
+                        {
+                            mLogger.error("Exception: " + ex);
+                        }
+                        finally {
+                            if (outputStream != null)
+								outputStream.close(); // IOUtils.closeQuietly(outputStream);
+                        }
+                    }
+
+                    mLogger.info("conn.getResponseCode...");
+                    int statusCode;
+                    long responseContentLength;
+                    if (url.startsWith("https"))
+					{
+                        statusCode = ((HttpsURLConnection) conn).getResponseCode();
+						responseContentLength = ((HttpsURLConnection) conn).getContentLength();
+					}
+					else
+					{
+                        statusCode = ((HttpURLConnection) conn).getResponseCode();
+						responseContentLength = ((HttpURLConnection) conn).getContentLength();
+					}
+
+                    mLogger.info("conn.getResponseCode" 
+						+ ", statusCode: " + statusCode
+						+ ", responseContentLength: " + responseContentLength
+					);
+                    if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
+                    {
+						String body = getErrorBody(conn, url);
+
+                        result = null;
+
+                        throw new Exception("Method failed" 
+							+ ", statusCode: " + statusCode
+							+ ", body: " + body
+						);
+                    }
+
+                    // Read the response body.
+                    // result = method.getResponseBodyAsString();
+					result = getResponseBody(conn, responseContentLength);
+
+                    mLogger.debug("result: " + result);
+
+                    break; // exit from the retry loop
+                }
+                catch (HttpException e) {
+                    String errorMessage = "URL: " + url
+                            + ", Fatal protocol violation: " + e
+                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", retryIndex: " + (retryIndex - 1)
+                            ;
+                    mLogger.error(errorMessage);
+
+                    if (retryIndex >= maxRetriesNumber)
+                        throw e;
+                    else
+                        Thread.sleep(100);  // half second
+                }
+                catch (IOException e) {
+                    String errorMessage = "URL: " + url
+                            + ", Fatal transport error: " + e
+                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", retryIndex: " + (retryIndex - 1)
+                            ;
+                    mLogger.error(errorMessage);
+
+                    if (retryIndex >= maxRetriesNumber)
+                        throw e;
+                    else
+                        Thread.sleep(100);  // half second
+                }
+                catch (Exception e) {
+                    String errorMessage = "URL: " + url
+                            + ", Fatal transport error: " + e
+                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", retryIndex: " + (retryIndex - 1)
+                            ;
+                    mLogger.error(errorMessage);
+
+                    if (retryIndex >= maxRetriesNumber)
+                        throw e;
+                    else
+                        Thread.sleep(100);  // half second
+                }
                 /*
                 finally {
                     // Release the connection.
@@ -848,6 +1047,8 @@ public class HttpFeedFetcher {
 
         // elapsed time saved in the calling method
         // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+
+		return result;
     }
 
 	static private String getResponseBody(URLConnection conn, long responseContentLength)
