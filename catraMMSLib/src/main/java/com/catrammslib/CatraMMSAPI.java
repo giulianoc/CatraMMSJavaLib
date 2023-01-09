@@ -3094,7 +3094,7 @@ public class CatraMMSAPI {
     }
 
     public String ingestBinaryContentSplittingInChunks(String username, String password,
-        File mediaFile, int fileSizeInBytes,
+        File mediaFile, long fileSizeInBytes,
         Long ingestionJobKey)
         throws Exception
     {
@@ -3125,14 +3125,14 @@ public class CatraMMSAPI {
 				return httpReturn;
 			}
 
-			int chunksNumber = fileSizeInBytes / chunkSize;                                                           
+			int chunksNumber = (int) (fileSizeInBytes / chunkSize);                                                           
 			if (fileSizeInBytes % chunkSize != 0)                                                                     
 				chunksNumber++;                                                                                       
 																													  
 			for(int chunkIndex = 0; chunkIndex < chunksNumber; chunkIndex++)                                          
 			{                                                                                                         
-				int contentRangeStart = chunkIndex * chunkSize;                                                   
-				int contentRangeEnd_Excluded = chunkIndex + 1 < chunksNumber ?                                    
+				long contentRangeStart = chunkIndex * chunkSize;                                                   
+				long contentRangeEnd_Excluded = chunkIndex + 1 < chunksNumber ?                                    
 					(chunkIndex + 1) * chunkSize :                                                                    
 					fileSizeInBytes;
 
@@ -3159,7 +3159,7 @@ public class CatraMMSAPI {
     }
 
 	public void ingestBinaryContent(String username, String password,
-                                    InputStream fileInputStream, int contentSize,
+                                    InputStream fileInputStream, long contentSize,
                                     Long ingestionJobKey)
             throws Exception
     {

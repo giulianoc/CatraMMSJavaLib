@@ -824,9 +824,9 @@ public class HttpFeedFetcher {
 
     static public String fetchPostHttpBinary(String url, int timeoutInSeconds, int maxRetriesNumber,
         String user, String password,
-        InputStream inputStreamBinary, int contentLength,
-		int contentRangeStart, // -1 se non deve essere usato
-		int contentRangeEnd_Excluded // -1 se non deve essere usato
+        InputStream inputStreamBinary, long contentLength,
+		long contentRangeStart, // -1 se non deve essere usato
+		long contentRangeEnd_Excluded // -1 se non deve essere usato
 	)
             throws Exception
     {
@@ -921,7 +921,7 @@ public class HttpFeedFetcher {
 							int bufferSize = 1024 * 10;
 							byte[] buffer = new byte[bufferSize];
 
-							int currentStart = 0;
+							long currentStart = 0;
 							if (contentRangeStart > 0)
 							{
 								currentStart = contentRangeStart;
@@ -929,7 +929,7 @@ public class HttpFeedFetcher {
 								inputStreamBinary.skip(currentStart);
 							}
 
-							int currentEnd = contentLength;
+							long currentEnd = contentLength;
 							if (contentRangeEnd_Excluded > 0)
 								currentEnd = contentRangeEnd_Excluded;
 
@@ -939,7 +939,7 @@ public class HttpFeedFetcher {
 								if (currentStart + bufferSize <= currentEnd)
 									len = bufferSize;
 								else
-									len = currentEnd - currentStart;
+									len = (int) (currentEnd - currentStart);
 								int bytesRead = inputStreamBinary.read(buffer, 0, len);
 								if (bytesRead > 0)
 								{
