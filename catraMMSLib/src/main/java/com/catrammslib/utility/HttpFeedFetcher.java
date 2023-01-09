@@ -926,7 +926,8 @@ public class HttpFeedFetcher {
 							{
 								currentStart = contentRangeStart;
 
-								inputStreamBinary.skip(currentStart);
+								// no skip is needed because the InputStream is not 'reopened'
+								// inputStreamBinary.skip(currentStart);
 							}
 
 							long currentEnd = contentLength;
