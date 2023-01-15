@@ -120,7 +120,7 @@ public class CatraMMSSocial {
 				JSONObject joPage = jaData.getJSONObject(pageIndex);
 
 				FacebookPage facebookPage = new FacebookPage();
-				facebookPage.setId(joPage.getString("userId"));
+				facebookPage.setId(joPage.getString("id"));
 				facebookPage.setName(joPage.getString("name"));
 				facebookPages.add(facebookPage);
 			}
