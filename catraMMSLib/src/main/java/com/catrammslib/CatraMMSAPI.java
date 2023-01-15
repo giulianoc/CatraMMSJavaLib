@@ -4557,8 +4557,11 @@ public class CatraMMSAPI {
         }
     }
 
-    public List<FacebookConf> getFacebookConf(String username, String password)
-            throws Exception
+    public List<FacebookConf> getFacebookConf(String username, String password,
+		Long confKey,	// optional
+		String label	// optional
+	)
+        throws Exception
     {
         List<FacebookConf> facebookConfList = new ArrayList<>();
 
@@ -4566,6 +4569,10 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/facebook";
+			if (confKey != null)
+				mmsURL += "/" + confKey;
+			else if (label != null && !label.isEmpty())
+				mmsURL += ("?label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
 
             mLogger.info("mmsURL: " + mmsURL);
 
