@@ -101,7 +101,7 @@ public class CatraMMSSocial {
 			{                                                                                                             
 				"data":[                                                                                                  
 					{                                                                                                     
-						"access_token":"EAAad2ZC8dnYsBAFOdxQ7C11jfnc9lSL0LZCrRtFpeBK8tQAZApkHHtE6da17WFsUbNYgvA43L7QPkSa0t6gMNTOZBQdTUNjAZBkS8NlV8FLurWAv3jo8XqixxJIsI0YoaIJBALhguTanJEeVNzt3FnJMshRIUpdfxldgWbJRUkMiJQmgZBMVLo",
+						"access_token":".......",
 						"category":"Software",                                                                            
 						"category_list":[{"id":"2211","name":"Software"}],                                                
 						"name":"Test",                                                                                    
