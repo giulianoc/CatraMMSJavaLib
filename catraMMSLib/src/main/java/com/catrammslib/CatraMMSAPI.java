@@ -26,6 +26,7 @@ import com.catrammslib.entity.AWSChannelConf;
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
 import com.catrammslib.entity.Stream;
+import com.catrammslib.entity.TwitchConf;
 import com.catrammslib.entity.EMailConf;
 import com.catrammslib.entity.Encoder;
 import com.catrammslib.entity.EncodersPool;
@@ -4621,6 +4622,180 @@ public class CatraMMSAPI {
         return facebookConfList;
     }
 
+    public void addTwitchConf(String username, String password,
+                               String label, String userAccessToken)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonTwitchConf;
+            {
+                JSONObject joTwitchConf = new JSONObject();
+
+                joTwitchConf.put("Label", label);
+                joTwitchConf.put("UserAccessToken", userAccessToken);
+
+                jsonTwitchConf = joTwitchConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/twitch";
+
+            mLogger.info("addTwitchConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonTwitchConf: " + jsonTwitchConf
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonTwitchConf, outputToBeCompressed);
+            mLogger.info("addTwitchConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addTwitchConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifyTwitchConf(String username, String password,
+        Long confKey, String label, String userAccessToken)
+        throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonTwitchConf;
+            {
+                JSONObject joTwitchConf = new JSONObject();
+
+                joTwitchConf.put("Label", label);
+                joTwitchConf.put("UserAccessToken", userAccessToken);
+
+                jsonTwitchConf = joTwitchConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/twitch/" + confKey;
+
+            mLogger.info("modifyTwitchConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonTwitchConf: " + jsonTwitchConf
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonTwitchConf, outputToBeCompressed);
+            mLogger.info("modifyTwitchConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyTwitchConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeTwitchConf(String username, String password,
+                                  Long confKey)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/twitch/" + confKey;
+
+            mLogger.info("removeTwitchConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", confKey: " + confKey
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("removeTwitchConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeTwitchConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<TwitchConf> getTwitchConf(String username, String password,
+		Long confKey,	// optional
+		String label	// optional
+	)
+        throws Exception
+    {
+        List<TwitchConf> twitchConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/twitch";
+			if (confKey != null)
+				mmsURL += "/" + confKey;
+			else if (label != null && !label.isEmpty())
+				mmsURL += ("?label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getTwitchConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaTwitchConf = joResponse.getJSONArray("twitchConf");
+
+            mLogger.info("jaTwitchConf.length(): " + jaTwitchConf.length());
+
+            twitchConfList.clear();
+
+            for (int twitchConfIndex = 0;
+                 twitchConfIndex < jaTwitchConf.length();
+                 twitchConfIndex++)
+            {
+                TwitchConf twitchConf = new TwitchConf();
+
+                JSONObject twitchConfInfo = jaTwitchConf.getJSONObject(twitchConfIndex);
+
+                fillTwitchConf(twitchConf, twitchConfInfo);
+
+                twitchConfList.add(twitchConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing twitchConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return twitchConfList;
+    }
+
 	public Long addStream(String username, String password,
 		String label, 
 		String sourceType,
@@ -8010,7 +8185,28 @@ public class CatraMMSAPI {
         }
     }
 
-    private void fillStream(Stream stream, JSONObject streamInfo)
+    private void fillTwitchConf(TwitchConf twitchConf, JSONObject twitchConfInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try {
+            twitchConf.setConfKey(twitchConfInfo.getLong("confKey"));
+            twitchConf.setLabel(twitchConfInfo.getString("label"));
+            twitchConf.setUserAccessToken(twitchConfInfo.getString("userAccessToken"));
+            twitchConf.setModificationDate(simpleDateFormat.parse(twitchConfInfo.getString("modificationDate")));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillTwitchConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+	private void fillStream(Stream stream, JSONObject streamInfo)
             throws Exception
     {
         try {
