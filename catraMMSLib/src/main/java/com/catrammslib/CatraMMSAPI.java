@@ -4623,7 +4623,7 @@ public class CatraMMSAPI {
     }
 
     public void addTwitchConf(String username, String password,
-                               String label, String userAccessToken)
+                               String label, String refreshToken)
             throws Exception
     {
 
@@ -4635,7 +4635,7 @@ public class CatraMMSAPI {
                 JSONObject joTwitchConf = new JSONObject();
 
                 joTwitchConf.put("Label", label);
-                joTwitchConf.put("UserAccessToken", userAccessToken);
+                joTwitchConf.put("RefreshToken", refreshToken);
 
                 jsonTwitchConf = joTwitchConf.toString(4);
             }
@@ -4663,7 +4663,7 @@ public class CatraMMSAPI {
     }
 
     public void modifyTwitchConf(String username, String password,
-        Long confKey, String label, String userAccessToken)
+        Long confKey, String label, String refreshToken)
         throws Exception
     {
 
@@ -4675,7 +4675,7 @@ public class CatraMMSAPI {
                 JSONObject joTwitchConf = new JSONObject();
 
                 joTwitchConf.put("Label", label);
-                joTwitchConf.put("UserAccessToken", userAccessToken);
+                joTwitchConf.put("RefreshToken", refreshToken);
 
                 jsonTwitchConf = joTwitchConf.toString(4);
             }
@@ -8194,7 +8194,7 @@ public class CatraMMSAPI {
         try {
             twitchConf.setConfKey(twitchConfInfo.getLong("confKey"));
             twitchConf.setLabel(twitchConfInfo.getString("label"));
-            twitchConf.setUserAccessToken(twitchConfInfo.getString("userAccessToken"));
+            twitchConf.setRefreshToken(twitchConfInfo.getString("refreshToken"));
             twitchConf.setModificationDate(simpleDateFormat.parse(twitchConfInfo.getString("modificationDate")));
         }
         catch (Exception e)

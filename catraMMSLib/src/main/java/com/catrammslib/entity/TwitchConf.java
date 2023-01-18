@@ -10,7 +10,7 @@ public class TwitchConf implements Serializable{
 
     private Long confKey;
     private String label;
-    private String userAccessToken;
+    private String refreshToken;
 	private Date modificationDate;
 
     public Long getConfKey() {
@@ -29,13 +29,6 @@ public class TwitchConf implements Serializable{
         this.label = label;
     }
 
-	public String getUserAccessToken() {
-		return userAccessToken;
-	}
-
-	public void setUserAccessToken(String userAccessToken) {
-		this.userAccessToken = userAccessToken;
-	}
 
 	public Date getModificationDate() {
 		return modificationDate;
@@ -43,6 +36,14 @@ public class TwitchConf implements Serializable{
 
 	public void setModificationDate(Date modificationDate) {
 		this.modificationDate = modificationDate;
+	}
+
+	public String getRefreshToken() {
+		return refreshToken;
+	}
+
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
 	}
 
 }
