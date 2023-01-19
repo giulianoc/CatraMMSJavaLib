@@ -26,6 +26,7 @@ import com.catrammslib.entity.AWSChannelConf;
 import com.catrammslib.entity.AudioBitRate;
 import com.catrammslib.entity.AudioTrack;
 import com.catrammslib.entity.Stream;
+import com.catrammslib.entity.TiktokConf;
 import com.catrammslib.entity.TwitchConf;
 import com.catrammslib.entity.EMailConf;
 import com.catrammslib.entity.Encoder;
@@ -4796,6 +4797,180 @@ public class CatraMMSAPI {
         return twitchConfList;
     }
 
+    public void addTiktokConf(String username, String password,
+                               String label, String accessToken)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonTiktokConf;
+            {
+                JSONObject joTiktokConf = new JSONObject();
+
+                joTiktokConf.put("Label", label);
+                joTiktokConf.put("AccessToken", accessToken);
+
+                jsonTiktokConf = joTiktokConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/tiktok";
+
+            mLogger.info("addTiktokConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonTiktokConf: " + jsonTiktokConf
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonTiktokConf, outputToBeCompressed);
+            mLogger.info("addTiktokConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addTiktokConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifyTiktokConf(String username, String password,
+        Long confKey, String label, String accessToken)
+        throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonTiktokConf;
+            {
+                JSONObject joTiktokConf = new JSONObject();
+
+                joTiktokConf.put("Label", label);
+                joTiktokConf.put("AccessToken", accessToken);
+
+                jsonTiktokConf = joTiktokConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/tiktok/" + confKey;
+
+            mLogger.info("modifyTiktokConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonTiktokConf: " + jsonTiktokConf
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonTiktokConf, outputToBeCompressed);
+            mLogger.info("modifyTiktokConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyTiktokConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeTiktokConf(String username, String password,
+                                  Long confKey)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/tiktok/" + confKey;
+
+            mLogger.info("removeTiktokConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", confKey: " + confKey
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("removeTiktokConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeTiktokConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<TiktokConf> getTiktokConf(String username, String password,
+		Long confKey,	// optional
+		String label	// optional
+	)
+        throws Exception
+    {
+        List<TiktokConf> tiktokConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/tiktok";
+			if (confKey != null)
+				mmsURL += "/" + confKey;
+			else if (label != null && !label.isEmpty())
+				mmsURL += ("?label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getTiktokConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaTiktokConf = joResponse.getJSONArray("tiktokConf");
+
+            mLogger.info("jaTiktokConf.length(): " + jaTiktokConf.length());
+
+            tiktokConfList.clear();
+
+            for (int tiktokConfIndex = 0;
+                 tiktokConfIndex < jaTiktokConf.length();
+                 tiktokConfIndex++)
+            {
+                TiktokConf tiktokConf = new TiktokConf();
+
+                JSONObject tiktokConfInfo = jaTiktokConf.getJSONObject(tiktokConfIndex);
+
+                fillTiktokConf(tiktokConf, tiktokConfInfo);
+
+                tiktokConfList.add(tiktokConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing tiktokConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return tiktokConfList;
+    }
+
 	public Long addStream(String username, String password,
 		String label, 
 		String sourceType,
@@ -8200,6 +8375,27 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "fillTwitchConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillTiktokConf(TiktokConf tiktokConf, JSONObject tiktokConfInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try {
+            tiktokConf.setConfKey(tiktokConfInfo.getLong("confKey"));
+            tiktokConf.setLabel(tiktokConfInfo.getString("label"));
+            tiktokConf.setAccessToken(tiktokConfInfo.getString("accessToken"));
+            tiktokConf.setModificationDate(simpleDateFormat.parse(tiktokConfInfo.getString("modificationDate")));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillTiktokConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
