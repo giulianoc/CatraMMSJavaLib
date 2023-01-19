@@ -4798,7 +4798,7 @@ public class CatraMMSAPI {
     }
 
     public void addTiktokConf(String username, String password,
-                               String label, String accessToken)
+                               String label, String token)
             throws Exception
     {
 
@@ -4810,7 +4810,7 @@ public class CatraMMSAPI {
                 JSONObject joTiktokConf = new JSONObject();
 
                 joTiktokConf.put("Label", label);
-                joTiktokConf.put("AccessToken", accessToken);
+                joTiktokConf.put("Token", token);
 
                 jsonTiktokConf = joTiktokConf.toString(4);
             }
@@ -4838,7 +4838,7 @@ public class CatraMMSAPI {
     }
 
     public void modifyTiktokConf(String username, String password,
-        Long confKey, String label, String accessToken)
+        Long confKey, String label, String token)
         throws Exception
     {
 
@@ -4850,7 +4850,7 @@ public class CatraMMSAPI {
                 JSONObject joTiktokConf = new JSONObject();
 
                 joTiktokConf.put("Label", label);
-                joTiktokConf.put("AccessToken", accessToken);
+                joTiktokConf.put("Token", token);
 
                 jsonTiktokConf = joTiktokConf.toString(4);
             }
@@ -8390,7 +8390,7 @@ public class CatraMMSAPI {
         try {
             tiktokConf.setConfKey(tiktokConfInfo.getLong("confKey"));
             tiktokConf.setLabel(tiktokConfInfo.getString("label"));
-            tiktokConf.setAccessToken(tiktokConfInfo.getString("accessToken"));
+            tiktokConf.setToken(tiktokConfInfo.getString("token"));
             tiktokConf.setModificationDate(simpleDateFormat.parse(tiktokConfInfo.getString("modificationDate")));
         }
         catch (Exception e)

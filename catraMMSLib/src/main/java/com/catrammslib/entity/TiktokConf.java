@@ -10,7 +10,7 @@ public class TiktokConf implements Serializable{
 
     private Long confKey;
     private String label;
-    private String accessToken;
+    private String token;
 	private Date modificationDate;
 
     public Long getConfKey() {
@@ -38,12 +38,12 @@ public class TiktokConf implements Serializable{
 		this.modificationDate = modificationDate;
 	}
 
-	public String getAccessToken() {
-		return accessToken;
+	public String getToken() {
+		return token;
 	}
 
-	public void setAccessToken(String accessToken) {
-		this.accessToken = accessToken;
+	public void setToken(String token) {
+		this.token = token;
 	}
 
 
