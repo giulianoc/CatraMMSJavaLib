@@ -22,40 +22,7 @@ import java.util.TimeZone;
 
 import com.amazonaws.services.cloudfront.CloudFrontUrlSigner;
 import com.amazonaws.services.cloudfront.util.SignerUtils.Protocol;
-import com.catrammslib.entity.AWSChannelConf;
-import com.catrammslib.entity.AudioBitRate;
-import com.catrammslib.entity.AudioTrack;
-import com.catrammslib.entity.Stream;
-import com.catrammslib.entity.TiktokConf;
-import com.catrammslib.entity.TwitchConf;
-import com.catrammslib.entity.EMailConf;
-import com.catrammslib.entity.Encoder;
-import com.catrammslib.entity.EncodersPool;
-import com.catrammslib.entity.EncodingJob;
-import com.catrammslib.entity.EncodingProfile;
-import com.catrammslib.entity.EncodingProfilesSet;
-import com.catrammslib.entity.FTPConf;
-import com.catrammslib.entity.FacebookConf;
-import com.catrammslib.entity.IngestionJob;
-import com.catrammslib.entity.IngestionJobMediaItem;
-import com.catrammslib.entity.IngestionWorkflow;
-import com.catrammslib.entity.MediaItem;
-import com.catrammslib.entity.MediaItemCrossReference;
-import com.catrammslib.entity.PhysicalPath;
-import com.catrammslib.entity.RequestPerContentStatistic;
-import com.catrammslib.entity.RequestPerUserStatistic;
-import com.catrammslib.entity.RequestPerMonthStatistic;
-import com.catrammslib.entity.RequestPerDayStatistic;
-import com.catrammslib.entity.RequestPerHourStatistic;
-import com.catrammslib.entity.RequestStatistic;
-import com.catrammslib.entity.SourceTVStream;
-import com.catrammslib.entity.UserProfile;
-import com.catrammslib.entity.VideoBitRate;
-import com.catrammslib.entity.VideoTrack;
-import com.catrammslib.entity.WorkflowLibrary;
-import com.catrammslib.entity.WorkflowVariable;
-import com.catrammslib.entity.WorkspaceDetails;
-import com.catrammslib.entity.YouTubeConf;
+import com.catrammslib.entity.*;
 import com.catrammslib.utility.BroadcastPlaylistItem;
 import com.catrammslib.utility.BulkOfDeliveryURLData;
 import com.catrammslib.utility.HttpFeedFetcher;
@@ -5792,7 +5759,7 @@ public class CatraMMSAPI {
                 jsonAWSChannelConf = joAWSChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel";
 
             mLogger.info("addAWSChannelConf"
                             + ", mmsURL: " + mmsURL
@@ -5835,7 +5802,7 @@ public class CatraMMSAPI {
                 jsonAWSChannelConf = joAWSChannelConf.toString(4);
             }
 
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel/" + confKey;
 
             mLogger.info("modifyAWSChannelConf"
                             + ", mmsURL: " + mmsURL
@@ -5864,7 +5831,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel/" + confKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel/" + confKey;
 
             mLogger.info("removeAWSChannelConf"
                 + ", mmsURL: " + mmsURL
@@ -5893,7 +5860,7 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/aws/channel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel";
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -5940,6 +5907,181 @@ public class CatraMMSAPI {
         }
 
         return awsChannelConfList;
+    }
+
+    public void addCDN77ChannelConf(String username, String password,
+                                    String label, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonCDN77ChannelConf;
+            {
+                JSONObject joCDN77ChannelConf = new JSONObject();
+
+                joCDN77ChannelConf.put("label", label);
+                joCDN77ChannelConf.put("rtmpURL", rtmpURL);
+                joCDN77ChannelConf.put("resourceURL", resourceURL);
+                joCDN77ChannelConf.put("filePath", filePath);
+                if (secureToken != null)
+                    joCDN77ChannelConf.put("secureToken", secureToken);
+                joCDN77ChannelConf.put("type", type);
+
+                jsonCDN77ChannelConf = joCDN77ChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel";
+
+            mLogger.info("addCDN77ChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonCDN77ChannelConf: " + jsonCDN77ChannelConf
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonCDN77ChannelConf, outputToBeCompressed);
+            mLogger.info("addCDN77ChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addCDN77ChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifyCDN77ChannelConf(String username, String password, Long confKey,
+                                       String label, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonCDN77ChannelConf;
+            {
+                JSONObject joCDN77ChannelConf = new JSONObject();
+
+                joCDN77ChannelConf.put("label", label);
+                joCDN77ChannelConf.put("rtmpURL", rtmpURL);
+                joCDN77ChannelConf.put("resourceURL", resourceURL);
+                joCDN77ChannelConf.put("filePath", filePath);
+                if (secureToken != null)
+                    joCDN77ChannelConf.put("secureToken", secureToken);
+                joCDN77ChannelConf.put("type", type);
+
+                jsonCDN77ChannelConf = joCDN77ChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel/" + confKey;
+
+            mLogger.info("modifyCDN77ChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonCDN77ChannelConf: " + jsonCDN77ChannelConf
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonCDN77ChannelConf, outputToBeCompressed);
+            mLogger.info("modifyCDN77ChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyCDN77ChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeCDN77ChannelConf(String username, String password,
+                                     Long confKey)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel/" + confKey;
+
+            mLogger.info("removeCDN77ChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", confKey: " + confKey
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("removeCDN77ChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeCDN77ChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password)
+            throws Exception
+    {
+        List<CDN77ChannelConf> cdn77ChannelConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel";
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getCDN77ChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaCDN77ChannelConf = joResponse.getJSONArray("cdn77ChannelConf");
+
+            mLogger.info("jaCDN77ChannelConf.length(): " + jaCDN77ChannelConf.length());
+
+            cdn77ChannelConfList.clear();
+
+            for (int confIndex = 0; confIndex < jaCDN77ChannelConf.length(); confIndex++)
+            {
+                CDN77ChannelConf cdn77ChannelConf = new CDN77ChannelConf();
+
+                JSONObject cdn77ChannelConfInfo = jaCDN77ChannelConf.getJSONObject(confIndex);
+
+                fillCDN77ChannelConf(cdn77ChannelConf, cdn77ChannelConfInfo);
+
+                cdn77ChannelConfList.add(cdn77ChannelConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing cdb77ChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return cdn77ChannelConfList;
     }
 
     public void addFTPConf(String username, String password,
@@ -8648,6 +8790,34 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "fillAWSChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillCDN77ChannelConf(CDN77ChannelConf cdn77ChannelConf, JSONObject cdn77ChannelConfInfo)
+            throws Exception
+    {
+        try {
+            cdn77ChannelConf.setConfKey(cdn77ChannelConfInfo.getLong("confKey"));
+            cdn77ChannelConf.setLabel(cdn77ChannelConfInfo.getString("label"));
+            cdn77ChannelConf.setRtmpURL(cdn77ChannelConfInfo.getString("rtmpURL"));
+            cdn77ChannelConf.setResourceURL(cdn77ChannelConfInfo.getString("resourceURL"));
+            cdn77ChannelConf.setFilePath(cdn77ChannelConfInfo.getString("filePath"));
+            if (cdn77ChannelConfInfo.isNull("secureToken"))
+                cdn77ChannelConf.setSecureToken(null);
+            else
+                cdn77ChannelConf.setSecureToken(cdn77ChannelConfInfo.getString("secureToken"));
+            cdn77ChannelConf.setType(cdn77ChannelConfInfo.getString("type"));
+            if (cdn77ChannelConfInfo.isNull("reservedByIngestionJobKey"))
+                cdn77ChannelConf.setReservedByIngestionJobKey(null);
+            else
+                cdn77ChannelConf.setReservedByIngestionJobKey(cdn77ChannelConfInfo.getLong("reservedByIngestionJobKey"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillCDN77ChannelConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
