@@ -9,7 +9,7 @@ public class LiveProxyOutput implements Serializable {
     
     private static final Logger mLogger = Logger.getLogger(LiveProxyOutput.class);
 
-	// RTMP_Stream, AWS_CHANNEL, HLS, UDP_Stream
+	// RTMP_Stream, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
 	// RTMP_Stream
     private String rtmpURL;
@@ -22,12 +22,17 @@ public class LiveProxyOutput implements Serializable {
 	// HLS
     private Long segmentDurationInSeconds;
 
-	// AWS_CHANNEL
+	// CDN_AWS
 	private String awsChannelConfigurationLabel;	// to be started/stopped
-	// AWS_CHANNEL
+	// CDN_AWS
 	private Boolean awsSignedURL;
-	// AWS_CHANNEL
+	// CDN_AWS
 	private Long awsExpirationInMinutes;
+
+	// CDN_CDN77
+	private String cdn77ChannelConfigurationLabel;	// to be started/stopped
+	// CDN_CDN77
+	private Long cdn77ExpirationInMinutes;
 
 	private Long videoTrackIndexToBeUsed;
 	private Long audioTrackIndexToBeUsed;
@@ -62,7 +67,7 @@ public class LiveProxyOutput implements Serializable {
 				if (getPlayURL() != null && !getPlayURL().isEmpty())
 					joOutput.put("PlayUrl", getPlayURL());
 			}
-			else if (getOutputType().equalsIgnoreCase("AWS_CHANNEL"))
+			else if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
 				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isEmpty())
 					joOutput.put("awsChannelConfigurationLabel", getAwsChannelConfigurationLabel());
@@ -70,6 +75,13 @@ public class LiveProxyOutput implements Serializable {
 					joOutput.put("awsSignedURL", getAwsSignedURL());
 				if (getAwsExpirationInMinutes() != null)
 					joOutput.put("awsExpirationInMinutes", getAwsExpirationInMinutes());
+			}
+			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
+			{
+				if (getCdn77ChannelConfigurationLabel() != null && !getCdn77ChannelConfigurationLabel().isEmpty())
+					joOutput.put("cdn77ChannelConfigurationLabel", getCdn77ChannelConfigurationLabel());
+				if (getCdn77ExpirationInMinutes() != null)
+					joOutput.put("cdn77ExpirationInMinutes", getCdn77ExpirationInMinutes());
 			}
 			else if (getOutputType().equalsIgnoreCase("UDP_Stream"))
 				joOutput.put("udpUrl", getUdpURL());
@@ -129,6 +141,22 @@ public class LiveProxyOutput implements Serializable {
 
 	public void setVideoTrackIndexToBeUsed(Long videoTrackIndexToBeUsed) {
 		this.videoTrackIndexToBeUsed = videoTrackIndexToBeUsed;
+	}
+
+	public String getCdn77ChannelConfigurationLabel() {
+		return cdn77ChannelConfigurationLabel;
+	}
+
+	public void setCdn77ChannelConfigurationLabel(String cdn77ChannelConfigurationLabel) {
+		this.cdn77ChannelConfigurationLabel = cdn77ChannelConfigurationLabel;
+	}
+
+	public Long getCdn77ExpirationInMinutes() {
+		return cdn77ExpirationInMinutes;
+	}
+
+	public void setCdn77ExpirationInMinutes(Long cdn77ExpirationInMinutes) {
+		this.cdn77ExpirationInMinutes = cdn77ExpirationInMinutes;
 	}
 
 	public Long getAudioTrackIndexToBeUsed() {
