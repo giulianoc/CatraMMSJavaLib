@@ -177,7 +177,6 @@ public class CatraMMSAPI {
             if ((pos = strippedPath.indexOf("?")) != -1)
                 filePath = strippedPath.substring(0, pos);
 
-            mLogger.info("strippedPath: " + strippedPath);
             String hashStr = strippedPath + secureToken;
 
             String sExpiryTimestamp;
@@ -189,17 +188,25 @@ public class CatraMMSAPI {
             else
                 sExpiryTimestamp = expiryTimestamp.toString();
 
-            mLogger.info("sExpiryTimestamp: " + sExpiryTimestamp);
-
             String base64HashStr = Base64.getEncoder().encodeToString(md5(hashStr));
-            mLogger.info("base64HashStr 1: " + base64HashStr);
-            base64HashStr = base64HashStr.replace("+", "-").replace("/", "_");
-            mLogger.info("base64HashStr 2: " + base64HashStr);
+            mLogger.info("getCDN77SignedUrlPath"
+                    + ", strippedPath: " + strippedPath
+                    + ", hashStr: " + hashStr
+                    + ", sExpiryTimestamp: " + sExpiryTimestamp
+                    + ", base64HashStr: " + base64HashStr
+            );
+            String base64HashStr_2 = base64HashStr.replace("+", "-").replace("/", "_");
 
             // the URL is however, intensionaly returned with the previously stripped parts (eg. playlist/{chunk}..)
-            String signedURL = "https://" + cdnResourceUrl + "/" + base64HashStr + sExpiryTimestamp + filePath;
+            String signedURL = "https://" + cdnResourceUrl + "/" + base64HashStr_2 + sExpiryTimestamp + filePath;
             mLogger.info("getCDN77SignedUrlPath"
-				+ ", signedURL: " + signedURL);
+                    + ", strippedPath: " + strippedPath
+                    + ", hashStr: " + hashStr
+                    + ", sExpiryTimestamp: " + sExpiryTimestamp
+                    + ", base64HashStr: " + base64HashStr
+                    + ", base64HashStr_2: " + base64HashStr_2
+                    + ", signedURL: " + signedURL
+            );
 
             return signedURL;
         }
