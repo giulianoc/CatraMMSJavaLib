@@ -30,7 +30,7 @@ public class LiveProxyOutput implements Serializable {
 	private Long awsExpirationInMinutes;
 
 	// CDN_CDN77
-	private String cdn77ChannelConfigurationLabel;	// to be started/stopped
+	private String cdn77ChannelConfigurationLabel;
 	// CDN_CDN77
 	private Long cdn77ExpirationInMinutes;
 

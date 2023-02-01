@@ -6034,7 +6034,7 @@ public class CatraMMSAPI {
         }
     }
 
-    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password)
+    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label)
             throws Exception
     {
         List<CDN77ChannelConf> cdn77ChannelConfList = new ArrayList<>();
@@ -6042,8 +6042,9 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel";
-
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel"
+                + (label == null || label.isEmpty() ? "" : ("&label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+            ;
             mLogger.info("mmsURL: " + mmsURL);
 
             Date now = new Date();
