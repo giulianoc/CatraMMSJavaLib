@@ -6092,6 +6092,192 @@ public class CatraMMSAPI {
         return cdn77ChannelConfList;
     }
 
+    public void addRTMPChannelConf(String username, String password,
+                                   String label, String rtmpURL, String streamName, String userName, String rtmpPassword,
+                                   String playURL, String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonRTMPChannelConf;
+            {
+                JSONObject joRTMPChannelConf = new JSONObject();
+
+                joRTMPChannelConf.put("label", label);
+                joRTMPChannelConf.put("rtmpURL", rtmpURL);
+                if (streamName != null)
+                    joRTMPChannelConf.put("streamName", streamName);
+                if (userName != null)
+                    joRTMPChannelConf.put("userName", userName);
+                if (rtmpPassword != null)
+                    joRTMPChannelConf.put("password", rtmpPassword);
+                if (playURL != null)
+                    joRTMPChannelConf.put("playURL", playURL);
+                joRTMPChannelConf.put("type", type);
+
+                jsonRTMPChannelConf = joRTMPChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel";
+
+            mLogger.info("addRTMPChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonRTMPChannelConf: " + jsonRTMPChannelConf
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonRTMPChannelConf, outputToBeCompressed);
+            mLogger.info("addRTMPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addRTMPChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifyRTMPChannelConf(String username, String password, Long confKey,
+                                      String label, String rtmpURL, String streamName, String userName,
+                                      String rtmpPassword, String playURL, String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonRTMPChannelConf;
+            {
+                JSONObject joRTMPChannelConf = new JSONObject();
+
+                joRTMPChannelConf.put("label", label);
+                joRTMPChannelConf.put("rtmpURL", rtmpURL);
+                if (streamName != null)
+                    joRTMPChannelConf.put("streamName", streamName);
+                if (userName != null)
+                    joRTMPChannelConf.put("userName", userName);
+                if (rtmpPassword != null)
+                    joRTMPChannelConf.put("rtmpPassword", rtmpPassword);
+                if (playURL != null)
+                    joRTMPChannelConf.put("playURL", playURL);
+                joRTMPChannelConf.put("type", type);
+
+                jsonRTMPChannelConf = joRTMPChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel/" + confKey;
+
+            mLogger.info("modifyRTMPChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonRTMPChannelConf: " + jsonRTMPChannelConf
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonRTMPChannelConf, outputToBeCompressed);
+            mLogger.info("modifyRTMPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyRTMPChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeRTMPChannelConf(String username, String password,
+                                      Long confKey)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel/" + confKey;
+
+            mLogger.info("removeRTMPChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", confKey: " + confKey
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("removeRTMPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeRTMPChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<RTMPChannelConf> getRTMPChannelConf(String username, String password, String label)
+            throws Exception
+    {
+        List<RTMPChannelConf> rtmpChannelConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel"
+                    + (label == null || label.isEmpty() ? "" : ("&label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+                    ;
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getRTMPChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaRTMPChannelConf = joResponse.getJSONArray("rtmpChannelConf");
+
+            mLogger.info("jaRTMPChannelConf.length(): " + jaRTMPChannelConf.length());
+
+            rtmpChannelConfList.clear();
+
+            for (int confIndex = 0; confIndex < jaRTMPChannelConf.length(); confIndex++)
+            {
+                RTMPChannelConf rtmpChannelConf = new RTMPChannelConf();
+
+                JSONObject rtmpChannelConfInfo = jaRTMPChannelConf.getJSONObject(confIndex);
+
+                fillRTMPChannelConf(rtmpChannelConf, rtmpChannelConfInfo);
+
+                rtmpChannelConfList.add(rtmpChannelConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing rtmpChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return rtmpChannelConfList;
+    }
+
     public void addFTPConf(String username, String password,
                                String label, String ftpServer,
                            Long ftpPort, String ftpUserName, String ftpPassword,
@@ -8826,6 +9012,44 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "fillCDN77ChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillRTMPChannelConf(RTMPChannelConf rtmpChannelConf, JSONObject rtmpChannelConfInfo)
+            throws Exception
+    {
+        try {
+            rtmpChannelConf.setConfKey(rtmpChannelConfInfo.getLong("confKey"));
+            rtmpChannelConf.setLabel(rtmpChannelConfInfo.getString("label"));
+            rtmpChannelConf.setRtmpURL(rtmpChannelConfInfo.getString("rtmpURL"));
+            if (rtmpChannelConfInfo.isNull("streamName"))
+                rtmpChannelConf.setStreamName(null);
+            else
+                rtmpChannelConf.setStreamName(rtmpChannelConfInfo.getString("streamName"));
+            if (rtmpChannelConfInfo.isNull("userName"))
+                rtmpChannelConf.setUserName(null);
+            else
+                rtmpChannelConf.setUserName(rtmpChannelConfInfo.getString("userName"));
+            if (rtmpChannelConfInfo.isNull("password"))
+                rtmpChannelConf.setPassword(null);
+            else
+                rtmpChannelConf.setPassword(rtmpChannelConfInfo.getString("password"));
+            if (rtmpChannelConfInfo.isNull("playURL"))
+                rtmpChannelConf.setPlayURL(null);
+            else
+                rtmpChannelConf.setPlayURL(rtmpChannelConfInfo.getString("playURL"));
+            rtmpChannelConf.setType(rtmpChannelConfInfo.getString("type"));
+            if (rtmpChannelConfInfo.isNull("reservedByIngestionJobKey"))
+                rtmpChannelConf.setReservedByIngestionJobKey(null);
+            else
+                rtmpChannelConf.setReservedByIngestionJobKey(rtmpChannelConfInfo.getLong("reservedByIngestionJobKey"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillRTMPChannelConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
