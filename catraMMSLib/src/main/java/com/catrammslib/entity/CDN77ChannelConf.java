@@ -14,6 +14,7 @@ public class CDN77ChannelConf implements Serializable{
 	private String secureToken;
     private String type;
     private Long reservedByIngestionJobKey;
+	private String configurationLabel;
 
     public Long getConfKey() {
         return confKey;
@@ -45,6 +46,14 @@ public class CDN77ChannelConf implements Serializable{
 
 	public void setResourceURL(String resourceURL) {
 		this.resourceURL = resourceURL;
+	}
+
+	public String getConfigurationLabel() {
+		return configurationLabel;
+	}
+
+	public void setConfigurationLabel(String configurationLabel) {
+		this.configurationLabel = configurationLabel;
 	}
 
 	public String getFilePath() {

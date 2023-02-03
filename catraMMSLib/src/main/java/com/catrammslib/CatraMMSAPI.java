@@ -9008,6 +9008,10 @@ public class CatraMMSAPI {
                 cdn77ChannelConf.setReservedByIngestionJobKey(null);
             else
                 cdn77ChannelConf.setReservedByIngestionJobKey(cdn77ChannelConfInfo.getLong("reservedByIngestionJobKey"));
+            if (cdn77ChannelConfInfo.isNull("configurationLabel"))
+                cdn77ChannelConf.setConfigurationLabel(null);
+            else
+                cdn77ChannelConf.setConfigurationLabel(cdn77ChannelConfInfo.getString("configurationLabel"));
         }
         catch (Exception e)
         {
