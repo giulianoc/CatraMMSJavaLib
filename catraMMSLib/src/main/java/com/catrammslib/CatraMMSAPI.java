@@ -6043,7 +6043,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel"
-                + (label == null || label.isEmpty() ? "" : ("&label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+                + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
             ;
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -6229,7 +6229,7 @@ public class CatraMMSAPI {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel"
-                    + (label == null || label.isEmpty() ? "" : ("&label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+                    + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
                     ;
             mLogger.info("mmsURL: " + mmsURL);
 
