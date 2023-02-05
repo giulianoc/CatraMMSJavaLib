@@ -29,7 +29,8 @@ public class CatraMMSBroadcaster {
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
-		String editBroadcasterDeliveryType, // MMS HLS, CDN
+		String editBroadcasterDeliveryType, // MMS HLS, CDN, CDN77
+		String editBroadcasterCdn77ConfigurationLabel,
 		Long editBroadcasterHLSDeliveryCode, String broadcasterCdnRtmp, String broadcasterCdnPlayURL, 
 		String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
@@ -48,6 +49,8 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
 				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
 				+ ", broadcastEncodersPoolLabel: " + broadcastEncodersPoolLabel
+				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
+				+ ", editBroadcasterCdn77ConfigurationLabel: " + editBroadcasterCdn77ConfigurationLabel
 				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
 				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 				+ ", encodingProfileLabel: " + encodingProfileLabel
@@ -167,6 +170,7 @@ public class CatraMMSBroadcaster {
 					drawTextDetails,
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
+					editBroadcasterCdn77ConfigurationLabel,
 					editBroadcasterHLSDeliveryCode, broadcasterCdnRtmp, broadcasterCdnPlayURL,
 
 					broadcastIngestionJobKey,
@@ -500,7 +504,8 @@ public class CatraMMSBroadcaster {
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
-		String editBroadcasterDeliveryType, // MMS HLS, CDN
+		String editBroadcasterDeliveryType, // MMS HLS, CDN, CDN77
+		String editBroadcasterCdn77ConfigurationLabel,
 		Long editBroadcasterHLSDeliveryCode, String broadcasterCdnRtmp, String broadcasterCdnPlayURL,
 
 		Long broadcastIngestionJobKey,
@@ -516,6 +521,8 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterStart: " + broadcasterStart
 				+ ", broadcasterEnd: " + broadcasterEnd
 				+ ", encodingProfileLabel: " + encodingProfileLabel
+				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
+				+ ", editBroadcasterCdn77ConfigurationLabel: " + editBroadcasterCdn77ConfigurationLabel
 				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
 				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
@@ -536,6 +543,11 @@ public class CatraMMSBroadcaster {
 				{
 					if (editBroadcasterHLSDeliveryCode != null)
 						joExtraLiveProxyBroadcasterParameters.put("hlsDeliveryCode", editBroadcasterHLSDeliveryCode);
+				}
+				else if (editBroadcasterDeliveryType.equals("CDN77"))
+				{
+					if (editBroadcasterCdn77ConfigurationLabel != null)
+						joExtraLiveProxyBroadcasterParameters.put("cdn77ConfigurationLabel", editBroadcasterCdn77ConfigurationLabel);
 				}
 				else // if (editBroadcasterDeliveryType.equals("CDN"))
 				{
@@ -560,6 +572,20 @@ public class CatraMMSBroadcaster {
 					// liveProxyOutput.setOutputType("RTMP_Stream");
 					// liveProxyOutput.setRtmpURL("rtmp://prg-1.s.cdn77.com:1936/1909844812/12376543");
 					// liveProxyOutput.setPlayURL("https://1909844812.rsc.cdn77.org/1909844812/12376543/index.m3u8");
+
+					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
+
+					if (drawTextDetails != null)
+						liveProxyOutput.setDrawTextDetails(drawTextDetails);
+
+					liveProxyOutputList.add(liveProxyOutput);
+				}
+				else if (editBroadcasterDeliveryType.equals("CDN77"))
+				{
+					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
+
+					liveProxyOutput.setOutputType("CDN_CDN77");
+					liveProxyOutput.setCdn77ChannelConfigurationLabel(editBroadcasterCdn77ConfigurationLabel);
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 
