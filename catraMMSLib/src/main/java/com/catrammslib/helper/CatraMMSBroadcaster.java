@@ -546,7 +546,7 @@ public class CatraMMSBroadcaster {
 				}
 				else if (editBroadcasterDeliveryType.equals("CDN77"))
 				{
-					if (editBroadcasterCdn77ConfigurationLabel != null)
+					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
 						joExtraLiveProxyBroadcasterParameters.put("cdn77ConfigurationLabel", editBroadcasterCdn77ConfigurationLabel);
 				}
 				else // if (editBroadcasterDeliveryType.equals("CDN"))
@@ -585,7 +585,8 @@ public class CatraMMSBroadcaster {
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 
 					liveProxyOutput.setOutputType("CDN_CDN77");
-					liveProxyOutput.setCdn77ChannelConfigurationLabel(editBroadcasterCdn77ConfigurationLabel);
+					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
+						liveProxyOutput.setCdn77ChannelConfigurationLabel(editBroadcasterCdn77ConfigurationLabel);
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 
