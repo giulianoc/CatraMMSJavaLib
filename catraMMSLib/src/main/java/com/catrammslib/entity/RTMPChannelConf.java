@@ -15,6 +15,7 @@ public class RTMPChannelConf implements Serializable{
 	private String playURL;
     private String type;
     private Long reservedByIngestionJobKey;
+	private String configurationLabel;
 
     public Long getConfKey() {
         return confKey;
@@ -62,6 +63,14 @@ public class RTMPChannelConf implements Serializable{
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getConfigurationLabel() {
+		return configurationLabel;
+	}
+
+	public void setConfigurationLabel(String configurationLabel) {
+		this.configurationLabel = configurationLabel;
 	}
 
 	public String getPlayURL() {

@@ -9050,6 +9050,10 @@ public class CatraMMSAPI {
                 rtmpChannelConf.setReservedByIngestionJobKey(null);
             else
                 rtmpChannelConf.setReservedByIngestionJobKey(rtmpChannelConfInfo.getLong("reservedByIngestionJobKey"));
+            if (rtmpChannelConfInfo.isNull("configurationLabel"))
+                rtmpChannelConf.setConfigurationLabel(null);
+            else
+                rtmpChannelConf.setConfigurationLabel(rtmpChannelConfInfo.getString("configurationLabel"));
         }
         catch (Exception e)
         {
