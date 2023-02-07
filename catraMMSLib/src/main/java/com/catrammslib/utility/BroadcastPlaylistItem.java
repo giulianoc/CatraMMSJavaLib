@@ -543,7 +543,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		broadcastPlaylistItem.setPhysicalPathKey(getPhysicalPathKey());
 		broadcastPlaylistItem.setUrl(getUrl());
 		broadcastPlaylistItem.setDrawTextEnable(getDrawTextEnable());
-		broadcastPlaylistItem.setDrawTextDetails(getDrawTextDetails());
+		broadcastPlaylistItem.setDrawTextDetails(getDrawTextDetails().clone());
 
 		return broadcastPlaylistItem;
 	}
