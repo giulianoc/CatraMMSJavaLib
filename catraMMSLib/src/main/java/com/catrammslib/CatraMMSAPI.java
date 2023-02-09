@@ -649,6 +649,7 @@ public class CatraMMSAPI {
 
         UserProfile userProfile = new UserProfile();
         WorkspaceDetails workspaceDetails = null;
+        String mmsVersion = null;
 
         try
         {
@@ -663,6 +664,8 @@ public class CatraMMSAPI {
 				JSONObject joWorkspaceInfo = joWMMSInfo.getJSONObject("workspace");
 				fillWorkspaceDetails(workspaceDetails, joWorkspaceInfo);
 			}
+            if (joWMMSInfo.has("mmsVersion") && !joWMMSInfo.isNull("mmsVersion"))
+                mmsVersion = joWMMSInfo.getString("mmsVersion");
         }
         catch (Exception e)
         {
@@ -677,6 +680,7 @@ public class CatraMMSAPI {
         List<Object> objects = new ArrayList<>();
         objects.add(userProfile);
         objects.add(workspaceDetails);
+        objects.add(mmsVersion);
 
         return objects;
     }
