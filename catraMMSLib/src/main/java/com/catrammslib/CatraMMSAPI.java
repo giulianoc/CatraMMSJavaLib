@@ -6169,9 +6169,9 @@ public class CatraMMSAPI {
                 else
                     joRTMPChannelConf.put("userName", "");
                 if (rtmpPassword != null)
-                    joRTMPChannelConf.put("rtmpPassword", rtmpPassword);
+                    joRTMPChannelConf.put("password", rtmpPassword);
                 else
-                    joRTMPChannelConf.put("rtmpPassword", "");
+                    joRTMPChannelConf.put("password", "");
                 if (playURL != null)
                     joRTMPChannelConf.put("playURL", playURL);
                 else
