@@ -6101,7 +6101,6 @@ public class CatraMMSAPI {
                                    String playURL, String type)
             throws Exception
     {
-
         String mmsInfo;
         try
         {
@@ -6163,12 +6162,20 @@ public class CatraMMSAPI {
                 joRTMPChannelConf.put("rtmpURL", rtmpURL);
                 if (streamName != null)
                     joRTMPChannelConf.put("streamName", streamName);
+                else
+                    joRTMPChannelConf.put("streamName", "");
                 if (userName != null)
                     joRTMPChannelConf.put("userName", userName);
+                else
+                    joRTMPChannelConf.put("userName", "");
                 if (rtmpPassword != null)
                     joRTMPChannelConf.put("rtmpPassword", rtmpPassword);
+                else
+                    joRTMPChannelConf.put("rtmpPassword", "");
                 if (playURL != null)
                     joRTMPChannelConf.put("playURL", playURL);
+                else
+                    joRTMPChannelConf.put("playURL", "");
                 joRTMPChannelConf.put("type", type);
 
                 jsonRTMPChannelConf = joRTMPChannelConf.toString(4);
