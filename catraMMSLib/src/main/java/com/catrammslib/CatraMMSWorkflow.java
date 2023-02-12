@@ -904,7 +904,7 @@ public class CatraMMSWorkflow {
                     mediaItemReferenceList,
                     null);
 
-			joParameters.put("configurationLabel", facebookConfigurationLabel);
+			joParameters.put("facebookConfigurationLabel", facebookConfigurationLabel);
 
 			joParameters.put("facebookNodeType", facebookNodeType);
 			joParameters.put("facebookNodeId", facebookNodeId);
