@@ -597,6 +597,7 @@ public class CatraMMSBroadcaster {
 				}
 				else
 				{
+					/* non abbiamo piu RTMP_Stream
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 
 					liveProxyOutput.setOutputType("RTMP_Stream");
@@ -609,6 +610,7 @@ public class CatraMMSBroadcaster {
 						liveProxyOutput.setDrawTextDetails(drawTextDetails);
 
 					liveProxyOutputList.add(liveProxyOutput);
+					 */
 				}
 
                 joBroadcaster = CatraMMSWorkflow.buildLiveProxyJson(

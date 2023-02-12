@@ -9,14 +9,12 @@ public class LiveProxyOutput implements Serializable {
     
     private static final Logger mLogger = Logger.getLogger(LiveProxyOutput.class);
 
-	// RTMP_Stream, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
+	// RTMP_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
-	// RTMP_Stream
-    private String rtmpURL;
-	// RTMP_Stream
-    private String playURL;
+
 	// UDP_Stream
     private String udpURL;
+
 	// HLS
 	private Long deliveryCode;
 	// HLS
@@ -34,16 +32,19 @@ public class LiveProxyOutput implements Serializable {
 	// CDN_CDN77
 	private Long cdn77ExpirationInMinutes;
 
+	// RTMP_Channel
+	private String rtmpChannelConfigurationLabel;
+
 	private Long videoTrackIndexToBeUsed;
 	private Long audioTrackIndexToBeUsed;
 
 	private DrawTextDetails drawTextDetails;
 
-	// RTMP_Stream, HLS
+	// HLS
 	private String otherOutputOptions;
-	// RTMP_Stream, HLS
+	// HLS
     private String encodingProfileLabel;
-	// RTMP_Stream, HLS
+	// HLS
 	private JSONObject filters;
 
 	public LiveProxyOutput()
@@ -61,13 +62,7 @@ public class LiveProxyOutput implements Serializable {
 		try
 		{
 			joOutput.put("OutputType", getOutputType());
-			if (getOutputType().equalsIgnoreCase("RTMP_Stream"))
-			{
-				joOutput.put("RtmpUrl", getRtmpURL());
-				if (getPlayURL() != null && !getPlayURL().isEmpty())
-					joOutput.put("PlayUrl", getPlayURL());
-			}
-			else if (getOutputType().equalsIgnoreCase("CDN_AWS"))
+			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
 				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isEmpty())
 					joOutput.put("awsChannelConfigurationLabel", getAwsChannelConfigurationLabel());
@@ -85,6 +80,11 @@ public class LiveProxyOutput implements Serializable {
 			}
 			else if (getOutputType().equalsIgnoreCase("UDP_Stream"))
 				joOutput.put("udpUrl", getUdpURL());
+			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
+			{
+				if (getRtmpChannelConfigurationLabel() != null && !getRtmpChannelConfigurationLabel().isEmpty())
+					joOutput.put("rtmpChannelConfigurationLabel", getRtmpChannelConfigurationLabel());
+			}
 			else
 			{
 				joOutput.put("DeliveryCode", getDeliveryCode());
@@ -125,6 +125,14 @@ public class LiveProxyOutput implements Serializable {
     public void setOutputType(String outputType) {
         this.outputType = outputType;
     }
+
+	public String getRtmpChannelConfigurationLabel() {
+		return rtmpChannelConfigurationLabel;
+	}
+
+	public void setRtmpChannelConfigurationLabel(String rtmpChannelConfigurationLabel) {
+		this.rtmpChannelConfigurationLabel = rtmpChannelConfigurationLabel;
+	}
 
 	public String getUdpURL() {
 		return udpURL;
@@ -182,22 +190,6 @@ public class LiveProxyOutput implements Serializable {
 
 	public void setAwsSignedURL(Boolean awsSignedURL) {
 		this.awsSignedURL = awsSignedURL;
-	}
-
-	public String getRtmpURL() {
-        return rtmpURL;
-    }
-
-    public void setRtmpURL(String rtmpURL) {
-        this.rtmpURL = rtmpURL;
-    }
-
-    public String getPlayURL() {
-		return playURL;
-	}
-
-	public void setPlayURL(String playURL) {
-		this.playURL = playURL;
 	}
 
 	public Long getSegmentDurationInSeconds() {
