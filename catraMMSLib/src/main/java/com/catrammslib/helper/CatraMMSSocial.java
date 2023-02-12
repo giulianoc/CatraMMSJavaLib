@@ -24,6 +24,13 @@ public class CatraMMSSocial {
         String facebookInfo;
         try
         {
+            if (userAccessToken == null)
+            {
+                mLogger.error("userAccessToken is null");
+
+                throw new Exception("userAccessToken is null");
+            }
+
             String facebookURL = configurationProperties.getProperty("facebook.userid.url")
 				.replace("{user-access-token}", userAccessToken);
 
