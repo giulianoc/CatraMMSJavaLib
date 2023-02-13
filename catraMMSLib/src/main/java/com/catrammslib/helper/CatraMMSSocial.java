@@ -16,62 +16,8 @@ public class CatraMMSSocial {
 
     private static final Logger mLogger = Logger.getLogger(CatraMMSSocial.class);
 
-	static public String getFacebookUserId(Properties configurationProperties, String userAccessToken)
-	throws Exception
-	{
-		String userId;
-
-        String facebookInfo;
-        try
-        {
-            if (userAccessToken == null)
-            {
-                mLogger.error("userAccessToken is null");
-
-                throw new Exception("userAccessToken is null");
-            }
-
-            String facebookURL = configurationProperties.getProperty("facebook.userid.url")
-				.replace("{user-access-token}", userAccessToken);
-
-            mLogger.info("facebookURL: " + facebookURL);
-
-			int timeoutInSeconds = 60;
-			int maxRetriesNumber = 1;
-
-            Date now = new Date();
-            facebookInfo = HttpFeedFetcher.fetchGetHttpsJson(facebookURL, timeoutInSeconds, maxRetriesNumber,
-                    null, null, null, false);
-            mLogger.info("getFacebookConf. Elapsed (@" + facebookURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "MMS API failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-        try
-        {
-			// {"id":"2231443363556360"}
-
-            JSONObject joFacebookInfo = new JSONObject(facebookInfo);
-            userId = joFacebookInfo.getString("id");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "Parsing facebookInfo failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-
-		return userId;
-	}
-
 	static public List<FacebookPage> getFacebookUserPagesList(Properties configurationProperties,
-		String userId, String userAccessToken)
+		String userAccessToken)
 	throws Exception
 	{
 		List<FacebookPage> facebookPages = new ArrayList<>();
@@ -79,8 +25,8 @@ public class CatraMMSSocial {
         String facebookInfo;
         try
         {
+            // https://developers.facebook.com/docs/pages/managing
             String facebookURL = configurationProperties.getProperty("facebook.pages-list.url")
-				.replace("{user-id}", userId)
 				.replace("{user-access-token}", userAccessToken)
 			;
 
@@ -105,19 +51,20 @@ public class CatraMMSSocial {
         try
         {
 			/*
-			{                                                                                                             
-				"data":[                                                                                                  
-					{                                                                                                     
-						"access_token":".......",
-						"category":"Software",                                                                            
-						"category_list":[{"id":"2211","name":"Software"}],                                                
-						"name":"Test",                                                                                    
-						"id":"581410318976233",                                                                           
-						"tasks":["ANALYZE","ADVERTISE","MESSAGING","MODERATE","CREATE_CONTENT","MANAGE"]                  
-					}                                                                                                     
-				],                                                                                                        
-				"paging":{"cursors":{"before":"NTgxNDEwMzE4OTc2MjMz","after":"NTgxNDEwMzE4OTc2MjMz"}}                     
-			}                                                                                                             
+			{
+              "data": [
+                {
+                  "id": "581410318976233",
+                  "name": "Test"
+                }
+              ],
+              "paging": {
+                "cursors": {
+                  "before": "QVFIUk9OMWFuaFRTVERYVTJQOXlkVHhIb19YeFdTWHZA2OFhDZAUp4VEVBaGRfa2Y5Ulo5bGphMEJvajI0MHg3V3pmQl8tZADRadXl0LXRjZAzFWMDhUODlrSUVB",
+                  "after": "QVFIUk9OMWFuaFRTVERYVTJQOXlkVHhIb19YeFdTWHZA2OFhDZAUp4VEVBaGRfa2Y5Ulo5bGphMEJvajI0MHg3V3pmQl8tZADRadXl0LXRjZAzFWMDhUODlrSUVB"
+                }
+              }
+            }
 			 */
 
             JSONObject joFacebookInfo = new JSONObject(facebookInfo);
