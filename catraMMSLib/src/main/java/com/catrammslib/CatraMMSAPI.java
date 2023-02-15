@@ -6289,6 +6289,187 @@ public class CatraMMSAPI {
         return rtmpChannelConfList;
     }
 
+    public void addHLSChannelConf(String username, String password,
+                                   String label, Long deliveryCode, Long segmentDuration, Long playlistEntriesNumber,
+                                   String type)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String jsonHLSChannelConf;
+            {
+                JSONObject joHLSChannelConf = new JSONObject();
+
+                joHLSChannelConf.put("label", label);
+                joHLSChannelConf.put("deliveryCode", deliveryCode);
+                if (segmentDuration != null)
+                    joHLSChannelConf.put("segmentDuration", segmentDuration);
+                if (playlistEntriesNumber != null)
+                    joHLSChannelConf.put("playlistEntriesNumber", playlistEntriesNumber);
+                joHLSChannelConf.put("type", type);
+
+                jsonHLSChannelConf = joHLSChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/hls/channel";
+
+            mLogger.info("addHLSChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonHLSChannelConf: " + jsonHLSChannelConf
+            );
+
+            Date now = new Date();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonHLSChannelConf, outputToBeCompressed);
+            mLogger.info("addHLSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addHLSChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifyHLSChannelConf(String username, String password, Long confKey,
+                                      String label, Long deliveryCode, Long segmentDuration, Long playlistEntriesNumber,
+                                      String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonHLSChannelConf;
+            {
+                JSONObject joHLSChannelConf = new JSONObject();
+
+                joHLSChannelConf.put("label", label);
+                joHLSChannelConf.put("deliveryCode", deliveryCode);
+                if (segmentDuration != null)
+                    joHLSChannelConf.put("segmentDuration", segmentDuration);
+                else
+                    joHLSChannelConf.put("segmentDuration", -1);
+                if (playlistEntriesNumber != null)
+                    joHLSChannelConf.put("playlistEntriesNumber", playlistEntriesNumber);
+                else
+                    joHLSChannelConf.put("playlistEntriesNumber", -1);
+                joHLSChannelConf.put("type", type);
+
+                jsonHLSChannelConf = joHLSChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/hls/channel/" + confKey;
+
+            mLogger.info("modifyHLSChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonHLSChannelConf: " + jsonHLSChannelConf
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonHLSChannelConf, outputToBeCompressed);
+            mLogger.info("modifyHLSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyHLSChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeHLSChannelConf(String username, String password,
+                                      Long confKey)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/hls/channel/" + confKey;
+
+            mLogger.info("removeHLSChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", confKey: " + confKey
+            );
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null);
+            mLogger.info("removeHLSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeHLSChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<HLSChannelConf> getHLSChannelConf(String username, String password, String label)
+            throws Exception
+    {
+        List<HLSChannelConf> hlsChannelConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/hls/channel"
+                    + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+                    ;
+            mLogger.info("mmsURL: " + mmsURL);
+
+            Date now = new Date();
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getHLSChannelConf. Elapsed (@" + mmsURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaHLSChannelConf = joResponse.getJSONArray("hlsChannelConf");
+
+            mLogger.info("jaHLSChannelConf.length(): " + jaHLSChannelConf.length());
+
+            hlsChannelConfList.clear();
+
+            for (int confIndex = 0; confIndex < jaHLSChannelConf.length(); confIndex++)
+            {
+                HLSChannelConf hlsChannelConf = new HLSChannelConf();
+
+                JSONObject hlsChannelConfInfo = jaHLSChannelConf.getJSONObject(confIndex);
+
+                fillHLSChannelConf(hlsChannelConf, hlsChannelConfInfo);
+
+                hlsChannelConfList.add(hlsChannelConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing hlsChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return hlsChannelConfList;
+    }
+
     public void addFTPConf(String username, String password,
                                String label, String ftpServer,
                            Long ftpPort, String ftpUserName, String ftpPassword,
@@ -9069,6 +9250,40 @@ public class CatraMMSAPI {
         catch (Exception e)
         {
             String errorMessage = "fillRTMPChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillHLSChannelConf(HLSChannelConf hlsChannelConf, JSONObject hlsChannelConfInfo)
+            throws Exception
+    {
+        try {
+            hlsChannelConf.setConfKey(hlsChannelConfInfo.getLong("confKey"));
+            hlsChannelConf.setLabel(hlsChannelConfInfo.getString("label"));
+            hlsChannelConf.setDeliveryCode(hlsChannelConfInfo.getLong("deliveryCode"));
+            if (hlsChannelConfInfo.isNull("segmentDuration"))
+                hlsChannelConf.setSegmentDuration(null);
+            else
+                hlsChannelConf.setSegmentDuration(hlsChannelConfInfo.getLong("segmentDuration"));
+            if (hlsChannelConfInfo.isNull("playlistEntriesNumber"))
+                hlsChannelConf.setPlaylistEntriesNumber(null);
+            else
+                hlsChannelConf.setPlaylistEntriesNumber(hlsChannelConfInfo.getLong("playlistEntriesNumber"));
+            hlsChannelConf.setType(hlsChannelConfInfo.getString("type"));
+            if (hlsChannelConfInfo.isNull("reservedByIngestionJobKey"))
+                hlsChannelConf.setReservedByIngestionJobKey(null);
+            else
+                hlsChannelConf.setReservedByIngestionJobKey(hlsChannelConfInfo.getLong("reservedByIngestionJobKey"));
+            if (hlsChannelConfInfo.isNull("configurationLabel"))
+                hlsChannelConf.setConfigurationLabel(null);
+            else
+                hlsChannelConf.setConfigurationLabel(hlsChannelConfInfo.getString("configurationLabel"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillHLSChannelConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);

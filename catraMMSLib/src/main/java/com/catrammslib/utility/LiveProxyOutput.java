@@ -9,7 +9,7 @@ public class LiveProxyOutput implements Serializable {
     
     private static final Logger mLogger = Logger.getLogger(LiveProxyOutput.class);
 
-	// RTMP_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
+	// RTMP_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
 
 	// UDP_Stream
@@ -34,6 +34,9 @@ public class LiveProxyOutput implements Serializable {
 
 	// RTMP_Channel
 	private String rtmpChannelConfigurationLabel;
+
+	// HLS_Channel
+	private String hlsChannelConfigurationLabel;
 
 	private Long videoTrackIndexToBeUsed;
 	private Long audioTrackIndexToBeUsed;
@@ -84,6 +87,11 @@ public class LiveProxyOutput implements Serializable {
 			{
 				if (getRtmpChannelConfigurationLabel() != null && !getRtmpChannelConfigurationLabel().isEmpty())
 					joOutput.put("rtmpChannelConfigurationLabel", getRtmpChannelConfigurationLabel());
+			}
+			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
+			{
+				if (getHlsChannelConfigurationLabel() != null && !getHlsChannelConfigurationLabel().isEmpty())
+					joOutput.put("hlsChannelConfigurationLabel", getHlsChannelConfigurationLabel());
 			}
 			else
 			{
@@ -165,6 +173,14 @@ public class LiveProxyOutput implements Serializable {
 
 	public void setCdn77ExpirationInMinutes(Long cdn77ExpirationInMinutes) {
 		this.cdn77ExpirationInMinutes = cdn77ExpirationInMinutes;
+	}
+
+	public String getHlsChannelConfigurationLabel() {
+		return hlsChannelConfigurationLabel;
+	}
+
+	public void setHlsChannelConfigurationLabel(String hlsChannelConfigurationLabel) {
+		this.hlsChannelConfigurationLabel = hlsChannelConfigurationLabel;
 	}
 
 	public Long getAudioTrackIndexToBeUsed() {
