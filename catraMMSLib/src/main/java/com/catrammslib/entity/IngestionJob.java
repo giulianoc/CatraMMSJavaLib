@@ -22,6 +22,7 @@ public class IngestionJob implements Serializable, Comparable {
     private String label;
     private String ingestionType;
     private String metaDataContent;
+    private JSONObject joMetaDataContent;
     private Date processingStartingFrom;
     private Date startProcessing;
     private Boolean endProcessingEstimate;
@@ -82,10 +83,10 @@ public class IngestionJob implements Serializable, Comparable {
 					
 					try
 					{
-						JSONObject joParameters = new JSONObject(metaDataContent);
-						if (joParameters.has("Outputs"))
+						// JSONObject joParameters = new JSONObject(metaDataContent);
+						if (joMetaDataContent.has("Outputs"))
 						{
-							JSONArray jaOutputs = joParameters.getJSONArray("Outputs");
+							JSONArray jaOutputs = joMetaDataContent.getJSONArray("Outputs");
 							for (int outputIndex = 0; outputIndex < jaOutputs.length(); outputIndex++)
 							{
 								JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
@@ -129,10 +130,10 @@ public class IngestionJob implements Serializable, Comparable {
 				// 2. in case we have an RTMP_Stream as Output and PlayUrl is filled
 				try
 				{
-					JSONObject joParameters = new JSONObject(metaDataContent);
-					if (joParameters.has("Outputs"))
+					// JSONObject joParameters = new JSONObject(metaDataContent);
+					if (joMetaDataContent.has("Outputs"))
 					{
-						JSONArray jaOutputs = joParameters.getJSONArray("Outputs");
+						JSONArray jaOutputs = joMetaDataContent.getJSONArray("Outputs");
 						for (int outputIndex = 0; outputIndex < jaOutputs.length(); outputIndex++)
 						{
 							JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
@@ -240,6 +241,33 @@ public class IngestionJob implements Serializable, Comparable {
 			return 0;
 	}
 
+    public JSONObject getJoMetaDataContent() {
+        return joMetaDataContent;
+    }
+
+    public void setJoMetaDataContent(JSONObject joMetaDataContent) {
+        this.joMetaDataContent = joMetaDataContent;
+    }
+
+    public void setMetaDataContent(String metaDataContent) {
+
+        this.metaDataContent = metaDataContent;
+
+        if (metaDataContent != null && !metaDataContent.isEmpty())
+        {
+            try
+            {
+                joMetaDataContent = new JSONObject(metaDataContent);
+            }
+            catch (Exception e)
+            {
+                mLogger.error("Exception"
+                        + ", exception: " + e
+                        + ", metaDataContent: " + metaDataContent
+                );
+            }
+        }
+    }
 	public Date getIngestionDate() {
 		return ingestionDate;
 	}
@@ -392,9 +420,6 @@ public class IngestionJob implements Serializable, Comparable {
         return metaDataContent;
     }
 
-    public void setMetaDataContent(String metaDataContent) {
-        this.metaDataContent = metaDataContent;
-    }
 
     public Long getDependOnIngestionJobKey() {
         return dependOnIngestionJobKey;

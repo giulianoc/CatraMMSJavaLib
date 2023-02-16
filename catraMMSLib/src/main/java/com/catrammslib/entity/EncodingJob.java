@@ -1,5 +1,7 @@
 package com.catrammslib.entity;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
@@ -22,6 +24,7 @@ public class EncodingJob implements Serializable {
     private int maxEncodingPriorityCode;
     private String type;
     private String parameters;  // the content of this field depend on the 'type' field
+    private JSONObject joParameters;
     private Long ingestionJobKey;
     private Boolean ownedByCurrentWorkspace;
 
@@ -150,7 +153,25 @@ public class EncodingJob implements Serializable {
     }
 
     public void setParameters(String parameters) {
+
         this.parameters = parameters;
+
+        if (parameters != null && !parameters.isEmpty())
+        {
+            try
+            {
+                joParameters = new JSONObject(parameters);
+            }
+            catch (Exception e)
+            {
+                /*
+                mLogger.error("Exception"
+                        + ", exception: " + e
+                        + ", parameters: " + parameters
+                );
+                 */
+            }
+        }
     }
 
     public Long getEncodingProfileKey() {
@@ -159,6 +180,14 @@ public class EncodingJob implements Serializable {
 
     public void setEncodingProfileKey(Long encodingProfileKey) {
         this.encodingProfileKey = encodingProfileKey;
+    }
+
+    public JSONObject getJoParameters() {
+        return joParameters;
+    }
+
+    public void setJoParameters(JSONObject joParameters) {
+        this.joParameters = joParameters;
     }
 
     public Long getSourcePhysicalPathKey() {
