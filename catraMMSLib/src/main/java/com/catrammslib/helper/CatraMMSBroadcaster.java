@@ -563,15 +563,12 @@ public class CatraMMSBroadcaster {
                 List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
 
 				// 2022-09-14: l'output HLS crea problemi nel caso di encoder esterno.
-				if (editBroadcasterDeliveryType.equals("MMS HLS"))
+				if (editBroadcasterDeliveryType.equals("HLS_Channel"))
 				{
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 
-					liveProxyOutput.setOutputType("HLS");
-					liveProxyOutput.setDeliveryCode(editBroadcasterHLSDeliveryCode);
-					// liveProxyOutput.setOutputType("RTMP_Stream");
-					// liveProxyOutput.setRtmpURL("rtmp://prg-1.s.cdn77.com:1936/1909844812/12376543");
-					// liveProxyOutput.setPlayURL("https://1909844812.rsc.cdn77.org/1909844812/12376543/index.m3u8");
+					liveProxyOutput.setOutputType("HLS_Channel");
+					// TO DO: liveProxyOutput.setHlsChannelConfigurationLabel(editBroadcasterHLSDeliveryCode);
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 

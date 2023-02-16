@@ -194,7 +194,7 @@ public class CatraMMSWorkflow {
     static public JSONObject buildLiveRecorderJson(
             String label,
 
-            Long deliveryCode,        // mandatory
+            Long recordingCode,        // mandatory
 
             String liveConfigurationLabel,
 
@@ -245,7 +245,7 @@ public class CatraMMSWorkflow {
                     null);
             */
 
-            joParameters.put("DeliveryCode", deliveryCode);
+            joParameters.put("recordingCode", recordingCode);
 
             joParameters.put("ConfigurationLabel", liveConfigurationLabel);
 
@@ -1715,7 +1715,7 @@ public class CatraMMSWorkflow {
             String label, String title, String uniqueName, Boolean allowUniqueNameOverride,
             List<String> tags, String ingester,
 
-            Long deliveryCode,
+            Long recordingCode,
 
             Long utcLiveCutStartInMilliSecs,
             Long utcLiveCutEndInMilliSecs,
@@ -1744,7 +1744,7 @@ public class CatraMMSWorkflow {
                     startPublishing, endPublishing,
                     uniqueName, allowUniqueNameOverride);
 
-            joParameters.put("DeliveryCode", deliveryCode);
+            joParameters.put("recordingCode", recordingCode);
 
             if (chunkEncodingProfileKey != null)
                 joParameters.put("ChunkEncodingProfileKey", chunkEncodingProfileKey);

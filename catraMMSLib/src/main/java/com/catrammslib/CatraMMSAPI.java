@@ -2006,7 +2006,7 @@ public class CatraMMSAPI {
                               Date ingestionStart, Date ingestionEnd,
                               String title, Boolean bLiveRecordingChunk,
                               List<String> tagsIn, List<String> tagsNotIn,
-                              Long deliveryCode, String jsonCondition,
+                              Long recordingCode, String jsonCondition,
                               String orderBy, String jsonOrderBy,
 							  JSONObject joResponseFields,
                               List<MediaItem> mediaItemsList    // has to be already initialized (new ArrayList<>())
@@ -2052,7 +2052,7 @@ public class CatraMMSAPI {
                     // + "&tags=" + (tags == null ? "" : java.net.URLEncoder.encode(tags, "UTF-8"))
                     + (ingestionStart != null ? ("&startIngestionDate=" + simpleDateFormat.format(ingestionStart)) : "")
                     + (ingestionEnd != null ? ("&endIngestionDate=" + simpleDateFormat.format(ingestionEnd)) : "")
-                    + (deliveryCode == null ? "" : ("&deliveryCode=" + deliveryCode))
+                    + (recordingCode == null ? "" : ("&recordingCode=" + recordingCode))
                     + (jsonCondition == null ? "" : ("&jsonCondition=" +  java.net.URLEncoder.encode(jsonCondition, "UTF-8")))
                     + "&orderBy=" + (orderBy == null ? "" : java.net.URLEncoder.encode(orderBy, "UTF-8"))
                     + "&jsonOrderBy=" + (jsonOrderBy == null ? "" : java.net.URLEncoder.encode(jsonOrderBy, "UTF-8"))
@@ -2824,7 +2824,7 @@ public class CatraMMSAPI {
                                  String ingestionType, 
 								 String configurationLabel,	// used in case of Live-Proxy
 								 String outputChannelLabel,	// used in case of Live-Grid
-								 Long deliveryCode,	// used in case of Live-Recorder
+								 Long recordingCode,	// used in case of Live-Recorder
 								 Boolean broadcastIngestionJobKeyNotNull,	// used in case of Broadcaster
 								 // String jsonParametersCondition, // altamente sconsigliato perchè poco performante
                                  boolean ingestionDateAscending,
@@ -2853,7 +2853,7 @@ public class CatraMMSAPI {
                     	java.net.URLEncoder.encode(configurationLabel, "UTF-8"))) // requires unescape server side
 					+ (outputChannelLabel == null || outputChannelLabel.isEmpty() ? "" : ("&outputChannelLabel=" + 
                     	java.net.URLEncoder.encode(outputChannelLabel, "UTF-8"))) // requires unescape server side
-					+ (deliveryCode == null ? "" : ("&deliveryCode=" + deliveryCode))
+					+ (recordingCode == null ? "" : ("&recordingCode=" + recordingCode))
 					+ (broadcastIngestionJobKeyNotNull == null ? "" : ("&broadcastIngestionJobKeyNotNull=" + broadcastIngestionJobKeyNotNull))
                     // + "&jsonParametersCondition=" + (jsonParametersCondition == null || jsonParametersCondition.isEmpty()
                     //	? "" : java.net.URLEncoder.encode(jsonParametersCondition, "UTF-8")) // requires unescape server side

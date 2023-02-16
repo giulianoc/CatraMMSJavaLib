@@ -15,11 +15,6 @@ public class LiveProxyOutput implements Serializable {
 	// UDP_Stream
     private String udpURL;
 
-	// HLS
-	private Long deliveryCode;
-	// HLS
-    private Long segmentDurationInSeconds;
-
 	// CDN_AWS
 	private String awsChannelConfigurationLabel;	// to be started/stopped
 	// CDN_AWS
@@ -95,9 +90,9 @@ public class LiveProxyOutput implements Serializable {
 			}
 			else
 			{
-				joOutput.put("DeliveryCode", getDeliveryCode());
-				if (getSegmentDurationInSeconds() != null)
-					joOutput.put("SegmentDurationInSeconds", getSegmentDurationInSeconds());
+				mLogger.error("Unknown outputType"
+						+ ", outputType: " + getOutputType()
+				);
 			}
 	
 			if (getEncodingProfileLabel() != null && !getEncodingProfileLabel().isEmpty())
@@ -208,28 +203,12 @@ public class LiveProxyOutput implements Serializable {
 		this.awsSignedURL = awsSignedURL;
 	}
 
-	public Long getSegmentDurationInSeconds() {
-        return segmentDurationInSeconds;
-    }
-
-    public void setSegmentDurationInSeconds(Long segmentDurationInSeconds) {
-        this.segmentDurationInSeconds = segmentDurationInSeconds;
-    }
-
     public String getEncodingProfileLabel() {
         return encodingProfileLabel;
     }
 
     public void setEncodingProfileLabel(String encodingProfileLabel) {
         this.encodingProfileLabel = encodingProfileLabel;
-    }
-
-    public Long getDeliveryCode() {
-        return deliveryCode;
-    }
-
-    public void setDeliveryCode(Long deliveryCode) {
-        this.deliveryCode = deliveryCode;
     }
 
 	public JSONObject getFilters() {
