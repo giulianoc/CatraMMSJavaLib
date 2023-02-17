@@ -29,9 +29,9 @@ public class CatraMMSBroadcaster {
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
-		String editBroadcasterDeliveryType, // MMS HLS, CDN, CDN77
+		String editBroadcasterDeliveryType, // HLS_Channel, CDN, CDN77
 		String editBroadcasterCdn77ConfigurationLabel,
-		Long editBroadcasterHLSDeliveryCode, String broadcasterCdnRtmp, String broadcasterCdnPlayURL, 
+		String editBroadcasterHlsConfigurationLabel,
 		String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
 		CatraMMSAPI catraMMS, String username, String password)
@@ -51,8 +51,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcastEncodersPoolLabel: " + broadcastEncodersPoolLabel
 				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
 				+ ", editBroadcasterCdn77ConfigurationLabel: " + editBroadcasterCdn77ConfigurationLabel
-				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
-				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
+				+ ", editBroadcasterHlsConfigurationLabel: " + editBroadcasterHlsConfigurationLabel
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 			);
 
@@ -159,8 +158,6 @@ public class CatraMMSBroadcaster {
 					+ ", broadcasterStart: " + broadcasterStart
 					+ ", broadcasterEnd: " + broadcasterEnd
 					+ ", encodingProfileLabel: " + encodingProfileLabel
-					+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
-					+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
 					+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 					+ ", broadcastDefaultPlaylistItem: " + broadcastDefaultPlaylistItem
 				);
@@ -171,7 +168,7 @@ public class CatraMMSBroadcaster {
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
 					editBroadcasterCdn77ConfigurationLabel,
-					editBroadcasterHLSDeliveryCode, broadcasterCdnRtmp, broadcasterCdnPlayURL,
+					editBroadcasterHlsConfigurationLabel,
 
 					broadcastIngestionJobKey,
 					broadcastDefaultPlaylistItem
@@ -504,9 +501,9 @@ public class CatraMMSBroadcaster {
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
-		String editBroadcasterDeliveryType, // MMS HLS, CDN, CDN77
+		String editBroadcasterDeliveryType, // HLS_Channel, CDN, CDN77
 		String editBroadcasterCdn77ConfigurationLabel,
-		Long editBroadcasterHLSDeliveryCode, String broadcasterCdnRtmp, String broadcasterCdnPlayURL,
+		String editBroadcasterHlsConfigurationLabel,
 
 		Long broadcastIngestionJobKey,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem
@@ -523,8 +520,7 @@ public class CatraMMSBroadcaster {
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
 				+ ", editBroadcasterCdn77ConfigurationLabel: " + editBroadcasterCdn77ConfigurationLabel
-				+ ", broadcasterCdnRtmp: " + broadcasterCdnRtmp
-				+ ", broadcasterCdnPlayURL: " + broadcasterCdnPlayURL
+				+ ", editBroadcasterHlsConfigurationLabel: " + editBroadcasterHlsConfigurationLabel
 				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 			);
 
@@ -539,22 +535,21 @@ public class CatraMMSBroadcaster {
 
 				if (editBroadcasterDeliveryType != null && !editBroadcasterDeliveryType.isEmpty())
 					joExtraLiveProxyBroadcasterParameters.put("deliveryType", editBroadcasterDeliveryType);
-				if (editBroadcasterDeliveryType.equals("MMS HLS"))
+				if (editBroadcasterDeliveryType.equals("HLS_Channel"))
 				{
-					if (editBroadcasterHLSDeliveryCode != null)
-						joExtraLiveProxyBroadcasterParameters.put("hlsDeliveryCode", editBroadcasterHLSDeliveryCode);
+					if (editBroadcasterHlsConfigurationLabel != null)
+						joExtraLiveProxyBroadcasterParameters.put("hlsConfigurationLabel", editBroadcasterHlsConfigurationLabel);
 				}
 				else if (editBroadcasterDeliveryType.equals("CDN77"))
 				{
 					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
 						joExtraLiveProxyBroadcasterParameters.put("cdn77ConfigurationLabel", editBroadcasterCdn77ConfigurationLabel);
 				}
-				else // if (editBroadcasterDeliveryType.equals("CDN"))
+				else
 				{
-					if (broadcasterCdnRtmp != null && !broadcasterCdnRtmp.isEmpty())
-						joExtraLiveProxyBroadcasterParameters.put("cdnRtmp", broadcasterCdnRtmp);
-					if (broadcasterCdnPlayURL != null && !broadcasterCdnPlayURL.isEmpty())
-						joExtraLiveProxyBroadcasterParameters.put("cdnPlayURL", broadcasterCdnPlayURL);
+					mLogger.error("unknown editBroadcasterDeliveryType"
+							+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
+					);
 				}
 
 				JSONObject joExtraLiveProxyInternalMMSParameters = new JSONObject();
@@ -568,7 +563,8 @@ public class CatraMMSBroadcaster {
 					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
 
 					liveProxyOutput.setOutputType("HLS_Channel");
-					// TO DO: liveProxyOutput.setHlsChannelConfigurationLabel(editBroadcasterHLSDeliveryCode);
+					if (editBroadcasterHlsConfigurationLabel != null && !editBroadcasterHlsConfigurationLabel.isEmpty())
+						liveProxyOutput.setHlsChannelConfigurationLabel(editBroadcasterHlsConfigurationLabel);
 
 					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
 
@@ -594,20 +590,9 @@ public class CatraMMSBroadcaster {
 				}
 				else
 				{
-					/* non abbiamo piu RTMP_Stream
-					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
-
-					liveProxyOutput.setOutputType("RTMP_Stream");
-					liveProxyOutput.setRtmpURL(broadcasterCdnRtmp);
-					liveProxyOutput.setPlayURL(broadcasterCdnPlayURL);
-
-					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
-
-					if (drawTextDetails != null)
-						liveProxyOutput.setDrawTextDetails(drawTextDetails);
-
-					liveProxyOutputList.add(liveProxyOutput);
-					 */
+					mLogger.error("unknown editBroadcasterDeliveryType"
+							+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
+					);
 				}
 
                 joBroadcaster = CatraMMSWorkflow.buildLiveProxyJson(
