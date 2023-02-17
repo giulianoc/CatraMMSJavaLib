@@ -13,6 +13,7 @@ public class CDN77ChannelConf implements Serializable{
     private String filePath;
 	private String secureToken;
     private String type;
+	private Long outputIndex;
     private Long reservedByIngestionJobKey;
 	private String configurationLabel;
 
@@ -24,7 +25,15 @@ public class CDN77ChannelConf implements Serializable{
         this.confKey = confKey;
     }
 
-    public String getLabel() {
+	public Long getOutputIndex() {
+		return outputIndex;
+	}
+
+	public void setOutputIndex(Long outputIndex) {
+		this.outputIndex = outputIndex;
+	}
+
+	public String getLabel() {
         return label;
     }
 

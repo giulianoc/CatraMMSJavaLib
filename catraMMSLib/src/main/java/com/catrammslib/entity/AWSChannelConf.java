@@ -13,7 +13,9 @@ public class AWSChannelConf implements Serializable{
     private String rtmpURL;
     private String playURL;
     private String type;
+	private Long outputIndex;
     private Long reservedByIngestionJobKey;
+	private String configurationLabel;
 
     public Long getConfKey() {
         return confKey;
@@ -23,7 +25,23 @@ public class AWSChannelConf implements Serializable{
         this.confKey = confKey;
     }
 
-    public String getLabel() {
+	public String getConfigurationLabel() {
+		return configurationLabel;
+	}
+
+	public void setConfigurationLabel(String configurationLabel) {
+		this.configurationLabel = configurationLabel;
+	}
+
+	public Long getOutputIndex() {
+		return outputIndex;
+	}
+
+	public void setOutputIndex(Long outputIndex) {
+		this.outputIndex = outputIndex;
+	}
+
+	public String getLabel() {
         return label;
     }
 

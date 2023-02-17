@@ -5863,7 +5863,7 @@ public class CatraMMSAPI {
         }
     }
 
-    public List<AWSChannelConf> getAWSChannelConf(String username, String password)
+    public List<AWSChannelConf> getAWSChannelConf(String username, String password, String label)
             throws Exception
     {
         List<AWSChannelConf> awsChannelConfList = new ArrayList<>();
@@ -5871,7 +5871,9 @@ public class CatraMMSAPI {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel"
+                + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
+            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -9168,10 +9170,18 @@ public class CatraMMSAPI {
             awsChannelConf.setRtmpURL(awsChannelConfInfo.getString("rtmpURL"));
             awsChannelConf.setPlayURL(awsChannelConfInfo.getString("playURL"));
             awsChannelConf.setType(awsChannelConfInfo.getString("type"));
+            if (awsChannelConfInfo.isNull("outputIndex"))
+                awsChannelConf.setOutputIndex(null);
+            else
+                awsChannelConf.setOutputIndex(awsChannelConfInfo.getLong("outputIndex"));
 			if (awsChannelConfInfo.isNull("reservedByIngestionJobKey"))
 				awsChannelConf.setReservedByIngestionJobKey(null);
 			else
 				awsChannelConf.setReservedByIngestionJobKey(awsChannelConfInfo.getLong("reservedByIngestionJobKey"));
+            if (awsChannelConfInfo.isNull("configurationLabel"))
+                awsChannelConf.setConfigurationLabel(null);
+            else
+                awsChannelConf.setConfigurationLabel(awsChannelConfInfo.getString("configurationLabel"));
         }
         catch (Exception e)
         {
@@ -9196,6 +9206,10 @@ public class CatraMMSAPI {
             else
                 cdn77ChannelConf.setSecureToken(cdn77ChannelConfInfo.getString("secureToken"));
             cdn77ChannelConf.setType(cdn77ChannelConfInfo.getString("type"));
+            if (cdn77ChannelConfInfo.isNull("outputIndex"))
+                cdn77ChannelConf.setOutputIndex(null);
+            else
+                cdn77ChannelConf.setOutputIndex(cdn77ChannelConfInfo.getLong("outputIndex"));
             if (cdn77ChannelConfInfo.isNull("reservedByIngestionJobKey"))
                 cdn77ChannelConf.setReservedByIngestionJobKey(null);
             else
@@ -9238,6 +9252,10 @@ public class CatraMMSAPI {
             else
                 rtmpChannelConf.setPlayURL(rtmpChannelConfInfo.getString("playURL"));
             rtmpChannelConf.setType(rtmpChannelConfInfo.getString("type"));
+            if (rtmpChannelConfInfo.isNull("outputIndex"))
+                rtmpChannelConf.setOutputIndex(null);
+            else
+                rtmpChannelConf.setOutputIndex(rtmpChannelConfInfo.getLong("outputIndex"));
             if (rtmpChannelConfInfo.isNull("reservedByIngestionJobKey"))
                 rtmpChannelConf.setReservedByIngestionJobKey(null);
             else
@@ -9272,6 +9290,10 @@ public class CatraMMSAPI {
             else
                 hlsChannelConf.setPlaylistEntriesNumber(hlsChannelConfInfo.getLong("playlistEntriesNumber"));
             hlsChannelConf.setType(hlsChannelConfInfo.getString("type"));
+            if (hlsChannelConfInfo.isNull("outputIndex"))
+                hlsChannelConf.setOutputIndex(null);
+            else
+                hlsChannelConf.setOutputIndex(hlsChannelConfInfo.getLong("outputIndex"));
             if (hlsChannelConfInfo.isNull("reservedByIngestionJobKey"))
                 hlsChannelConf.setReservedByIngestionJobKey(null);
             else
