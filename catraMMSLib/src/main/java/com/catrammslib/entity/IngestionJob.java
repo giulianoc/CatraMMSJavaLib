@@ -137,15 +137,15 @@ public class IngestionJob implements Serializable, Comparable {
 						for (int outputIndex = 0; outputIndex < jaOutputs.length(); outputIndex++)
 						{
 							JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
-							if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("HLS"))
+							if (joOutput.has("OutputType")
+                                    && joOutput.getString("OutputType").equalsIgnoreCase("HLS_Channel"))
 							{
 								playable = true;
 
 								break;
 							}
 							else if (joOutput.has("OutputType") && 
-								(joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream")
-                                    || joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
+								(joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
 									|| joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
                                     || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                 )
