@@ -1151,8 +1151,8 @@ public class CatraMMSAPI {
         }
     }
 
-    public Long addEncodingProfilesSet(String username, String password,
-                                   String contentType, String jsonEncodingProfilesSet)
+    public Long addUpdateEncodingProfilesSet(String username, String password,
+                                             String contentType, String jsonEncodingProfilesSet)
             throws Exception
     {
         Long encodingProfilesSetKey;
@@ -1175,7 +1175,7 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "addEncodingProfile MMS failed. Exception: " + e;
+            String errorMessage = "addUpdateEncodingProfilesSet MMS failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -1194,7 +1194,7 @@ public class CatraMMSAPI {
         }
         catch (Exception e)
         {
-            String errorMessage = "addEncodingProfile failed. Exception: " + e;
+            String errorMessage = "addUpdateEncodingProfilesSet failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
