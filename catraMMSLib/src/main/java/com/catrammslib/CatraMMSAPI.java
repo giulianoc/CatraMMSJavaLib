@@ -3590,7 +3590,7 @@ public class CatraMMSAPI {
 
                 JSONObject encodingProfilesSetInfo = jaEncodingProfilesSets.getJSONObject(encodingProfilesSetIndex);
 
-                boolean deep = false;
+                boolean deep = true;
                 fillEncodingProfilesSet(encodingProfilesSet, encodingProfilesSetInfo, deep);
 
                 encodingProfilesSetList.add(encodingProfilesSet);
