@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by multi on 09.06.18.
@@ -18,6 +19,19 @@ public class EncodingProfile implements Serializable, Comparable<EncodingProfile
     @Override
     public int compareTo(EncodingProfile o) {
         return encodingProfileKey.compareTo(o.encodingProfileKey);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EncodingProfile that = (EncodingProfile) o;
+        return Objects.equals(encodingProfileKey, that.encodingProfileKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(encodingProfileKey);
     }
 
     public boolean isGlobal() {
