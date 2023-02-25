@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by multi on 09.06.18.
  */
-public class EncodingProfile implements Serializable{
+public class EncodingProfile implements Serializable, Comparable<EncodingProfile>{
     private Long encodingProfileKey;
     private boolean global;
     private String label;
@@ -14,6 +14,11 @@ public class EncodingProfile implements Serializable{
     private EncodingProfileVideo videoDetails = new EncodingProfileVideo();
     private EncodingProfileAudio audioDetails = new EncodingProfileAudio();
     private EncodingProfileImage imageDetails = new EncodingProfileImage();
+
+    @Override
+    public int compareTo(EncodingProfile o) {
+        return encodingProfileKey.compareTo(o.encodingProfileKey);
+    }
 
     public boolean isGlobal() {
         return global;
@@ -78,4 +83,5 @@ public class EncodingProfile implements Serializable{
     public void setImageDetails(EncodingProfileImage imageDetails) {
         this.imageDetails = imageDetails;
     }
+
 }
