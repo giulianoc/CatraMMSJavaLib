@@ -239,7 +239,7 @@ public class CatraMMSAPI {
         }
     }
 
-    public Long shareWorkspace(String username, String password,
+    public void shareWorkspace(String username, String password,
         String emailAddressToShare,
 
         Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
@@ -290,6 +290,9 @@ public class CatraMMSAPI {
             throw new Exception(errorMessage);
         }
 
+        // 2023-03-01: in case the user is not present, no 'userKey' is returned.
+        // An email with a confirmation code is sent to invite the user to register
+        /*
         Long userKey;
 
         try
@@ -306,6 +309,7 @@ public class CatraMMSAPI {
         }
 
         return userKey;
+        */
     }
 
     public void setWorkspaceAsDefault(String username, String password,
