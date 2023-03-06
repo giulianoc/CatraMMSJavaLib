@@ -168,6 +168,8 @@ public class CatraMMSWorkflow {
                 }
                 else if(workflowVariable.getType().equalsIgnoreCase("jsonObject"))
                     joParameters.put(workflowVariable.getName(), workflowVariable.getJsonObjectValue());
+                else if(workflowVariable.getType().equalsIgnoreCase("jsonArray"))
+                    joParameters.put(workflowVariable.getName(), workflowVariable.getJsonArrayValue());
                 else
                 {
                     String errorMessage = "WorkflowVariable type not managed"
