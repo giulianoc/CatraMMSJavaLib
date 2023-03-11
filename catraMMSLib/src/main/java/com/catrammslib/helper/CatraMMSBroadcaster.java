@@ -22,7 +22,7 @@ public class CatraMMSBroadcaster {
 
     private static final Logger mLogger = Logger.getLogger(CatraMMSBroadcaster.class);
 
-	static public Long addBroadcaster(String broadcasterConfigurationLabel,
+	static public Long addBroadcaster(Stream broadcasterStream,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		String broadcasterIngestionJobLabel,
 		DrawTextDetails drawTextDetails,
@@ -42,7 +42,7 @@ public class CatraMMSBroadcaster {
 		try
 		{
 			mLogger.info("Received addBroadcaster"
-				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
+				+ ", broadcasterStream.getLabel: " + broadcasterStream.getLabel()
 				+ ", broadcasterName: " + broadcasterName
 				+ ", broadcasterStart: " + broadcasterStart
 				+ ", broadcasterEnd: " + broadcasterEnd
@@ -55,28 +55,8 @@ public class CatraMMSBroadcaster {
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 			);
 
-			mLogger.info("looking for catraMMS.getChannelConf"
-				+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
-			);
-			Stream broadcasterStream = null;
 			String broadcastURL;
 			{
-				List<Stream> streamList = new ArrayList<>();
-				catraMMS.getStream(username, password, 0, 1,
-						null, broadcasterConfigurationLabel, false, null, null,
-						null, null, null, null, null,
-						streamList);
-
-				if (streamList.size() != 1)
-				{
-					mLogger.error("catraMMS.getStream failed"
-							+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
-					);
-
-					throw new Exception("catraMMS.getStream failed");
-				}
-
-				broadcasterStream = streamList.get(0);
 				// it could be udp:// (we might have corrupt packets) or better rtmp://
 				// 2022-10-22: it cannot be rtmp because rtmp is tcp protocol and the ffmpeg server command
 				//	will disconnect at every playlist change causing
@@ -154,7 +134,7 @@ public class CatraMMSBroadcaster {
 
 				mLogger.info("buildBroadcasterJson"
 					+ ", broadcasterIngestionJobLabel: " + broadcasterIngestionJobLabel
-					+ ", broadcasterConfigurationLabel: " + broadcasterConfigurationLabel
+					+ ", broadcasterStream.getLabel: " + broadcasterStream.getLabel()
 					+ ", broadcasterStart: " + broadcasterStart
 					+ ", broadcasterEnd: " + broadcasterEnd
 					+ ", encodingProfileLabel: " + encodingProfileLabel
@@ -162,8 +142,8 @@ public class CatraMMSBroadcaster {
 					+ ", broadcastDefaultPlaylistItem: " + broadcastDefaultPlaylistItem
 				);
 				JSONObject joWorkflow = buildBroadcasterJson(
-					broadcasterIngestionJobLabel,		
-					broadcasterConfigurationLabel,	// udp://<server>:<port>
+					broadcasterIngestionJobLabel,
+					broadcasterStream.getLabel(),	// udp://<server>:<port>
 					drawTextDetails,
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
