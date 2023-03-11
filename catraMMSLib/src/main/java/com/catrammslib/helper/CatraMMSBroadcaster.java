@@ -374,7 +374,7 @@ public class CatraMMSBroadcaster {
 	                joBroadcast = CatraMMSWorkflow.buildLiveProxyJsonForBroadcast(
 						broadcastIngestionJobLabel,
 
-						broadcastDefaultPlaylistItem.getStreamConfigurationLabel(),
+						broadcastDefaultPlaylistItem.getStream().getLabel(),
 						encodersPoolLabel,
 
 						broadcasterStart, broadcasterEnd,

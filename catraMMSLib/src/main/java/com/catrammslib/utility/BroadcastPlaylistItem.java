@@ -26,8 +26,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	private String mediaType;					// Stream, Media, Countdown, Direct URL
 
 	// in case of Stream
-	private String streamConfigurationLabel;
-	private Stream stream;			// got from streamConfigurationLabel
+	private Stream stream;
 
 	// in case of Media
 	private Boolean endBasedOnMediaDuration;
@@ -82,9 +81,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 		if (mediaType.equals("Stream"))
 		{
-			if (stream != null)
+			if (stream != null) {
 				str = "<b>" + stream.getConfKey() + "</b>: ";
-			str += streamConfigurationLabel;
+				str += stream.getLabel();
+			}
 		}
 		else if (mediaType.equals("Media"))
 		{
@@ -196,8 +196,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			if (mediaType.equals("Stream"))
 			{
-				if (streamConfigurationLabel != null 
-					&& !streamConfigurationLabel.equals(joBroadcastPlaylistItem.getString("streamConfigurationLabel")))
+				if (stream == null
+					|| !stream.getLabel().equals(joBroadcastPlaylistItem.getString("streamConfigurationLabel")))
 					return false;
 			}
 			else if (mediaType.equals("Media"))
@@ -269,8 +269,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			joBroadcastPlaylistItem.put("mediaType", mediaType);
 			if (mediaType.equalsIgnoreCase("Stream"))
 			{
-				if (streamConfigurationLabel != null)
-					joBroadcastPlaylistItem.put("streamConfigurationLabel", streamConfigurationLabel);
+				if (stream != null)
+					joBroadcastPlaylistItem.put("streamConfigurationLabel", stream.getLabel());
 
 				if (drawTextEnable)
 					joBroadcastPlaylistItem.put("drawTextDetails", drawTextDetails.toJson());
@@ -322,7 +322,16 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			broadcastPlaylistItem.setMediaType(joBroadcastPlaylistItem.getString("mediaType"));
 			if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
 			{
-				broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
+				String streamConfigurationLabel = joBroadcastPlaylistItem.getString("streamConfigurationLabel");
+				// broadcastPlaylistItem.setStreamConfigurationLabel(joBroadcastPlaylistItem.getString("streamConfigurationLabel"));
+				{
+					List<Stream> streamList = new ArrayList<>();
+					localCatraMMS.getStream(localUsername, localPassword, 0, 1, null,
+							streamConfigurationLabel, false,
+							null, null, null, null, null, null, null, streamList);
+					if (streamList.size() > 0)
+						broadcastPlaylistItem.setStream(streamList.get(0));
+				}
 
 				if (joBroadcastPlaylistItem.has("drawTextDetails"))
 				{
@@ -411,8 +420,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			broadcastPlaylistItem.setMediaType("Stream");
 
-			broadcastPlaylistItem.setStreamConfigurationLabel(
-				joBroadcastStreamInput.getString("streamConfigurationLabel"));
+			// broadcastPlaylistItem.setStreamConfigurationLabel(
+			//	joBroadcastStreamInput.getString("streamConfigurationLabel"));
 
 			Stream stream = catraMMS.getStream(username, password,
 				joBroadcastStreamInput.getLong("streamConfKey"));
@@ -535,7 +544,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		broadcastPlaylistItem.setTimestamp(getTimestamp());
 		broadcastPlaylistItem.setStart(getStart());
 		broadcastPlaylistItem.setEnd(getEnd());
-		broadcastPlaylistItem.setStreamConfigurationLabel(getStreamConfigurationLabel());
+		// broadcastPlaylistItem.setStreamConfigurationLabel(getStreamConfigurationLabel());
+		broadcastPlaylistItem.setStream(getStream());
 		broadcastPlaylistItem.setMediaType(getMediaType());
 		// setEndBasedOnMediaDuration deve essere prima di setPhysicalPathKeys (che usa questo flag)
 		broadcastPlaylistItem.setEndBasedOnMediaDuration(getEndBasedOnMediaDuration());
@@ -656,6 +666,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			drawTextDetails.setCountdown(false);
 	}
 
+	/*
 	public void setStreamConfigurationLabel(String streamConfigurationLabel) 
 	{
 		this.streamConfigurationLabel = streamConfigurationLabel;
@@ -677,6 +688,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			mLogger.error("Exception: " + e.getMessage());
 		}
 	}
+	 */
 
 	public void setReferencePhysicalPathKeys(String localReferencesPhysicalPathKeys) 
 	{
@@ -826,9 +838,11 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return referencePhysicalPathKeys.toString();
 	}
 
+	/*
 	public String getStreamConfigurationLabel() {
 		return streamConfigurationLabel;
 	}
+	 */
 
 	public String getUrl() {
 		return url;
