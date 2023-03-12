@@ -2821,7 +2821,7 @@ public class CatraMMSAPI {
 
     public Long getIngestionJobs(String username, String password,
                                  long startIndex, long pageSize,
-                                 String label, Long ingestionJobKey,
+                                 String label, Boolean labelLike, Long ingestionJobKey,
                                  Date start, Date end,
 								 Date startScheduleDate,
                                  String status,             // completed or notCompleted
@@ -2851,6 +2851,7 @@ public class CatraMMSAPI {
                     + "?start=" + startIndex
                     + "&rows=" + pageSize
                     + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
+                    + (labelLike == null ? "" : "&labelLike=" + labelLike)
                     + "&status=" + (status == null ? "" : status)
                     + ((ingestionType == null || ingestionType.equalsIgnoreCase("all")) ? "" : ("&ingestionType=" + ingestionType))
                     + (configurationLabel == null || configurationLabel.isEmpty() ? "" : ("&configurationLabel=" + 
