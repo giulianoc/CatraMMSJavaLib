@@ -9,6 +9,16 @@ import java.util.Objects;
  */
 public class RequestStatistic implements Serializable{
 	private Long requestStatisticKey;
+
+	public String getIpAddress() {
+		return ipAddress;
+	}
+
+	public void setIpAddress(String ipAddress) {
+		this.ipAddress = ipAddress;
+	}
+
+	private String ipAddress;
     private String userId;
     private Long physicalPathKey;
     private Long confStreamKey;
