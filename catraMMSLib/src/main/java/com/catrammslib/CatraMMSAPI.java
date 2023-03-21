@@ -6830,7 +6830,8 @@ public class CatraMMSAPI {
     }
 
 	public void addRequestStatistic(String username, String password,
-		String userId, 
+        String ipAddress,
+        String userId,
 		// physicalPathKey or confStreamKey has to be present
 		Long physicalPathKey, Long confStreamKey,
 		String title
@@ -6845,6 +6846,8 @@ public class CatraMMSAPI {
             {
                 JSONObject joStatistic = new JSONObject();
 
+                if (ipAddress != null && !ipAddress.isBlank())
+                    joStatistic.put("ipAddress", ipAddress);
                 joStatistic.put("userId", userId);
 				if (physicalPathKey != null)
 					joStatistic.put("physicalPathKey", physicalPathKey);
