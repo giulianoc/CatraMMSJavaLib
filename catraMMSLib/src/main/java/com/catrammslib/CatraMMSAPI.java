@@ -3097,7 +3097,7 @@ public class CatraMMSAPI implements Serializable {
 
 			// binaryFileInputStream = new DataInputStream(new FileInputStream(mediaFile));
 
-			int chunkSize = 100 * 1000 * 1000;
+			long chunkSize = 100 * 1000 * 1000;
 
 			if (fileSizeInBytes <= chunkSize)
 			{
@@ -3109,16 +3109,23 @@ public class CatraMMSAPI implements Serializable {
 				return httpReturn;
 			}
 
-			int chunksNumber = (int) (fileSizeInBytes / chunkSize);                                                           
+			long chunksNumber = (long) (fileSizeInBytes / chunkSize);
 			if (fileSizeInBytes % chunkSize != 0)                                                                     
 				chunksNumber++;                                                                                       
 																													  
-			for(int chunkIndex = 0; chunkIndex < chunksNumber; chunkIndex++)                                          
+			for(long chunkIndex = 0; chunkIndex < chunksNumber; chunkIndex++)
 			{                                                                                                         
 				long contentRangeStart = chunkIndex * chunkSize;                                                   
 				long contentRangeEnd_Excluded = chunkIndex + 1 < chunksNumber ?                                    
 					(chunkIndex + 1) * chunkSize :                                                                    
 					fileSizeInBytes;
+
+                mLogger.info("ingestBinaryContent"
+                    + ", mmsURL: " + mmsURL
+                    + ", fileSizeInBytes: " + fileSizeInBytes
+                    + ", contentRangeStart: " + contentRangeStart
+                    + ", contentRangeEnd_Excluded: " + contentRangeEnd_Excluded
+                );
 
 				Date now = new Date();
 				httpReturn = HttpFeedFetcher.fetchPostHttpBinary(mmsURL, timeoutInSeconds, maxRetriesNumber,
