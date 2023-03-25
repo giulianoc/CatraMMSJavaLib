@@ -3,6 +3,7 @@ package com.catrammslib;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -35,7 +36,7 @@ import org.json.JSONObject;
 /**
  * Created by multi on 08.06.18.
  */
-public class CatraMMSAPI {
+public class CatraMMSAPI implements Serializable {
 
     private final Logger mLogger = Logger.getLogger(this.getClass());
 
