@@ -331,6 +331,7 @@ public class CatraMMSWorkflow {
             String label,
 
             String liveConfigurationLabel,
+            Long useVideoTrackFromMediaItemKey,
 
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
@@ -356,6 +357,8 @@ public class CatraMMSWorkflow {
             joTask.put("Parameters", joParameters);
 
 			joParameters.put("ConfigurationLabel", liveConfigurationLabel);
+            if (useVideoTrackFromMediaItemKey != null)
+                joParameters.put("useVideoTrackFromMediaItemKey", useVideoTrackFromMediaItemKey);
 
 			// this is a parameter used ONLY for the 'live channel/broadcaster' application.
 			if (defaultBroadcast != null && defaultBroadcast)
@@ -456,8 +459,8 @@ public class CatraMMSWorkflow {
     {
         try
         {
-            JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, encodersPool, 
-				proxyStartTime, proxyEndTime, userAgent, maxWidth, otherInputOptions,
+            JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, null,
+                encodersPool, proxyStartTime, proxyEndTime, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
 				liveProxyOutputList, joInternalMMSParameters, defaultBroadcast);
 

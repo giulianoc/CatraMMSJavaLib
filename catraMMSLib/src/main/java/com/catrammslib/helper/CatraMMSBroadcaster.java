@@ -578,8 +578,8 @@ public class CatraMMSBroadcaster {
                 joBroadcaster = CatraMMSWorkflow.buildLiveProxyJson(
 					broadcasterIngestionJobLabel,
 
-					// i prossimi due parametri sono legati tra loro
-					broadcasterStreamConfigurationLabel,
+					// i parametri Label e encodersPool sono legati tra loro
+					broadcasterStreamConfigurationLabel, null,
 					null,	// encodersPool,
 
 					broadcasterStart, broadcasterEnd,
