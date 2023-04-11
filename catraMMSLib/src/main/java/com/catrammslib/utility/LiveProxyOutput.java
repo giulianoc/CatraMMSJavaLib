@@ -59,7 +59,7 @@ public class LiveProxyOutput implements Serializable {
 
 		try
 		{
-			joOutput.put("OutputType", getOutputType());
+			joOutput.put("outputType", getOutputType());
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
 				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isEmpty())
@@ -99,7 +99,7 @@ public class LiveProxyOutput implements Serializable {
 				joOutput.put("EncodingProfileLabel", getEncodingProfileLabel());
 	
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
-				joOutput.put("OtherOutputOptions", getOtherOutputOptions());
+				joOutput.put("otherOutputOptions", getOtherOutputOptions());
 	
 			if (getVideoTrackIndexToBeUsed() != null && getVideoTrackIndexToBeUsed() != -1)
 				joOutput.put("videoTrackIndexToBeUsed",  getVideoTrackIndexToBeUsed());

@@ -260,10 +260,10 @@ public class CatraMMSWorkflow {
                 joParameters.put("otherInputOptions", otherInputOptions);
 
             if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
             if (userAgent != null && !userAgent.isEmpty())
-                joParameters.put("UserAgent", userAgent);
+                joParameters.put("userAgent", userAgent);
 
             {
                 JSONObject joRecordingPeriod = new JSONObject();
@@ -365,25 +365,25 @@ public class CatraMMSWorkflow {
 				joParameters.put("defaultBroadcast", defaultBroadcast);
 
             if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
             if (userAgent != null && !userAgent.isEmpty())
-                joParameters.put("UserAgent", userAgent);
+                joParameters.put("userAgent", userAgent);
 
             if (maxWidth != null)
-                joParameters.put("MaxWidth", maxWidth);
+                joParameters.put("maxWidth", maxWidth);
 
             if (otherInputOptions != null && !otherInputOptions.isEmpty())
-                joParameters.put("OtherInputOptions", otherInputOptions);
+                joParameters.put("otherInputOptions", otherInputOptions);
 
             if (maxAttemptsNumberInCaseOfErrors != null)
-                joParameters.put("MaxAttemptsNumberInCaseOfErrors", maxAttemptsNumberInCaseOfErrors);
+                joParameters.put("maxAttemptsNumberInCaseOfErrors", maxAttemptsNumberInCaseOfErrors);
             if (waitingSecondsBetweenAttemptsInCaseOfErrors != null)
-                joParameters.put("WaitingSecondsBetweenAttemptsInCaseOfErrors", waitingSecondsBetweenAttemptsInCaseOfErrors);
+                joParameters.put("waitingSecondsBetweenAttemptsInCaseOfErrors", waitingSecondsBetweenAttemptsInCaseOfErrors);
 
             if (proxyStartTime != null && proxyEndTime != null)
             {
-                joParameters.put("TimePeriod", true);
+                joParameters.put("timePeriod", true);
 
                 JSONObject joProxyPeriod = new JSONObject();
                 joParameters.put("schedule", joProxyPeriod);
@@ -395,7 +395,7 @@ public class CatraMMSWorkflow {
                 joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
             }
             else
-                joParameters.put("TimePeriod", false);
+                joParameters.put("timePeriod", false);
 
             if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
             {
@@ -515,14 +515,14 @@ public class CatraMMSWorkflow {
 				joParameters.put("defaultBroadcast", defaultBroadcast);
 
 			if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
             if (otherInputOptions != null && !otherInputOptions.isEmpty())
-                joParameters.put("OtherInputOptions", otherInputOptions);
+                joParameters.put("otherInputOptions", otherInputOptions);
 
             if (proxyStartTime != null && proxyEndTime != null)
             {
-                joParameters.put("TimePeriod", true);
+                joParameters.put("timePeriod", true);
 
                 JSONObject joProxyPeriod = new JSONObject();
                 joParameters.put("schedule", joProxyPeriod);
@@ -534,7 +534,7 @@ public class CatraMMSWorkflow {
                 joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
             }
             else
-                joParameters.put("TimePeriod", false);
+                joParameters.put("timePeriod", false);
 
             if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
             {
@@ -656,7 +656,7 @@ public class CatraMMSWorkflow {
 				joParameters.put("defaultBroadcast", defaultBroadcast);
 			
 			if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
             if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
             {
@@ -860,7 +860,7 @@ public class CatraMMSWorkflow {
 			}
 
 			if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
 			{
 				JSONObject joProxyPeriod = new JSONObject();
@@ -1865,7 +1865,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("EncodingProfilesSetLabel", encodingProfilesSetLabel);
 
             if (encodersPool != null && !encodersPool.isEmpty())
-                joParameters.put("EncodersPool", encodersPool);
+                joParameters.put("encodersPool", encodersPool);
 
             if (videoTrackIndex != null && videoTrackIndex >= 0)
                 joParameters.put("VideoTrackIndex", videoTrackIndex);

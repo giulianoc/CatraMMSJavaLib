@@ -8469,8 +8469,8 @@ public class CatraMMSAPI implements Serializable {
 					if (joMetadataContent.has("ConfigurationLabel") && !joMetadataContent.isNull("ConfigurationLabel"))
 						ingestionJob.setChannelLabel(joMetadataContent.getString("ConfigurationLabel"));
 
-					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
-                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("schedule"))
+					if (joMetadataContent.has("timePeriod") && !joMetadataContent.isNull("timePeriod")
+                        && joMetadataContent.getBoolean("timePeriod") && joMetadataContent.has("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -8487,8 +8487,8 @@ public class CatraMMSAPI implements Serializable {
                 else if (ingestionJob.getIngestionType().equalsIgnoreCase("VOD-Proxy")
                     && joMetadataContent != null)
                 {
-					if (joMetadataContent.has("TimePeriod") && !joMetadataContent.isNull("TimePeriod")
-                        && joMetadataContent.getBoolean("TimePeriod") && joMetadataContent.has("schedule"))
+					if (joMetadataContent.has("timePeriod") && !joMetadataContent.isNull("timePeriod")
+                        && joMetadataContent.getBoolean("timePeriod") && joMetadataContent.has("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                         dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
