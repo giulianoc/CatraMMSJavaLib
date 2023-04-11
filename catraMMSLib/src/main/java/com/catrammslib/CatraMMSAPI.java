@@ -1334,7 +1334,7 @@ public class CatraMMSAPI implements Serializable {
         {
 			JSONObject joEncoder = new JSONObject();
 
-			joEncoder.put("Label", label);
+			joEncoder.put("label", label);
 			joEncoder.put("External", external);
 			joEncoder.put("Enabled", enabled);
 			joEncoder.put("Protocol", protocol);
@@ -1395,7 +1395,7 @@ public class CatraMMSAPI implements Serializable {
         {
 			JSONObject joEncoder = new JSONObject();
 
-			joEncoder.put("Label", label);
+			joEncoder.put("label", label);
 			joEncoder.put("External", external);
 			joEncoder.put("Enabled", enabled);
 			joEncoder.put("Protocol", protocol);
@@ -1711,7 +1711,7 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             JSONObject joEncodersPool = new JSONObject();
-            joEncodersPool.put("Label", label);
+            joEncodersPool.put("label", label);
 
             JSONArray jaEncoderKeys = new JSONArray();
             joEncodersPool.put("encoderKeys", jaEncoderKeys);
@@ -1768,7 +1768,7 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             JSONObject joEncodersPool = new JSONObject();
-            joEncodersPool.put("Label", label);
+            joEncodersPool.put("label", label);
 
             JSONArray jaEncoderKeys = new JSONArray();
             joEncodersPool.put("encoderKeys", jaEncoderKeys);
@@ -4452,7 +4452,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joFacebookConf = new JSONObject();
 
-                joFacebookConf.put("Label", label);
+                joFacebookConf.put("label", label);
                 joFacebookConf.put("UserAccessToken", userAccessToken);
 
                 jsonFacebookConf = joFacebookConf.toString(4);
@@ -4492,7 +4492,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joFacebookConf = new JSONObject();
 
-                joFacebookConf.put("Label", label);
+                joFacebookConf.put("label", label);
                 joFacebookConf.put("UserAccessToken", userAccessToken);
 
                 jsonFacebookConf = joFacebookConf.toString(4);
@@ -4626,7 +4626,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joTwitchConf = new JSONObject();
 
-                joTwitchConf.put("Label", label);
+                joTwitchConf.put("label", label);
                 joTwitchConf.put("RefreshToken", refreshToken);
 
                 jsonTwitchConf = joTwitchConf.toString(4);
@@ -4666,7 +4666,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joTwitchConf = new JSONObject();
 
-                joTwitchConf.put("Label", label);
+                joTwitchConf.put("label", label);
                 joTwitchConf.put("RefreshToken", refreshToken);
 
                 jsonTwitchConf = joTwitchConf.toString(4);
@@ -4800,7 +4800,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joTiktokConf = new JSONObject();
 
-                joTiktokConf.put("Label", label);
+                joTiktokConf.put("label", label);
                 joTiktokConf.put("Token", token);
 
                 jsonTiktokConf = joTiktokConf.toString(4);
@@ -4840,7 +4840,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joTiktokConf = new JSONObject();
 
-                joTiktokConf.put("Label", label);
+                joTiktokConf.put("label", label);
                 joTiktokConf.put("Token", token);
 
                 jsonTiktokConf = joTiktokConf.toString(4);
@@ -6499,7 +6499,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joFTPConf = new JSONObject();
 
-                joFTPConf.put("Label", label);
+                joFTPConf.put("label", label);
                 joFTPConf.put("Server", ftpServer);
                 joFTPConf.put("Port", ftpPort);
                 joFTPConf.put("UserName", ftpUserName);
@@ -6545,7 +6545,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joFTPConf = new JSONObject();
 
-                joFTPConf.put("Label", label);
+                joFTPConf.put("label", label);
                 joFTPConf.put("Server", ftpServer);
                 joFTPConf.put("Port", ftpPort);
                 joFTPConf.put("UserName", ftpUserName);
@@ -6677,7 +6677,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joEMailConf = new JSONObject();
 
-                joEMailConf.put("Label", label);
+                joEMailConf.put("label", label);
                 joEMailConf.put("Addresses", addresses);
                 joEMailConf.put("Subject", subject);
                 joEMailConf.put("Message", message);
@@ -6720,7 +6720,7 @@ public class CatraMMSAPI implements Serializable {
             {
                 JSONObject joEMailConf = new JSONObject();
 
-                joEMailConf.put("Label", label);
+                joEMailConf.put("label", label);
                 joEMailConf.put("Addresses", addresses);
                 joEMailConf.put("Subject", subject);
                 joEMailConf.put("Message", message);
