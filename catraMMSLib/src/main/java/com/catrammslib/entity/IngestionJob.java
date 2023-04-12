@@ -109,6 +109,25 @@ public class IngestionJob implements Serializable, Comparable {
 	
 									break;
 								}
+                                else if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("HLS"))
+                                {
+                                    playable = true;
+
+                                    break;
+                                }
+                                else if (joOutput.has("OutputType") &&
+                                        (joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream")
+                                                || joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
+                                                || joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
+                                                || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
+                                        )
+                                        && joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+                                )
+                                {
+                                    playable = true;
+
+                                    break;
+                                }
 							}
 						}
 					}
@@ -156,6 +175,25 @@ public class IngestionJob implements Serializable, Comparable {
 
 								break;
 							}
+                            else if (joOutput.has("OutputType")
+                                    && joOutput.getString("OutputType").equalsIgnoreCase("HLS_Channel"))
+                            {
+                                playable = true;
+
+                                break;
+                            }
+                            else if (joOutput.has("OutputType") &&
+                                    (joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
+                                            || joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
+                                            || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
+                                    )
+                                    && joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+                            )
+                            {
+                                playable = true;
+
+                                break;
+                            }
 						}
 					}
 				}
