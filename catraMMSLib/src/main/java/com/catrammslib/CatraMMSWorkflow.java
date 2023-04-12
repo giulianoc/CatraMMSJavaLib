@@ -249,7 +249,7 @@ public class CatraMMSWorkflow {
 
             joParameters.put("recordingCode", recordingCode);
 
-            joParameters.put("ConfigurationLabel", liveConfigurationLabel);
+            joParameters.put("configurationLabel", liveConfigurationLabel);
 
             joParameters.put("EncoderPriority", encodingPriority);
             // joParameters.put("HighAvailability", highAvailability);
@@ -356,7 +356,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
 
-			joParameters.put("ConfigurationLabel", liveConfigurationLabel);
+			joParameters.put("configurationLabel", liveConfigurationLabel);
             if (useVideoTrackFromMediaItemKey != null)
                 joParameters.put("useVideoTrackFromMediaItemKey", useVideoTrackFromMediaItemKey);
 
@@ -762,7 +762,7 @@ public class CatraMMSWorkflow {
                     mediaItemReferenceList,
                     null);
 
-			joParameters.put("ConfigurationLabel", youTubeConfigurationLabel);
+			joParameters.put("configurationLabel", youTubeConfigurationLabel);
 
             if (title != null && !title.isEmpty())
                 joParameters.put("Title", title);
@@ -847,7 +847,7 @@ public class CatraMMSWorkflow {
 			if (channelConfigurationLabel != null)
 			{
                 joParameters.put("SourceType", "Live");
-                joParameters.put("ConfigurationLabel", channelConfigurationLabel);
+                joParameters.put("configurationLabel", channelConfigurationLabel);
 			}
 			else
 			{
@@ -1167,7 +1167,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
 
-            joParameters.put("ConfigurationLabel", configurationLabel);
+            joParameters.put("configurationLabel", configurationLabel);
 
             if (userSubstitutionsToBeReplaced != null
                     && userSubstitutionsReplaceWith != null
@@ -1946,7 +1946,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("Parameters", joParameters);
 
-            joParameters.put("ConfigurationLabel", ftpConfigurationLabel);
+            joParameters.put("configurationLabel", ftpConfigurationLabel);
 
             return joTask;
         }
