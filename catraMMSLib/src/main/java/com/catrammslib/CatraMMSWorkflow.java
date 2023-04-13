@@ -285,7 +285,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("MonitorHLS", joMonitorHLS);
 
                 if (monitorHLSEncodingProfileLabel != null && !monitorHLSEncodingProfileLabel.isEmpty())
-                    joMonitorHLS.put("EncodingProfileLabel", monitorHLSEncodingProfileLabel);
+                    joMonitorHLS.put("encodingProfileLabel", monitorHLSEncodingProfileLabel);
             }
             if (liveRecorderVirtualVOD)
             {
@@ -295,7 +295,7 @@ public class CatraMMSWorkflow {
                 if (liveRecorderVirtualVODMaxDurationInMinutes != null)
                     joVirtualVOD.put("LiveRecorderVirtualVODMaxDuration", liveRecorderVirtualVODMaxDurationInMinutes);
                 if (liveRecorderVirtualVODEncodingProfileLabel != null && !liveRecorderVirtualVODEncodingProfileLabel.isEmpty())
-                    joVirtualVOD.put("EncodingProfileLabel", liveRecorderVirtualVODEncodingProfileLabel);
+                    joVirtualVOD.put("encodingProfileLabel", liveRecorderVirtualVODEncodingProfileLabel);
             }
 
             if (liveRecorderOutputList != null && liveRecorderOutputList.size() > 0)
@@ -1639,7 +1639,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("EncodingPriority", encodingPriority);
 
             if (encodingProfileLabel != null && !encodingProfileLabel.isEmpty())
-                joParameters.put("EncodingProfileLabel", encodingProfileLabel);
+                joParameters.put("encodingProfileLabel", encodingProfileLabel);
 
             if (introOverlayDurationInSeconds != null)
                 joParameters.put("IntroOverlayDurationInSeconds", introOverlayDurationInSeconds);
@@ -1856,11 +1856,11 @@ public class CatraMMSWorkflow {
             joParameters.put("Ingester", ingester);
 
             if (contentType != null)
-                joParameters.put("ContentType", contentType);
+                joParameters.put("contentType", contentType);
 
             joParameters.put("EncodingPriority", encodingPriority);
             if (encodingProfileLabel != null)
-                joParameters.put("EncodingProfileLabel", encodingProfileLabel);
+                joParameters.put("encodingProfileLabel", encodingProfileLabel);
 			else if (encodingProfilesSetLabel != null)
                 joParameters.put("EncodingProfilesSetLabel", encodingProfilesSetLabel);
 

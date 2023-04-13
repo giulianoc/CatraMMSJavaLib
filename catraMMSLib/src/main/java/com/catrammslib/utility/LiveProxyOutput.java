@@ -96,7 +96,7 @@ public class LiveProxyOutput implements Serializable {
 			}
 	
 			if (getEncodingProfileLabel() != null && !getEncodingProfileLabel().isEmpty())
-				joOutput.put("EncodingProfileLabel", getEncodingProfileLabel());
+				joOutput.put("encodingProfileLabel", getEncodingProfileLabel());
 	
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
 				joOutput.put("otherOutputOptions", getOtherOutputOptions());
