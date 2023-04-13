@@ -301,7 +301,7 @@ public class CatraMMSWorkflow {
             if (liveRecorderOutputList != null && liveRecorderOutputList.size() > 0)
             {
                 JSONArray jaOutputs = new JSONArray();
-                joParameters.put("Outputs", jaOutputs);
+                joParameters.put("outputs", jaOutputs);
 
                 for(LiveProxyOutput liveProxyOutput: liveRecorderOutputList)
                 {
@@ -406,7 +406,7 @@ public class CatraMMSWorkflow {
             }
 
             JSONArray jaOutputs = new JSONArray();
-            joParameters.put("Outputs", jaOutputs);
+            joParameters.put("outputs", jaOutputs);
 
             for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
             {
@@ -545,7 +545,7 @@ public class CatraMMSWorkflow {
             }
 
             JSONArray jaOutputs = new JSONArray();
-            joParameters.put("Outputs", jaOutputs);
+            joParameters.put("outputs", jaOutputs);
 
             for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
             {
@@ -667,7 +667,7 @@ public class CatraMMSWorkflow {
             }
 
             JSONArray jaOutputs = new JSONArray();
-            joParameters.put("Outputs", jaOutputs);
+            joParameters.put("outputs", jaOutputs);
 
             for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
             {
