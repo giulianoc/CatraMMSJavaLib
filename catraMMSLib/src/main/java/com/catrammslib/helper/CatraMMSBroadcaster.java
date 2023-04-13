@@ -457,7 +457,7 @@ public class CatraMMSBroadcaster {
                     	+ ", broadcastDefaultPlaylistItem.getMediaType: " + broadcastDefaultPlaylistItem.getMediaType());
 				}
 
-                joWorkflow.put("Task", joBroadcast);
+                joWorkflow.put("task", joBroadcast);
             }
 
             mLogger.info("Ready for the ingest"
@@ -594,7 +594,7 @@ public class CatraMMSBroadcaster {
 					joExtraLiveProxyInternalMMSParameters,
 					null
                 );
-                joWorkflow.put("Task", joBroadcaster);
+                joWorkflow.put("task", joBroadcaster);
             }
 
             mLogger.info("buildBroadcasterJson, ready for the ingest"

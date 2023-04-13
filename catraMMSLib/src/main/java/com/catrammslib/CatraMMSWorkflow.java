@@ -80,7 +80,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("ExecutionType", executionType);
 
                 jaTasks = new JSONArray();
-                joParameters.put("Tasks", jaTasks);
+                joParameters.put("tasks", jaTasks);
 
                 if (referencesOutput != null && referencesOutput.size() > 0)
                 {
@@ -1088,7 +1088,7 @@ public class CatraMMSWorkflow {
                 if (jaParent != null)
                     jaParent.put(joImageGroupOfTasks);
                 else if (joParentOnSuccess != null)
-                    joParentOnSuccess.put("Task", joImageGroupOfTasks);
+                    joParentOnSuccess.put("task", joImageGroupOfTasks);
             }
 
             JSONObject joFrameContainingFace = CatraMMSWorkflow.buildFaceRecognitionJson(
@@ -1100,7 +1100,7 @@ public class CatraMMSWorkflow {
             {
                 JSONObject joFrameContainingFaceOnSuccess = CatraMMSWorkflow.buildEventJson(joFrameContainingFace, "OnSuccess");
 
-                joFrameContainingFaceOnSuccess.put("Task", CatraMMSWorkflow.buildEncodeJson(
+                joFrameContainingFaceOnSuccess.put("task", CatraMMSWorkflow.buildEncodeJson(
                         "Encode image (FrameContainingFace): " + title,
                         ingester, "image",
                         "High",
@@ -1121,13 +1121,13 @@ public class CatraMMSWorkflow {
                         imageTags, ingester, frameCaptureSeconds, imageRetention,
                         null, null, null, null
                 );
-                joFrameContainingFaceOnError.put("Task", joFrame);
+                joFrameContainingFaceOnError.put("task", joFrame);
             }
 
             {
                 JSONObject joFrameOnSuccess = CatraMMSWorkflow.buildEventJson(joFrame, "OnSuccess");
 
-                joFrameOnSuccess.put("Task", CatraMMSWorkflow.buildEncodeJson(
+                joFrameOnSuccess.put("task", CatraMMSWorkflow.buildEncodeJson(
                         "Encode image (Frame): " + title,
                         ingester, "image",
                         "High",
