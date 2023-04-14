@@ -106,7 +106,8 @@ public class IngestionJob implements Serializable, Comparable {
 										|| joOutput.getString("outputType").equalsIgnoreCase("CDN_AWS")
                                         || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                     )
-									&& joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+									&& ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
+                                        || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
 									)
 								{
 									playable = true;
@@ -125,7 +126,8 @@ public class IngestionJob implements Serializable, Comparable {
                                                 || joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
                                                 || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                         )
-                                        && joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+                                        && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
+                                            || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
                                 )
                                 {
                                     playable = true;
@@ -176,7 +178,8 @@ public class IngestionJob implements Serializable, Comparable {
 									|| joOutput.getString("outputType").equalsIgnoreCase("CDN_AWS")
                                     || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                 )
-								&& joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+                                && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
+                                    || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
 								)
 							{
 								playable = true;
@@ -195,7 +198,8 @@ public class IngestionJob implements Serializable, Comparable {
                                             || joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
                                             || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                     )
-                                    && joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty()
+                                    && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
+                                        || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
                             )
                             {
                                 playable = true;
