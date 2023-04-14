@@ -586,7 +586,10 @@ public class HttpFeedFetcher {
 						+ ", statusCode: " + statusCode
 						+ ", responseContentLength: " + responseContentLength
 					);
-                    if (statusCode != HttpStatus.SC_OK && statusCode != HttpStatus.SC_CREATED)
+                    if (statusCode != HttpStatus.SC_OK
+                            && statusCode != HttpStatus.SC_CREATED
+                            && statusCode != HttpStatus.SC_NO_CONTENT   // 204
+                    )
                     {
 						String body = getErrorBody(conn, url);
 
