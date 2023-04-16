@@ -253,8 +253,8 @@ public class CatraMMSWorkflow {
 
             joParameters.put("EncoderPriority", encodingPriority);
             // joParameters.put("HighAvailability", highAvailability);
-            joParameters.put("OutputFileFormat", outputFileFormat);
-            joParameters.put("SegmentDuration", segmentDurationInSeconds);
+            joParameters.put("outputFileFormat", outputFileFormat);
+            joParameters.put("segmentDuration", segmentDurationInSeconds);
 
             if (otherInputOptions != null && !otherInputOptions.isEmpty())
                 joParameters.put("otherInputOptions", otherInputOptions);
@@ -282,7 +282,7 @@ public class CatraMMSWorkflow {
             if (monitorHLS != null && monitorHLS)
             {
                 JSONObject joMonitorHLS = new JSONObject();
-                joParameters.put("MonitorHLS", joMonitorHLS);
+                joParameters.put("monitorHLS", joMonitorHLS);
 
                 if (monitorHLSEncodingProfileLabel != null && !monitorHLSEncodingProfileLabel.isEmpty())
                     joMonitorHLS.put("encodingProfileLabel", monitorHLSEncodingProfileLabel);
@@ -773,7 +773,7 @@ public class CatraMMSWorkflow {
 			if (tags != null)
 			{
 				JSONArray jaTags = new JSONArray();
-				joParameters.put("Tags", jaTags);
+				joParameters.put("tags", jaTags);
 
 				for (String tag: tags)
 				{
@@ -1036,7 +1036,7 @@ public class CatraMMSWorkflow {
                     null);
 
             joParameters.put("CascadeName", "haarcascade_frontalface_alt_tree");
-            joParameters.put("EncodingPriority", "High");    // takes a lot of time by the MMSEngine
+            joParameters.put("encodingPriority", "High");    // takes a lot of time by the MMSEngine
             joParameters.put("InitialFramesNumberToBeSkipped", faceRecognition_InitialFramesNumberToBeSkipped);
             joParameters.put("OneFramePerSecond", true);
             joParameters.put("Output", "FrameContainingFace");
@@ -1282,9 +1282,9 @@ public class CatraMMSWorkflow {
                     null);
 
             if (outputFileFormat == null || outputFileFormat.isEmpty())
-                joParameters.put("OutputFileFormat", "mp4");
+                joParameters.put("outputFileFormat", "mp4");
             else
-                joParameters.put("OutputFileFormat", outputFileFormat);
+                joParameters.put("outputFileFormat", outputFileFormat);
 
             if (forTheWorkflowEditor)
             {
@@ -1352,7 +1352,7 @@ public class CatraMMSWorkflow {
 
             if (variantOfReferencedLabel != null && !variantOfReferencedLabel.isEmpty())
             {
-                joParameters.put("Ingester", ingester);
+                joParameters.put("ingester", ingester);
 
                 joParameters.put("FileFormat", fileFormat);
 
@@ -1636,7 +1636,7 @@ public class CatraMMSWorkflow {
                     waitForGlobalIngestionLabel);
 
             if (encodingPriority != null && !encodingPriority.isEmpty())
-                joParameters.put("EncodingPriority", encodingPriority);
+                joParameters.put("encodingPriority", encodingPriority);
 
             if (encodingProfileLabel != null && !encodingProfileLabel.isEmpty())
                 joParameters.put("encodingProfileLabel", encodingProfileLabel);
@@ -1697,7 +1697,7 @@ public class CatraMMSWorkflow {
                     null);
 
             if (outputFileFormat != null)
-                joParameters.put("OutputFileFormat", outputFileFormat);
+                joParameters.put("outputFileFormat", outputFileFormat);
             joParameters.put("StartTimeInSeconds", startTimeInSeconds);
             joParameters.put("EndTimeInSeconds", endTimeInSeconds);
             joParameters.put("CutType", cutType);
@@ -1808,7 +1808,7 @@ public class CatraMMSWorkflow {
                     mediaItemReferenceList,
                     null);
 
-            joParameters.put("OutputFileFormat", outputFileFormat);
+            joParameters.put("outputFileFormat", outputFileFormat);
 
             if (utcProcessingStartingFrom != null)
             {
@@ -1853,12 +1853,12 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
-            joParameters.put("Ingester", ingester);
+            joParameters.put("ingester", ingester);
 
             if (contentType != null)
                 joParameters.put("contentType", contentType);
 
-            joParameters.put("EncodingPriority", encodingPriority);
+            joParameters.put("encodingPriority", encodingPriority);
             if (encodingProfileLabel != null)
                 joParameters.put("encodingProfileLabel", encodingProfileLabel);
 			else if (encodingProfilesSetLabel != null)
@@ -2031,7 +2031,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
-            joParameters.put("Ingester", ingester);
+            joParameters.put("ingester", ingester);
 
             setCommonParameters(joParameters,
                     null,
@@ -2083,7 +2083,7 @@ public class CatraMMSWorkflow {
 
             joParameters.put("VideoSpeedType", videoSpeedType);
             joParameters.put("VideoSpeedSize", videoSpeedSize);
-            joParameters.put("EncodingPriority", encodingPriority);
+            joParameters.put("encodingPriority", encodingPriority);
 
             return joTask;
         }
@@ -2131,7 +2131,7 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
-            joParameters.put("Ingester", ingester);
+            joParameters.put("ingester", ingester);
 
 			{
 				JSONObject joDrawTextDetails = new JSONObject();
@@ -2201,7 +2201,7 @@ public class CatraMMSWorkflow {
         try
         {
             joParameters.put("Title", title);
-            joParameters.put("Ingester", ingester);
+            joParameters.put("ingester", ingester);
             if (mediaItemRetention != null && !mediaItemRetention.isEmpty())
                 joParameters.put("Retention", mediaItemRetention);
             if (physicalItemRetention != null && !physicalItemRetention.isEmpty())
@@ -2210,7 +2210,7 @@ public class CatraMMSWorkflow {
             if (tags != null && tags.size() > 0)
             {
                 JSONArray jaTags = new JSONArray();
-                joParameters.put("Tags", jaTags);
+                joParameters.put("tags", jaTags);
 
                 for(String tag: tags)
                 {
@@ -2220,15 +2220,18 @@ public class CatraMMSWorkflow {
             }
 
             if (joUserData != null)
-                joParameters.put("UserData", joUserData);
+                joParameters.put("userData", joUserData);
 
             if (startPublishing!= null && endPublishing != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("StartPublishing", dateFormat.format(startPublishing));
-                joParameters.put("EndPublishing", dateFormat.format(endPublishing));
+                JSONObject joPublishing = new JSONObject();
+                joParameters.put("publishing", joPublishing);
+
+                joPublishing.put("startPublishing", dateFormat.format(startPublishing));
+                joPublishing.put("endPublishing", dateFormat.format(endPublishing));
             }
 
             if (uniqueName != null)
@@ -2260,10 +2263,10 @@ public class CatraMMSWorkflow {
             if (waitForGlobalIngestionLabel != null && !waitForGlobalIngestionLabel.isEmpty())
             {
                 JSONArray jaWaitForArray = new JSONArray();
-                joParameters.put("WaitFor", jaWaitForArray);
+                joParameters.put("waitFor", jaWaitForArray);
 
                 JSONObject joWaitForLabel = new JSONObject();
-                joWaitForLabel.put("GlobalIngestionLabel", waitForGlobalIngestionLabel);
+                joWaitForLabel.put("globalIngestionLabel", waitForGlobalIngestionLabel);
 
                 jaWaitForArray.put(joWaitForLabel);
             }

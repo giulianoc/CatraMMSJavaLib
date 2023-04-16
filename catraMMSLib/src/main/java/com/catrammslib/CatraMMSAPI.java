@@ -2420,9 +2420,9 @@ public class CatraMMSAPI implements Serializable {
             if (newTitle != null)
                 joEdit.put("Title", newTitle);
             if (newUserData != null)
-                joEdit.put("UserData", newUserData); // mms backend manages this field as string since it saves it as string into DB
+                joEdit.put("userData", newUserData); // mms backend manages this field as string since it saves it as string into DB
             if (jaTags != null)
-                joEdit.put("Tags", jaTags); // mms backend manages this field as a json array to get the tags
+                joEdit.put("tags", jaTags); // mms backend manages this field as a json array to get the tags
             if (newRetentionInMinutes != null)
                 joEdit.put("RetentionInMinutes", newRetentionInMinutes);
             if (newUniqueName != null)
@@ -8430,8 +8430,8 @@ public class CatraMMSAPI implements Serializable {
                 if (ingestionJob.getMetaDataContent() != null && !ingestionJob.getMetaDataContent().isEmpty())
                     joMetadataContent = new JSONObject(ingestionJob.getMetaDataContent());
 
-                if (joMetadataContent.has("Ingester") && !joMetadataContent.isNull("Ingester"))
-                    ingestionJob.setIngester(joMetadataContent.getString("Ingester"));
+                if (joMetadataContent.has("ingester") && !joMetadataContent.isNull("ingester"))
+                    ingestionJob.setIngester(joMetadataContent.getString("ingester"));
 
                 if (ingestionJob.getIngestionType().equalsIgnoreCase("Live-Recorder")
                         && joMetadataContent != null)
@@ -8455,7 +8455,7 @@ public class CatraMMSAPI implements Serializable {
                     else
                         ingestionJob.setRecordingVirtualVOD(false);
 
-                    if (joMetadataContent.has("MonitorHLS"))
+                    if (joMetadataContent.has("monitorHLS"))
                         ingestionJob.setRecordingMonitorHLS(true);
                     else
                         ingestionJob.setRecordingMonitorHLS(false);
