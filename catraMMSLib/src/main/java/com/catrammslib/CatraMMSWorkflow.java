@@ -1354,14 +1354,14 @@ public class CatraMMSWorkflow {
             {
                 joParameters.put("ingester", ingester);
 
-                joParameters.put("FileFormat", fileFormat);
+                joParameters.put("fileFormat", fileFormat);
 
                 // see docs/TASK_01_Add_Content_JSON_Format.txt
                 if (regenerateTimestamps != null)
                     joParameters.put("RegenerateTimestamps", regenerateTimestamps);
 
                 if (sourceURL != null && !sourceURL.isEmpty())
-                    joParameters.put("SourceURL", sourceURL);
+                    joParameters.put("sourceURL", sourceURL);
                 else if (pushBinaryFileName != null)
                 {
                     // this is a parameter just to manage the scenario described on AddContentProperties.setData(JSONObject)
@@ -1389,14 +1389,14 @@ public class CatraMMSWorkflow {
                         null,
                         null);
 
-                joParameters.put("FileFormat", fileFormat);
+                joParameters.put("fileFormat", fileFormat);
 
                 // see docs/TASK_01_Add_Content_JSON_Format.txt
                 if (regenerateTimestamps != null)
                     joParameters.put("RegenerateTimestamps", regenerateTimestamps);
 
                 if (sourceURL != null && !sourceURL.isEmpty())
-                    joParameters.put("SourceURL", sourceURL);
+                    joParameters.put("sourceURL", sourceURL);
                 else if (pushBinaryFileName != null)
                 {
                     // this is a parameter just to manage the scenario described on AddContentProperties.setData(JSONObject)

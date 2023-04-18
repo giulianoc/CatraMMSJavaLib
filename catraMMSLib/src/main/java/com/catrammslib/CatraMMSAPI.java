@@ -8691,7 +8691,7 @@ public class CatraMMSAPI implements Serializable {
             encodingProfile.setContentType(encodingProfileInfo.getString("contentType"));
 
             JSONObject joProfileInfo = encodingProfileInfo.getJSONObject("profile");
-            encodingProfile.setFileFormat(joProfileInfo.getString("FileFormat"));
+            encodingProfile.setFileFormat(joProfileInfo.getString("fileFormat"));
 
             if (deep)
             {
