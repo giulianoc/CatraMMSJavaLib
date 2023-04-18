@@ -77,7 +77,7 @@ public class CatraMMSWorkflow {
                 JSONObject joParameters = new JSONObject();
                 joGroupOfTasks.put("parameters", joParameters);
 
-                joParameters.put("ExecutionType", executionType);
+                joParameters.put("executionType", executionType);
 
                 jaTasks = new JSONArray();
                 joParameters.put("tasks", jaTasks);
@@ -85,7 +85,7 @@ public class CatraMMSWorkflow {
                 if (referencesOutput != null && referencesOutput.size() > 0)
                 {
                     // jaReferencesOutput = new JSONArray();
-                    joParameters.put("ReferencesOutput", jaReferencesOutput);
+                    joParameters.put("referencesOutput", jaReferencesOutput);
 
                     for(String referenceOutput: referencesOutput)
                     {
