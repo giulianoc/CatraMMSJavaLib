@@ -27,7 +27,7 @@ public class CatraMMSWorkflow {
         {
             JSONObject joWorkflow = new JSONObject();
             joWorkflow.put("label", label);
-            joWorkflow.put("Type", "Workflow");
+            joWorkflow.put("type", "Workflow");
 
             return joWorkflow;
         }
@@ -70,7 +70,7 @@ public class CatraMMSWorkflow {
             JSONObject joGroupOfTasks = new JSONObject();
 
             joGroupOfTasks.put("label", label);
-            joGroupOfTasks.put("Type", "GroupOfTasks");
+            joGroupOfTasks.put("type", "GroupOfTasks");
             JSONArray jaTasks;
             JSONArray jaReferencesOutput = new JSONArray();
             {
@@ -134,7 +134,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Workflow-As-Library");
+            joTask.put("type", "Workflow-As-Library");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -227,7 +227,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Live-Recorder");
+            joTask.put("type", "Live-Recorder");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -351,7 +351,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Live-Proxy");
+            joTask.put("type", "Live-Proxy");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -500,7 +500,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "VOD-Proxy");
+            joTask.put("type", "VOD-Proxy");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -630,7 +630,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Countdown");
+            joTask.put("type", "Countdown");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -752,7 +752,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Post-On-YouTube");
+            joTask.put("type", "Post-On-YouTube");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -822,7 +822,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "YouTube-Live-Broadcast");
+            joTask.put("type", "YouTube-Live-Broadcast");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -899,7 +899,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Post-On-Facebook");
+            joTask.put("type", "Post-On-Facebook");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -948,7 +948,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Facebook-Live-Broadcast");
+            joTask.put("type", "Facebook-Live-Broadcast");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1019,7 +1019,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Face-Recognition");
+            joTask.put("type", "Face-Recognition");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1162,7 +1162,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Email-Notification");
+            joTask.put("type", "Email-Notification");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1221,7 +1221,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Frame");
+            joTask.put("type", "Frame");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1265,7 +1265,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Extract-Tracks");
+            joTask.put("type", "Extract-Tracks");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1345,7 +1345,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Add-Content");
+            joTask.put("type", "Add-Content");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1440,12 +1440,12 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Media-Cross-Reference");
+            joTask.put("type", "Media-Cross-Reference");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
-            joParameters.put("Type", mediaCrossReferenceType);
+            joParameters.put("type", mediaCrossReferenceType);
 
             if (firstReferenceLabel != null && secondReferenceLabel != null)
             {
@@ -1499,7 +1499,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Concat-Demuxer");
+            joTask.put("type", "Concat-Demuxer");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1556,7 +1556,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Check-Streaming");
+            joTask.put("type", "Check-Streaming");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1619,7 +1619,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Intro-Outro-Overlay");
+            joTask.put("type", "Intro-Outro-Overlay");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1680,7 +1680,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Cut");
+            joTask.put("type", "Cut");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1738,7 +1738,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Live-Cut");
+            joTask.put("type", "Live-Cut");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1798,7 +1798,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Change-File-Format");
+            joTask.put("type", "Change-File-Format");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1848,7 +1848,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Encode");
+            joTask.put("type", "Encode");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1907,7 +1907,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Local-Copy");
+            joTask.put("type", "Local-Copy");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1941,7 +1941,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "FTP-Delivery");
+            joTask.put("type", "FTP-Delivery");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -1976,7 +1976,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "HTTP-Callback");
+            joTask.put("type", "HTTP-Callback");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -2026,7 +2026,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Remove-Content");
+            joTask.put("type", "Remove-Content");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -2065,7 +2065,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Video-Speed");
+            joTask.put("type", "Video-Speed");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
@@ -2126,7 +2126,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = new JSONObject();
 
             joTask.put("label", label);
-            joTask.put("Type", "Overlay-Text-On-Video");
+            joTask.put("type", "Overlay-Text-On-Video");
 
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);

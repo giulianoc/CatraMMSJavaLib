@@ -9135,8 +9135,8 @@ public class CatraMMSAPI implements Serializable {
 
                     if (joWorkflowVariable.has("Description"))
                         workflowVariable.setDescription(joWorkflowVariable.getString("Description"));
-                    if (joWorkflowVariable.has("Type"))
-                        workflowVariable.setType(joWorkflowVariable.getString("Type"));
+                    if (joWorkflowVariable.has("type"))
+                        workflowVariable.setType(joWorkflowVariable.getString("type"));
                     else
                         workflowVariable.setType("string");
                     if (!workflowVariable.isNullVariable() && joWorkflowVariable.has("Value"))
