@@ -8697,30 +8697,30 @@ public class CatraMMSAPI implements Serializable {
             {
                 if (encodingProfile.getContentType().equalsIgnoreCase("video"))
                 {
-                    JSONObject joVideoInfo = joProfileInfo.getJSONObject("Video");
+                    JSONObject joVideoInfo = joProfileInfo.getJSONObject("video");
 
-                    encodingProfile.getVideoDetails().setCodec(joVideoInfo.getString("Codec"));
-                    if (joVideoInfo.isNull("Profile"))
+                    encodingProfile.getVideoDetails().setCodec(joVideoInfo.getString("codec"));
+                    if (joVideoInfo.isNull("profile"))
                         encodingProfile.getVideoDetails().setProfile(null);
                     else
-                        encodingProfile.getVideoDetails().setProfile(joVideoInfo.getString("Profile"));
-                    encodingProfile.getVideoDetails().setTwoPasses(joVideoInfo.getBoolean("TwoPasses"));
-                    if (joVideoInfo.isNull("OtherOutputParameters"))
+                        encodingProfile.getVideoDetails().setProfile(joVideoInfo.getString("profile"));
+                    encodingProfile.getVideoDetails().setTwoPasses(joVideoInfo.getBoolean("twoPasses"));
+                    if (joVideoInfo.isNull("otherOutputParameters"))
                         encodingProfile.getVideoDetails().setOtherOutputParameters(null);
                     else
-                        encodingProfile.getVideoDetails().setOtherOutputParameters(joVideoInfo.getString("OtherOutputParameters"));
-                    if (joVideoInfo.isNull("FrameRate"))
+                        encodingProfile.getVideoDetails().setOtherOutputParameters(joVideoInfo.getString("otherOutputParameters"));
+                    if (joVideoInfo.isNull("frameRate"))
                         encodingProfile.getVideoDetails().setFrameRate(null);
                     else
-                        encodingProfile.getVideoDetails().setFrameRate(joVideoInfo.getLong("FrameRate"));
+                        encodingProfile.getVideoDetails().setFrameRate(joVideoInfo.getLong("frameRate"));
                     if (joVideoInfo.isNull("KeyFrameIntervalInSeconds"))
                         encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(null);
                     else
                         encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(joVideoInfo.getLong("KeyFrameIntervalInSeconds"));
 
-                    if (joVideoInfo.has("BitRates"))
+                    if (joVideoInfo.has("bitRates"))
                     {
-                        JSONArray jaBitRates = joVideoInfo.getJSONArray("BitRates");
+                        JSONArray jaBitRates = joVideoInfo.getJSONArray("bitRates");
                         for (int bitRateIndex = 0; bitRateIndex < jaBitRates.length(); bitRateIndex++)
                         {
                             JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
@@ -8728,9 +8728,9 @@ public class CatraMMSAPI implements Serializable {
                             VideoBitRate videoBitRate = new VideoBitRate();
                             encodingProfile.getVideoDetails().getVideoBitRateList().add(videoBitRate);
 
-                            videoBitRate.setWidth(joBitRate.getLong("Width"));
-                            videoBitRate.setHeight(joBitRate.getLong("Height"));
-                            videoBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
+                            videoBitRate.setWidth(joBitRate.getLong("width"));
+                            videoBitRate.setHeight(joBitRate.getLong("height"));
+                            videoBitRate.setkBitRate(joBitRate.getLong("kBitRate"));
                             if (!joBitRate.has("ForceOriginalAspectRatio") || joBitRate.isNull("ForceOriginalAspectRatio"))
                                 videoBitRate.setForceOriginalAspectRatio(null);
                             else
@@ -8750,25 +8750,25 @@ public class CatraMMSAPI implements Serializable {
                         }
                     }
 
-                    JSONObject joAudioInfo = joProfileInfo.getJSONObject("Audio");
+                    JSONObject joAudioInfo = joProfileInfo.getJSONObject("audio");
 
-                    encodingProfile.getAudioDetails().setCodec(joAudioInfo.getString("Codec"));
-                    if (joAudioInfo.isNull("OtherOutputParameters"))
+                    encodingProfile.getAudioDetails().setCodec(joAudioInfo.getString("codec"));
+                    if (joAudioInfo.isNull("otherOutputParameters"))
                         encodingProfile.getAudioDetails().setOtherOutputParameters(null);
                     else
-                        encodingProfile.getAudioDetails().setOtherOutputParameters(joAudioInfo.getString("OtherOutputParameters"));
-                    if (joAudioInfo.isNull("ChannelsNumber"))
+                        encodingProfile.getAudioDetails().setOtherOutputParameters(joAudioInfo.getString("otherOutputParameters"));
+                    if (joAudioInfo.isNull("channelsNumber"))
                         encodingProfile.getAudioDetails().setChannelsNumber(null);
                     else
-                        encodingProfile.getAudioDetails().setChannelsNumber(joAudioInfo.getLong("ChannelsNumber"));
+                        encodingProfile.getAudioDetails().setChannelsNumber(joAudioInfo.getLong("channelsNumber"));
                     if (joAudioInfo.isNull("SampleRate"))
                         encodingProfile.getAudioDetails().setSampleRate(null);
                     else
                         encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
 
-                    if (joAudioInfo.has("BitRates"))
+                    if (joAudioInfo.has("bitRates"))
                     {
-                        JSONArray jaBitRates = joAudioInfo.getJSONArray("BitRates");
+                        JSONArray jaBitRates = joAudioInfo.getJSONArray("bitRates");
                         for (int bitRateIndex = 0; bitRateIndex < jaBitRates.length(); bitRateIndex++)
                         {
                             JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
@@ -8776,34 +8776,34 @@ public class CatraMMSAPI implements Serializable {
                             AudioBitRate audioBitRate = new AudioBitRate();
                             encodingProfile.getVideoDetails().getAudioBitRateList().add(audioBitRate);
 
-                            if (!joBitRate.has("KBitRate") || joBitRate.isNull("KBitRate"))
+                            if (!joBitRate.has("kBitRate") || joBitRate.isNull("kBitRate"))
                                 audioBitRate.setkBitRate(null);
                             else
-                                audioBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
+                                audioBitRate.setkBitRate(joBitRate.getLong("kBitRate"));
                         }
                     }
                 }
                 else if (encodingProfile.getContentType().equalsIgnoreCase("audio"))
                 {
-                    JSONObject joAudioInfo = joProfileInfo.getJSONObject("Audio");
+                    JSONObject joAudioInfo = joProfileInfo.getJSONObject("audio");
 
-                    encodingProfile.getAudioDetails().setCodec(joAudioInfo.getString("Codec"));
-                    if (joAudioInfo.isNull("OtherOutputParameters"))
+                    encodingProfile.getAudioDetails().setCodec(joAudioInfo.getString("codec"));
+                    if (joAudioInfo.isNull("otherOutputParameters"))
                         encodingProfile.getAudioDetails().setOtherOutputParameters(null);
                     else
-                        encodingProfile.getAudioDetails().setOtherOutputParameters(joAudioInfo.getString("OtherOutputParameters"));
-                    if (joAudioInfo.isNull("ChannelsNumber"))
+                        encodingProfile.getAudioDetails().setOtherOutputParameters(joAudioInfo.getString("otherOutputParameters"));
+                    if (joAudioInfo.isNull("channelsNumber"))
                         encodingProfile.getAudioDetails().setChannelsNumber(null);
                     else
-                        encodingProfile.getAudioDetails().setChannelsNumber(joAudioInfo.getLong("ChannelsNumber"));
+                        encodingProfile.getAudioDetails().setChannelsNumber(joAudioInfo.getLong("channelsNumber"));
                     if (joAudioInfo.isNull("SampleRate"))
                         encodingProfile.getAudioDetails().setSampleRate(null);
                     else
                         encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
 
-                    if (joAudioInfo.has("BitRates"))
+                    if (joAudioInfo.has("bitRates"))
                     {
-                        JSONArray jaBitRates = joAudioInfo.getJSONArray("BitRates");
+                        JSONArray jaBitRates = joAudioInfo.getJSONArray("bitRates");
                         for (int bitRateIndex = 0; bitRateIndex < jaBitRates.length(); bitRateIndex++)
                         {
                             JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
@@ -8811,10 +8811,10 @@ public class CatraMMSAPI implements Serializable {
                             AudioBitRate audioBitRate = new AudioBitRate();
                             encodingProfile.getAudioDetails().getAudioBitRateList().add(audioBitRate);
 
-                            if (joBitRate.isNull("KBitRate"))
+                            if (joBitRate.isNull("kBitRate"))
                                 audioBitRate.setkBitRate(null);
                             else
-                                audioBitRate.setkBitRate(joBitRate.getLong("KBitRate"));
+                                audioBitRate.setkBitRate(joBitRate.getLong("kBitRate"));
                         }
                     }
                 }
@@ -8822,8 +8822,8 @@ public class CatraMMSAPI implements Serializable {
                 {
                     JSONObject joImageInfo = joProfileInfo.getJSONObject("Image");
 
-                    encodingProfile.getImageDetails().setWidth(joImageInfo.getLong("Width"));
-                    encodingProfile.getImageDetails().setHeight(joImageInfo.getLong("Height"));
+                    encodingProfile.getImageDetails().setWidth(joImageInfo.getLong("width"));
+                    encodingProfile.getImageDetails().setHeight(joImageInfo.getLong("height"));
                     encodingProfile.getImageDetails().setAspectRatio(joImageInfo.getBoolean("AspectRatio"));
                     encodingProfile.getImageDetails().setInterlaceType(joImageInfo.getString("InterlaceType"));
                 }

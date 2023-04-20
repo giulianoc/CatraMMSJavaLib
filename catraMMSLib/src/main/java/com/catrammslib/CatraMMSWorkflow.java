@@ -1358,7 +1358,7 @@ public class CatraMMSWorkflow {
 
                 // see docs/TASK_01_Add_Content_JSON_Format.txt
                 if (regenerateTimestamps != null)
-                    joParameters.put("RegenerateTimestamps", regenerateTimestamps);
+                    joParameters.put("regenerateTimestamps", regenerateTimestamps);
 
                 if (sourceURL != null && !sourceURL.isEmpty())
                     joParameters.put("sourceURL", sourceURL);
@@ -1371,10 +1371,10 @@ public class CatraMMSWorkflow {
                 joParameters.put("VariantOfReferencedLabel", variantOfReferencedLabel);
 
                 if (externalDeliveryTechnology != null && !externalDeliveryTechnology.isEmpty())
-                    joParameters.put("ExternalDeliveryTechnology", externalDeliveryTechnology);
+                    joParameters.put("externalDeliveryTechnology", externalDeliveryTechnology);
 
                 if (externalDeliveryURL != null && !externalDeliveryURL.isEmpty())
-                    joParameters.put("ExternalDeliveryURL", externalDeliveryURL);
+                    joParameters.put("externalDeliveryURL", externalDeliveryURL);
             }
             else
             {
@@ -1393,7 +1393,7 @@ public class CatraMMSWorkflow {
 
                 // see docs/TASK_01_Add_Content_JSON_Format.txt
                 if (regenerateTimestamps != null)
-                    joParameters.put("RegenerateTimestamps", regenerateTimestamps);
+                    joParameters.put("regenerateTimestamps", regenerateTimestamps);
 
                 if (sourceURL != null && !sourceURL.isEmpty())
                     joParameters.put("sourceURL", sourceURL);
@@ -1411,10 +1411,10 @@ public class CatraMMSWorkflow {
                 }
 
                 if (externalDeliveryTechnology != null && !externalDeliveryTechnology.isEmpty())
-                    joParameters.put("ExternalDeliveryTechnology", externalDeliveryTechnology);
+                    joParameters.put("externalDeliveryTechnology", externalDeliveryTechnology);
 
                 if (externalDeliveryURL != null && !externalDeliveryURL.isEmpty())
-                    joParameters.put("ExternalDeliveryURL", externalDeliveryURL);
+                    joParameters.put("externalDeliveryURL", externalDeliveryURL);
             }
 
             return joTask;
