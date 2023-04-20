@@ -2160,7 +2160,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("encodersPool", encodersPool);
 
 			joParameters.put("Title", title);
-			joParameters.put("Retention", mediaItemRetention);
+			joParameters.put("retention", mediaItemRetention);
 
             if (utcProcessingStartingFrom != null)
             {
@@ -2203,7 +2203,7 @@ public class CatraMMSWorkflow {
             joParameters.put("Title", title);
             joParameters.put("ingester", ingester);
             if (mediaItemRetention != null && !mediaItemRetention.isEmpty())
-                joParameters.put("Retention", mediaItemRetention);
+                joParameters.put("retention", mediaItemRetention);
             if (physicalItemRetention != null && !physicalItemRetention.isEmpty())
                 joParameters.put("PhysicalItemRetention", physicalItemRetention);
 
