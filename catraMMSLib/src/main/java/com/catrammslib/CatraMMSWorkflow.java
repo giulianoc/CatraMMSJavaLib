@@ -1450,7 +1450,7 @@ public class CatraMMSWorkflow {
             if (firstReferenceLabel != null && secondReferenceLabel != null)
             {
                 JSONArray joReferences = new JSONArray();
-                joParameters.put("References", joReferences);
+                joParameters.put("references", joReferences);
 
                 {
                     JSONObject joReference = new JSONObject();
@@ -2278,7 +2278,7 @@ public class CatraMMSWorkflow {
             if (mediaItemReferenceList != null && mediaItemReferenceList.size() > 0)
             {
                 JSONArray jsonReferencesArray = new JSONArray();
-                joParameters.put("References", jsonReferencesArray);
+                joParameters.put("references", jsonReferencesArray);
 
                 for(MediaItemReference mediaItemReference: mediaItemReferenceList)
                 {
