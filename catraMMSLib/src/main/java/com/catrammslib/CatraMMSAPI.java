@@ -7922,7 +7922,8 @@ public class CatraMMSAPI implements Serializable {
         catch (Exception e)
         {
             String errorMessage = "fillEncodingJob failed. Exception: " + e
-                    + ", joParameters: " + (joParameters == null ? "null" : joParameters.toString());
+                + ", encodingJob.getType: " + (encodingJob == null ? "null" : encodingJob.getType())
+                + ", joParameters: " + (joParameters == null ? "null" : joParameters.toString());
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
