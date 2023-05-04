@@ -67,8 +67,9 @@ public class HttpFeedFetcher {
 
             // GetMethod method = null;
             int retryIndex = 0;
+            int maxRequestNumber = maxRetriesNumber + 1;
 
-            while(retryIndex < maxRetriesNumber)
+            while(retryIndex < maxRequestNumber)
             {
                 retryIndex++;
 
@@ -162,12 +163,12 @@ public class HttpFeedFetcher {
                 catch (HttpException e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal protocol violation: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -176,12 +177,12 @@ public class HttpFeedFetcher {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
                             // + ", last chars read: " + sb.toString().substring(sb.toString().length() - 100)
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -189,12 +190,12 @@ public class HttpFeedFetcher {
                 catch (Exception e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -210,7 +211,7 @@ public class HttpFeedFetcher {
         }
 
         // elapsed time saved in the calling method
-        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (System.currentTimeMillis() - startTimestamp.getTime()) + "@");
 
         return result;
     }
@@ -246,8 +247,9 @@ public class HttpFeedFetcher {
 
             // GetMethod method = null;
             int retryIndex = 0;
+            int maxRequestNumber = maxRetriesNumber + 1;
 
-            while(retryIndex < maxRetriesNumber)
+            while(retryIndex < maxRequestNumber)
             {
                 retryIndex++;
 
@@ -343,12 +345,12 @@ public class HttpFeedFetcher {
                 catch (HttpException e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal protocol violation: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -357,12 +359,12 @@ public class HttpFeedFetcher {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
                             // + ", last chars read: " + sb.toString().substring(sb.toString().length() - 100)
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -370,12 +372,12 @@ public class HttpFeedFetcher {
                 catch (Exception e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -391,7 +393,7 @@ public class HttpFeedFetcher {
         }
 
         // elapsed time saved in the calling method
-        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (System.currentTimeMillis() - startTimestamp.getTime()) + "@");
 
         return result;
     }
@@ -459,8 +461,9 @@ public class HttpFeedFetcher {
 
             // GetMethod method = null;
             int retryIndex = 0;
+            int maxRequestNumber = maxRetriesNumber + 1;
 
-            while(retryIndex < maxRetriesNumber)
+            while(retryIndex < maxRequestNumber)
             {
                 retryIndex++;
 
@@ -612,12 +615,12 @@ public class HttpFeedFetcher {
                 catch (HttpException e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal protocol violation: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -625,12 +628,12 @@ public class HttpFeedFetcher {
                 catch (IOException e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -638,12 +641,12 @@ public class HttpFeedFetcher {
                 catch (Exception e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -659,7 +662,7 @@ public class HttpFeedFetcher {
         }
 
         // elapsed time saved in the calling method
-        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (System.currentTimeMillis() - startTimestamp.getTime()) + "@");
 
         return result;
     }
@@ -821,7 +824,7 @@ public class HttpFeedFetcher {
         }
 
         // elapsed time saved in the calling method
-        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (System.currentTimeMillis() - startTimestamp.getTime()) + "@");
     }
 	*/
 
@@ -859,8 +862,9 @@ public class HttpFeedFetcher {
 
             // GetMethod method = null;
             int retryIndex = 0;
+            int maxRequestNumber = maxRetriesNumber + 1;
 
-            while(retryIndex < maxRetriesNumber)
+            while(retryIndex < maxRequestNumber)
             {
                 retryIndex++;
 
@@ -1003,12 +1007,12 @@ public class HttpFeedFetcher {
                 catch (HttpException e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal protocol violation: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -1016,12 +1020,12 @@ public class HttpFeedFetcher {
                 catch (IOException e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -1029,12 +1033,12 @@ public class HttpFeedFetcher {
                 catch (Exception e) {
                     String errorMessage = "URL: " + url
                             + ", Fatal transport error: " + e
-                            + ", maxRetriesNumber: " + maxRetriesNumber
+                            + ", maxRequestNumber: " + maxRequestNumber
                             + ", retryIndex: " + (retryIndex - 1)
                             ;
                     mLogger.error(errorMessage);
 
-                    if (retryIndex >= maxRetriesNumber)
+                    if (retryIndex >= maxRequestNumber)
                         throw e;
                     else
                         Thread.sleep(100);  // half second
@@ -1050,7 +1054,7 @@ public class HttpFeedFetcher {
         }
 
         // elapsed time saved in the calling method
-        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (new Date().getTime() - startTimestamp.getTime()) + "@");
+        // mLogger.info("@fetchHttpsJson " + url + "@ elapsed (milliseconds): @" + (System.currentTimeMillis() - startTimestamp.getTime()) + "@");
 
 		return result;
     }

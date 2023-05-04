@@ -225,12 +225,12 @@ public class IngestionJob implements Serializable, Comparable {
 
 	public boolean isRunning()
 	{
-		Date now = new Date();
+		long now = System.currentTimeMillis();
 
 		if (status != null && status.equalsIgnoreCase("EncodingQueued")
-			&& startProcessing != null && startProcessing.getTime() <= now.getTime()
+			&& startProcessing != null && startProcessing.getTime() <= now
 			&& (endProcessing == null 
-				|| now.getTime() < endProcessing.getTime())	// in case endProcessingEstimate is true
+				|| now < endProcessing.getTime())	// in case endProcessingEstimate is true
 		)
 			return true;
 		else

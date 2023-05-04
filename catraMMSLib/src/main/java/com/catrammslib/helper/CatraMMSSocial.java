@@ -35,10 +35,10 @@ public class CatraMMSSocial {
 			int timeoutInSeconds = 60;
 			int maxRetriesNumber = 1;
 
-            Date now = new Date();
+            long start = System.currentTimeMillis();
             facebookInfo = HttpFeedFetcher.fetchGetHttpsJson(facebookURL, timeoutInSeconds, maxRetriesNumber,
                     null, null, null, false);
-            mLogger.info("getFacebookConf. Elapsed (@" + facebookURL + "@): @" + (new Date().getTime() - now.getTime()) + "@ millisecs.");
+            mLogger.info("getFacebookConf. Elapsed (@" + facebookURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
