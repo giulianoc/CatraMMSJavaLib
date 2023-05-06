@@ -3490,7 +3490,8 @@ public class CatraMMSAPI implements Serializable {
 
                 JSONObject encodingProfileInfo = jaEncodingProfiles.getJSONObject(encodingProfileIndex);
 
-                boolean deep = false;
+                // 2023-05-06: cambiato a true perchè serve in EncodingProfiles.java
+                boolean deep = true;
                 fillEncodingProfile(encodingProfile, encodingProfileInfo, deep);
 
                 encodingProfileList.add(encodingProfile);
