@@ -44,6 +44,8 @@ public class AudioBitRate implements Serializable {
 
     public void setkBitRate(Long kBitRate) {
         this.kBitRate = kBitRate;
+
+        sKBitRate = kBitRate != null ? kBitRate.toString() : null;
     }
 
 }

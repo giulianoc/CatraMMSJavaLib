@@ -89,6 +89,7 @@ public class VideoBitRate implements Serializable {
 
     public void setWidth(Long width) {
         this.width = width;
+        sWidth = width != null ? width.toString() : null;
     }
 
     public Long getHeight() {
@@ -97,6 +98,7 @@ public class VideoBitRate implements Serializable {
 
     public void setHeight(Long height) {
         this.height = height;
+        sHeight = height != null ? height.toString() : null;
     }
 
     public String getForceOriginalAspectRatio() {
@@ -121,6 +123,7 @@ public class VideoBitRate implements Serializable {
 
     public void setkBitRate(Long kBitRate) {
         this.kBitRate = kBitRate;
+        sKBitRate = kBitRate != null ? kBitRate.toString() : null;
     }
 
     public Long getkMaxRate() {
