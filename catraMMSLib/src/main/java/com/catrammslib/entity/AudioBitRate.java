@@ -20,6 +20,14 @@ public class AudioBitRate implements Serializable {
         return Objects.hash(kBitRate);
     }
 
+    @Override
+    public String toString() {
+        return "AudioBitRate{" +
+                "kBitRate=" + kBitRate +
+                ", sKBitRate='" + sKBitRate + '\'' +
+                '}';
+    }
+
     public String getsKBitRate() {
         return sKBitRate;
     }

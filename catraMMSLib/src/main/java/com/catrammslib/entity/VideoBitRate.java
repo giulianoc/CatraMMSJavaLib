@@ -37,6 +37,22 @@ public class VideoBitRate implements Serializable {
         return Objects.hash(kBitRate);
     }
 
+    @Override
+    public String toString() {
+        return "VideoBitRate{" +
+                "width=" + width +
+                ", sWidth='" + sWidth + '\'' +
+                ", height=" + height +
+                ", sHeight='" + sHeight + '\'' +
+                ", forceOriginalAspectRatio='" + forceOriginalAspectRatio + '\'' +
+                ", pad=" + pad +
+                ", kBitRate=" + kBitRate +
+                ", sKBitRate='" + sKBitRate + '\'' +
+                ", kMaxRate=" + kMaxRate +
+                ", kBufferSize=" + kBufferSize +
+                '}';
+    }
+
     public String getsWidth() {
         return sWidth;
     }
