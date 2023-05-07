@@ -8770,10 +8770,10 @@ public class CatraMMSAPI implements Serializable {
                         encodingProfile.getAudioDetails().setChannelsNumber(null);
                     else
                         encodingProfile.getAudioDetails().setChannelsNumber(joAudioInfo.getLong("channelsNumber"));
-                    if (joAudioInfo.isNull("SampleRate"))
+                    if (joAudioInfo.isNull("sampleRate"))
                         encodingProfile.getAudioDetails().setSampleRate(null);
                     else
-                        encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
+                        encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("sampleRate"));
 
                     if (joAudioInfo.has("bitRates"))
                     {
@@ -8805,10 +8805,10 @@ public class CatraMMSAPI implements Serializable {
                         encodingProfile.getAudioDetails().setChannelsNumber(null);
                     else
                         encodingProfile.getAudioDetails().setChannelsNumber(joAudioInfo.getLong("channelsNumber"));
-                    if (joAudioInfo.isNull("SampleRate"))
+                    if (joAudioInfo.isNull("sampleRate"))
                         encodingProfile.getAudioDetails().setSampleRate(null);
                     else
-                        encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("SampleRate"));
+                        encodingProfile.getAudioDetails().setSampleRate(joAudioInfo.getLong("sampleRate"));
 
                     if (joAudioInfo.has("bitRates"))
                     {
