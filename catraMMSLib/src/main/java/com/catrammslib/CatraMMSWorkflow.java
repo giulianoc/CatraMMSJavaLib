@@ -1963,10 +1963,12 @@ public class CatraMMSWorkflow {
             String label,
 			String userName, String password,
             String method, // GET, POST, PUT
+            boolean addMediaData,
             String protocol, String hostName, String uri, 
 			String parameters,	// ?param1=value1&....
+            boolean formData,
 			String httpBody,
-            Long timeoutInSeconds, Long maxRetries,
+            int timeoutInSeconds, int maxRetries,
             List<MediaItemReference> mediaItemReferenceList
     )
             throws Exception
@@ -1988,11 +1990,14 @@ public class CatraMMSWorkflow {
 				joParameters.put("password", password);	
 			}
 
+            joParameters.put("addMediaData", addMediaData);
+
 			joParameters.put("protocol", protocol);
             joParameters.put("hostName", hostName);
             joParameters.put("uri", uri);
             if (parameters != null)
                 joParameters.put("parameters", parameters);
+            joParameters.put("formData", formData);
             joParameters.put("method", method);
 			if (httpBody != null && httpBody.length() > 0)
 	            joParameters.put("httpBody", httpBody);
@@ -2273,7 +2278,7 @@ public class CatraMMSWorkflow {
 
             if (dependenciesToBeAddedToReferencesAt != null
                     && !dependenciesToBeAddedToReferencesAt.isEmpty())
-                joParameters.put("DependenciesToBeAddedToReferencesAt", dependenciesToBeAddedToReferencesAt);
+                joParameters.put("dependenciesToBeAddedToReferencesAt", dependenciesToBeAddedToReferencesAt);
 
             if (mediaItemReferenceList != null && mediaItemReferenceList.size() > 0)
             {
