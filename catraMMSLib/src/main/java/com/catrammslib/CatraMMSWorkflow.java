@@ -1603,7 +1603,7 @@ public class CatraMMSWorkflow {
             String mediaItemRetention, String physicalItemRetention,
             JSONObject joUserData,
             Date startPublishing, Date endPublishing,
-            String encodingPriority, String encodingProfileLabel,
+            String encodingPriority, String encodingProfileLabel, String encodersPool,
             Long introOverlayDurationInSeconds, Long outroOverlayDurationInSeconds,
             Boolean muteIntroOverlay, Boolean muteOutroOverlay,
             String dependenciesToBeAddedToReferencesAt,   // Beginning, End or an integer
@@ -1640,6 +1640,9 @@ public class CatraMMSWorkflow {
 
             if (encodingProfileLabel != null && !encodingProfileLabel.isEmpty())
                 joParameters.put("encodingProfileLabel", encodingProfileLabel);
+
+            if (encodersPool != null && !encodersPool.isEmpty())
+                joParameters.put("encodersPool", encodersPool);
 
             if (introOverlayDurationInSeconds != null)
                 joParameters.put("IntroOverlayDurationInSeconds", introOverlayDurationInSeconds);
