@@ -1645,16 +1645,16 @@ public class CatraMMSWorkflow {
                 joParameters.put("encodersPool", encodersPool);
 
             if (introOverlayDurationInSeconds != null)
-                joParameters.put("IntroOverlayDurationInSeconds", introOverlayDurationInSeconds);
+                joParameters.put("introOverlayDurationInSeconds", introOverlayDurationInSeconds);
 
             if (outroOverlayDurationInSeconds != null)
-                joParameters.put("OutroOverlayDurationInSeconds", outroOverlayDurationInSeconds);
+                joParameters.put("outroOverlayDurationInSeconds", outroOverlayDurationInSeconds);
 
             if (muteIntroOverlay != null)
-                joParameters.put("MuteIntroOverlay", muteIntroOverlay);
+                joParameters.put("muteIntroOverlay", muteIntroOverlay);
 
             if (muteOutroOverlay != null)
-                joParameters.put("MuteOutroOverlay", muteOutroOverlay);
+                joParameters.put("muteOutroOverlay", muteOutroOverlay);
 
             return joTask;
         }
