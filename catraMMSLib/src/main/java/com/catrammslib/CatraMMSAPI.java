@@ -8722,10 +8722,10 @@ public class CatraMMSAPI implements Serializable {
                         encodingProfile.getVideoDetails().setFrameRate(null);
                     else
                         encodingProfile.getVideoDetails().setFrameRate(joVideoInfo.getLong("frameRate"));
-                    if (joVideoInfo.isNull("KeyFrameIntervalInSeconds"))
+                    if (joVideoInfo.isNull("keyFrameIntervalInSeconds"))
                         encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(null);
                     else
-                        encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(joVideoInfo.getLong("KeyFrameIntervalInSeconds"));
+                        encodingProfile.getVideoDetails().setKeyFrameIntervalInSeconds(joVideoInfo.getLong("keyFrameIntervalInSeconds"));
 
                     if (joVideoInfo.has("bitRates"))
                     {
