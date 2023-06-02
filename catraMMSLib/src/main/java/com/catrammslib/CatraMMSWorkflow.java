@@ -1701,7 +1701,7 @@ public class CatraMMSWorkflow {
 
             if (outputFileFormat != null)
                 joParameters.put("outputFileFormat", outputFileFormat);
-            joParameters.put("StartTimeInSeconds", startTimeInSeconds);
+            joParameters.put("startTimeInSeconds", startTimeInSeconds);
             joParameters.put("EndTimeInSeconds", endTimeInSeconds);
             joParameters.put("CutType", cutType);
             if (fixEndTimeIfOvercomeDuration != null)
