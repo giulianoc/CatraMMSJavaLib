@@ -3883,7 +3883,9 @@ public class CatraMMSAPI implements Serializable {
         {
             if (physicalPath == null
                     && ((mediaItemKey == null && uniqueName == null)
-                        || (encodingProfileKey == null && (encodingProfileLabel == null || encodingProfileLabel.isEmpty())))
+                        // commentato perchè profile == -1 indica che si vuole il source profile
+                        // || (encodingProfileKey == null && (encodingProfileLabel == null || encodingProfileLabel.isEmpty()))
+                    )
             )
             {
                 String errorMessage = "physicalPath or (mediaItemKey-uniqueName)/encodingProfileKey have to be present";
@@ -3924,7 +3926,7 @@ public class CatraMMSAPI implements Serializable {
                         mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                                 + "/catramms/1.0.1/delivery/vod/0/0"
                                 + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
-                                + "&encodingProfileLabel=" + java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8") // requires unescape server side
+                                + "&encodingProfileLabel=" + (encodingProfileLabel == null ? "" : java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8")) // requires unescape server side
                                 + "&ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
                                 + "&save=" + save.toString()
@@ -3955,7 +3957,7 @@ public class CatraMMSAPI implements Serializable {
                     {
                         mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                             + "/catramms/1.0.1/delivery/vod/" + mediaItemKey + "/0"
-                            + "?encodingProfileLabel=" + java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8") // requires unescape server side
+                            + "?encodingProfileLabel=" + (encodingProfileLabel == null ? "" : java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8")) // requires unescape server side
                             + "&ttlInSeconds=" + ttlInSeconds
                             + "&maxRetries=" + maxRetries
                             + "&save=" + save.toString()
