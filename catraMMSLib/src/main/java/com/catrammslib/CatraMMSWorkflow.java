@@ -1670,7 +1670,7 @@ public class CatraMMSWorkflow {
     static public JSONObject buildCutJson(
             String label, String title, List<String> tags, String ingester,
             String outputFileFormat,
-            double startTimeInSeconds, double endTimeInSeconds, String cutType,
+            String startTime, String endTime, String cutType,
             Boolean fixEndTimeIfOvercomeDuration,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
@@ -1701,11 +1701,11 @@ public class CatraMMSWorkflow {
 
             if (outputFileFormat != null)
                 joParameters.put("outputFileFormat", outputFileFormat);
-            joParameters.put("startTimeInSeconds", startTimeInSeconds);
-            joParameters.put("EndTimeInSeconds", endTimeInSeconds);
-            joParameters.put("CutType", cutType);
+            joParameters.put("startTime", startTime);
+            joParameters.put("endTime", endTime);
+            joParameters.put("cutType", cutType);
             if (fixEndTimeIfOvercomeDuration != null)
-                joParameters.put("FixEndTimeIfOvercomeDuration", fixEndTimeIfOvercomeDuration);
+                joParameters.put("fixEndTimeIfOvercomeDuration", fixEndTimeIfOvercomeDuration);
 
 
             return joTask;
