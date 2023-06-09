@@ -41,6 +41,7 @@ public class CatraMMSAPI implements Serializable {
     private final Logger mLogger = Logger.getLogger(this.getClass());
 
     private int timeoutInSeconds;
+    public int statisticsTimeoutInSeconds;
     private int maxRetriesNumber;
     private String mmsAPIProtocol;
     private String mmsAPIHostName;
@@ -64,9 +65,15 @@ public class CatraMMSAPI implements Serializable {
             {
                 String tmpTimeoutInSeconds = configurationProperties.getProperty(prefix + ".mms.timeoutInSeconds");
                 if (tmpTimeoutInSeconds == null)
-					timeoutInSeconds = 180;
+					timeoutInSeconds = 15;
 				else
 	                timeoutInSeconds = Integer.parseInt(tmpTimeoutInSeconds);
+
+                String tmpStatisticsTimeoutInSeconds = configurationProperties.getProperty(prefix + ".mms.statistics.timeoutInSeconds");
+                if (tmpStatisticsTimeoutInSeconds == null)
+                    statisticsTimeoutInSeconds = 30;
+                else
+                    statisticsTimeoutInSeconds = Integer.parseInt(tmpStatisticsTimeoutInSeconds);
 
                 String tmpMaxRetriesNumber = configurationProperties.getProperty(prefix + ".mms.delivery.maxRetriesNumber");
                 if (tmpMaxRetriesNumber == null)
@@ -6997,13 +7004,16 @@ public class CatraMMSAPI implements Serializable {
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, statisticsTimeoutInSeconds, maxRetriesNumber,
 				username, password, null, outputToBeCompressed);
             mLogger.info("getRequestPerContentStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "getRequestPerContentStatistics MMS failed. Exception: " + e;
+            String errorMessage = "getRequestPerContentStatistics MMS failed"
+                    + ", statisticsTimeoutInSeconds: " + statisticsTimeoutInSeconds
+                    + ", exception: " + e
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -7070,13 +7080,16 @@ public class CatraMMSAPI implements Serializable {
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, statisticsTimeoutInSeconds, maxRetriesNumber,
 				username, password, null, outputToBeCompressed);
             mLogger.info("getRequestPerUserStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "getRequestPerUserStatistics MMS failed. Exception: " + e;
+            String errorMessage = "getRequestPerUserStatistics MMS failed"
+                    + ", statisticsTimeoutInSeconds: " + statisticsTimeoutInSeconds
+                    + ", exception: " + e
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -7143,13 +7156,16 @@ public class CatraMMSAPI implements Serializable {
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, statisticsTimeoutInSeconds, maxRetriesNumber,
 				username, password, null, outputToBeCompressed);
             mLogger.info("getRequestPerMonthStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "getRequestPerMonthStatistics MMS failed. Exception: " + e;
+            String errorMessage = "getRequestPerMonthStatistics MMS failed"
+                    + ", statisticsTimeoutInSeconds: " + statisticsTimeoutInSeconds
+                    + ", exception: " + e
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -7216,13 +7232,16 @@ public class CatraMMSAPI implements Serializable {
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, statisticsTimeoutInSeconds, maxRetriesNumber,
 				username, password, null, outputToBeCompressed);
             mLogger.info("getRequestPerDayStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "getRequestPerDayStatistics MMS failed. Exception: " + e;
+            String errorMessage = "getRequestPerDayStatistics MMS failed"
+                    + ", statisticsTimeoutInSeconds: " + statisticsTimeoutInSeconds
+                    + ", exception: " + e
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -7289,13 +7308,16 @@ public class CatraMMSAPI implements Serializable {
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
-            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+            mmsInfo = HttpFeedFetcher.fetchGetHttpsJson(mmsURL, statisticsTimeoutInSeconds, maxRetriesNumber,
 				username, password, null, outputToBeCompressed);
             mLogger.info("getRequestPerHourStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
-            String errorMessage = "getRequestPerHourStatistics MMS failed. Exception: " + e;
+            String errorMessage = "getRequestPerHourStatistics MMS failed"
+                    + ", statisticsTimeoutInSeconds: " + statisticsTimeoutInSeconds
+                    + ", exception: " + e
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
