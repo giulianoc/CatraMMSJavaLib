@@ -249,15 +249,14 @@ public class IngestionJob implements Serializable, Comparable {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		IngestionJob other = (IngestionJob) obj;
-		if (ingestionJobKey == null) {
-			if (other.ingestionJobKey != null)
-				return false;
-		} else if (!ingestionJobKey.equals(other.ingestionJobKey))
+		if ((ingestionJobKey == null && other.ingestionJobKey != null)
+            || (ingestionJobKey != null && other.ingestionJobKey == null)
+        )
+            return false;
+		else if (ingestionJobKey != other.ingestionJobKey)
 			return false;
 		return true;
 	}
