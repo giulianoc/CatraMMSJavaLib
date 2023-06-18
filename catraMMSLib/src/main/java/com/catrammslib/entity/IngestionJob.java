@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +50,9 @@ public class IngestionJob implements Serializable, Comparable {
     // ingestionType is 'LiveRecorder'
     private String channelLabel;
     private Date recordingPeriodStart;
+    private String recordingPeriodStart_YYYY_MM_DD_HH_MM_SS;
     private Date recordingPeriodEnd;
+    private String recordingPeriodEnd_YYYY_MM_DD_HH_MM_SS;
     private Boolean recordingVirtualVOD;
     private Boolean recordingMonitorHLS;
 
@@ -507,7 +510,24 @@ public class IngestionJob implements Serializable, Comparable {
     }
 
     public void setRecordingPeriodStart(Date recordingPeriodStart) {
+
         this.recordingPeriodStart = recordingPeriodStart;
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            recordingPeriodStart_YYYY_MM_DD_HH_MM_SS = simpleDateFormat.format(recordingPeriodStart);
+        }
+        catch (Exception e)
+        {
+            mLogger.error("exception: " + e);
+        }
+    }
+
+    public String getRecordingPeriodStart_YYYY_MM_DD_HH_MM_SS() {
+        return recordingPeriodStart_YYYY_MM_DD_HH_MM_SS;
+    }
+
+    public void setRecordingPeriodStart_YYYY_MM_DD_HH_MM_SS(String recordingPeriodStart_YYYY_MM_DD_HH_MM_SS) {
+        this.recordingPeriodStart_YYYY_MM_DD_HH_MM_SS = recordingPeriodStart_YYYY_MM_DD_HH_MM_SS;
     }
 
     public Date getProxyPeriodStart() {
@@ -532,6 +552,22 @@ public class IngestionJob implements Serializable, Comparable {
 
     public void setRecordingPeriodEnd(Date recordingPeriodEnd) {
         this.recordingPeriodEnd = recordingPeriodEnd;
+        try {
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            recordingPeriodEnd_YYYY_MM_DD_HH_MM_SS = simpleDateFormat.format(recordingPeriodEnd);
+        }
+        catch (Exception e)
+        {
+            mLogger.error("exception: " + e);
+        }
+    }
+
+    public String getRecordingPeriodEnd_YYYY_MM_DD_HH_MM_SS() {
+        return recordingPeriodEnd_YYYY_MM_DD_HH_MM_SS;
+    }
+
+    public void setRecordingPeriodEnd_YYYY_MM_DD_HH_MM_SS(String recordingPeriodEnd_YYYY_MM_DD_HH_MM_SS) {
+        this.recordingPeriodEnd_YYYY_MM_DD_HH_MM_SS = recordingPeriodEnd_YYYY_MM_DD_HH_MM_SS;
     }
 
     public Boolean getRecordingVirtualVOD() {
