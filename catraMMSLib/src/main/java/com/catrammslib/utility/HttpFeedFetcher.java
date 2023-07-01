@@ -306,6 +306,8 @@ public class HttpFeedFetcher {
         while(retryIndex < maxRequestNumber) {
             retryIndex++;
 
+            Path tempFile = null;
+
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
@@ -321,7 +323,7 @@ public class HttpFeedFetcher {
                     requestBuilder.header("Content-Length", String.valueOf(contentLength));
 
                 // crea un file temporaneo
-                Path tempFile = Files.createTempFile("postBinary_", ".bin");
+                tempFile = Files.createTempFile("postBinary_", ".bin");
                 mLogger.info("HttpFeedFetcher. fetchPostHttpBinary. write to temporary file"
                         + "tmpdir: " + System.getProperty("java.io.tmpdir")
                         + ", tempFile: " + tempFile
@@ -377,6 +379,9 @@ public class HttpFeedFetcher {
 
                 body = getResponseBody(client, request, false);
 
+                if (tempFile.toFile().exists())
+                    tempFile.toFile().delete();
+
                 break; // exit from the retry loop
             } catch (Exception e) {
                 String errorMessage = "HttpFeedFetcher. fetchPostHttpBinary"
@@ -385,6 +390,9 @@ public class HttpFeedFetcher {
                         + ", maxRequestNumber: " + maxRequestNumber
                         + ", retryIndex: " + (retryIndex - 1);
                 mLogger.error(errorMessage);
+
+                if (tempFile != null && tempFile.toFile().exists())
+                    tempFile.toFile().delete();
 
                 if (retryIndex >= maxRequestNumber)
                     throw e;
