@@ -941,7 +941,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("deleteWorkspace. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1158,7 +1158,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeEncodingProfile. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1238,7 +1238,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeEncodingProfilesSet. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1294,7 +1294,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("killEncodingJob. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1477,7 +1477,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeEncoder. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1850,7 +1850,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeEncodersPool. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -1930,7 +1930,7 @@ public class CatraMMSAPI implements Serializable {
             String postContentType = null;
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL,
                     timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeEncoderFromWorkspace. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -3034,7 +3034,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("cancelIngestionJob. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4265,7 +4265,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeWorkflowAsLibrary. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
             // mLogger.info("mmsInfo: " + mmsInfo);
         }
@@ -4386,7 +4386,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeYouTubeConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4553,7 +4553,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeFacebookConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4727,7 +4727,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeTwitchConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -4901,7 +4901,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeTiktokConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -5253,7 +5253,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeStream. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -5617,7 +5617,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeSourceTVStream. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -5881,7 +5881,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeAWSChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -6058,7 +6058,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeCDN77ChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -6251,7 +6251,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeRTMPChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -6432,7 +6432,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeHLSChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -6610,7 +6610,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeFTPConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
@@ -6783,7 +6783,7 @@ public class CatraMMSAPI implements Serializable {
 
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
-                    username, password, null);
+                    username, password);
             mLogger.info("removeEMailConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)

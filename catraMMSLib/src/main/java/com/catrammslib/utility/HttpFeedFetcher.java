@@ -239,7 +239,7 @@ public class HttpFeedFetcher {
     }
 
     static public String fetchDeleteHttpsJson(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
-                                           String user, String password, String deleteBodyRequest)
+                                           String user, String password) //, String deleteBodyRequest)
             throws Exception
     {
         String body = null;
@@ -264,7 +264,7 @@ public class HttpFeedFetcher {
                 requestBuilder.header("Content-Type", "application/json");
 
                 HttpRequest request = requestBuilder
-                        .PUT(HttpRequest.BodyPublishers.ofString(deleteBodyRequest, StandardCharsets.UTF_8))
+                        .DELETE()
                         .build();
 
                 body = getResponseBody(client, request, false);
