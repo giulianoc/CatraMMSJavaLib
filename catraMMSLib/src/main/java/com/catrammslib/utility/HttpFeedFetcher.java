@@ -366,12 +366,20 @@ public class HttpFeedFetcher {
                 catch (Exception ex)
                 {
                     mLogger.error("HttpFeedFetcher. fetchPostHttpBinary"
+                            + ", tempFile: " + tempFile
                             + ", Exception: " + ex);
                 }
                 finally {
                     if (outputStream != null)
                         outputStream.close(); // IOUtils.closeQuietly(outputStream);
                 }
+
+                mLogger.info("HttpFeedFetcher. fetchPostHttpBinary. check length"
+                        + ", contentLength: " + contentLength
+                        + ", contentRangeStart: " + contentRangeStart
+                        + ", contentRangeEnd_Excluded: " + contentRangeEnd_Excluded
+                        + ", tempFile.toFile().length: " + tempFile.toFile().length()
+                );
 
                 HttpRequest request = requestBuilder
                         .POST(HttpRequest.BodyPublishers.ofFile(tempFile))
@@ -386,6 +394,9 @@ public class HttpFeedFetcher {
             } catch (Exception e) {
                 String errorMessage = "HttpFeedFetcher. fetchPostHttpBinary"
                         + ", endpoint: " + endpoint
+                        + ", contentLength: " + contentLength
+                        + ", contentRangeStart: " + contentRangeStart
+                        + ", contentRangeEnd_Excluded: " + contentRangeEnd_Excluded
                         + ", Fatal transport error: " + e
                         + ", maxRequestNumber: " + maxRequestNumber
                         + ", retryIndex: " + (retryIndex - 1);
