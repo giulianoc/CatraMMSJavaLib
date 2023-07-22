@@ -319,8 +319,16 @@ public class HttpFeedFetcher {
 
                 if (contentRangeStart >= 0 && contentRangeEnd_Excluded > 0)
                     requestBuilder.header("Content-Range", "bytes " + contentRangeStart + "-" + (contentRangeEnd_Excluded - 1) + "/" + contentLength);
-                else
-                    requestBuilder.header("Content-Length", String.valueOf(contentLength));
+                /*
+                2023-07-22: ho dovuto commentare il setting dell'header content length perchè in jdk11 non è permesso.
+                    In jdk12 hanno aggiunto una property per sovrascrivere questo comportamento.
+                    Dalla docs: # By default, the following request headers are not allowed to be set by user code
+                                # in HttpRequests: "connection", "content-length", "expect", "host" and "upgrade".
+                                # The 'jdk.httpclient.allowRestrictedHeaders' property allows one or more of these
+                                # headers to be specified as a comma separated list to override the default restriction.
+                */
+                // else
+                //    requestBuilder.header("Content-Length", String.valueOf(contentLength));
 
                 // crea un file temporaneo
                 tempFile = Files.createTempFile("postBinary_", ".bin");
