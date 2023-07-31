@@ -742,6 +742,7 @@ public class CatraMMSWorkflow {
             List<String> tags,
 			Long categoryId,
 			String privacyStatus,
+            Boolean madeForKids,
 
             List<MediaItemReference> mediaItemReferenceList
     )
@@ -788,6 +789,9 @@ public class CatraMMSWorkflow {
 			if (privacyStatus != null && !privacyStatus.isEmpty())
                 joParameters.put("privacyStatus", privacyStatus);
 
+            if (madeForKids != null)
+                joParameters.put("madeForKids", madeForKids);
+            
             return joTask;
         }
         catch (Exception e)
