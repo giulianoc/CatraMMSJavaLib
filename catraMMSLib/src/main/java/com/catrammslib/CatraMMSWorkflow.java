@@ -765,10 +765,10 @@ public class CatraMMSWorkflow {
 			joParameters.put("configurationLabel", youTubeConfigurationLabel);
 
             if (title != null && !title.isEmpty())
-                joParameters.put("Title", title);
+                joParameters.put("title", title);
 
 			if (description != null && !description.isEmpty())
-                joParameters.put("Description", description);
+                joParameters.put("description", description);
 
 			if (tags != null)
 			{
@@ -783,10 +783,10 @@ public class CatraMMSWorkflow {
 			}
 
 			if (categoryId != null)
-                joParameters.put("CategoryId", categoryId);
+                joParameters.put("categoryId", categoryId);
 
 			if (privacyStatus != null && !privacyStatus.isEmpty())
-                joParameters.put("Privacy", privacyStatus);
+                joParameters.put("privacyStatus", privacyStatus);
 
             return joTask;
         }
@@ -827,31 +827,31 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
-			joParameters.put("YouTubeConfigurationLabel", youTubeConfigurationLabel);
+			joParameters.put("youTubeConfigurationLabel", youTubeConfigurationLabel);
 
             if (title != null && !title.isEmpty())
-                joParameters.put("Title", title);
+                joParameters.put("title", title);
 
 			if (description != null && !description.isEmpty())
-                joParameters.put("Description", description);
+                joParameters.put("description", description);
 
 			if (privacyStatus != null && !privacyStatus.isEmpty())
-                joParameters.put("Privacy", privacyStatus);
+                joParameters.put("privacyStatus", privacyStatus);
 
 			if (madeForKids != null)
-                joParameters.put("MadeForKids", madeForKids);
+                joParameters.put("madeForKids", madeForKids);
 
 			if (latencyPreference != null && !latencyPreference.isEmpty())
-                joParameters.put("LatencyPreference", latencyPreference);
+                joParameters.put("latencyPreference", latencyPreference);
 
 			if (channelConfigurationLabel != null)
 			{
-                joParameters.put("SourceType", "Live");
+                joParameters.put("sourceType", "Live");
                 joParameters.put("configurationLabel", channelConfigurationLabel);
 			}
 			else
 			{
-                joParameters.put("SourceType", "MediaItem");
+                joParameters.put("sourceType", "MediaItem");
 
 				setCommonParameters(joParameters,
 					null,
