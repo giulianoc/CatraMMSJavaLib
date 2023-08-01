@@ -183,6 +183,64 @@ public class HttpFeedFetcher {
         return body;
     }
 
+    static public String fetchPatchHttpsJson(String endpoint, String contentType, int timeoutInSeconds, int maxRetriesNumber,
+                                            String user, String password, String authorizationHeader, String patchBodyRequest,
+                                            boolean outputToBeCompressed)
+            throws Exception
+    {
+        String body = null;
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        int retryIndex = 0;
+        int maxRequestNumber = maxRetriesNumber + 1;
+
+        while(retryIndex < maxRequestNumber) {
+            retryIndex++;
+
+            try {
+                HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                        .uri(URI.create(endpoint))
+                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                if (authorizationHeader != null)
+                    requestBuilder.header("Authorization", authorizationHeader);
+                else if (user != null && password != null)
+                {
+                    String encoded = Base64.getEncoder().encodeToString((user + ":" + password).getBytes("utf-8"));
+                    requestBuilder.header("Authorization", "Basic " + encoded);
+                }
+                if (outputToBeCompressed)
+                    requestBuilder.header("X-ResponseBodyCompressed", "true");
+                if (contentType == null)
+                    requestBuilder.header("Content-Type", "application/json");
+                else
+                    requestBuilder.header("Content-Type", contentType);
+
+                HttpRequest request = requestBuilder
+                        .method("PATCH", HttpRequest.BodyPublishers.ofString(patchBodyRequest, StandardCharsets.UTF_8))
+                        .build();
+
+                body = getResponseBody(client, request, outputToBeCompressed);
+
+                break; // exit from the retry loop
+            } catch (Exception e) {
+                String errorMessage = "HttpFeedFetcher. fetchPatchHttpsJson"
+                        + ", endpoint: " + endpoint
+                        + ", Fatal transport error: " + e
+                        + ", maxRequestNumber: " + maxRequestNumber
+                        + ", retryIndex: " + (retryIndex - 1);
+                mLogger.error(errorMessage);
+
+                if (retryIndex >= maxRequestNumber)
+                    throw e;
+                else
+                    Thread.sleep(100);  // half second
+            }
+        }
+
+        return body;
+    }
+
     static public String fetchPutHttpsJson(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
                                             String user, String password, String authorizationHeader, String putBodyRequest,
                                             boolean outputToBeCompressed)
