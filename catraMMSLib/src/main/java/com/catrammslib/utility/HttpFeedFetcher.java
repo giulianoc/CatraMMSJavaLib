@@ -471,7 +471,7 @@ public class HttpFeedFetcher {
                 HttpResponse<String> response = client.send(request,
                         HttpResponse.BodyHandlers.ofString());
                 int statusCode = response.statusCode();
-                if (statusCode != 200 && statusCode != 201)
+                if (!(statusCode >= 200 && statusCode <= 210))
                 {
                     String errorMessage = "HttpFeedFetcher, getResponseBody failed"
                             + ", statusCode: " + statusCode
