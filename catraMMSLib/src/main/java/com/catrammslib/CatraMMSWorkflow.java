@@ -290,10 +290,10 @@ public class CatraMMSWorkflow {
             if (liveRecorderVirtualVOD)
             {
                 JSONObject joVirtualVOD = new JSONObject();
-                joParameters.put("LiveRecorderVirtualVOD", joVirtualVOD);
+                joParameters.put("liveRecorderVirtualVOD", joVirtualVOD);
 
                 if (liveRecorderVirtualVODMaxDurationInMinutes != null)
-                    joVirtualVOD.put("LiveRecorderVirtualVODMaxDuration", liveRecorderVirtualVODMaxDurationInMinutes);
+                    joVirtualVOD.put("liveRecorderVirtualVODMaxDuration", liveRecorderVirtualVODMaxDurationInMinutes);
                 if (liveRecorderVirtualVODEncodingProfileLabel != null && !liveRecorderVirtualVODEncodingProfileLabel.isEmpty())
                     joVirtualVOD.put("encodingProfileLabel", liveRecorderVirtualVODEncodingProfileLabel);
             }

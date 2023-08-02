@@ -8483,7 +8483,7 @@ public class CatraMMSAPI implements Serializable {
                             ingestionJob.setRecordingPeriodEnd(dateFormat.parse(joRecordingPeriod.getString("end")));
                     }
 
-                    if (joMetadataContent.has("LiveRecorderVirtualVOD"))
+                    if (joMetadataContent.has("liveRecorderVirtualVOD"))
                         ingestionJob.setRecordingVirtualVOD(true);
                     else
                         ingestionJob.setRecordingVirtualVOD(false);
