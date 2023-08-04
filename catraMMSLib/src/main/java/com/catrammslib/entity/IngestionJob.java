@@ -253,14 +253,14 @@ public class IngestionJob implements Serializable, Comparable {
 		if (this == obj)
 			return true;
 		if (obj == null || getClass() != obj.getClass())
-			return false;
+            return false;
 		IngestionJob other = (IngestionJob) obj;
 		if ((ingestionJobKey == null && other.ingestionJobKey != null)
             || (ingestionJobKey != null && other.ingestionJobKey == null)
         )
             return false;
-		else if (ingestionJobKey != other.ingestionJobKey)
-			return false;
+		else if (ingestionJobKey.longValue() != other.ingestionJobKey.longValue())
+            return false;
 		return true;
 	}
 
