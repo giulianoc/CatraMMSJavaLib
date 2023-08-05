@@ -1466,7 +1466,7 @@ public class LiveStreams {
                 }
 
                 {
-                    JSONObject joLiveRecorderOnSuccess = CatraMMSWorkflow.buildEventJson(joLiveRecorder, "OnSuccess");
+                    JSONObject joLiveRecorderOnSuccess = CatraMMSWorkflow.buildEventJson(joLiveRecorder, "onSuccess");
                     joLiveRecorderOnSuccess.put("task", joLiveRecorderGOT);
                 }
 
@@ -1490,16 +1490,16 @@ public class LiveStreams {
 
                     List<WorkflowVariable> workflowVariableList = new ArrayList<>();
                     workflowVariableList.add(new WorkflowVariable("label", liveChunkImageLabel));
-                    workflowVariableList.add(new WorkflowVariable("Title", liveChunkImageLabel));
-                    // workflowVariableList.add(new WorkflowVariable("ImageUserData", joUserData.toString()));
-                    // workflowVariableList.add(new WorkflowVariable("ImageTags", jaThumbnailTags.toString()));
-                    workflowVariableList.add(new WorkflowVariable("InstantInSeconds", 30));
+                    workflowVariableList.add(new WorkflowVariable("title", liveChunkImageLabel));
+                    // workflowVariableList.add(new WorkflowVariable("imageUserData", joUserData.toString()));
+                    // workflowVariableList.add(new WorkflowVariable("imageTags", jaThumbnailTags.toString()));
+                    workflowVariableList.add(new WorkflowVariable("instantInSeconds", 30));
 
-                    //workflowVariableList.add(new WorkflowVariable("UniqueName", "Channel_" + channelKey));
-                    // workflowVariableList.add(new WorkflowVariable("AllowUniqueNameOverride", true));
-                    workflowVariableList.add(new WorkflowVariable("ImageRetention", retentionChunk));
+                    //workflowVariableList.add(new WorkflowVariable("uniqueName", "Channel_" + channelKey));
+                    // workflowVariableList.add(new WorkflowVariable("allowUniqueNameOverride", true));
+                    workflowVariableList.add(new WorkflowVariable("imageRetention", retentionChunk));
                     workflowVariableList.add(new WorkflowVariable("ingester", ingester));
-                    workflowVariableList.add(new WorkflowVariable("InitialFramesNumberToBeSkipped", (long) 0));
+                    workflowVariableList.add(new WorkflowVariable("initialFramesNumberToBeSkipped", (long) 0));
 					/*
 						2022-10-04.
 						scenario:
@@ -1559,7 +1559,7 @@ public class LiveStreams {
             if (buildVODAtTheEnd != null && buildVODAtTheEnd)
             {
                 JSONObject joLiveRecorderGOTOnSuccess = CatraMMSWorkflow.buildEventJson(
-                        joLiveRecorderGroupOfTasks, "OnSuccess");
+                        joLiveRecorderGroupOfTasks, "onSuccess");
 
                 String label = "Concat Live Recorder Chunks: " + channel;
 
@@ -1587,7 +1587,7 @@ public class LiveStreams {
                 }
 
                 {
-                    JSONObject joConcatOnSuccess = CatraMMSWorkflow.buildEventJson(joLiveRecorderGOTConcat, "OnSuccess");
+                    JSONObject joConcatOnSuccess = CatraMMSWorkflow.buildEventJson(joLiveRecorderGOTConcat, "onSuccess");
                     joConcatOnSuccess.put("task", joConcatGOT);
                 }
 
@@ -1610,16 +1610,16 @@ public class LiveStreams {
 
                     List<WorkflowVariable> workflowVariableList = new ArrayList<>();
                     workflowVariableList.add(new WorkflowVariable("label", liveConcatImageLabel));
-                    workflowVariableList.add(new WorkflowVariable("Title", liveConcatImageLabel));
-                    // workflowVariableList.add(new WorkflowVariable("ImageUserData", joUserData.toString()));
-                    // workflowVariableList.add(new WorkflowVariable("ImageTags", jaThumbnailTags.toString()));
-                    workflowVariableList.add(new WorkflowVariable("InstantInSeconds", 30));
+                    workflowVariableList.add(new WorkflowVariable("title", liveConcatImageLabel));
+                    // workflowVariableList.add(new WorkflowVariable("imageUserData", joUserData.toString()));
+                    // workflowVariableList.add(new WorkflowVariable("imageTags", jaThumbnailTags.toString()));
+                    workflowVariableList.add(new WorkflowVariable("instantInSeconds", 30));
 
-                    //workflowVariableList.add(new WorkflowVariable("UniqueName", "Channel_" + channelKey));
-                    // workflowVariableList.add(new WorkflowVariable("AllowUniqueNameOverride", true));
-                    workflowVariableList.add(new WorkflowVariable("ImageRetention", retentionBuildVODAtTheEnd));
+                    //workflowVariableList.add(new WorkflowVariable("uniqueName", "Channel_" + channelKey));
+                    // workflowVariableList.add(new WorkflowVariable("allowUniqueNameOverride", true));
+                    workflowVariableList.add(new WorkflowVariable("imageRetention", retentionBuildVODAtTheEnd));
                     workflowVariableList.add(new WorkflowVariable("ingester", ingester));
-                    workflowVariableList.add(new WorkflowVariable("InitialFramesNumberToBeSkipped",
+                    workflowVariableList.add(new WorkflowVariable("initialFramesNumberToBeSkipped",
                             (long) (30 * 25)));
 					/*
 						2022-10-16.

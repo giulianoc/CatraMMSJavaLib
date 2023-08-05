@@ -139,8 +139,8 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
-            joParameters.put("WorkflowAsLibraryLabel", workflowAsLibraryLabel);
-            joParameters.put("WorkflowAsLibraryType", workflowAsLibraryType);
+            joParameters.put("workflowAsLibraryLabel", workflowAsLibraryLabel);
+            joParameters.put("workflowAsLibraryType", workflowAsLibraryType);
 
             for (WorkflowVariable workflowVariable: workflowVariableList)
             {
@@ -1041,7 +1041,7 @@ public class CatraMMSWorkflow {
 
             joParameters.put("CascadeName", "haarcascade_frontalface_alt_tree");
             joParameters.put("encodingPriority", "High");    // takes a lot of time by the MMSEngine
-            joParameters.put("InitialFramesNumberToBeSkipped", faceRecognition_InitialFramesNumberToBeSkipped);
+            joParameters.put("initialFramesNumberToBeSkipped", faceRecognition_InitialFramesNumberToBeSkipped);
             joParameters.put("OneFramePerSecond", true);
             joParameters.put("Output", "FrameContainingFace");
 
@@ -1102,7 +1102,7 @@ public class CatraMMSWorkflow {
             jaImageGroupOfTasks.put(joFrameContainingFace);
 
             {
-                JSONObject joFrameContainingFaceOnSuccess = CatraMMSWorkflow.buildEventJson(joFrameContainingFace, "OnSuccess");
+                JSONObject joFrameContainingFaceOnSuccess = CatraMMSWorkflow.buildEventJson(joFrameContainingFace, "onSuccess");
 
                 joFrameContainingFaceOnSuccess.put("task", CatraMMSWorkflow.buildEncodeJson(
                         "Encode image (FrameContainingFace): " + title,
@@ -1118,7 +1118,7 @@ public class CatraMMSWorkflow {
 
             JSONObject joFrame;
             {
-                JSONObject joFrameContainingFaceOnError = CatraMMSWorkflow.buildEventJson(joFrameContainingFace, "OnError");
+                JSONObject joFrameContainingFaceOnError = CatraMMSWorkflow.buildEventJson(joFrameContainingFace, "onError");
 
                 joFrame = CatraMMSWorkflow.buildFrameJson(
                         frameImageReferenceLabel, title,
@@ -1129,7 +1129,7 @@ public class CatraMMSWorkflow {
             }
 
             {
-                JSONObject joFrameOnSuccess = CatraMMSWorkflow.buildEventJson(joFrame, "OnSuccess");
+                JSONObject joFrameOnSuccess = CatraMMSWorkflow.buildEventJson(joFrame, "onSuccess");
 
                 joFrameOnSuccess.put("task", CatraMMSWorkflow.buildEncodeJson(
                         "Encode image (Frame): " + title,
@@ -1241,7 +1241,7 @@ public class CatraMMSWorkflow {
                     mediaItemReferenceList,
                     null);
 
-            joParameters.put("InstantInSeconds", instantInSeconds);
+            joParameters.put("instantInSeconds", instantInSeconds);
 
             return joTask;
         }
@@ -1409,9 +1409,9 @@ public class CatraMMSWorkflow {
 
                 if (uniqueName != null && !uniqueName.isEmpty())
                 {
-                    joParameters.put("UniqueName", uniqueName);
+                    joParameters.put("uniqueName", uniqueName);
                     if (allowUniqueNameOverride != null)
-                        joParameters.put("AllowUniqueNameOverride", allowUniqueNameOverride);
+                        joParameters.put("allowUniqueNameOverride", allowUniqueNameOverride);
                 }
 
                 if (externalDeliveryTechnology != null && !externalDeliveryTechnology.isEmpty())
@@ -2171,7 +2171,7 @@ public class CatraMMSWorkflow {
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("encodersPool", encodersPool);
 
-			joParameters.put("Title", title);
+			joParameters.put("title", title);
 			joParameters.put("retention", mediaItemRetention);
 
             if (utcProcessingStartingFrom != null)
@@ -2212,7 +2212,7 @@ public class CatraMMSWorkflow {
     {
         try
         {
-            joParameters.put("Title", title);
+            joParameters.put("title", title);
             joParameters.put("ingester", ingester);
             if (mediaItemRetention != null && !mediaItemRetention.isEmpty())
                 joParameters.put("retention", mediaItemRetention);
@@ -2247,10 +2247,10 @@ public class CatraMMSWorkflow {
             }
 
             if (uniqueName != null)
-                joParameters.put("UniqueName", uniqueName);
+                joParameters.put("uniqueName", uniqueName);
 
             if (allowUniqueNameOverride != null)
-                joParameters.put("AllowUniqueNameOverride", allowUniqueNameOverride);
+                joParameters.put("allowUniqueNameOverride", allowUniqueNameOverride);
         }
         catch (Exception e)
         {

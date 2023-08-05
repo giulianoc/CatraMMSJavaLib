@@ -2432,7 +2432,7 @@ public class CatraMMSAPI implements Serializable {
 
             JSONObject joEdit = new JSONObject();
             if (newTitle != null)
-                joEdit.put("Title", newTitle);
+                joEdit.put("title", newTitle);
             if (newUserData != null)
                 joEdit.put("userData", newUserData); // mms backend manages this field as string since it saves it as string into DB
             if (jaTags != null)
@@ -2440,7 +2440,7 @@ public class CatraMMSAPI implements Serializable {
             if (newRetentionInMinutes != null)
                 joEdit.put("RetentionInMinutes", newRetentionInMinutes);
             if (newUniqueName != null)
-                joEdit.put("UniqueName", newUniqueName);
+                joEdit.put("uniqueName", newUniqueName);
 
             String sEdit = joEdit.toString(4);
 
