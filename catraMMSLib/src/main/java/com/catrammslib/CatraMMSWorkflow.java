@@ -1759,19 +1759,19 @@ public class CatraMMSWorkflow {
             joParameters.put("recordingCode", recordingCode);
 
             if (chunkEncodingProfileKey != null)
-                joParameters.put("ChunkEncodingProfileKey", chunkEncodingProfileKey);
+                joParameters.put("chunkEncodingProfileKey", chunkEncodingProfileKey);
 
             {
                 JSONObject joCutPeriod = new JSONObject();
-                joParameters.put("CutPeriod", joCutPeriod);
+                joParameters.put("cutPeriod", joCutPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joCutPeriod.put("Start", dateFormat.format(utcLiveCutStartInMilliSecs));
-                joCutPeriod.put("End", dateFormat.format(utcLiveCutEndInMilliSecs));
+                joCutPeriod.put("start", dateFormat.format(utcLiveCutStartInMilliSecs));
+                joCutPeriod.put("end", dateFormat.format(utcLiveCutEndInMilliSecs));
             }
-            joParameters.put("MaxWaitingForLastChunkInSeconds", maxWaitingForLastChunkInSeconds);
+            joParameters.put("maxWaitingForLastChunkInSeconds", maxWaitingForLastChunkInSeconds);
 
 			if (utcProcessingStartingFrom != null)
             {
