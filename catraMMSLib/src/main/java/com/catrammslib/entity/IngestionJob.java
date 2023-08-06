@@ -240,16 +240,29 @@ public class IngestionJob implements Serializable, Comparable {
 			return false;
 	}
 
-    public boolean isPlanned()
-    {
+    public boolean isPlanned() {
         long now = System.currentTimeMillis();
 
-        if (status != null && status.equalsIgnoreCase("EncodingQueued")
-                && startProcessing != null && now <= startProcessing.getTime()
-        )
-            return true;
+        if (ingestionType.equalsIgnoreCase("Live-Recorder"))
+        {
+            if (status != null
+                    && (status.equalsIgnoreCase("EncodingQueued") || status.equalsIgnoreCase("Start_TaskQueued"))
+                    && recordingPeriodStart != null && now <= recordingPeriodStart.getTime()
+            )
+                return true;
+            else
+                return false;
+        }
         else
-            return false;
+        {
+            if (status != null
+                    && (status.equalsIgnoreCase("EncodingQueued") || status.equalsIgnoreCase("Start_TaskQueued"))
+                    && proxyPeriodStart != null && now <= proxyPeriodStart.getTime()
+            )
+                return true;
+            else
+                return false;
+        }
     }
 
     @Override
