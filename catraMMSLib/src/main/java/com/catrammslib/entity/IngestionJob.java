@@ -240,6 +240,18 @@ public class IngestionJob implements Serializable, Comparable {
 			return false;
 	}
 
+    public boolean isPlanned()
+    {
+        long now = System.currentTimeMillis();
+
+        if (status != null && status.equalsIgnoreCase("EncodingQueued")
+                && startProcessing != null && now <= startProcessing.getTime()
+        )
+            return true;
+        else
+            return false;
+    }
+
     @Override
 	public int hashCode() {
 		final int prime = 31;
