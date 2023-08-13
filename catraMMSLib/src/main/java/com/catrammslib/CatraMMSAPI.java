@@ -9161,52 +9161,52 @@ public class CatraMMSAPI implements Serializable {
 
                     workflowVariable.setName(variableName);
 
-                    if (joWorkflowVariable.has("IsNull"))
-                        workflowVariable.setNullVariable(joWorkflowVariable.getBoolean("IsNull"));
+                    if (joWorkflowVariable.has("isNull"))
+                        workflowVariable.setNullVariable(joWorkflowVariable.getBoolean("isNull"));
                     else
                         workflowVariable.setNullVariable(false);
 
-                    if (joWorkflowVariable.has("Description"))
-                        workflowVariable.setDescription(joWorkflowVariable.getString("Description"));
+                    if (joWorkflowVariable.has("description"))
+                        workflowVariable.setDescription(joWorkflowVariable.getString("description"));
                     if (joWorkflowVariable.has("type"))
                         workflowVariable.setType(joWorkflowVariable.getString("type"));
                     else
                         workflowVariable.setType("string");
-                    if (!workflowVariable.isNullVariable() && joWorkflowVariable.has("Value"))
+                    if (!workflowVariable.isNullVariable() && joWorkflowVariable.has("value"))
                     {
                         if (workflowVariable.getType().equalsIgnoreCase("string"))
-                            workflowVariable.setStringValue(joWorkflowVariable.getString("Value"));
+                            workflowVariable.setStringValue(joWorkflowVariable.getString("value"));
                         else if (workflowVariable.getType().equalsIgnoreCase("integer"))
-                            workflowVariable.setLongValue(joWorkflowVariable.getLong("Value"));
+                            workflowVariable.setLongValue(joWorkflowVariable.getLong("value"));
                         else if (workflowVariable.getType().equalsIgnoreCase("decimal"))
-                            workflowVariable.setDoubleValue(joWorkflowVariable.getDouble("Value"));
+                            workflowVariable.setDoubleValue(joWorkflowVariable.getDouble("value"));
                         else if (workflowVariable.getType().equalsIgnoreCase("boolean"))
-                            workflowVariable.setBooleanValue(joWorkflowVariable.getBoolean("Value"));
+                            workflowVariable.setBooleanValue(joWorkflowVariable.getBoolean("value"));
                         else if (workflowVariable.getType().equalsIgnoreCase("datetime"))
                         {
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                            workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("Value")));
+                            workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("value")));
                         }
                         else if (workflowVariable.getType().equalsIgnoreCase("datetime-millisecs"))
                         {
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
                             dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                            workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("Value")));
+                            workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("value")));
                         }
                         else if (workflowVariable.getType().equalsIgnoreCase("jsonObject"))
-                            workflowVariable.setJsonObjectValue(joWorkflowVariable.getJSONObject("Value"));
+                            workflowVariable.setJsonObjectValue(joWorkflowVariable.getJSONObject("value"));
                         else if (workflowVariable.getType().equalsIgnoreCase("jsonArray"))
-                            workflowVariable.setJsonArrayValue(joWorkflowVariable.getJSONArray("Value"));
+                            workflowVariable.setJsonArrayValue(joWorkflowVariable.getJSONArray("value"));
                         else
                             mLogger.error("Unknown type: " + workflowVariable.getType());
                     }
 
-                    if (joWorkflowVariable.has("Position"))
+                    if (joWorkflowVariable.has("position"))
                     {
-                        int position = joWorkflowVariable.getInt("Position");
+                        int position = joWorkflowVariable.getInt("position");
                         workflowLibrary.getWorkflowVariableList().set(position, workflowVariable);
                     }
                     else
