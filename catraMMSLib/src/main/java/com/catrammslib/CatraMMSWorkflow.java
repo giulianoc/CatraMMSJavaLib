@@ -1039,11 +1039,11 @@ public class CatraMMSWorkflow {
                     mediaItemReferenceList,
                     null);
 
-            joParameters.put("CascadeName", "haarcascade_frontalface_alt_tree");
+            joParameters.put("cascadeName", "haarcascade_frontalface_alt_tree");
             joParameters.put("encodingPriority", "High");    // takes a lot of time by the MMSEngine
             joParameters.put("initialFramesNumberToBeSkipped", faceRecognition_InitialFramesNumberToBeSkipped);
-            joParameters.put("OneFramePerSecond", true);
-            joParameters.put("Output", "FrameContainingFace");
+            joParameters.put("oneFramePerSecond", true);
+            joParameters.put("output", "FrameContainingFace");
 
             return joTask;
         }
