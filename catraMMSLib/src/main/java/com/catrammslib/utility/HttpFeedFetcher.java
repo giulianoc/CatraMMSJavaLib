@@ -23,7 +23,7 @@ public class HttpFeedFetcher {
 
     public static final String configFileName = "mpCommon.properties";
 
-    static public String fetchGetHttpsJson(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
+    static public String GET(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
                                            String user, String password, String authorizationHeader,
                                            boolean outputToBeCompressed)
             throws Exception
