@@ -354,7 +354,7 @@ public class CatraMMSBroadcaster {
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 					{
 						outputStream.setFade(true);
-						outputStream.setFadeDuration(3L);
+						outputStream.setFade_Duration(3L);
 						/*
 						JSONObject joFilters = new JSONObject();
 						
