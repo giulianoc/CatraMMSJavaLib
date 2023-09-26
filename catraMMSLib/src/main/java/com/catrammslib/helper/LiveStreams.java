@@ -7,7 +7,7 @@ import com.catrammslib.entity.Stream;
 import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.helper.entity.LiveStreamInfo;
 import com.catrammslib.utility.IngestionResult;
-import com.catrammslib.utility.LiveProxyOutput;
+import com.catrammslib.utility.OutputStream;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -1332,13 +1332,13 @@ public class LiveStreams {
 
                 String monitorHLSEncodingProfileLabel = "MMS_HLS_H264_800Kb_veryfast_360p25_high422_AAC_92";
 
-                List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
+                List<OutputStream> outputStreamList = new ArrayList<>();
                 if (cdn77ChannelConfigurationLabel != null && !cdn77ChannelConfigurationLabel.isBlank())
                 {
-                    LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
+                    OutputStream outputStream = new OutputStream();
 
-                    liveProxyOutput.setOutputType("CDN_CDN77");
-                    liveProxyOutput.setCdn77ChannelConfigurationLabel(cdn77ChannelConfigurationLabel);
+                    outputStream.setOutputType("CDN_CDN77");
+                    outputStream.setCdn77ChannelConfigurationLabel(cdn77ChannelConfigurationLabel);
 
                     // liveProxyOutput.setEncodingProfileLabel(monitorHLSEncodingProfileLabel);
 
@@ -1394,7 +1394,7 @@ public class LiveStreams {
 					}
 					*/
 
-                    liveProxyOutputList.add(liveProxyOutput);
+                    outputStreamList.add(outputStream);
                 }
 
                 String liveRecorderVirtualVODEncodingProfileLabel = null;
@@ -1425,7 +1425,7 @@ public class LiveStreams {
                         utcLiveRecorderEnd,
                         encodersPool,
                         null,
-                        liveProxyOutputList,
+                        outputStreamList,
                         null,
                         monitoringFrameIncreasingEnabled
                 );

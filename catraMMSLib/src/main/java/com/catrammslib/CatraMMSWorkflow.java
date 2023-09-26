@@ -9,7 +9,7 @@ import java.util.TimeZone;
 
 import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.utility.DrawTextDetails;
-import com.catrammslib.utility.LiveProxyOutput;
+import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
 
 import org.apache.log4j.Logger;
@@ -216,7 +216,7 @@ public class CatraMMSWorkflow {
             Long utcLiveRecorderEnd,
             String encodersPool,
             String userAgent,
-            List<LiveProxyOutput> liveRecorderOutputList,
+            List<OutputStream> liveRecorderOutputList,
 			JSONArray jaFramesToBeDetected,
 			Boolean monitoringFrameIncreasingEnabled
     )
@@ -303,9 +303,9 @@ public class CatraMMSWorkflow {
                 JSONArray jaOutputs = new JSONArray();
                 joParameters.put("outputs", jaOutputs);
 
-                for(LiveProxyOutput liveProxyOutput: liveRecorderOutputList)
+                for(OutputStream outputStream : liveRecorderOutputList)
                 {
-                    JSONObject joOutput = liveProxyOutput.toJson();
+                    JSONObject joOutput = outputStream.toJson();
                     jaOutputs.put(joOutput);
                 }
             }
@@ -340,7 +340,7 @@ public class CatraMMSWorkflow {
             String otherInputOptions,
             Long maxAttemptsNumberInCaseOfErrors,
             Long waitingSecondsBetweenAttemptsInCaseOfErrors,
-            List<LiveProxyOutput> liveProxyOutputList,
+            List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
 			Boolean defaultBroadcast
     )
@@ -397,7 +397,7 @@ public class CatraMMSWorkflow {
             else
                 joParameters.put("timePeriod", false);
 
-            if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
+            if (outputStreamList == null || outputStreamList.size() == 0)
             {
                 String errorMessage = "At least one liveProxyOutput has to be present";
                 mLogger.error(errorMessage);
@@ -408,9 +408,9 @@ public class CatraMMSWorkflow {
             JSONArray jaOutputs = new JSONArray();
             joParameters.put("outputs", jaOutputs);
 
-            for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
+            for(OutputStream outputStream : outputStreamList)
             {
-				JSONObject joOutput = liveProxyOutput.toJson();
+				JSONObject joOutput = outputStream.toJson();
                 jaOutputs.put(joOutput);
             }
 
@@ -451,7 +451,7 @@ public class CatraMMSWorkflow {
 			//			2. questi parametri saranno gestiti dall'engine
 			DrawTextDetails drawTextDetails,
 
-            List<LiveProxyOutput> liveProxyOutputList,
+            List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
 			Boolean defaultBroadcast
     )
@@ -462,7 +462,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, null,
                 encodersPool, proxyStartTime, proxyEndTime, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
-				liveProxyOutputList, joInternalMMSParameters, defaultBroadcast);
+                    outputStreamList, joInternalMMSParameters, defaultBroadcast);
 
 			if (drawTextDetails != null)
 			{
@@ -490,7 +490,7 @@ public class CatraMMSWorkflow {
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
             String otherInputOptions,
-            List<LiveProxyOutput> liveProxyOutputList,
+            List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
     )
             throws Exception
@@ -536,7 +536,7 @@ public class CatraMMSWorkflow {
             else
                 joParameters.put("timePeriod", false);
 
-            if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
+            if (outputStreamList == null || outputStreamList.size() == 0)
             {
                 String errorMessage = "At least one liveProxyOutput has to be present";
                 mLogger.error(errorMessage);
@@ -547,9 +547,9 @@ public class CatraMMSWorkflow {
             JSONArray jaOutputs = new JSONArray();
             joParameters.put("outputs", jaOutputs);
 
-            for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
+            for(OutputStream outputStream : outputStreamList)
             {
-				JSONObject joOutput = liveProxyOutput.toJson();
+				JSONObject joOutput = outputStream.toJson();
                 jaOutputs.put(joOutput);
 			}
 
@@ -584,7 +584,7 @@ public class CatraMMSWorkflow {
 			//			2. questi parametri saranno gestiti dall'engine
 			DrawTextDetails drawTextDetails,
 			
-            List<LiveProxyOutput> liveProxyOutputList,
+            List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
     )
             throws Exception
@@ -592,7 +592,7 @@ public class CatraMMSWorkflow {
         try
         {
             JSONObject joTask = buildVODProxyJson(label, mediaItemReferenceList, encodersPool, 
-				proxyStartTime, proxyEndTime, otherInputOptions, liveProxyOutputList, defaultBroadcast);
+				proxyStartTime, proxyEndTime, otherInputOptions, outputStreamList, defaultBroadcast);
 
 			if (drawTextDetails != null)
 			{
@@ -620,7 +620,7 @@ public class CatraMMSWorkflow {
             String encodersPool,
             Date proxyStartTime, Date proxyEndTime,
 
-            List<LiveProxyOutput> liveProxyOutputList,
+            List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
     )
             throws Exception
@@ -658,7 +658,7 @@ public class CatraMMSWorkflow {
 			if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("encodersPool", encodersPool);
 
-            if (liveProxyOutputList == null || liveProxyOutputList.size() == 0)
+            if (outputStreamList == null || outputStreamList.size() == 0)
             {
                 String errorMessage = "At least one liveProxyOutput has to be present";
                 mLogger.error(errorMessage);
@@ -669,9 +669,9 @@ public class CatraMMSWorkflow {
             JSONArray jaOutputs = new JSONArray();
             joParameters.put("outputs", jaOutputs);
 
-            for(LiveProxyOutput liveProxyOutput: liveProxyOutputList)
+            for(OutputStream outputStream : outputStreamList)
             {
-				JSONObject joOutput = liveProxyOutput.toJson();
+				JSONObject joOutput = outputStream.toJson();
                 jaOutputs.put(joOutput);
             }
 
@@ -705,7 +705,7 @@ public class CatraMMSWorkflow {
 			//			2. questi parametri saranno gestiti dall'engine
 			DrawTextDetails drawTextDetails,
 
-			List<LiveProxyOutput> liveProxyOutputList,
+			List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
     )
             throws Exception
@@ -713,7 +713,7 @@ public class CatraMMSWorkflow {
         try
         {
             JSONObject joTask = buildCountdownJson(label, mediaItemReferenceList, encodersPool, 
-				proxyStartTime, proxyEndTime, liveProxyOutputList, defaultBroadcast);
+				proxyStartTime, proxyEndTime, outputStreamList, defaultBroadcast);
 
 			if (drawTextDetails != null)
 			{

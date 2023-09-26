@@ -15,7 +15,7 @@ import com.catrammslib.entity.Stream;
 import com.catrammslib.utility.BroadcastPlaylistItem;
 import com.catrammslib.utility.DrawTextDetails;
 import com.catrammslib.utility.IngestionResult;
-import com.catrammslib.utility.LiveProxyOutput;
+import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
 
 public class CatraMMSBroadcaster {
@@ -336,13 +336,13 @@ public class CatraMMSBroadcaster {
 
             JSONObject joBroadcast = null;
             {
-                List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
+                List<OutputStream> outputStreamList = new ArrayList<>();
 				{
-					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
+					OutputStream outputStream = new OutputStream();
 					// if (broadcastURL.startsWith("udp://"))
 					{
-						liveProxyOutput.setOutputType("UDP_Stream");
-						liveProxyOutput.setUdpURL(broadcastUdpURL);
+						outputStream.setOutputType("UDP_Stream");
+						outputStream.setUdpURL(broadcastUdpURL);
 					}
 					/*
 					else // if (broadcastURL.startsWith("rtmp://"))
@@ -351,7 +351,7 @@ public class CatraMMSBroadcaster {
 						liveProxyOutput.setRtmpURL(broadcastURL);
 					}
 					*/
-					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
+					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 					{
 						JSONObject joFilters = new JSONObject();
 						
@@ -364,10 +364,10 @@ public class CatraMMSBroadcaster {
 						joFade.put("type", "fade");
 						joFade.put("duration", 3);
 
-						liveProxyOutput.setFilters(joFilters);
+						outputStream.setFilters(joFilters);
 					}
 
-					liveProxyOutputList.add(liveProxyOutput);
+					outputStreamList.add(outputStream);
 				}
 				if (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Stream"))
 				{
@@ -388,7 +388,7 @@ public class CatraMMSBroadcaster {
 						broadcastDefaultPlaylistItem.getDrawTextEnable() ?
 							broadcastDefaultPlaylistItem.getDrawTextDetails() : null,
 
-						liveProxyOutputList,
+							outputStreamList,
 						null,
 						true
         	        );
@@ -425,7 +425,7 @@ public class CatraMMSBroadcaster {
 						null,
 						broadcastDefaultPlaylistItem.getDrawTextEnable() ?
 							broadcastDefaultPlaylistItem.getDrawTextDetails() : null,
-						liveProxyOutputList,
+							outputStreamList,
 						true
         	        );
 				}
@@ -447,7 +447,7 @@ public class CatraMMSBroadcaster {
 
 						broadcastDefaultPlaylistItem.getDrawTextDetails(),
 
-						liveProxyOutputList,
+							outputStreamList,
 						true
         	        );
 				}
@@ -535,38 +535,42 @@ public class CatraMMSBroadcaster {
 				JSONObject joExtraLiveProxyInternalMMSParameters = new JSONObject();
 				joExtraLiveProxyInternalMMSParameters.put("broadcaster", joExtraLiveProxyBroadcasterParameters);
 
-                List<LiveProxyOutput> liveProxyOutputList = new ArrayList<>();
+                List<OutputStream> outputStreamList = new ArrayList<>();
 
 				// 2022-09-14: l'output HLS crea problemi nel caso di encoder esterno.
 				if (editBroadcasterDeliveryType.equals("HLS_Channel"))
 				{
-					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
+					OutputStream outputStream = new OutputStream();
 
-					liveProxyOutput.setOutputType("HLS_Channel");
+					outputStream.setOutputType("HLS_Channel");
 					if (editBroadcasterHlsConfigurationLabel != null && !editBroadcasterHlsConfigurationLabel.isEmpty())
-						liveProxyOutput.setHlsChannelConfigurationLabel(editBroadcasterHlsConfigurationLabel);
+						outputStream.setHlsChannelConfigurationLabel(editBroadcasterHlsConfigurationLabel);
 
-					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
+					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
-					if (drawTextDetails != null)
-						liveProxyOutput.setDrawTextDetails(drawTextDetails);
+					if (drawTextDetails != null){
+						outputStream.setDrawTextEnable(true);
+						outputStream.setDrawTextDetails(drawTextDetails);
+					}
 
-					liveProxyOutputList.add(liveProxyOutput);
+					outputStreamList.add(outputStream);
 				}
 				else if (editBroadcasterDeliveryType.equals("CDN77"))
 				{
-					LiveProxyOutput liveProxyOutput = new LiveProxyOutput();
+					OutputStream outputStream = new OutputStream();
 
-					liveProxyOutput.setOutputType("CDN_CDN77");
+					outputStream.setOutputType("CDN_CDN77");
 					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
-						liveProxyOutput.setCdn77ChannelConfigurationLabel(editBroadcasterCdn77ConfigurationLabel);
+						outputStream.setCdn77ChannelConfigurationLabel(editBroadcasterCdn77ConfigurationLabel);
 
-					liveProxyOutput.setEncodingProfileLabel(encodingProfileLabel);
+					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
-					if (drawTextDetails != null)
-						liveProxyOutput.setDrawTextDetails(drawTextDetails);
+					if (drawTextDetails != null){
+						outputStream.setDrawTextEnable(true);
+						outputStream.setDrawTextDetails(drawTextDetails);
+					}
 
-					liveProxyOutputList.add(liveProxyOutput);
+					outputStreamList.add(outputStream);
 				}
 				else
 				{
@@ -590,7 +594,7 @@ public class CatraMMSBroadcaster {
 					null,
 					null,
 
-					liveProxyOutputList,
+						outputStreamList,
 					joExtraLiveProxyInternalMMSParameters,
 					null
                 );

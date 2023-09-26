@@ -1,13 +1,15 @@
 package com.catrammslib.utility;
 
 import java.io.Serializable;
+
+import com.catrammslib.entity.EncodingProfile;
 import org.apache.log4j.Logger;
 
 import org.json.JSONObject;
 
-public class LiveProxyOutput implements Serializable {
+public class OutputStream implements Serializable {
     
-    private static final Logger mLogger = Logger.getLogger(LiveProxyOutput.class);
+    private static final Logger mLogger = Logger.getLogger(OutputStream.class);
 
 	// RTMP_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
@@ -36,23 +38,37 @@ public class LiveProxyOutput implements Serializable {
 	private Long videoTrackIndexToBeUsed;
 	private Long audioTrackIndexToBeUsed;
 
+	// drawTextEnable serve per la GUI (altrimenti sarebbe bastato il controllo (drawTextDetails != null)
+	private Boolean drawTextEnable;
 	private DrawTextDetails drawTextDetails;
 
 	// HLS
 	private String otherOutputOptions;
 	// HLS
+
+	private EncodingProfile encodingProfile;
     private String encodingProfileLabel;
 	// HLS
 	private JSONObject filters;
 
-	public LiveProxyOutput()
+	public OutputStream()
 	{
+		drawTextEnable = false;
 		drawTextDetails = null;
 		filters = null;
 		videoTrackIndexToBeUsed = (long) -1;
 		audioTrackIndexToBeUsed = (long) -1;
 	}
-	
+
+	public OutputStream(boolean drawTextEnable, DrawTextDetails drawTextDetails)
+	{
+		drawTextEnable = drawTextEnable;
+		drawTextDetails = drawTextDetails;
+		filters = null;
+		videoTrackIndexToBeUsed = (long) -1;
+		audioTrackIndexToBeUsed = (long) -1;
+	}
+
 	public JSONObject toJson()
 	{
 		JSONObject joOutput = new JSONObject();
@@ -110,7 +126,7 @@ public class LiveProxyOutput implements Serializable {
 			if (getFilters() != null)
 				joOutput.put("filters", getFilters());
 			
-			if (drawTextDetails != null)
+			if (drawTextEnable && drawTextDetails != null)
 				joOutput.put("drawTextDetails", drawTextDetails.toJson());
 		}
 		catch(Exception e)
@@ -225,6 +241,14 @@ public class LiveProxyOutput implements Serializable {
 
 	public void setAwsExpirationInMinutes(Long awsExpirationInMinutes) {
 		this.awsExpirationInMinutes = awsExpirationInMinutes;
+	}
+
+	public Boolean getDrawTextEnable() {
+		return drawTextEnable;
+	}
+
+	public void setDrawTextEnable(Boolean drawTextEnable) {
+		this.drawTextEnable = drawTextEnable;
 	}
 
 	public DrawTextDetails getDrawTextDetails() {
