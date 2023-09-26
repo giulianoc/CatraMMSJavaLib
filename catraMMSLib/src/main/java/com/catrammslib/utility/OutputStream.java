@@ -46,8 +46,7 @@ public class OutputStream implements Serializable {
 	// HLS
 	private String otherOutputOptions;
 
-	// 2023-09-26: serve la new in fase di instanziazione della classe altrimenti avrei una
-	//		eccezione in outputStream.xhtml
+	// 2023-09-26: serve la new in fase di instanziazione della classe altrimenti avrei una eccezione in outputStream.xhtml
 	private EncodingProfile encodingProfile = new EncodingProfile();
 	// In alcuni casi abbiamo solamente encodingProfileLabel e non l'EncodingProfile, per cui lasciamo la doppia opzione
     private String encodingProfileLabel;
@@ -390,6 +389,13 @@ public class OutputStream implements Serializable {
 		return joOutput;
 	}
 
+	public void setEncodingProfile(EncodingProfile encodingProfile) {
+		this.encodingProfile = encodingProfile;
+
+		// 2023-09-26: vedi commento sopra quando encodingProfile viene definito
+		if (encodingProfile == null)
+			encodingProfile = new EncodingProfile();
+	}
     public String getOutputType() {
         return outputType;
     }
@@ -400,10 +406,6 @@ public class OutputStream implements Serializable {
 
 	public EncodingProfile getEncodingProfile() {
 		return encodingProfile;
-	}
-
-	public void setEncodingProfile(EncodingProfile encodingProfile) {
-		this.encodingProfile = encodingProfile;
 	}
 
 	public String getRtmpChannelConfigurationLabel() {
