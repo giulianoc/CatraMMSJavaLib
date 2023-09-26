@@ -264,6 +264,9 @@ public class OutputStream implements Serializable {
 				);
 			}
 
+			mLogger.info("getEncodingProfile"
+					+ ", getEncodingProfile: " + getEncodingProfile()
+			);
 			if (getEncodingProfile() != null && getEncodingProfile().getLabel() != null && !getEncodingProfile().getLabel().isBlank())
 				joOutput.put("encodingProfileLabel", getEncodingProfile().getLabel());
 			else if (getEncodingProfileLabel() != null && !getEncodingProfileLabel().isBlank())
@@ -391,6 +394,10 @@ public class OutputStream implements Serializable {
 
 	public void setEncodingProfile(EncodingProfile encodingProfile) {
 		this.encodingProfile = encodingProfile;
+
+		mLogger.info("AAAAAAAAAAAAAAAA: "
+				+ ", this.encodingProfile: " + this.encodingProfile
+		);
 
 		// 2023-09-26: vedi commento sopra quando encodingProfile viene definito
 		if (this.encodingProfile == null)
