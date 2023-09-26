@@ -49,17 +49,29 @@ public class OutputStream implements Serializable {
 	// 2023-09-26: serve la new in fase di instanziazione della classe altrimenti avrei una
 	//		eccezione in outputStream.xhtml
 	private EncodingProfile encodingProfile = new EncodingProfile();
+	// In alcuni casi abbiamo solamente encodingProfileLabel e non l'EncodingProfile, per cui lasciamo la doppia opzione
     private String encodingProfileLabel;
 
 	// filters
 	private Double audioVolumeChange;
+
 	private Boolean blackdetect;
+	private Float blackdetect_BlackMinDuration;
+	private Float blackdetect_PixelBlackTh;
+
 	private Boolean blackframe;
+	private Long blackframe_Amount;
+	private Long blackframe_Threshold;
+
 	private Boolean freezedetect;
-	private Long freezedetectDuration;
+	private Long freezedetect_Duration;
+	private Long freezedetect_NoiseInDb;
+
 	private Boolean silencedetect;
+	private Float silencedetect_Noise;
+
 	private Boolean fade;
-	private Long fadeDuration;
+	private Long fade_Duration;
 
 	public OutputStream(boolean drawTextEnable, DrawTextDetails drawTextDetails)
 	{
@@ -73,14 +85,30 @@ public class OutputStream implements Serializable {
 		awsExpirationInMinutes = (long) 1440;	// 1 day
 		cdn77ExpirationInMinutes = (long) 1440;	// 1 day
 
-		// filters
+		resetFilter();
+	}
+
+	private void resetFilter()
+	{
 		audioVolumeChange = null;
+
 		blackdetect = false;
+		blackdetect_BlackMinDuration = null;
+		blackdetect_PixelBlackTh = null;
+
 		blackframe = false;
+		blackframe_Amount = null;
+		blackframe_Threshold = null;
+
 		freezedetect = false;
+		freezedetect_Duration = null;
+		freezedetect_NoiseInDb = null;
+
 		silencedetect = false;
+		silencedetect_Noise = null;
+
 		fade = false;
-		fadeDuration = null;
+		fade_Duration = null;
 	}
 
 	public OutputStream clone()
@@ -101,14 +129,26 @@ public class OutputStream implements Serializable {
 		outputStream.setOtherOutputOptions(getOtherOutputOptions());
 		outputStream.setEncodingProfile(getEncodingProfile());
 		outputStream.setEncodingProfileLabel(getEncodingProfileLabel());
+
 		outputStream.setAudioVolumeChange(getAudioVolumeChange());
+
 		outputStream.setBlackdetect(getBlackdetect());
+		outputStream.setBlackdetect_BlackMinDuration(getBlackdetect_BlackMinDuration());
+		outputStream.setBlackdetect_PixelBlackTh(getBlackdetect_PixelBlackTh());
+
 		outputStream.setBlackframe(getBlackframe());
+		outputStream.setBlackframe_Amount(getBlackframe_Amount());
+		outputStream.setBlackframe_Threshold(getBlackframe_Threshold());
+
 		outputStream.setFreezedetect(getFreezedetect());
-		outputStream.setFreezedetectDuration(getFreezedetectDuration());
+		outputStream.setFreezedetect_Duration(getFreezedetect_Duration());
+		outputStream.setFreezedetect_NoiseInDb(getFreezedetect_NoiseInDb());
+
 		outputStream.setSilencedetect(getSilencedetect());
+		outputStream.setSilencedetect_Noise(getSilencedetect_Noise());
+
 		outputStream.setFade(getFade());
-		outputStream.setFadeDuration(getFadeDuration());
+		outputStream.setFade_Duration(getFade_Duration());
 
 		return outputStream;
 	}
@@ -117,13 +157,7 @@ public class OutputStream implements Serializable {
 	{
 		try
 		{
-			blackdetect = false;
-			blackframe = false;
-			freezedetect = false;
-			silencedetect = false;
-			audioVolumeChange = null;
-			fade = false;
-			fadeDuration = null;
+			resetFilter();
 
 			if (joFilters.has("video"))
 			{
@@ -146,7 +180,7 @@ public class OutputStream implements Serializable {
 						if (joFilter.has("duration"))
 						{
 							Object o = joFilter.get("duration");
-								setFreezedetectDuration(joFilter.getLong("duration"));
+								setFreezedetect_Duration(joFilter.getLong("duration"));
 						}
 					}
 
@@ -157,7 +191,7 @@ public class OutputStream implements Serializable {
 						if (joFilter.has("duration"))
 						{
 							Object o = joFilter.get("duration");
-							setFadeDuration(joFilter.getLong("duration"));
+							setFade_Duration(joFilter.getLong("duration"));
 						}
 					}
 				}
@@ -262,6 +296,10 @@ public class OutputStream implements Serializable {
 					jaVideo.put(joBlackDetect);
 
 					joBlackDetect.put("type", "blackdetect");
+					if (getBlackdetect_BlackMinDuration() != null)
+						joBlackDetect.put("black_min_duration", getBlackdetect_BlackMinDuration());
+					if (getBlackdetect_PixelBlackTh() != null)
+						joBlackDetect.put("pixel_black_th", getBlackdetect_PixelBlackTh());
 				}
 
 				if (getBlackframe() != null && getBlackframe())
@@ -270,6 +308,10 @@ public class OutputStream implements Serializable {
 					jaVideo.put(joBlackFrame);
 
 					joBlackFrame.put("type", "blackframe");
+					if (getBlackframe_Amount() != null)
+						joBlackFrame.put("amount", getBlackframe_Amount());
+					if (getBlackframe_Threshold() != null)
+						joBlackFrame.put("threshold", getBlackframe_Threshold());
 				}
 
 				if (getFreezedetect() != null && getFreezedetect())
@@ -278,9 +320,10 @@ public class OutputStream implements Serializable {
 					jaVideo.put(joFreezeDetect);
 
 					joFreezeDetect.put("type", "freezedetect");
-
-					if (getFreezedetectDuration() != null && getFreezedetectDuration() > 0)
-						joFreezeDetect.put("duration", getFreezedetectDuration());
+					if (getFreezedetect_Duration() != null && getFreezedetect_Duration() > 0)
+						joFreezeDetect.put("duration", getFreezedetect_Duration());
+					if (getFreezedetect_NoiseInDb() != null)
+						joFreezeDetect.put("noiseInDb", getFreezedetect_NoiseInDb());
 				}
 
 				if (getFade() != null && getFade())
@@ -290,8 +333,8 @@ public class OutputStream implements Serializable {
 
 					joFade.put("type", "fade");
 
-					if (getFadeDuration() != null && getFadeDuration() > 0)
-						joFade.put("duration", getFadeDuration());
+					if (getFade_Duration() != null && getFade_Duration() > 0)
+						joFade.put("duration", getFade_Duration());
 				}
 
 				if (getSilencedetect() != null && getSilencedetect())
@@ -300,6 +343,8 @@ public class OutputStream implements Serializable {
 					jaAudio.put(joSilenceDetect);
 
 					joSilenceDetect.put("type", "silencedetect");
+					if (getSilencedetect_Noise() != null)
+						joSilenceDetect.put("noise", getSilencedetect_Noise());
 				}
 
 				if (getAudioVolumeChange() != null)
@@ -453,14 +498,6 @@ public class OutputStream implements Serializable {
 		this.freezedetect = freezedetect;
 	}
 
-	public Long getFreezedetectDuration() {
-		return freezedetectDuration;
-	}
-
-	public void setFreezedetectDuration(Long freezedetectDuration) {
-		this.freezedetectDuration = freezedetectDuration;
-	}
-
 	public Boolean getSilencedetect() {
 		return silencedetect;
 	}
@@ -509,11 +546,67 @@ public class OutputStream implements Serializable {
 		this.fade = fade;
 	}
 
-	public Long getFadeDuration() {
-		return fadeDuration;
+	public Float getBlackdetect_BlackMinDuration() {
+		return blackdetect_BlackMinDuration;
 	}
 
-	public void setFadeDuration(Long fadeDuration) {
-		this.fadeDuration = fadeDuration;
+	public void setBlackdetect_BlackMinDuration(Float blackdetect_BlackMinDuration) {
+		this.blackdetect_BlackMinDuration = blackdetect_BlackMinDuration;
+	}
+
+	public Float getBlackdetect_PixelBlackTh() {
+		return blackdetect_PixelBlackTh;
+	}
+
+	public void setBlackdetect_PixelBlackTh(Float blackdetect_PixelBlackTh) {
+		this.blackdetect_PixelBlackTh = blackdetect_PixelBlackTh;
+	}
+
+	public Long getFreezedetect_Duration() {
+		return freezedetect_Duration;
+	}
+
+	public void setFreezedetect_Duration(Long freezedetect_Duration) {
+		this.freezedetect_Duration = freezedetect_Duration;
+	}
+
+	public Long getFade_Duration() {
+		return fade_Duration;
+	}
+
+	public void setFade_Duration(Long fade_Duration) {
+		this.fade_Duration = fade_Duration;
+	}
+
+	public Long getBlackframe_Amount() {
+		return blackframe_Amount;
+	}
+
+	public void setBlackframe_Amount(Long blackframe_Amount) {
+		this.blackframe_Amount = blackframe_Amount;
+	}
+
+	public Long getBlackframe_Threshold() {
+		return blackframe_Threshold;
+	}
+
+	public void setBlackframe_Threshold(Long blackframe_Threshold) {
+		this.blackframe_Threshold = blackframe_Threshold;
+	}
+
+	public Long getFreezedetect_NoiseInDb() {
+		return freezedetect_NoiseInDb;
+	}
+
+	public void setFreezedetect_NoiseInDb(Long freezedetect_NoiseInDb) {
+		this.freezedetect_NoiseInDb = freezedetect_NoiseInDb;
+	}
+
+	public Float getSilencedetect_Noise() {
+		return silencedetect_Noise;
+	}
+
+	public void setSilencedetect_Noise(Float silencedetect_Noise) {
+		this.silencedetect_Noise = silencedetect_Noise;
 	}
 }
