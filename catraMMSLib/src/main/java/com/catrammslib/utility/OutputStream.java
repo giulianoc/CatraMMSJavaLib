@@ -393,8 +393,8 @@ public class OutputStream implements Serializable {
 		this.encodingProfile = encodingProfile;
 
 		// 2023-09-26: vedi commento sopra quando encodingProfile viene definito
-		if (encodingProfile == null)
-			encodingProfile = new EncodingProfile();
+		if (this.encodingProfile == null)
+			this.encodingProfile = new EncodingProfile();
 	}
     public String getOutputType() {
         return outputType;
