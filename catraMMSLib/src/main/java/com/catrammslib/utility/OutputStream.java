@@ -281,17 +281,17 @@ public class OutputStream implements Serializable {
 
 			// filters
 			{
-				JSONObject joFilters = new JSONObject();
-				joOutput.put("filters", joFilters);
-
+				boolean videoFilterPresent = false;
 				JSONArray jaVideo = new JSONArray();
-				joFilters.put("video", jaVideo);
 
+				boolean audioFilterPresent = false;
 				JSONArray jaAudio = new JSONArray();
-				joFilters.put("audio", jaAudio);
 
+				// video filters
 				if (getBlackdetect() != null && getBlackdetect())
 				{
+					videoFilterPresent = true;
+
 					JSONObject joBlackDetect = new JSONObject();
 					jaVideo.put(joBlackDetect);
 
@@ -304,6 +304,8 @@ public class OutputStream implements Serializable {
 
 				if (getBlackframe() != null && getBlackframe())
 				{
+					videoFilterPresent = true;
+
 					JSONObject joBlackFrame = new JSONObject();
 					jaVideo.put(joBlackFrame);
 
@@ -316,6 +318,8 @@ public class OutputStream implements Serializable {
 
 				if (getFreezedetect() != null && getFreezedetect())
 				{
+					videoFilterPresent = true;
+
 					JSONObject joFreezeDetect = new JSONObject();
 					jaVideo.put(joFreezeDetect);
 
@@ -328,6 +332,8 @@ public class OutputStream implements Serializable {
 
 				if (getFade() != null && getFade())
 				{
+					videoFilterPresent = true;
+
 					JSONObject joFade = new JSONObject();
 					jaVideo.put(joFade);
 
@@ -337,8 +343,11 @@ public class OutputStream implements Serializable {
 						joFade.put("duration", getFade_Duration());
 				}
 
+				// audio filters
 				if (getSilencedetect() != null && getSilencedetect())
 				{
+					audioFilterPresent = true;
+
 					JSONObject joSilenceDetect = new JSONObject();
 					jaAudio.put(joSilenceDetect);
 
@@ -349,11 +358,24 @@ public class OutputStream implements Serializable {
 
 				if (getAudioVolumeChange() != null)
 				{
+					audioFilterPresent = true;
+
 					JSONObject joVolume = new JSONObject();
 					jaAudio.put(joVolume);
 
 					joVolume.put("type", "volume");
 					joVolume.put("factor", getAudioVolumeChange());
+				}
+
+				if (videoFilterPresent || audioFilterPresent)
+				{
+					JSONObject joFilters = new JSONObject();
+					joOutput.put("filters", joFilters);
+
+					if (videoFilterPresent)
+						joFilters.put("video", jaVideo);
+					if (audioFilterPresent)
+						joFilters.put("audio", jaAudio);
 				}
 			}
 
