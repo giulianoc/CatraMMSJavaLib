@@ -5,6 +5,7 @@ import java.io.Serializable;
 import com.catrammslib.entity.EncodingProfile;
 import org.apache.log4j.Logger;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class OutputStream implements Serializable {
@@ -44,29 +45,148 @@ public class OutputStream implements Serializable {
 
 	// HLS
 	private String otherOutputOptions;
-	// HLS
 
-	private EncodingProfile encodingProfile;
+	// 2023-09-26: serve la new in fase di instanziazione della classe altrimenti avrei una
+	//		eccezione in outputStream.xhtml
+	private EncodingProfile encodingProfile = new EncodingProfile();
     private String encodingProfileLabel;
-	// HLS
-	private JSONObject filters;
 
-	public OutputStream()
-	{
-		drawTextEnable = false;
-		drawTextDetails = null;
-		filters = null;
-		videoTrackIndexToBeUsed = (long) -1;
-		audioTrackIndexToBeUsed = (long) -1;
-	}
+	// filters
+	private Double audioVolumeChange;
+	private Boolean blackdetect;
+	private Boolean blackframe;
+	private Boolean freezedetect;
+	private Long freezedetectDuration;
+	private Boolean silencedetect;
+	private Boolean fade;
+	private Long fadeDuration;
 
 	public OutputStream(boolean drawTextEnable, DrawTextDetails drawTextDetails)
 	{
-		drawTextEnable = drawTextEnable;
-		drawTextDetails = drawTextDetails;
-		filters = null;
+		this.drawTextEnable = drawTextEnable;
+		this.drawTextDetails = drawTextDetails;
+
 		videoTrackIndexToBeUsed = (long) -1;
 		audioTrackIndexToBeUsed = (long) -1;
+
+		awsSignedURL = false;
+		awsExpirationInMinutes = (long) 1440;	// 1 day
+		cdn77ExpirationInMinutes = (long) 1440;	// 1 day
+
+		// filters
+		audioVolumeChange = null;
+		blackdetect = false;
+		blackframe = false;
+		freezedetect = false;
+		silencedetect = false;
+		fade = false;
+		fadeDuration = null;
+	}
+
+	public OutputStream clone()
+	{
+		OutputStream outputStream = new OutputStream(getDrawTextEnable(), getDrawTextDetails());
+
+		outputStream.setOutputType(getOutputType());
+		outputStream.setUdpURL(getUdpURL());
+		outputStream.setAwsChannelConfigurationLabel(getAwsChannelConfigurationLabel());
+		outputStream.setAwsSignedURL(getAwsSignedURL());
+		outputStream.setAwsExpirationInMinutes(getAwsExpirationInMinutes());
+		outputStream.setCdn77ChannelConfigurationLabel(getCdn77ChannelConfigurationLabel());
+		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
+		outputStream.setRtmpChannelConfigurationLabel(getRtmpChannelConfigurationLabel());
+		outputStream.setHlsChannelConfigurationLabel(getHlsChannelConfigurationLabel());
+		outputStream.setVideoTrackIndexToBeUsed(getVideoTrackIndexToBeUsed());
+		outputStream.setAudioTrackIndexToBeUsed(getAudioTrackIndexToBeUsed());
+		outputStream.setOtherOutputOptions(getOtherOutputOptions());
+		outputStream.setEncodingProfile(getEncodingProfile());
+		outputStream.setEncodingProfileLabel(getEncodingProfileLabel());
+		outputStream.setAudioVolumeChange(getAudioVolumeChange());
+		outputStream.setBlackdetect(getBlackdetect());
+		outputStream.setBlackframe(getBlackframe());
+		outputStream.setFreezedetect(getFreezedetect());
+		outputStream.setFreezedetectDuration(getFreezedetectDuration());
+		outputStream.setSilencedetect(getSilencedetect());
+		outputStream.setFade(getFade());
+		outputStream.setFadeDuration(getFadeDuration());
+
+		return outputStream;
+	}
+
+	public void filtersFromJson(JSONObject joFilters)
+	{
+		try
+		{
+			blackdetect = false;
+			blackframe = false;
+			freezedetect = false;
+			silencedetect = false;
+			audioVolumeChange = null;
+			fade = false;
+			fadeDuration = null;
+
+			if (joFilters.has("video"))
+			{
+				JSONArray jaVideo = joFilters.getJSONArray("video");
+
+				for (int filterIndex = 0; filterIndex < jaVideo.length(); filterIndex++)
+				{
+					JSONObject joFilter = jaVideo.getJSONObject(filterIndex);
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackdetect"))
+						setBlackdetect(true);
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackframe"))
+						setBlackframe(true);
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("freezedetect"))
+					{
+						setFreezedetect(true);
+
+						if (joFilter.has("duration"))
+						{
+							Object o = joFilter.get("duration");
+								setFreezedetectDuration(joFilter.getLong("duration"));
+						}
+					}
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("fade"))
+					{
+						setFade(true);
+
+						if (joFilter.has("duration"))
+						{
+							Object o = joFilter.get("duration");
+							setFadeDuration(joFilter.getLong("duration"));
+						}
+					}
+				}
+			}
+
+			if (joFilters.has("audio"))
+			{
+				JSONArray jaAudio = joFilters.getJSONArray("audio");
+
+				for (int filterIndex = 0; filterIndex < jaAudio.length(); filterIndex++)
+				{
+					JSONObject joFilter = jaAudio.getJSONObject(filterIndex);
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("volume"))
+					{
+						if (joFilter.has("factor") && !joFilter.isNull("factor"))
+							setAudioVolumeChange(joFilter.getDouble("factor"));
+					}
+					else if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("silencedetect"))
+					{
+						setSilencedetect(true);
+					}
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			mLogger.error("Exception: " + e);
+		}
 	}
 
 	public JSONObject toJson()
@@ -78,7 +198,7 @@ public class OutputStream implements Serializable {
 			joOutput.put("outputType", getOutputType());
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
-				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isEmpty())
+				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isBlank())
 					joOutput.put("awsChannelConfigurationLabel", getAwsChannelConfigurationLabel());
 				if (getAwsSignedURL() != null)
 					joOutput.put("awsSignedURL", getAwsSignedURL());
@@ -87,7 +207,7 @@ public class OutputStream implements Serializable {
 			}
 			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
-				if (getCdn77ChannelConfigurationLabel() != null && !getCdn77ChannelConfigurationLabel().isEmpty())
+				if (getCdn77ChannelConfigurationLabel() != null && !getCdn77ChannelConfigurationLabel().isBlank())
 					joOutput.put("cdn77ChannelConfigurationLabel", getCdn77ChannelConfigurationLabel());
 				if (getCdn77ExpirationInMinutes() != null)
 					joOutput.put("cdn77ExpirationInMinutes", getCdn77ExpirationInMinutes());
@@ -96,12 +216,12 @@ public class OutputStream implements Serializable {
 				joOutput.put("udpUrl", getUdpURL());
 			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
 			{
-				if (getRtmpChannelConfigurationLabel() != null && !getRtmpChannelConfigurationLabel().isEmpty())
+				if (getRtmpChannelConfigurationLabel() != null && !getRtmpChannelConfigurationLabel().isBlank())
 					joOutput.put("rtmpChannelConfigurationLabel", getRtmpChannelConfigurationLabel());
 			}
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
-				if (getHlsChannelConfigurationLabel() != null && !getHlsChannelConfigurationLabel().isEmpty())
+				if (getHlsChannelConfigurationLabel() != null && !getHlsChannelConfigurationLabel().isBlank())
 					joOutput.put("hlsChannelConfigurationLabel", getHlsChannelConfigurationLabel());
 			}
 			else
@@ -110,11 +230,13 @@ public class OutputStream implements Serializable {
 						+ ", outputType: " + getOutputType()
 				);
 			}
-	
-			if (getEncodingProfileLabel() != null && !getEncodingProfileLabel().isEmpty())
+
+			if (getEncodingProfile() != null && getEncodingProfile().getLabel() != null && !getEncodingProfile().getLabel().isBlank())
+				joOutput.put("encodingProfileLabel", getEncodingProfile().getLabel());
+			else if (getEncodingProfileLabel() != null && !getEncodingProfileLabel().isBlank())
 				joOutput.put("encodingProfileLabel", getEncodingProfileLabel());
 	
-			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isEmpty())
+			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isBlank())
 				joOutput.put("otherOutputOptions", getOtherOutputOptions());
 	
 			if (getVideoTrackIndexToBeUsed() != null && getVideoTrackIndexToBeUsed() != -1)
@@ -123,9 +245,73 @@ public class OutputStream implements Serializable {
 			if (getAudioTrackIndexToBeUsed() != null && getAudioTrackIndexToBeUsed() != -1)
 				joOutput.put("audioTrackIndexToBeUsed",  getAudioTrackIndexToBeUsed());
 
-			if (getFilters() != null)
-				joOutput.put("filters", getFilters());
-			
+			// filters
+			{
+				JSONObject joFilters = new JSONObject();
+				joOutput.put("filters", joFilters);
+
+				JSONArray jaVideo = new JSONArray();
+				joFilters.put("video", jaVideo);
+
+				JSONArray jaAudio = new JSONArray();
+				joFilters.put("audio", jaAudio);
+
+				if (getBlackdetect() != null && getBlackdetect())
+				{
+					JSONObject joBlackDetect = new JSONObject();
+					jaVideo.put(joBlackDetect);
+
+					joBlackDetect.put("type", "blackdetect");
+				}
+
+				if (getBlackframe() != null && getBlackframe())
+				{
+					JSONObject joBlackFrame = new JSONObject();
+					jaVideo.put(joBlackFrame);
+
+					joBlackFrame.put("type", "blackframe");
+				}
+
+				if (getFreezedetect() != null && getFreezedetect())
+				{
+					JSONObject joFreezeDetect = new JSONObject();
+					jaVideo.put(joFreezeDetect);
+
+					joFreezeDetect.put("type", "freezedetect");
+
+					if (getFreezedetectDuration() != null && getFreezedetectDuration() > 0)
+						joFreezeDetect.put("duration", getFreezedetectDuration());
+				}
+
+				if (getFade() != null && getFade())
+				{
+					JSONObject joFade = new JSONObject();
+					jaVideo.put(joFade);
+
+					joFade.put("type", "fade");
+
+					if (getFadeDuration() != null && getFadeDuration() > 0)
+						joFade.put("duration", getFadeDuration());
+				}
+
+				if (getSilencedetect() != null && getSilencedetect())
+				{
+					JSONObject joSilenceDetect = new JSONObject();
+					jaAudio.put(joSilenceDetect);
+
+					joSilenceDetect.put("type", "silencedetect");
+				}
+
+				if (getAudioVolumeChange() != null)
+				{
+					JSONObject joVolume = new JSONObject();
+					jaAudio.put(joVolume);
+
+					joVolume.put("type", "volume");
+					joVolume.put("factor", getAudioVolumeChange());
+				}
+			}
+
 			if (drawTextEnable && drawTextDetails != null)
 				joOutput.put("drawTextDetails", drawTextDetails.toJson());
 		}
@@ -144,6 +330,14 @@ public class OutputStream implements Serializable {
     public void setOutputType(String outputType) {
         this.outputType = outputType;
     }
+
+	public EncodingProfile getEncodingProfile() {
+		return encodingProfile;
+	}
+
+	public void setEncodingProfile(EncodingProfile encodingProfile) {
+		this.encodingProfile = encodingProfile;
+	}
 
 	public String getRtmpChannelConfigurationLabel() {
 		return rtmpChannelConfigurationLabel;
@@ -227,12 +421,52 @@ public class OutputStream implements Serializable {
         this.encodingProfileLabel = encodingProfileLabel;
     }
 
-	public JSONObject getFilters() {
-		return filters;
+	public Double getAudioVolumeChange() {
+		return audioVolumeChange;
 	}
 
-	public void setFilters(JSONObject filters) {
-		this.filters = filters;
+	public void setAudioVolumeChange(Double audioVolumeChange) {
+		this.audioVolumeChange = audioVolumeChange;
+	}
+
+	public Boolean getBlackdetect() {
+		return blackdetect;
+	}
+
+	public void setBlackdetect(Boolean blackdetect) {
+		this.blackdetect = blackdetect;
+	}
+
+	public Boolean getBlackframe() {
+		return blackframe;
+	}
+
+	public void setBlackframe(Boolean blackframe) {
+		this.blackframe = blackframe;
+	}
+
+	public Boolean getFreezedetect() {
+		return freezedetect;
+	}
+
+	public void setFreezedetect(Boolean freezedetect) {
+		this.freezedetect = freezedetect;
+	}
+
+	public Long getFreezedetectDuration() {
+		return freezedetectDuration;
+	}
+
+	public void setFreezedetectDuration(Long freezedetectDuration) {
+		this.freezedetectDuration = freezedetectDuration;
+	}
+
+	public Boolean getSilencedetect() {
+		return silencedetect;
+	}
+
+	public void setSilencedetect(Boolean silencedetect) {
+		this.silencedetect = silencedetect;
 	}
 
 	public Long getAwsExpirationInMinutes() {
@@ -266,4 +500,20 @@ public class OutputStream implements Serializable {
     public void setOtherOutputOptions(String otherOutputOptions) {
         this.otherOutputOptions = otherOutputOptions;
     }
+
+	public Boolean getFade() {
+		return fade;
+	}
+
+	public void setFade(Boolean fade) {
+		this.fade = fade;
+	}
+
+	public Long getFadeDuration() {
+		return fadeDuration;
+	}
+
+	public void setFadeDuration(Long fadeDuration) {
+		this.fadeDuration = fadeDuration;
+	}
 }

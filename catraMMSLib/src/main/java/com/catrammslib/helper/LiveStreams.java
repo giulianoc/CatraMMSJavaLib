@@ -1335,7 +1335,7 @@ public class LiveStreams {
                 List<OutputStream> outputStreamList = new ArrayList<>();
                 if (cdn77ChannelConfigurationLabel != null && !cdn77ChannelConfigurationLabel.isBlank())
                 {
-                    OutputStream outputStream = new OutputStream();
+                    OutputStream outputStream = new OutputStream(false, null);
 
                     outputStream.setOutputType("CDN_CDN77");
                     outputStream.setCdn77ChannelConfigurationLabel(cdn77ChannelConfigurationLabel);

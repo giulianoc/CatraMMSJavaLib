@@ -338,7 +338,7 @@ public class CatraMMSBroadcaster {
             {
                 List<OutputStream> outputStreamList = new ArrayList<>();
 				{
-					OutputStream outputStream = new OutputStream();
+					OutputStream outputStream = new OutputStream(false, null);
 					// if (broadcastURL.startsWith("udp://"))
 					{
 						outputStream.setOutputType("UDP_Stream");
@@ -353,6 +353,9 @@ public class CatraMMSBroadcaster {
 					*/
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 					{
+						outputStream.setFade(true);
+						outputStream.setFadeDuration(3L);
+						/*
 						JSONObject joFilters = new JSONObject();
 						
 						JSONArray jaVideo = new JSONArray();
@@ -365,6 +368,7 @@ public class CatraMMSBroadcaster {
 						joFade.put("duration", 3);
 
 						outputStream.setFilters(joFilters);
+						 */
 					}
 
 					outputStreamList.add(outputStream);
@@ -540,7 +544,7 @@ public class CatraMMSBroadcaster {
 				// 2022-09-14: l'output HLS crea problemi nel caso di encoder esterno.
 				if (editBroadcasterDeliveryType.equals("HLS_Channel"))
 				{
-					OutputStream outputStream = new OutputStream();
+					OutputStream outputStream = new OutputStream(false, null);
 
 					outputStream.setOutputType("HLS_Channel");
 					if (editBroadcasterHlsConfigurationLabel != null && !editBroadcasterHlsConfigurationLabel.isEmpty())
@@ -557,7 +561,7 @@ public class CatraMMSBroadcaster {
 				}
 				else if (editBroadcasterDeliveryType.equals("CDN77"))
 				{
-					OutputStream outputStream = new OutputStream();
+					OutputStream outputStream = new OutputStream(false, null);
 
 					outputStream.setOutputType("CDN_CDN77");
 					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
