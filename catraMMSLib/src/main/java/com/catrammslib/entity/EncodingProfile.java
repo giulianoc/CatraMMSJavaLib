@@ -18,12 +18,12 @@ public class EncodingProfile implements Serializable, Comparable<EncodingProfile
 
     @Override
     public int compareTo(EncodingProfile o) {
-        if (encodingProfileKey != null)
+        if (encodingProfileKey != null && o.encodingProfileKey != null)
             return encodingProfileKey.compareTo(o.encodingProfileKey);
-        else if (o.encodingProfileKey != null)
-            return o.encodingProfileKey.compareTo(encodingProfileKey);
-        else
+        else if (encodingProfileKey == null && o.encodingProfileKey == null)
             return 0;
+        else
+            return 1;
     }
 
     @Override
