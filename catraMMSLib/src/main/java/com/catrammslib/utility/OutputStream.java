@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.catrammslib.entity.EncodingProfile;
+import com.catrammslib.entity.HLSChannelConf;
 import org.apache.log4j.Logger;
 
 import org.json.JSONArray;
@@ -35,7 +36,7 @@ public class OutputStream implements Serializable {
 	private String rtmpChannelConfigurationLabel;
 
 	// HLS_Channel
-	private String hlsChannelConfigurationLabel;
+	private HLSChannelConf hlsChannel;
 
 	private Long videoTrackIndexToBeUsed;
 	private Long audioTrackIndexToBeUsed;
@@ -123,7 +124,7 @@ public class OutputStream implements Serializable {
 		outputStream.setCdn77ChannelConfigurationLabel(getCdn77ChannelConfigurationLabel());
 		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
 		outputStream.setRtmpChannelConfigurationLabel(getRtmpChannelConfigurationLabel());
-		outputStream.setHlsChannelConfigurationLabel(getHlsChannelConfigurationLabel());
+		outputStream.setHlsChannel(getHlsChannel());
 		outputStream.setVideoTrackIndexToBeUsed(getVideoTrackIndexToBeUsed());
 		outputStream.setAudioTrackIndexToBeUsed(getAudioTrackIndexToBeUsed());
 		outputStream.setOtherOutputOptions(getOtherOutputOptions());
@@ -255,8 +256,8 @@ public class OutputStream implements Serializable {
 			}
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
-				if (getHlsChannelConfigurationLabel() != null && !getHlsChannelConfigurationLabel().isBlank())
-					joOutput.put("hlsChannelConfigurationLabel", getHlsChannelConfigurationLabel());
+				if (getHlsChannel() != null && getHlsChannel().getLabel() != null && !getHlsChannel().getLabel().isBlank())
+					joOutput.put("hlsChannelConfigurationLabel", getHlsChannel().getLabel());
 			}
 			else
 			{
@@ -393,7 +394,10 @@ public class OutputStream implements Serializable {
 		return joOutput;
 	}
 
-	public void fromJson(JSONObject joOutputStream, List<EncodingProfile> encodingProfileList)
+	public void fromJson(JSONObject joOutputStream,
+						 List<EncodingProfile> encodingProfileList,
+						 List<HLSChannelConf> hlsChannelList
+	)
 	{
 		try
 		{
@@ -465,7 +469,23 @@ public class OutputStream implements Serializable {
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
 				if (joOutputStream.has("hlsChannelConfigurationLabel") && !joOutputStream.getString("hlsChannelConfigurationLabel").isEmpty())
-					setHlsChannelConfigurationLabel(joOutputStream.getString("hlsChannelConfigurationLabel"));
+				{
+					String hlsChannelConfigurationLabel = joOutputStream.getString("hlsChannelConfigurationLabel");
+
+					{
+						for (HLSChannelConf hlsChannelConf: hlsChannelList)
+						{
+							if (hlsChannelConf.getLabel().equals(hlsChannelConfigurationLabel))
+							{
+								setHlsChannel(hlsChannelConf);
+
+								break;
+							}
+						}
+					}
+				}
+				else
+					setHlsChannel(null);
 			}
 
 			if (joOutputStream.has("otherOutputOptions") && !joOutputStream.getString("otherOutputOptions").isEmpty())
@@ -558,12 +578,12 @@ public class OutputStream implements Serializable {
 		this.cdn77ExpirationInMinutes = cdn77ExpirationInMinutes;
 	}
 
-	public String getHlsChannelConfigurationLabel() {
-		return hlsChannelConfigurationLabel;
+	public HLSChannelConf getHlsChannel() {
+		return hlsChannel;
 	}
 
-	public void setHlsChannelConfigurationLabel(String hlsChannelConfigurationLabel) {
-		this.hlsChannelConfigurationLabel = hlsChannelConfigurationLabel;
+	public void setHlsChannel(HLSChannelConf hlsChannel) {
+		this.hlsChannel = hlsChannel;
 	}
 
 	public Long getAudioTrackIndexToBeUsed() {
