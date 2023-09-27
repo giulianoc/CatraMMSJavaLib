@@ -1,6 +1,7 @@
 package com.catrammslib.utility;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.catrammslib.entity.EncodingProfile;
 import org.apache.log4j.Logger;
@@ -392,12 +393,113 @@ public class OutputStream implements Serializable {
 		return joOutput;
 	}
 
+	public void fromJson(JSONObject joOutputStream, List<EncodingProfile> encodingProfileList)
+	{
+		try
+		{
+			if (joOutputStream.has("outputType") && !joOutputStream.getString("outputType").equalsIgnoreCase(""))
+			{
+				String sField = joOutputStream.getString("outputType");
+
+				setOutputType(sField);
+			}
+
+			if (joOutputStream.has("encodingProfileKey") && !joOutputStream.isNull("encodingProfileKey"))
+			{
+				Long localEncodingProfileKey = joOutputStream.getLong("encodingProfileKey");
+
+				{
+					for (EncodingProfile encodingProfile: encodingProfileList)
+					{
+						if (encodingProfile.getEncodingProfileKey() == localEncodingProfileKey)
+						{
+							setEncodingProfile(encodingProfile);
+
+							break;
+						}
+					}
+				}
+			}
+			else if (joOutputStream.has("encodingProfileLabel") && !joOutputStream.isNull("encodingProfileLabel"))
+			{
+				String localEncodingProfileLabel = joOutputStream.getString("encodingProfileLabel");
+
+				{
+					for (EncodingProfile encodingProfile: encodingProfileList)
+					{
+						if (encodingProfile.getLabel().equals(localEncodingProfileLabel))
+						{
+							setEncodingProfile(encodingProfile);
+
+							break;
+						}
+					}
+				}
+			}
+			else
+			{
+				setEncodingProfile(null);
+			}
+
+			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
+			{
+				if (joOutputStream.has("awsChannelConfigurationLabel") && !joOutputStream.getString("awsChannelConfigurationLabel").isEmpty())
+					setAwsChannelConfigurationLabel(joOutputStream.getString("awsChannelConfigurationLabel"));
+				if (joOutputStream.has("awsSignedURL"))
+					setAwsSignedURL(joOutputStream.getBoolean("awsSignedURL"));
+				if (joOutputStream.has("awsExpirationInMinutes"))
+					setAwsExpirationInMinutes(joOutputStream.getLong("awsExpirationInMinutes"));
+			}
+			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
+			{
+				if (joOutputStream.has("cdn77ChannelConfigurationLabel") && !joOutputStream.getString("cdn77ChannelConfigurationLabel").isEmpty())
+					setCdn77ChannelConfigurationLabel(joOutputStream.getString("cdn77ChannelConfigurationLabel"));
+				if (joOutputStream.has("cdn77ExpirationInMinutes"))
+					setCdn77ExpirationInMinutes(joOutputStream.getLong("cdn77ExpirationInMinutes"));
+			}
+			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
+			{
+				if (joOutputStream.has("rtmpChannelConfigurationLabel") && !joOutputStream.getString("rtmpChannelConfigurationLabel").isEmpty())
+					setRtmpChannelConfigurationLabel(joOutputStream.getString("rtmpChannelConfigurationLabel"));
+			}
+			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
+			{
+				if (joOutputStream.has("hlsChannelConfigurationLabel") && !joOutputStream.getString("hlsChannelConfigurationLabel").isEmpty())
+					setHlsChannelConfigurationLabel(joOutputStream.getString("hlsChannelConfigurationLabel"));
+			}
+
+			if (joOutputStream.has("otherOutputOptions") && !joOutputStream.getString("otherOutputOptions").isEmpty())
+				setOtherOutputOptions(joOutputStream.getString("otherOutputOptions"));
+
+			if (joOutputStream.has("filters"))
+			{
+				JSONObject joFilters = joOutputStream.getJSONObject("filters");
+				filtersFromJson(joFilters);
+			}
+
+			{
+				if (joOutputStream.has("drawTextDetails"))
+				{
+					setDrawTextEnable(true);
+
+					JSONObject joDrawTextDetails = joOutputStream.getJSONObject("drawTextDetails");
+
+					getDrawTextDetails().fromJson(joDrawTextDetails);
+				}
+				else
+				{
+					setDrawTextEnable(false);
+				}
+			}
+		}
+		catch(Exception e)
+		{
+			mLogger.error("Exception: " + e);
+		}
+	}
+
 	public void setEncodingProfile(EncodingProfile encodingProfile) {
 		this.encodingProfile = encodingProfile;
-
-		mLogger.info("AAAAAAAAAAAAAAAA: "
-				+ ", this.encodingProfile: " + this.encodingProfile
-		);
 
 		// 2023-09-26: vedi commento sopra quando encodingProfile viene definito
 		if (this.encodingProfile == null)
