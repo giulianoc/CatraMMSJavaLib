@@ -16,7 +16,8 @@ public class HLSChannelConf implements Serializable{
     private Long reservedByIngestionJobKey;
 	private String configurationLabel;
 
-    public Long getConfKey() {
+
+	public Long getConfKey() {
         return confKey;
     }
 
