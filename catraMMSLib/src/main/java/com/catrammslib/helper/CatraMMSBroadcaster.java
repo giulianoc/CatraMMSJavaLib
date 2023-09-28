@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.HLSChannelConf;
 import org.apache.log4j.Logger;
 import org.json.JSONArray;
@@ -31,7 +32,7 @@ public class CatraMMSBroadcaster {
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
 		String editBroadcasterDeliveryType, // HLS_Channel, CDN, CDN77
-		String editBroadcasterCdn77ConfigurationLabel,
+		CDN77ChannelConf editBroadcasterCdn77Channel,
 		HLSChannelConf editBroadcasterHlsChannel,
 		String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
@@ -51,7 +52,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcastIngestionJobLabel: " + broadcastIngestionJobLabel
 				+ ", broadcastEncodersPoolLabel: " + broadcastEncodersPoolLabel
 				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
-				+ ", editBroadcasterCdn77ConfigurationLabel: " + editBroadcasterCdn77ConfigurationLabel
+				+ ", editBroadcasterCdn77Channel: " + editBroadcasterCdn77Channel
 				+ ", editBroadcasterHlsChannel: " + editBroadcasterHlsChannel
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 			);
@@ -148,7 +149,7 @@ public class CatraMMSBroadcaster {
 					drawTextDetails,
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
-					editBroadcasterCdn77ConfigurationLabel, editBroadcasterHlsChannel,
+					editBroadcasterCdn77Channel, editBroadcasterHlsChannel,
 					broadcastIngestionJobKey,
 					broadcastDefaultPlaylistItem
 				);
@@ -485,7 +486,7 @@ public class CatraMMSBroadcaster {
 		Date broadcasterEnd,
 		String encodingProfileLabel,
 		String editBroadcasterDeliveryType, // HLS_Channel, CDN, CDN77
-		String editBroadcasterCdn77ConfigurationLabel,
+		CDN77ChannelConf editBroadcasterCdn77Channel,
 		HLSChannelConf editBroadcasterHlsChannel,
 
 		Long broadcastIngestionJobKey,
@@ -502,7 +503,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterEnd: " + broadcasterEnd
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
-				+ ", editBroadcasterCdn77ConfigurationLabel: " + editBroadcasterCdn77ConfigurationLabel
+				+ ", editBroadcasterCdn77Channel: " + editBroadcasterCdn77Channel
 				+ ", editBroadcasterHlsChannel: " + editBroadcasterHlsChannel
 				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 			);
@@ -525,8 +526,8 @@ public class CatraMMSBroadcaster {
 				}
 				else if (editBroadcasterDeliveryType.equals("CDN77"))
 				{
-					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
-						joExtraLiveProxyBroadcasterParameters.put("cdn77ConfigurationLabel", editBroadcasterCdn77ConfigurationLabel);
+					if (editBroadcasterCdn77Channel != null)
+						joExtraLiveProxyBroadcasterParameters.put("cdn77ConfigurationLabel", editBroadcasterCdn77Channel.getLabel());
 				}
 				else
 				{
@@ -563,8 +564,8 @@ public class CatraMMSBroadcaster {
 					OutputStream outputStream = new OutputStream(false, null);
 
 					outputStream.setOutputType("CDN_CDN77");
-					if (editBroadcasterCdn77ConfigurationLabel != null && !editBroadcasterCdn77ConfigurationLabel.isEmpty())
-						outputStream.setCdn77ChannelConfigurationLabel(editBroadcasterCdn77ConfigurationLabel);
+					if (editBroadcasterCdn77Channel != null)
+						outputStream.setCdn77Channel(editBroadcasterCdn77Channel);
 
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 

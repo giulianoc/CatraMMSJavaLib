@@ -3,8 +3,10 @@ package com.catrammslib.utility;
 import java.io.Serializable;
 import java.util.List;
 
+import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.EncodingProfile;
 import com.catrammslib.entity.HLSChannelConf;
+import com.catrammslib.entity.RTMPChannelConf;
 import org.apache.log4j.Logger;
 
 import org.json.JSONArray;
@@ -28,12 +30,12 @@ public class OutputStream implements Serializable {
 	private Long awsExpirationInMinutes;
 
 	// CDN_CDN77
-	private String cdn77ChannelConfigurationLabel;
+	private CDN77ChannelConf cdn77Channel;
 	// CDN_CDN77
 	private Long cdn77ExpirationInMinutes;
 
 	// RTMP_Channel
-	private String rtmpChannelConfigurationLabel;
+	private RTMPChannelConf rtmpChannel;
 
 	// HLS_Channel
 	private HLSChannelConf hlsChannel;
@@ -121,9 +123,9 @@ public class OutputStream implements Serializable {
 		outputStream.setAwsChannelConfigurationLabel(getAwsChannelConfigurationLabel());
 		outputStream.setAwsSignedURL(getAwsSignedURL());
 		outputStream.setAwsExpirationInMinutes(getAwsExpirationInMinutes());
-		outputStream.setCdn77ChannelConfigurationLabel(getCdn77ChannelConfigurationLabel());
+		outputStream.setCdn77Channel(getCdn77Channel());
 		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
-		outputStream.setRtmpChannelConfigurationLabel(getRtmpChannelConfigurationLabel());
+		outputStream.setRtmpChannel(getRtmpChannel());
 		outputStream.setHlsChannel(getHlsChannel());
 		outputStream.setVideoTrackIndexToBeUsed(getVideoTrackIndexToBeUsed());
 		outputStream.setAudioTrackIndexToBeUsed(getAudioTrackIndexToBeUsed());
@@ -242,8 +244,8 @@ public class OutputStream implements Serializable {
 			}
 			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
-				if (getCdn77ChannelConfigurationLabel() != null && !getCdn77ChannelConfigurationLabel().isBlank())
-					joOutput.put("cdn77ChannelConfigurationLabel", getCdn77ChannelConfigurationLabel());
+				if (getCdn77Channel() != null && getCdn77Channel().getLabel() != null && !getCdn77Channel().getLabel().isBlank())
+					joOutput.put("cdn77ChannelConfigurationLabel", getCdn77Channel().getLabel());
 				if (getCdn77ExpirationInMinutes() != null)
 					joOutput.put("cdn77ExpirationInMinutes", getCdn77ExpirationInMinutes());
 			}
@@ -251,8 +253,8 @@ public class OutputStream implements Serializable {
 				joOutput.put("udpUrl", getUdpURL());
 			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
 			{
-				if (getRtmpChannelConfigurationLabel() != null && !getRtmpChannelConfigurationLabel().isBlank())
-					joOutput.put("rtmpChannelConfigurationLabel", getRtmpChannelConfigurationLabel());
+				if (getRtmpChannel() != null && getRtmpChannel().getLabel() != null && !getRtmpChannel().getLabel().isBlank())
+					joOutput.put("rtmpChannelConfigurationLabel", getRtmpChannel().getLabel());
 			}
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
@@ -396,7 +398,9 @@ public class OutputStream implements Serializable {
 
 	public void fromJson(JSONObject joOutputStream,
 						 List<EncodingProfile> encodingProfileList,
-						 List<HLSChannelConf> hlsChannelList
+						 List<HLSChannelConf> hlsChannelList,
+						 List<RTMPChannelConf> rtmpChannelList,
+						 List<CDN77ChannelConf> cdn77ChannelList
 	)
 	{
 		try
@@ -457,14 +461,46 @@ public class OutputStream implements Serializable {
 			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
 				if (joOutputStream.has("cdn77ChannelConfigurationLabel") && !joOutputStream.getString("cdn77ChannelConfigurationLabel").isEmpty())
-					setCdn77ChannelConfigurationLabel(joOutputStream.getString("cdn77ChannelConfigurationLabel"));
+				{
+					String cdn77ChannelConfigurationLabel = joOutputStream.getString("cdn77ChannelConfigurationLabel");
+
+					{
+						for (CDN77ChannelConf cdn77ChannelConf: cdn77ChannelList)
+						{
+							if (cdn77ChannelConf.getLabel().equals(cdn77ChannelConfigurationLabel))
+							{
+								setCdn77Channel(cdn77ChannelConf);
+
+								break;
+							}
+						}
+					}
+				}
+				else
+					setCdn77Channel(null);
 				if (joOutputStream.has("cdn77ExpirationInMinutes"))
 					setCdn77ExpirationInMinutes(joOutputStream.getLong("cdn77ExpirationInMinutes"));
 			}
 			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
 			{
 				if (joOutputStream.has("rtmpChannelConfigurationLabel") && !joOutputStream.getString("rtmpChannelConfigurationLabel").isEmpty())
-					setRtmpChannelConfigurationLabel(joOutputStream.getString("rtmpChannelConfigurationLabel"));
+				{
+					String rtmpChannelConfigurationLabel = joOutputStream.getString("rtmpChannelConfigurationLabel");
+
+					{
+						for (RTMPChannelConf rtmpChannelConf: rtmpChannelList)
+						{
+							if (rtmpChannelConf.getLabel().equals(rtmpChannelConfigurationLabel))
+							{
+								setRtmpChannel(rtmpChannelConf);
+
+								break;
+							}
+						}
+					}
+				}
+				else
+					setRtmpChannel(null);
 			}
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
@@ -537,12 +573,12 @@ public class OutputStream implements Serializable {
 		return encodingProfile;
 	}
 
-	public String getRtmpChannelConfigurationLabel() {
-		return rtmpChannelConfigurationLabel;
+	public RTMPChannelConf getRtmpChannel() {
+		return rtmpChannel;
 	}
 
-	public void setRtmpChannelConfigurationLabel(String rtmpChannelConfigurationLabel) {
-		this.rtmpChannelConfigurationLabel = rtmpChannelConfigurationLabel;
+	public void setRtmpChannel(RTMPChannelConf rtmpChannel) {
+		this.rtmpChannel = rtmpChannel;
 	}
 
 	public String getUdpURL() {
@@ -562,12 +598,12 @@ public class OutputStream implements Serializable {
 		this.videoTrackIndexToBeUsed = videoTrackIndexToBeUsed;
 	}
 
-	public String getCdn77ChannelConfigurationLabel() {
-		return cdn77ChannelConfigurationLabel;
+	public CDN77ChannelConf getCdn77Channel() {
+		return cdn77Channel;
 	}
 
-	public void setCdn77ChannelConfigurationLabel(String cdn77ChannelConfigurationLabel) {
-		this.cdn77ChannelConfigurationLabel = cdn77ChannelConfigurationLabel;
+	public void setCdn77Channel(CDN77ChannelConf cdn77Channel) {
+		this.cdn77Channel = cdn77Channel;
 	}
 
 	public Long getCdn77ExpirationInMinutes() {
