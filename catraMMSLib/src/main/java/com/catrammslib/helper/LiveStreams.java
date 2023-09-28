@@ -2,6 +2,7 @@ package com.catrammslib.helper;
 
 import com.catrammslib.CatraMMSAPI;
 import com.catrammslib.CatraMMSWorkflow;
+import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.IngestionJob;
 import com.catrammslib.entity.Stream;
 import com.catrammslib.entity.WorkflowVariable;
@@ -1106,7 +1107,7 @@ public class LiveStreams {
             String encodersPool,
             boolean autoRenew,
             boolean monitorHLS,
-            String  cdn77ChannelConfigurationLabel,
+            CDN77ChannelConf cdn77Channel,
             boolean virtualVOD,
             Long virtualVODMaxDurationInMinutes,
             Boolean monitoringFrameIncreasingEnabled)
@@ -1130,7 +1131,7 @@ public class LiveStreams {
                 + ", encodersPool: " + encodersPool
                 + ", autoRenew: " + autoRenew
                 + ", monitorHLS: " + monitorHLS
-                + ", cdn77ChannelConfigurationLabel: " + cdn77ChannelConfigurationLabel
+                + ", cdn77Channel: " + cdn77Channel
                 + ", virtualVOD: " + virtualVOD
                 + ", virtualVODMaxDurationInMinutes: " + virtualVODMaxDurationInMinutes
                 + ", monitoringFrameIncreasingEnabled: " + monitoringFrameIncreasingEnabled
@@ -1215,7 +1216,7 @@ public class LiveStreams {
                     channelConf.getLabel(), channelConf.getLabel(), startRecording, stopRecording, buildVODAtTheEnd,
                     localLiveRecorderIngestionJobLabel,
                     segmentDurationInSeconds, retentionChunk, retentionBuildVODAtTheEnd, ingester, thumbnail,
-                    autoRenew, monitorHLS, cdn77ChannelConfigurationLabel,
+                    autoRenew, monitorHLS, cdn77Channel,
                     virtualVOD, virtualVODMaxDurationInMinutes, encodersPool,
                     monitoringFrameIncreasingEnabled);
             mLogger.info("joWorkflow: " + joWorkflow.toString(4));
@@ -1273,7 +1274,7 @@ public class LiveStreams {
                                                     Long segmentDurationInSeconds, String retentionChunk, String retentionBuildVODAtTheEnd, String ingester,
                                                     boolean chunkThumbnail,
                                                     boolean autoRenew, boolean monitorHLS,
-                                                    String cdn77ChannelConfigurationLabel,
+                                                    CDN77ChannelConf cdn77Channel,
                                                     boolean liveRecorderVirtualVOD,
                                                     Long liveRecorderVirtualVODMaxDurationInMinutes,
                                                     String encodersPool,
@@ -1333,12 +1334,12 @@ public class LiveStreams {
                 String monitorHLSEncodingProfileLabel = "MMS_HLS_H264_800Kb_veryfast_360p25_high422_AAC_92";
 
                 List<OutputStream> outputStreamList = new ArrayList<>();
-                if (cdn77ChannelConfigurationLabel != null && !cdn77ChannelConfigurationLabel.isBlank())
+                if (cdn77Channel != null)
                 {
                     OutputStream outputStream = new OutputStream(false, null);
 
                     outputStream.setOutputType("CDN_CDN77");
-                    outputStream.setCdn77ChannelConfigurationLabel(cdn77ChannelConfigurationLabel);
+                    outputStream.setCdn77Channel(cdn77Channel);
 
                     // liveProxyOutput.setEncodingProfileLabel(monitorHLSEncodingProfileLabel);
 
