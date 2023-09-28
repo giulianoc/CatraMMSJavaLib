@@ -3,10 +3,7 @@ package com.catrammslib.utility;
 import java.io.Serializable;
 import java.util.List;
 
-import com.catrammslib.entity.CDN77ChannelConf;
-import com.catrammslib.entity.EncodingProfile;
-import com.catrammslib.entity.HLSChannelConf;
-import com.catrammslib.entity.RTMPChannelConf;
+import com.catrammslib.entity.*;
 import org.apache.log4j.Logger;
 
 import org.json.JSONArray;
@@ -23,7 +20,7 @@ public class OutputStream implements Serializable {
     private String udpURL;
 
 	// CDN_AWS
-	private String awsChannelConfigurationLabel;	// to be started/stopped
+	private AWSChannelConf awsChannel;	// to be started/stopped
 	// CDN_AWS
 	private Boolean awsSignedURL;
 	// CDN_AWS
@@ -120,7 +117,7 @@ public class OutputStream implements Serializable {
 
 		outputStream.setOutputType(getOutputType());
 		outputStream.setUdpURL(getUdpURL());
-		outputStream.setAwsChannelConfigurationLabel(getAwsChannelConfigurationLabel());
+		outputStream.setAwsChannel(getAwsChannel());
 		outputStream.setAwsSignedURL(getAwsSignedURL());
 		outputStream.setAwsExpirationInMinutes(getAwsExpirationInMinutes());
 		outputStream.setCdn77Channel(getCdn77Channel());
@@ -235,8 +232,8 @@ public class OutputStream implements Serializable {
 			joOutput.put("outputType", getOutputType());
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
-				if (getAwsChannelConfigurationLabel() != null && !getAwsChannelConfigurationLabel().isBlank())
-					joOutput.put("awsChannelConfigurationLabel", getAwsChannelConfigurationLabel());
+				if (getAwsChannel() != null && getAwsChannel().getLabel() != null && !getAwsChannel().getLabel().isBlank())
+					joOutput.put("awsChannelConfigurationLabel", getAwsChannel().getLabel());
 				if (getAwsSignedURL() != null)
 					joOutput.put("awsSignedURL", getAwsSignedURL());
 				if (getAwsExpirationInMinutes() != null)
@@ -400,7 +397,8 @@ public class OutputStream implements Serializable {
 						 List<EncodingProfile> encodingProfileList,
 						 List<HLSChannelConf> hlsChannelList,
 						 List<RTMPChannelConf> rtmpChannelList,
-						 List<CDN77ChannelConf> cdn77ChannelList
+						 List<CDN77ChannelConf> cdn77ChannelList,
+						 List<AWSChannelConf> awsChannelList
 	)
 	{
 		try
@@ -452,7 +450,23 @@ public class OutputStream implements Serializable {
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
 				if (joOutputStream.has("awsChannelConfigurationLabel") && !joOutputStream.getString("awsChannelConfigurationLabel").isEmpty())
-					setAwsChannelConfigurationLabel(joOutputStream.getString("awsChannelConfigurationLabel"));
+				{
+					String awsChannelConfigurationLabel = joOutputStream.getString("awsChannelConfigurationLabel");
+
+					{
+						for (AWSChannelConf awsChannelConf: awsChannelList)
+						{
+							if (awsChannelConf.getLabel().equals(awsChannelConfigurationLabel))
+							{
+								setAwsChannel(awsChannelConf);
+
+								break;
+							}
+						}
+					}
+				}
+				else
+					setAwsChannel(null);
 				if (joOutputStream.has("awsSignedURL"))
 					setAwsSignedURL(joOutputStream.getBoolean("awsSignedURL"));
 				if (joOutputStream.has("awsExpirationInMinutes"))
@@ -630,14 +644,13 @@ public class OutputStream implements Serializable {
 		this.audioTrackIndexToBeUsed = audioTrackIndexToBeUsed;
 	}
 
-	public String getAwsChannelConfigurationLabel() {
-		return awsChannelConfigurationLabel;
+	public AWSChannelConf getAwsChannel() {
+		return awsChannel;
 	}
 
-	public void setAwsChannelConfigurationLabel(String awsChannelConfigurationLabel) {
-		this.awsChannelConfigurationLabel = awsChannelConfigurationLabel;
+	public void setAwsChannel(AWSChannelConf awsChannel) {
+		this.awsChannel = awsChannel;
 	}
-
 
 	public Boolean getAwsSignedURL() {
 		return awsSignedURL;
