@@ -5893,7 +5893,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<AWSChannelConf> getAWSChannelConf(String username, String password, String label)
+    public List<AWSChannelConf> getAWSChannelConf(String username, String password, String label, String type)
             throws Exception
     {
         List<AWSChannelConf> awsChannelConfList = new ArrayList<>();
@@ -5904,6 +5904,14 @@ public class CatraMMSAPI implements Serializable {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/aws/channel"
                 + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
             ;
+            if (type != null && !type.isBlank())
+            {
+                if (mmsURL.indexOf("channel?") != -1)
+                    mmsURL += "&";
+                else
+                    mmsURL += "?";
+                mmsURL += ("type=" + type);
+            }
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -6070,7 +6078,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label)
+    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, String type)
             throws Exception
     {
         List<CDN77ChannelConf> cdn77ChannelConfList = new ArrayList<>();
@@ -6081,6 +6089,14 @@ public class CatraMMSAPI implements Serializable {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel"
                 + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
             ;
+            if (type != null && !type.isBlank())
+            {
+                if (mmsURL.indexOf("channel?") != -1)
+                    mmsURL += "&";
+                else
+                    mmsURL += "?";
+                mmsURL += ("type=" + type);
+            }
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
@@ -6263,7 +6279,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<RTMPChannelConf> getRTMPChannelConf(String username, String password, String label)
+    public List<RTMPChannelConf> getRTMPChannelConf(String username, String password, String label, String type)
             throws Exception
     {
         List<RTMPChannelConf> rtmpChannelConfList = new ArrayList<>();
@@ -6274,6 +6290,14 @@ public class CatraMMSAPI implements Serializable {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel"
                     + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
                     ;
+            if (type != null && !type.isBlank())
+            {
+                if (mmsURL.indexOf("channel?") != -1)
+                    mmsURL += "&";
+                else
+                    mmsURL += "?";
+                mmsURL += ("type=" + type);
+            }
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
@@ -6444,7 +6468,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<HLSChannelConf> getHLSChannelConf(String username, String password, String label)
+    public List<HLSChannelConf> getHLSChannelConf(String username, String password, String label, String type)
             throws Exception
     {
         List<HLSChannelConf> hlsChannelConfList = new ArrayList<>();
@@ -6455,6 +6479,14 @@ public class CatraMMSAPI implements Serializable {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/hls/channel"
                     + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
                     ;
+            if (type != null && !type.isBlank())
+            {
+                if (mmsURL.indexOf("channel?") != -1)
+                    mmsURL += "&";
+                else
+                    mmsURL += "?";
+                mmsURL += ("type=" + type);
+            }
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
