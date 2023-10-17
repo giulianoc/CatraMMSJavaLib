@@ -1475,7 +1475,7 @@ public class LiveStreams {
                 {
                     // IngestionJobLabel and CurrentUtcChunkStartTime_HHMISS are variable introduced by the LiveRecorder Task
                     // where it creates the Workflow to generate the Chunks
-                    String liveChunkImageLabel = "${IngestionJobLabel} ${CurrentUtcChunkStartTime_HHMISS}";
+                    String liveChunkImageLabel = "${ingestionJobLabel} ${currentUtcChunkStartTime_HHMISS}";
 
                     /*
                     JSONObject joUserData = new JSONObject();
