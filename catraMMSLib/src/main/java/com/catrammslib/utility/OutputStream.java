@@ -4,14 +4,15 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.catrammslib.entity.*;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class OutputStream implements Serializable {
     
-    private static final Logger mLogger = Logger.getLogger(OutputStream.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(OutputStream.class);
 
 	// RTMP_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;

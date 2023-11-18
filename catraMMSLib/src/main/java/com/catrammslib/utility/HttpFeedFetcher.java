@@ -1,7 +1,8 @@
 package com.catrammslib.utility;
 
 import org.apache.commons.compress.compressors.deflate.DeflateCompressorInputStream;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
 import java.io.OutputStream;
@@ -20,7 +21,7 @@ import static java.time.temporal.ChronoUnit.SECONDS;
 
 public class HttpFeedFetcher {
 
-    private static final Logger mLogger = Logger.getLogger(HttpFeedFetcher.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(HttpFeedFetcher.class);
 
     public static final String configFileName = "mpCommon.properties";
 

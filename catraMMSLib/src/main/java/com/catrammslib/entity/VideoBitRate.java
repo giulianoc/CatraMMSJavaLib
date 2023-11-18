@@ -1,7 +1,5 @@
 package com.catrammslib.entity;
 
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
 import java.util.Objects;
 

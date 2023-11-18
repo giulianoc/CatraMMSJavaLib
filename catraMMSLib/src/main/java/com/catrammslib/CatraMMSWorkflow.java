@@ -12,13 +12,14 @@ import com.catrammslib.utility.DrawTextDetails;
 import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CatraMMSWorkflow {
 
-    private static final Logger mLogger = Logger.getLogger(CatraMMSWorkflow.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(CatraMMSWorkflow.class);
 
     static public JSONObject buildWorkflowRootJson(String label)
             throws Exception

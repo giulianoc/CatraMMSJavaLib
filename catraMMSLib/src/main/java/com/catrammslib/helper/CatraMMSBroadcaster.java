@@ -6,7 +6,8 @@ import java.util.List;
 
 import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.HLSChannelConf;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -22,7 +23,7 @@ import com.catrammslib.utility.MediaItemReference;
 
 public class CatraMMSBroadcaster {
 
-    private static final Logger mLogger = Logger.getLogger(CatraMMSBroadcaster.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(CatraMMSBroadcaster.class);
 
 	static public Long addBroadcaster(Stream broadcasterStream,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,

@@ -9,7 +9,7 @@ import java.util.Objects;
  */
 public class WorkspaceDetails implements Serializable {
     private Long workspaceKey;
-    private Boolean isEnabled;
+    private Boolean enabled;
     private String name;
     private String maxEncodingPriority;
     private String encodingPeriod;
@@ -47,7 +47,7 @@ public class WorkspaceDetails implements Serializable {
     public String toString() {
         return "WorkspaceDetails{" +
                 "workspaceKey=" + workspaceKey +
-                ", isEnabled=" + isEnabled +
+                ", enabled=" + enabled +
                 ", name='" + name + '\'' +
                 ", maxEncodingPriority='" + maxEncodingPriority + '\'' +
                 ", encodingPeriod='" + encodingPeriod + '\'' +
@@ -196,11 +196,11 @@ public class WorkspaceDetails implements Serializable {
     }
 
     public Boolean getEnabled() {
-        return isEnabled;
+        return enabled;
     }
 
     public void setEnabled(Boolean enabled) {
-        isEnabled = enabled;
+        enabled = enabled;
     }
 
     public Long getWorkspaceOwnerUserKey() {

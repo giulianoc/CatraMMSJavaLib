@@ -29,7 +29,8 @@ import com.catrammslib.utility.BulkOfDeliveryURLData;
 import com.catrammslib.utility.HttpFeedFetcher;
 import com.catrammslib.utility.IngestionResult;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -38,7 +39,7 @@ import org.json.JSONObject;
  */
 public class CatraMMSAPI implements Serializable {
 
-    private final Logger mLogger = Logger.getLogger(this.getClass());
+    private final Logger mLogger = LoggerFactory.getLogger(this.getClass());
 
     private int timeoutInSeconds;
     public int statisticsTimeoutInSeconds;
@@ -51,6 +52,24 @@ public class CatraMMSAPI implements Serializable {
     private int mmsBinaryPort;
     private int binaryTimeoutInSeconds;
 	private Boolean outputToBeCompressed;
+
+    public CatraMMSAPI(int timeoutInSeconds, int statisticsTimeoutInSeconds, int maxRetriesNumber,
+                       String mmsAPIProtocol, String mmsAPIHostName, int mmsAPIPort,
+                       String mmsBinaryProtocol, String mmsBinaryHostName, int mmsBinaryPort,
+                       int binaryTimeoutInSeconds, Boolean outputToBeCompressed)
+    {
+        this.timeoutInSeconds = timeoutInSeconds;
+        this.statisticsTimeoutInSeconds = statisticsTimeoutInSeconds;
+        this.maxRetriesNumber = maxRetriesNumber;
+        this.mmsAPIProtocol = mmsAPIProtocol;
+        this.mmsAPIHostName = mmsAPIHostName;
+        this.mmsAPIPort = mmsAPIPort;
+        this.mmsBinaryProtocol = mmsBinaryProtocol;
+        this.mmsBinaryHostName = mmsBinaryHostName;
+        this.mmsBinaryPort = mmsBinaryPort;
+        this.binaryTimeoutInSeconds = binaryTimeoutInSeconds;
+        this.outputToBeCompressed = outputToBeCompressed;
+    }
 
     public CatraMMSAPI(Properties configurationProperties, String prefix)
     {
@@ -130,6 +149,7 @@ public class CatraMMSAPI implements Serializable {
             return;
         }
     }
+
 
     public String getMmsAPIHostName() {
         return mmsAPIHostName;
@@ -852,7 +872,10 @@ public class CatraMMSAPI implements Serializable {
 			if (newName != null)
 				joBodyRequest.put("workspaceName", newName);
 			if (newEnabled != null)
-            	joBodyRequest.put("isEnabled", newEnabled);
+            {
+                joBodyRequest.put("isEnabled", newEnabled);
+                joBodyRequest.put("enabled", newEnabled);
+            }
 			if (newMaxEncodingPriority != null)
 				joBodyRequest.put("maxEncodingPriority", newMaxEncodingPriority);
 			if (newEncodingPeriod != null)
@@ -7450,7 +7473,10 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             workspaceDetails.setWorkspaceKey(jaWorkspaceInfo.getLong("workspaceKey"));
-            workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("isEnabled"));
+            if (jaWorkspaceInfo.has("isEnabled"))
+                workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("isEnabled"));
+            else if (jaWorkspaceInfo.has("enabled"))
+                workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("enabled"));
             workspaceDetails.setName(jaWorkspaceInfo.getString("workspaceName"));
             workspaceDetails.setMaxEncodingPriority(jaWorkspaceInfo.getString("maxEncodingPriority"));
             workspaceDetails.setEncodingPeriod(jaWorkspaceInfo.getString("encodingPeriod"));

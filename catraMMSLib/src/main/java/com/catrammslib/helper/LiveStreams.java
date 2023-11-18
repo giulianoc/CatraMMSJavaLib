@@ -9,7 +9,8 @@ import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.helper.entity.LiveStreamInfo;
 import com.catrammslib.utility.IngestionResult;
 import com.catrammslib.utility.OutputStream;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -21,7 +22,7 @@ import java.util.List;
 
 public class LiveStreams {
 
-    private static final Logger mLogger = Logger.getLogger(LiveStreams.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(LiveStreams.class);
 
     public static String statusALL = "All";
     public static String statusOK = "Working";      // finished OK
@@ -80,8 +81,6 @@ public class LiveStreams {
                         liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.LiveProxyWorkflowNotRunning);
                         liveStreamInfo.setLiveRecorderChannelStatus(LiveStreamInfo.LiveRecorderWorkflowNotRunning);
 
-                        int aaa = 0;
-                        mLogger.info(aaa++);
                         // liveGrid
                         IngestionJob liveGridIngestionJob = null;
                         if(gridInfo)
@@ -266,17 +265,13 @@ public class LiveStreams {
                             }
                         }
 
-                        mLogger.info(aaa++);
                         // LiveProxy
                         IngestionJob liveProxyIngestionJob = null;
                         if (proxyInfo)
                         {
-                            mLogger.info(aaa++);
                             {
                                 List<IngestionJob> liveProxyIngestionJobList = new ArrayList<>();
                                 {
-                                    Date startingPoint = new Date();
-
                                     // 2021-07-26: In case of IP_PULL (or TV), it is possible to understand if
                                     //  a Live-Proxy ingestion Job is running for a specified channel.
                                     //  That because we can compare the following information:
@@ -290,39 +285,36 @@ public class LiveStreams {
                                     // In this case, to support the auto-restart of the channel in case of failure, we need to find out the
                                     // associated IngestionJob using the following assumption:
                                     //      - the IngestionJob label has to have the following format: <channel name> Proxy (<channel label>)
-                                    boolean ascending = false;
-                                    Date start = null;
-                                    Date end = null;
                                     String localIngestionType = "Live-Proxy";
                                     int localStartIndex = 0;
                                     int localPageSize = 50;
-                                    // int localPageSize = 1;
 
                                     List<IngestionJob> ingestionJobList = new ArrayList<>();
-
-                                    // String jsonParametersCondition = "JSON_EXTRACT(ij.metaDataContent, '$.ConfigurationLabel') = '"
-                                    //                + liveStreamInfo.getStream().getLabel().replace("'", "''") + "'";
 
                                     // 2021-02-01: we will NOT consider just the last one, may be from the last one it seems down,
                                     // the system will start a new one and we will have the mess....
                                     // So we will look at the last not completed, it means status "notCompleted" and, if it is missing,
                                     // we will take the last "completed" to get his status
+                                    long startingPoint = System.currentTimeMillis();
                                     Long ingestionJobsNumber = catraMMS.getIngestionJobs(
                                             userName, password,
                                             // ((Integer.parseInt(currentPage) - 1) * pageSize), pageSize,
                                             localStartIndex, localPageSize,
-                                            null, null, null, start, end, null,
+                                            null, null, null, null, null, null,
                                             null, localIngestionType,
-                                            liveStreamInfo.getStream().getLabel(), null, null, null, // jsonParametersCondition,
-                                            ascending,
+                                            liveStreamInfo.getStream().getLabel(), null, null, null,
+                                            false,
                                             true, false,
-                                            // 2022-12-18: this is important because it could generare a new Workflow in case status is 'not running'
+                                            // 2022-12-18: this is important because it could generate a new Workflow in case status is 'not running'
                                             true,
                                             ingestionJobList);
                                     mLogger.info("liveStreamsFillList statistics (liveProxy)"
+                                            + ", localStartIndex: " + localStartIndex
+                                            + ", localPageSize: " + localPageSize
                                             + ", localIngestionType: " + localIngestionType
+                                            + ", stream label: " + liveStreamInfo.getStream().getLabel()
                                             + ", ingestionJobList.size: " + ingestionJobList.size()
-                                            + ", elapsed (secs): " + ((new Date().getTime() - startingPoint.getTime()) / 1000)
+                                            + ", elapsed (millisecs): " + (System.currentTimeMillis() - startingPoint)
                                     );
                                     IngestionJob notEndedIngestionJob = null;
                                     for (IngestionJob ingestionJob: ingestionJobList)
@@ -342,12 +334,6 @@ public class LiveStreams {
 
                                     if (notEndedIngestionJob != null)
                                         liveProxyIngestionJobList.add(notEndedIngestionJob);
-
-                                    mLogger.info("liveStreamsFillList statistics (liveProxy)"
-                                            + ", localIngestionType: " + localIngestionType
-                                            + ", liveProxyIngestionJobList.size: " + liveProxyIngestionJobList.size()
-                                            + ", elapsed (secs): " + ((new Date().getTime() - startingPoint.getTime()) / 1000)
-                                    );
                                 }
 
                                 if (liveProxyIngestionJobList.size() > 0)
@@ -373,7 +359,6 @@ public class LiveStreams {
                                 }
                             }
 
-                            mLogger.info(aaa++);
                             {
                                 liveStreamInfo.setLiveProxyIngestionJob(liveProxyIngestionJob);
 
@@ -484,15 +469,12 @@ public class LiveStreams {
                                 if (toBeFiltered)
                                     liveStreamInfoToBeFiltered.add(liveStreamInfo);
                             }
-                            mLogger.info(aaa++);
                         }
 
-                        mLogger.info(aaa++);
                         // Live-Recorder
                         IngestionJob liveRecorderIngestionJob = null;
                         if (recorderInfo)
                         {
-                            mLogger.info(aaa++);
                             {
                                 List<IngestionJob> liveRecorderIngestionJobList = new ArrayList<>();
                                 {
@@ -601,7 +583,6 @@ public class LiveStreams {
                                 }
                             }
 
-                            mLogger.info(aaa++);
                             {
                                 liveStreamInfo.setLiveRecorderIngestionJob(liveRecorderIngestionJob);
 
@@ -691,14 +672,11 @@ public class LiveStreams {
                                 if (toBeFiltered)
                                     liveStreamInfoToBeFiltered.add(liveStreamInfo);
                             }
-                            mLogger.info(aaa++);
                         }
 
-                        mLogger.info(aaa++);
                         {
                             IngestionJob lastIngestionJob = null;
 
-                            mLogger.info(aaa++);
                             // last among liveGridIngestionJob and liveProxyIngestionJob
                             {
                                 if (liveProxyIngestionJob != null && liveGridIngestionJob == null)
@@ -722,7 +700,6 @@ public class LiveStreams {
                                 }
                             }
 
-                            mLogger.info(aaa++);
                             // last among lastIngestionJob and liveRecorderIngestionJob
                             {
                                 if (lastIngestionJob != null && liveRecorderIngestionJob == null)
@@ -748,7 +725,6 @@ public class LiveStreams {
 
                             liveStreamInfo.setLastIngestionJob(lastIngestionJob);
 
-                            mLogger.info(aaa++);
                             if (lastIngestionJob != null)
                             {
                                 if (lastIngestionJob.getIngestionType().equalsIgnoreCase("Live-Grid"))
@@ -772,7 +748,6 @@ public class LiveStreams {
                                 liveStreamInfo.setLastChannelStatus("");
                             }
 
-                            mLogger.info(aaa++);
                             // liveGridIngestionJob and liveProxyIngestionJob and liveRecorderIngestionJob
                             {
                                 String htmlChannelStatus;
@@ -838,7 +813,6 @@ public class LiveStreams {
                             }
                         }
 
-                        mLogger.info(aaa++);
                         Date channelEndPoint = new Date();
                         mLogger.info("liveStreamsFillList statistics (Channel) " + channelIndex + "/" + liveStreamInfoList.size()
                                 + ", label: " + liveStreamInfo.getStream().getLabel()

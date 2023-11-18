@@ -1,7 +1,8 @@
 package com.catrammslib.entity;
 
 import com.catrammslib.CatraMMSWorkflow;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -13,7 +14,7 @@ import java.util.Date;
  */
 public class WorkflowVariable implements Serializable{
 
-    private static final Logger mLogger = Logger.getLogger(CatraMMSWorkflow.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(CatraMMSWorkflow.class);
 
     private String name;
     private String description;

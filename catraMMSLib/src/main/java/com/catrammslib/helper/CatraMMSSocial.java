@@ -5,7 +5,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +15,7 @@ import com.catrammslib.utility.HttpFeedFetcher;
 
 public class CatraMMSSocial {
 
-    private static final Logger mLogger = Logger.getLogger(CatraMMSSocial.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(CatraMMSSocial.class);
 
 	static public List<FacebookPage> getFacebookUserPagesList(Properties configurationProperties,
 		String userAccessToken)

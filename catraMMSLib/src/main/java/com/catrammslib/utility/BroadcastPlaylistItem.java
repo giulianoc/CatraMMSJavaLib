@@ -1,6 +1,7 @@
 package com.catrammslib.utility;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -14,7 +15,7 @@ import com.catrammslib.entity.MediaItem;
 
 public class BroadcastPlaylistItem implements Serializable, Comparable<BroadcastPlaylistItem> {
 
-    static private final Logger mLogger = Logger.getLogger(BroadcastPlaylistItem.class);
+    static private final Logger mLogger = LoggerFactory.getLogger(BroadcastPlaylistItem.class);
 
 	private List<String> mediaTypeList = new ArrayList<>();
 

@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 
@@ -9,7 +10,7 @@ import java.io.Serializable;
  */
 public class VideoTrack implements Serializable{
 
-    private static final Logger mLogger = Logger.getLogger(VideoTrack.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(VideoTrack.class);
 
     private Long videoTrackKey;
     private Long trackIndex;

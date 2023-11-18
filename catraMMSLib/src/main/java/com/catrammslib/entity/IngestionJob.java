@@ -8,7 +8,8 @@ import java.util.List;
 
 import javax.lang.model.util.ElementScanner6;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -17,7 +18,7 @@ import org.json.JSONObject;
  */
 public class IngestionJob implements Serializable, Comparable {
 
-    private final Logger mLogger = Logger.getLogger(IngestionJob.class);
+    private final Logger mLogger = LoggerFactory.getLogger(IngestionJob.class);
 
 	private Long ingestionJobKey;
     private String label;

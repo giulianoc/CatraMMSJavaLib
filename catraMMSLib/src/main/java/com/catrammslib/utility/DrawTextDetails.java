@@ -1,13 +1,14 @@
 package com.catrammslib.utility;
 
 import java.io.Serializable;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.json.JSONObject;
 
 public class DrawTextDetails implements Serializable {
     
-    private static final Logger mLogger = Logger.getLogger(DrawTextDetails.class);
+    private static final Logger mLogger = LoggerFactory.getLogger(DrawTextDetails.class);
 
 	private boolean countdown;
 
