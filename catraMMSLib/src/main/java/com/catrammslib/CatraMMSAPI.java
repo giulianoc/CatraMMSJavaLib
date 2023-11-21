@@ -873,7 +873,7 @@ public class CatraMMSAPI implements Serializable {
 				joBodyRequest.put("workspaceName", newName);
 			if (newEnabled != null)
             {
-                joBodyRequest.put("isEnabled", newEnabled);
+                joBodyRequest.put("isEnabled", newEnabled); // da eliminare dopo upgrade a Postgres
                 joBodyRequest.put("enabled", newEnabled);
             }
 			if (newMaxEncodingPriority != null)
@@ -7473,9 +7473,9 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             workspaceDetails.setWorkspaceKey(jaWorkspaceInfo.getLong("workspaceKey"));
-            if (jaWorkspaceInfo.has("isEnabled"))
-                workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("isEnabled"));
-            else if (jaWorkspaceInfo.has("enabled"))
+            if (jaWorkspaceInfo.has("isEnabled")) // da eliminare dopo upgrade a Postgres
+                workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("isEnabled")); // da eliminare dopo upgrade a Postgres
+            else if (jaWorkspaceInfo.has("enabled")) // da eliminare dopo upgrade a Postgres
                 workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("enabled"));
             workspaceDetails.setName(jaWorkspaceInfo.getString("workspaceName"));
             workspaceDetails.setMaxEncodingPriority(jaWorkspaceInfo.getString("maxEncodingPriority"));
