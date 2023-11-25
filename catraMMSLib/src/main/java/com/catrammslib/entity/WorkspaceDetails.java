@@ -200,7 +200,7 @@ public class WorkspaceDetails implements Serializable {
     }
 
     public void setEnabled(Boolean enabled) {
-        enabled = enabled;
+        this.enabled = enabled;
     }
 
     public Long getWorkspaceOwnerUserKey() {

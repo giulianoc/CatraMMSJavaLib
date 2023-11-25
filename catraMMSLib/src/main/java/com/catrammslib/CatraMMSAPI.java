@@ -7477,6 +7477,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("isEnabled")); // da eliminare dopo upgrade a Postgres
             else if (jaWorkspaceInfo.has("enabled")) // da eliminare dopo upgrade a Postgres
                 workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("enabled"));
+
             workspaceDetails.setName(jaWorkspaceInfo.getString("workspaceName"));
             workspaceDetails.setMaxEncodingPriority(jaWorkspaceInfo.getString("maxEncodingPriority"));
             workspaceDetails.setEncodingPeriod(jaWorkspaceInfo.getString("encodingPeriod"));
