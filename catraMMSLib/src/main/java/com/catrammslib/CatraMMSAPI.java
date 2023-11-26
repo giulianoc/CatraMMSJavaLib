@@ -8297,6 +8297,8 @@ public class CatraMMSAPI implements Serializable {
 				mediaItem.setProviderName(mediaItemInfo.getString("providerName"));
 			if (mediaItemInfo.has("retentionInMinutes") && !mediaItemInfo.isNull("retentionInMinutes"))
 				mediaItem.setRetentionInMinutes(mediaItemInfo.getLong("retentionInMinutes"));
+            if (mediaItemInfo.has("willBeRemovedAt") && !mediaItemInfo.isNull("willBeRemovedAt"))
+                mediaItem.setWillBeRemovedAt(simpleDateFormat.parse(mediaItemInfo.getString("willBeRemovedAt")));
 
             if (deep && mediaItemInfo.has("physicalPaths"))
             {

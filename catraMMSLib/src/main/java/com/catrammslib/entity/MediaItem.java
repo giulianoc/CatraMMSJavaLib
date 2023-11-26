@@ -24,6 +24,7 @@ public class MediaItem implements Serializable{
     private String userData;
     private String providerName;
     private Long retentionInMinutes;
+    private Date willBeRemovedAt;
 
     // this field is filled and used by the GUI
     private String thumbnailURL;
@@ -195,6 +196,14 @@ public class MediaItem implements Serializable{
 
     public void setStyle(String style) {
         this.style = style;
+    }
+
+    public Date getWillBeRemovedAt() {
+        return willBeRemovedAt;
+    }
+
+    public void setWillBeRemovedAt(Date willBeRemovedAt) {
+        this.willBeRemovedAt = willBeRemovedAt;
     }
 
     public String getThumbnailURL() {
