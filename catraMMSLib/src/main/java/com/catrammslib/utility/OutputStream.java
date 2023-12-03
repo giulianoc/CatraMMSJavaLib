@@ -14,6 +14,20 @@ public class OutputStream implements Serializable {
     
     private static final Logger mLogger = LoggerFactory.getLogger(OutputStream.class);
 
+	// default: nessuna indicazione, ffmpeg seleziona una traccia video in base a https://ffmpeg.org/ffmpeg.html#Automatic-stream-selection
+	// all video tracks (0:v)
+	// first video track (0:v:0)
+	// second video track (0:v:1)
+	// third video track (0:v:2)
+	private String videoMap;
+
+	// default: nessuna indicazione, ffmpeg seleziona una traccia audio in base a https://ffmpeg.org/ffmpeg.html#Automatic-stream-selection
+	// all audio tracks (0:a)
+	// first audio track (0:a:0)
+	// second audio track (0:a:1)
+	// third audio track (0:a:2)
+	private String audioMap;
+
 	// RTMP_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
 
@@ -37,9 +51,6 @@ public class OutputStream implements Serializable {
 
 	// HLS_Channel
 	private HLSChannelConf hlsChannel;
-
-	private Long videoTrackIndexToBeUsed;
-	private Long audioTrackIndexToBeUsed;
 
 	// drawTextEnable serve per la GUI (altrimenti sarebbe bastato il controllo (drawTextDetails != null)
 	private Boolean drawTextEnable;
@@ -79,12 +90,12 @@ public class OutputStream implements Serializable {
 		this.drawTextEnable = drawTextEnable;
 		this.drawTextDetails = drawTextDetails;
 
-		videoTrackIndexToBeUsed = (long) -1;
-		audioTrackIndexToBeUsed = (long) -1;
-
 		awsSignedURL = false;
 		awsExpirationInMinutes = (long) 1440;	// 1 day
 		cdn77ExpirationInMinutes = (long) 1440;	// 1 day
+
+		videoMap = "default";
+		audioMap = "default";
 
 		resetFilter();
 	}
@@ -116,6 +127,8 @@ public class OutputStream implements Serializable {
 	{
 		OutputStream outputStream = new OutputStream(getDrawTextEnable(), getDrawTextDetails());
 
+		outputStream.setVideoMap(getVideoMap());
+		outputStream.setAudioMap(getAudioMap());
 		outputStream.setOutputType(getOutputType());
 		outputStream.setUdpURL(getUdpURL());
 		outputStream.setAwsChannel(getAwsChannel());
@@ -125,8 +138,6 @@ public class OutputStream implements Serializable {
 		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
 		outputStream.setRtmpChannel(getRtmpChannel());
 		outputStream.setHlsChannel(getHlsChannel());
-		outputStream.setVideoTrackIndexToBeUsed(getVideoTrackIndexToBeUsed());
-		outputStream.setAudioTrackIndexToBeUsed(getAudioTrackIndexToBeUsed());
 		outputStream.setOtherOutputOptions(getOtherOutputOptions());
 		outputStream.setEncodingProfile(getEncodingProfile());
 		outputStream.setEncodingProfileLabel(getEncodingProfileLabel());
@@ -230,6 +241,9 @@ public class OutputStream implements Serializable {
 
 		try
 		{
+			joOutput.put("videoMap", getVideoMap());
+			joOutput.put("audioMap", getAudioMap());
+
 			joOutput.put("outputType", getOutputType());
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
@@ -276,13 +290,7 @@ public class OutputStream implements Serializable {
 	
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isBlank())
 				joOutput.put("otherOutputOptions", getOtherOutputOptions());
-	
-			if (getVideoTrackIndexToBeUsed() != null && getVideoTrackIndexToBeUsed() != -1)
-				joOutput.put("videoTrackIndexToBeUsed",  getVideoTrackIndexToBeUsed());
-
-			if (getAudioTrackIndexToBeUsed() != null && getAudioTrackIndexToBeUsed() != -1)
-				joOutput.put("audioTrackIndexToBeUsed",  getAudioTrackIndexToBeUsed());
-
+			
 			// filters
 			{
 				boolean videoFilterPresent = false;
@@ -404,6 +412,13 @@ public class OutputStream implements Serializable {
 	{
 		try
 		{
+			setVideoMap("default");
+			if (joOutputStream.has("videoMap") && !joOutputStream.getString("videoMap").isBlank())
+				setVideoMap(joOutputStream.getString("videoMap"));
+			setAudioMap("default");
+			if (joOutputStream.has("audioMap") && !joOutputStream.getString("audioMap").isBlank())
+				setAudioMap(joOutputStream.getString("audioMap"));
+
 			if (joOutputStream.has("outputType") && !joOutputStream.getString("outputType").equalsIgnoreCase(""))
 			{
 				String sField = joOutputStream.getString("outputType");
@@ -584,6 +599,22 @@ public class OutputStream implements Serializable {
         this.outputType = outputType;
     }
 
+	public String getVideoMap() {
+		return videoMap;
+	}
+
+	public void setVideoMap(String videoMap) {
+		this.videoMap = videoMap;
+	}
+
+	public String getAudioMap() {
+		return audioMap;
+	}
+
+	public void setAudioMap(String audioMap) {
+		this.audioMap = audioMap;
+	}
+
 	public EncodingProfile getEncodingProfile() {
 		return encodingProfile;
 	}
@@ -602,15 +633,6 @@ public class OutputStream implements Serializable {
 
 	public void setUdpURL(String udpURL) {
 		this.udpURL = udpURL;
-	}
-
-
-	public Long getVideoTrackIndexToBeUsed() {
-		return videoTrackIndexToBeUsed;
-	}
-
-	public void setVideoTrackIndexToBeUsed(Long videoTrackIndexToBeUsed) {
-		this.videoTrackIndexToBeUsed = videoTrackIndexToBeUsed;
 	}
 
 	public CDN77ChannelConf getCdn77Channel() {
@@ -635,14 +657,6 @@ public class OutputStream implements Serializable {
 
 	public void setHlsChannel(HLSChannelConf hlsChannel) {
 		this.hlsChannel = hlsChannel;
-	}
-
-	public Long getAudioTrackIndexToBeUsed() {
-		return audioTrackIndexToBeUsed;
-	}
-
-	public void setAudioTrackIndexToBeUsed(Long audioTrackIndexToBeUsed) {
-		this.audioTrackIndexToBeUsed = audioTrackIndexToBeUsed;
 	}
 
 	public AWSChannelConf getAwsChannel() {
