@@ -290,7 +290,7 @@ public class OutputStream implements Serializable {
 	
 			if (getOtherOutputOptions() != null && !getOtherOutputOptions().isBlank())
 				joOutput.put("otherOutputOptions", getOtherOutputOptions());
-			
+
 			// filters
 			{
 				boolean videoFilterPresent = false;
