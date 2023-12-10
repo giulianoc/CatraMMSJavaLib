@@ -761,13 +761,13 @@ public class CatraMMSAPI implements Serializable {
 			if (newExpirationDate != null)
 				joUser.put("expirationDate", simpleDateFormat.format(newExpirationDate));
             if (creditCard_cardNumber != null)
-                joUser.put("cardNumber", creditCard_cardNumber);
+                joUser.put("creditCard_cardNumber", creditCard_cardNumber);
             if (creditCard_nameOnCard != null)
-                joUser.put("nameOnCard", creditCard_nameOnCard);
+                joUser.put("creditCard_nameOnCard", creditCard_nameOnCard);
             if (creditCard_expiryDate != null)
-                joUser.put("expiryDate", simpleDateFormat_creditCard.format(creditCard_expiryDate));
+                joUser.put("creditCard_expiryDate", simpleDateFormat_creditCard.format(creditCard_expiryDate));
             if (creditCard_securityCode != null)
-                joUser.put("securityCode", creditCard_securityCode);
+                joUser.put("creditCard_securityCode", creditCard_securityCode);
 
 			String bodyRequest = joUser.toString();
 
