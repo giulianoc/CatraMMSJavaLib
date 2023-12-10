@@ -4842,6 +4842,66 @@ public class CatraMMSAPI implements Serializable {
         return twitchConfList;
     }
 
+    public List<CostConf> getCostsConf(String username, String password
+    )
+            throws Exception
+    {
+        List<CostConf> costsConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/costs";
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getCostsConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaCostsConf = joResponse.getJSONArray("costsConf");
+
+            mLogger.info("jaCostsConf.length(): " + jaCostsConf.length());
+
+            costsConfList.clear();
+
+            for (int costsConfIndex = 0;
+                 costsConfIndex < jaCostsConf.length();
+                 costsConfIndex++)
+            {
+                CostConf costConf = new CostConf();
+
+                JSONObject costConfInfo = jaCostsConf.getJSONObject(costsConfIndex);
+
+                fillCostConf(costConf, costConfInfo);
+
+                costsConfList.add(costConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing costConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return costsConfList;
+    }
+
     public void addTiktokConf(String username, String password,
                                String label, String token)
             throws Exception
@@ -9050,6 +9110,28 @@ public class CatraMMSAPI implements Serializable {
         catch (Exception e)
         {
             String errorMessage = "fillTwitchConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillCostConf(CostConf costConf, JSONObject costConfInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try {
+            costConf.setConfKey(costConfInfo.getLong("confKey"));
+            costConf.setType(costConfInfo.getString("type"));
+            costConf.setQuantity(costConfInfo.getLong("quantity"));
+            costConf.setOrderTimestamp(simpleDateFormat.parse(costConfInfo.getString("orderTimestamp")));
+            costConf.setExpiration(simpleDateFormat.parse(costConfInfo.getString("expiration")));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillCostConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
