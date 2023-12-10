@@ -730,11 +730,17 @@ public class CatraMMSAPI implements Serializable {
 		String newCountry,
 		Date newExpirationDate,	// backend update this field only if you are an admin
 		String oldPassword,
-		String newPassword)
+		String newPassword,
+        String creditCard_cardNumber,
+        String creditCard_nameOnCard,
+        Date creditCard_expiryDate,
+        String creditCard_securityCode)
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        SimpleDateFormat simpleDateFormat_creditCard = new SimpleDateFormat("yyyy-MM");
 
         String mmsInfo;
         try
@@ -754,6 +760,14 @@ public class CatraMMSAPI implements Serializable {
 				joUser.put("country", newCountry);
 			if (newExpirationDate != null)
 				joUser.put("expirationDate", simpleDateFormat.format(newExpirationDate));
+            if (creditCard_cardNumber != null)
+                joUser.put("cardNumber", creditCard_cardNumber);
+            if (creditCard_nameOnCard != null)
+                joUser.put("nameOnCard", creditCard_nameOnCard);
+            if (creditCard_expiryDate != null)
+                joUser.put("expiryDate", simpleDateFormat_creditCard.format(creditCard_expiryDate));
+            if (creditCard_securityCode != null)
+                joUser.put("securityCode", creditCard_securityCode);
 
 			String bodyRequest = joUser.toString();
 
@@ -7414,6 +7428,7 @@ public class CatraMMSAPI implements Serializable {
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        SimpleDateFormat simpleDateFormat_CreditCard = new SimpleDateFormat("yyyy-MM");
 
         try
         {
@@ -7424,6 +7439,14 @@ public class CatraMMSAPI implements Serializable {
             userProfile.setEmail(joUserProfileInfo.getString("email"));
             userProfile.setCreationDate(simpleDateFormat.parse(joUserProfileInfo.getString("creationDate")));
             userProfile.setExpirationDate(simpleDateFormat.parse(joUserProfileInfo.getString("expirationDate")));
+            if (joUserProfileInfo.has("creditCard_cardNumber") && !joUserProfileInfo.isNull("creditCard_cardNumber"))
+                userProfile.setCreditCard_cardNumber(joUserProfileInfo.getString("creditCard_cardNumber"));
+            if (joUserProfileInfo.has("creditCard_nameOnCard") && !joUserProfileInfo.isNull("creditCard_nameOnCard"))
+                userProfile.setCreditCard_cardNumber(joUserProfileInfo.getString("creditCard_nameOnCard"));
+            if (joUserProfileInfo.has("creditCard_expiryDate") && !joUserProfileInfo.isNull("creditCard_expiryDate"))
+                userProfile.setExpirationDate(simpleDateFormat_CreditCard.parse(joUserProfileInfo.getString("creditCard_expiryDate")));
+            if (joUserProfileInfo.has("creditCard_securityCode") && !joUserProfileInfo.isNull("creditCard_securityCode"))
+                userProfile.setCreditCard_cardNumber(joUserProfileInfo.getString("creditCard_securityCode"));
         }
         catch (Exception e)
         {
