@@ -867,7 +867,7 @@ public class CatraMMSAPI implements Serializable {
     public WorkspaceDetails updateWorkspace(String username, String password,
 		Boolean newEnabled, String newName, String newMaxEncodingPriority,
 		String newEncodingPeriod, Long newMaxIngestionsNumber,
-		Long newMaxStorageInMB, String newLanguageCode, Date newExpirationDate,
+		Long newMaxStorageInMB, Long newDedicatedEncoders, String newLanguageCode, Date newExpirationDate,
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
 		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
 		Boolean newEditMedia, Boolean newEditConfiguration, Boolean newKillEncoding,
@@ -898,6 +898,8 @@ public class CatraMMSAPI implements Serializable {
 				joBodyRequest.put("maxIngestionsNumber", newMaxIngestionsNumber);
 			if (newMaxStorageInMB != null)
 				joBodyRequest.put("maxStorageInMB", newMaxStorageInMB);
+            if (newDedicatedEncoders != null)
+                joBodyRequest.put("dedicatedEncoders", newDedicatedEncoders);
 			if (newLanguageCode != null)
 				joBodyRequest.put("languageCode", newLanguageCode);
 
@@ -7566,6 +7568,8 @@ public class CatraMMSAPI implements Serializable {
             workspaceDetails.setEncodingPeriod(jaWorkspaceInfo.getString("encodingPeriod"));
             workspaceDetails.setMaxIngestionsNumber(jaWorkspaceInfo.getLong("maxIngestionsNumber"));
             workspaceDetails.setMaxStorageInMB(jaWorkspaceInfo.getLong("maxStorageInMB"));
+            if (jaWorkspaceInfo.has("dedicatedEncoders") && !jaWorkspaceInfo.isNull("dedicatedEncoders"))
+                workspaceDetails.setDedicatedEncoders(jaWorkspaceInfo.getLong("dedicatedEncoders"));
             workspaceDetails.setUsageInMB(jaWorkspaceInfo.getLong("workSpaceUsageInMB"));
             workspaceDetails.setLanguageCode(jaWorkspaceInfo.getString("languageCode"));
             workspaceDetails.setCreationDate(simpleDateFormat.parse(jaWorkspaceInfo.getString("creationDate")));

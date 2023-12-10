@@ -15,6 +15,7 @@ public class WorkspaceDetails implements Serializable {
     private String encodingPeriod;
     private Long maxIngestionsNumber;
     private Long maxStorageInMB;
+    private Long dedicatedEncoders;
 
 	private Long workspaceOwnerUserKey;	// filled only if user is admin
 	private String workspaceOwnerUserName; // filled only if user is admin
@@ -53,6 +54,7 @@ public class WorkspaceDetails implements Serializable {
                 ", encodingPeriod='" + encodingPeriod + '\'' +
                 ", maxIngestionsNumber=" + maxIngestionsNumber +
                 ", maxStorageInMB=" + maxStorageInMB +
+                ", dedicatedEncoders=" + dedicatedEncoders +
                 ", workspaceOwnerUserKey=" + workspaceOwnerUserKey +
                 ", workspaceOwnerUserName=" + workspaceOwnerUserName +
                 ", usageInMB=" + usageInMB +
@@ -249,6 +251,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setMaxStorageInMB(Long maxStorageInMB) {
         this.maxStorageInMB = maxStorageInMB;
+    }
+
+    public Long getDedicatedEncoders() {
+        return dedicatedEncoders;
+    }
+
+    public void setDedicatedEncoders(Long dedicatedEncoders) {
+        this.dedicatedEncoders = dedicatedEncoders;
     }
 
     public Long getUsageInMB() {
