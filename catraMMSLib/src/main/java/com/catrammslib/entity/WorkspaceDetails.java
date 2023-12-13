@@ -1,7 +1,10 @@
 package com.catrammslib.entity;
 
+import com.catrammslib.utility.Cost;
+
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -27,11 +30,8 @@ public class WorkspaceDetails implements Serializable {
 
 
     // this field is used by the GUI
-    private Long newMaxStorageInGB;
-    private Long minNewUsageInGB;
-    private Long newDedicatedEncoder_power_1;
-    private Long newDedicatedEncoder_power_2;
-    private Long newDedicatedEncoder_power_3;
+    private List<Cost> dedicatedEncoderAndStorageList;
+
 
 
     private Long workspaceOwnerUserKey;	// filled only if user is admin
@@ -294,14 +294,6 @@ public class WorkspaceDetails implements Serializable {
         }
     }
 
-    public Long getMinNewUsageInGB() {
-        return minNewUsageInGB;
-    }
-
-    public void setMinNewUsageInGB(Long minNewUsageInGB) {
-        this.minNewUsageInGB = minNewUsageInGB;
-    }
-
     public String getLanguageCode() {
         return languageCode;
     }
@@ -364,7 +356,6 @@ public class WorkspaceDetails implements Serializable {
 
     public void setMaxStorageInGB(Long maxStorageInGB) {
         this.maxStorageInGB = maxStorageInGB;
-        this.newMaxStorageInGB = maxStorageInGB;
     }
 
     public Long getCurrentCostForStorage() {
@@ -381,7 +372,6 @@ public class WorkspaceDetails implements Serializable {
 
     public void setDedicatedEncoder_power_1(Long dedicatedEncoder_power_1) {
         this.dedicatedEncoder_power_1 = dedicatedEncoder_power_1;
-        this.newDedicatedEncoder_power_1 = dedicatedEncoder_power_1;
     }
 
     public Long getCurrentCostForDedicatedEncoder_power_1() {
@@ -398,7 +388,6 @@ public class WorkspaceDetails implements Serializable {
 
     public void setDedicatedEncoder_power_2(Long dedicatedEncoder_power_2) {
         this.dedicatedEncoder_power_2 = dedicatedEncoder_power_2;
-        this.newDedicatedEncoder_power_2 = dedicatedEncoder_power_2;
     }
 
     public Long getCurrentCostForDedicatedEncoder_power_2() {
@@ -415,7 +404,6 @@ public class WorkspaceDetails implements Serializable {
 
     public void setDedicatedEncoder_power_3(Long dedicatedEncoder_power_3) {
         this.dedicatedEncoder_power_3 = dedicatedEncoder_power_3;
-        this.newDedicatedEncoder_power_3 = dedicatedEncoder_power_3;
     }
 
     public Long getCurrentCostForDedicatedEncoder_power_3() {
@@ -424,38 +412,6 @@ public class WorkspaceDetails implements Serializable {
 
     public void setCurrentCostForDedicatedEncoder_power_3(Long currentCostForDedicatedEncoder_power_3) {
         this.currentCostForDedicatedEncoder_power_3 = currentCostForDedicatedEncoder_power_3;
-    }
-
-    public Long getNewMaxStorageInGB() {
-        return newMaxStorageInGB;
-    }
-
-    public void setNewMaxStorageInGB(Long newMaxStorageInGB) {
-        this.newMaxStorageInGB = newMaxStorageInGB;
-    }
-
-    public Long getNewDedicatedEncoder_power_1() {
-        return newDedicatedEncoder_power_1;
-    }
-
-    public void setNewDedicatedEncoder_power_1(Long newDedicatedEncoder_power_1) {
-        this.newDedicatedEncoder_power_1 = newDedicatedEncoder_power_1;
-    }
-
-    public Long getNewDedicatedEncoder_power_2() {
-        return newDedicatedEncoder_power_2;
-    }
-
-    public void setNewDedicatedEncoder_power_2(Long newDedicatedEncoder_power_2) {
-        this.newDedicatedEncoder_power_2 = newDedicatedEncoder_power_2;
-    }
-
-    public Long getNewDedicatedEncoder_power_3() {
-        return newDedicatedEncoder_power_3;
-    }
-
-    public void setNewDedicatedEncoder_power_3(Long newDedicatedEncoder_power_3) {
-        this.newDedicatedEncoder_power_3 = newDedicatedEncoder_power_3;
     }
 
     public Boolean getApplicationRecorder() {
