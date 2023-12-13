@@ -285,13 +285,6 @@ public class WorkspaceDetails implements Serializable {
 
     public void setUsageInMB(Long usageInMB) {
         this.usageInMB = usageInMB;
-        if (usageInMB != null) {
-            long usageInGB = usageInMB / 1000; // 289121 / 1000 = 289
-            if (usageInGB % 100 == 0)
-                minNewUsageInGB = usageInGB;
-            else
-                minNewUsageInGB = (((long)(usageInGB / 100)) * 100) + 100;  // = 300
-        }
     }
 
     public String getLanguageCode() {
@@ -422,4 +415,11 @@ public class WorkspaceDetails implements Serializable {
         this.applicationRecorder = applicationRecorder;
     }
 
+    public List<Cost> getDedicatedEncoderAndStorageList() {
+        return dedicatedEncoderAndStorageList;
+    }
+
+    public void setDedicatedEncoderAndStorageList(List<Cost> dedicatedEncoderAndStorageList) {
+        this.dedicatedEncoderAndStorageList = dedicatedEncoderAndStorageList;
+    }
 }
