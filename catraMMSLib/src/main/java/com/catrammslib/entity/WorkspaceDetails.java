@@ -14,10 +14,26 @@ public class WorkspaceDetails implements Serializable {
     private String maxEncodingPriority;
     private String encodingPeriod;
     private Long maxIngestionsNumber;
-    private Long maxStorageInMB;
-    private Long dedicatedEncoders;
+    private Long maxStorageInMB; // da rimuovere in modo da usare maxStorageInGB
 
-	private Long workspaceOwnerUserKey;	// filled only if user is admin
+    private Long maxStorageInGB;
+    private Long currentCostForStorage;
+    private Long dedicatedEncoder_power_1;
+    private Long currentCostForDedicatedEncoder_power_1;
+    private Long dedicatedEncoder_power_2;
+    private Long currentCostForDedicatedEncoder_power_2;
+    private Long dedicatedEncoder_power_3;
+    private Long currentCostForDedicatedEncoder_power_3;
+
+
+    // this field is used by the GUI
+    private Long newMaxStorageInGB;
+    private Long newDedicatedEncoder_power_1;
+    private Long newDedicatedEncoder_power_2;
+    private Long newDedicatedEncoder_power_3;
+
+
+    private Long workspaceOwnerUserKey;	// filled only if user is admin
 	private String workspaceOwnerUserName; // filled only if user is admin
 
     private Long usageInMB;
@@ -54,7 +70,6 @@ public class WorkspaceDetails implements Serializable {
                 ", encodingPeriod='" + encodingPeriod + '\'' +
                 ", maxIngestionsNumber=" + maxIngestionsNumber +
                 ", maxStorageInMB=" + maxStorageInMB +
-                ", dedicatedEncoders=" + dedicatedEncoders +
                 ", workspaceOwnerUserKey=" + workspaceOwnerUserKey +
                 ", workspaceOwnerUserName=" + workspaceOwnerUserName +
                 ", usageInMB=" + usageInMB +
@@ -77,6 +92,15 @@ public class WorkspaceDetails implements Serializable {
                 ", cancelIngestionJob=" + cancelIngestionJob +
                 ", editEncodersPool=" + editEncodersPool +
                 ", applicationRecorder=" + applicationRecorder +
+
+                ", maxStorageInGB=" + maxStorageInGB +
+                ", currentCostForStorage=" + currentCostForStorage +
+                ", dedicatedEncoder_power_1=" + dedicatedEncoder_power_1 +
+                ", currentCostForDedicatedEncoder_power_1=" + currentCostForDedicatedEncoder_power_1 +
+                ", dedicatedEncoder_power_2=" + dedicatedEncoder_power_2 +
+                ", currentCostForDedicatedEncoder_power_2=" + currentCostForDedicatedEncoder_power_2 +
+                ", dedicatedEncoder_power_3=" + dedicatedEncoder_power_3 +
+                ", currentCostForDedicatedEncoder_power_3=" + currentCostForDedicatedEncoder_power_3 +
                 '}';
     }
 
@@ -253,13 +277,6 @@ public class WorkspaceDetails implements Serializable {
         this.maxStorageInMB = maxStorageInMB;
     }
 
-    public Long getDedicatedEncoders() {
-        return dedicatedEncoders;
-    }
-
-    public void setDedicatedEncoders(Long dedicatedEncoders) {
-        this.dedicatedEncoders = dedicatedEncoders;
-    }
 
     public Long getUsageInMB() {
         return usageInMB;
@@ -325,6 +342,106 @@ public class WorkspaceDetails implements Serializable {
         this.editEncodersPool = editEncodersPool;
     }
 
+    public Long getMaxStorageInGB() {
+        return maxStorageInGB;
+    }
+
+    public void setMaxStorageInGB(Long maxStorageInGB) {
+        this.maxStorageInGB = maxStorageInGB;
+        this.newMaxStorageInGB = maxStorageInGB;
+    }
+
+    public Long getCurrentCostForStorage() {
+        return currentCostForStorage;
+    }
+
+    public void setCurrentCostForStorage(Long currentCostForStorage) {
+        this.currentCostForStorage = currentCostForStorage;
+    }
+
+    public Long getDedicatedEncoder_power_1() {
+        return dedicatedEncoder_power_1;
+    }
+
+    public void setDedicatedEncoder_power_1(Long dedicatedEncoder_power_1) {
+        this.dedicatedEncoder_power_1 = dedicatedEncoder_power_1;
+        this.newDedicatedEncoder_power_1 = dedicatedEncoder_power_1;
+    }
+
+    public Long getCurrentCostForDedicatedEncoder_power_1() {
+        return currentCostForDedicatedEncoder_power_1;
+    }
+
+    public void setCurrentCostForDedicatedEncoder_power_1(Long currentCostForDedicatedEncoder_power_1) {
+        this.currentCostForDedicatedEncoder_power_1 = currentCostForDedicatedEncoder_power_1;
+    }
+
+    public Long getDedicatedEncoder_power_2() {
+        return dedicatedEncoder_power_2;
+    }
+
+    public void setDedicatedEncoder_power_2(Long dedicatedEncoder_power_2) {
+        this.dedicatedEncoder_power_2 = dedicatedEncoder_power_2;
+        this.newDedicatedEncoder_power_2 = dedicatedEncoder_power_2;
+    }
+
+    public Long getCurrentCostForDedicatedEncoder_power_2() {
+        return currentCostForDedicatedEncoder_power_2;
+    }
+
+    public void setCurrentCostForDedicatedEncoder_power_2(Long currentCostForDedicatedEncoder_power_2) {
+        this.currentCostForDedicatedEncoder_power_2 = currentCostForDedicatedEncoder_power_2;
+    }
+
+    public Long getDedicatedEncoder_power_3() {
+        return dedicatedEncoder_power_3;
+    }
+
+    public void setDedicatedEncoder_power_3(Long dedicatedEncoder_power_3) {
+        this.dedicatedEncoder_power_3 = dedicatedEncoder_power_3;
+        this.newDedicatedEncoder_power_3 = dedicatedEncoder_power_3;
+    }
+
+    public Long getCurrentCostForDedicatedEncoder_power_3() {
+        return currentCostForDedicatedEncoder_power_3;
+    }
+
+    public void setCurrentCostForDedicatedEncoder_power_3(Long currentCostForDedicatedEncoder_power_3) {
+        this.currentCostForDedicatedEncoder_power_3 = currentCostForDedicatedEncoder_power_3;
+    }
+
+    public Long getNewMaxStorageInGB() {
+        return newMaxStorageInGB;
+    }
+
+    public void setNewMaxStorageInGB(Long newMaxStorageInGB) {
+        this.newMaxStorageInGB = newMaxStorageInGB;
+    }
+
+    public Long getNewDedicatedEncoder_power_1() {
+        return newDedicatedEncoder_power_1;
+    }
+
+    public void setNewDedicatedEncoder_power_1(Long newDedicatedEncoder_power_1) {
+        this.newDedicatedEncoder_power_1 = newDedicatedEncoder_power_1;
+    }
+
+    public Long getNewDedicatedEncoder_power_2() {
+        return newDedicatedEncoder_power_2;
+    }
+
+    public void setNewDedicatedEncoder_power_2(Long newDedicatedEncoder_power_2) {
+        this.newDedicatedEncoder_power_2 = newDedicatedEncoder_power_2;
+    }
+
+    public Long getNewDedicatedEncoder_power_3() {
+        return newDedicatedEncoder_power_3;
+    }
+
+    public void setNewDedicatedEncoder_power_3(Long newDedicatedEncoder_power_3) {
+        this.newDedicatedEncoder_power_3 = newDedicatedEncoder_power_3;
+    }
+
     public Boolean getApplicationRecorder() {
         return applicationRecorder;
     }
@@ -333,13 +450,4 @@ public class WorkspaceDetails implements Serializable {
         this.applicationRecorder = applicationRecorder;
     }
 
-    /*
-    public List<Encoder> getEncoderList() {
-        return encoderList;
-    }
-
-    public void setEncoderList(List<Encoder> encoderList) {
-        this.encoderList = encoderList;
-    }
-     */
 }

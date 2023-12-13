@@ -1995,7 +1995,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public void getWorkspaceList(String username, String password,
+    public void getWorkspaceList(String username, String password, Boolean costDetails,
                             List<WorkspaceDetails> workspaceDetailsList)
             throws Exception
     {
@@ -2007,6 +2007,7 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/workspace"
+                    + (costDetails != null && costDetails ? "?costDetails=true" : "")
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -7568,8 +7569,6 @@ public class CatraMMSAPI implements Serializable {
             workspaceDetails.setEncodingPeriod(jaWorkspaceInfo.getString("encodingPeriod"));
             workspaceDetails.setMaxIngestionsNumber(jaWorkspaceInfo.getLong("maxIngestionsNumber"));
             workspaceDetails.setMaxStorageInMB(jaWorkspaceInfo.getLong("maxStorageInMB"));
-            if (jaWorkspaceInfo.has("dedicatedEncoders") && !jaWorkspaceInfo.isNull("dedicatedEncoders"))
-                workspaceDetails.setDedicatedEncoders(jaWorkspaceInfo.getLong("dedicatedEncoders"));
             workspaceDetails.setUsageInMB(jaWorkspaceInfo.getLong("workSpaceUsageInMB"));
             workspaceDetails.setLanguageCode(jaWorkspaceInfo.getString("languageCode"));
             workspaceDetails.setCreationDate(simpleDateFormat.parse(jaWorkspaceInfo.getString("creationDate")));
@@ -7598,6 +7597,20 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setCancelIngestionJob(joUserAPIKey.getBoolean("cancelIngestionJob"));
                 workspaceDetails.setEditEncodersPool(joUserAPIKey.getBoolean("editEncodersPool"));
                 workspaceDetails.setApplicationRecorder(joUserAPIKey.getBoolean("applicationRecorder"));
+            }
+
+            if(jaWorkspaceInfo.has("cost"))
+            {
+                JSONObject joCostInfo = jaWorkspaceInfo.getJSONObject("cost");
+
+                workspaceDetails.setMaxStorageInGB(joCostInfo.getLong("maxStorageInGB"));
+                workspaceDetails.setCurrentCostForStorage(joCostInfo.getLong("currentCostForStorage"));
+                workspaceDetails.setDedicatedEncoder_power_1(joCostInfo.getLong("dedicatedEncoder_power_1"));
+                workspaceDetails.setCurrentCostForDedicatedEncoder_power_1(joCostInfo.getLong("currentCostForDedicatedEncoder_power_1"));
+                workspaceDetails.setDedicatedEncoder_power_2(joCostInfo.getLong("dedicatedEncoder_power_2"));
+                workspaceDetails.setCurrentCostForDedicatedEncoder_power_2(joCostInfo.getLong("currentCostForDedicatedEncoder_power_2"));
+                workspaceDetails.setDedicatedEncoder_power_3(joCostInfo.getLong("dedicatedEncoder_power_3"));
+                workspaceDetails.setCurrentCostForDedicatedEncoder_power_3(joCostInfo.getLong("currentCostForDedicatedEncoder_power_3"));
             }
 
             /*
