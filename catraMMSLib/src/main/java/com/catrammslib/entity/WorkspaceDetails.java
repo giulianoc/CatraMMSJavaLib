@@ -28,6 +28,7 @@ public class WorkspaceDetails implements Serializable {
 
     // this field is used by the GUI
     private Long newMaxStorageInGB;
+    private Long minNewUsageInMB;
     private Long newDedicatedEncoder_power_1;
     private Long newDedicatedEncoder_power_2;
     private Long newDedicatedEncoder_power_3;
@@ -284,6 +285,21 @@ public class WorkspaceDetails implements Serializable {
 
     public void setUsageInMB(Long usageInMB) {
         this.usageInMB = usageInMB;
+        if (usageInMB != null) {
+            if (usageInMB % 100 == 0)
+                minNewUsageInMB = usageInMB;
+            else
+                minNewUsageInMB = (((long)(usageInMB / 100)) * 100) + 100;
+        }
+
+    }
+
+    public Long getMinNewUsageInMB() {
+        return minNewUsageInMB;
+    }
+
+    public void setMinNewUsageInMB(Long minNewUsageInMB) {
+        this.minNewUsageInMB = minNewUsageInMB;
     }
 
     public String getLanguageCode() {
