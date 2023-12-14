@@ -29,10 +29,6 @@ public class WorkspaceDetails implements Serializable {
     private Long currentCostForDedicatedEncoder_power_3;
 
 
-    // this field is used by the GUI
-    private List<Cost> dedicatedEncoderAndStorageList;
-
-
 
     private Long workspaceOwnerUserKey;	// filled only if user is admin
 	private String workspaceOwnerUserName; // filled only if user is admin
@@ -59,7 +55,13 @@ public class WorkspaceDetails implements Serializable {
     private Boolean editEncodersPool;
     private Boolean applicationRecorder;
 
-    // private List<Encoder> encoderList = new ArrayList<>();
+
+    // this field is used by the GUI
+    private List<Cost> dedicatedEncoderAndStorageList;
+    private Long currentTotalCost;
+    private Long newTotalCost;
+
+
 
     @Override
     public String toString() {
@@ -413,6 +415,22 @@ public class WorkspaceDetails implements Serializable {
 
     public void setApplicationRecorder(Boolean applicationRecorder) {
         this.applicationRecorder = applicationRecorder;
+    }
+
+    public Long getCurrentTotalCost() {
+        return currentTotalCost;
+    }
+
+    public void setCurrentTotalCost(Long currentTotalCost) {
+        this.currentTotalCost = currentTotalCost;
+    }
+
+    public Long getNewTotalCost() {
+        return newTotalCost;
+    }
+
+    public void setNewTotalCost(Long newTotalCost) {
+        this.newTotalCost = newTotalCost;
     }
 
     public List<Cost> getDedicatedEncoderAndStorageList() {
