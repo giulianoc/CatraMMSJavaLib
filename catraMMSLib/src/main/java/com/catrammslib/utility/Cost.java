@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class Cost implements Serializable {
 
     private String description;
+    private String type;    // storage or encoder
     private Long monthlyCost;    // eur
     private Long stepFactor;
     private Long minAmount;
@@ -22,6 +23,7 @@ public class Cost implements Serializable {
         Cost cost = new Cost();
 
         cost.setDescription(getDescription());
+        cost.setType(getType());
         cost.setMonthlyCost(getMonthlyCost());
         cost.setStepFactor(getStepFactor());
         cost.setMinAmount(getMinAmount());
@@ -78,6 +80,14 @@ public class Cost implements Serializable {
 
     public void setCurrentAmount(Long currentAmount) {
         this.currentAmount = currentAmount;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Long getNewAmount() {
