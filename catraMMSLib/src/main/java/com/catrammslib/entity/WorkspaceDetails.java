@@ -57,7 +57,7 @@ public class WorkspaceDetails implements Serializable {
 
 
     // this field is used by the GUI
-    private List<Cost> dedicatedEncoderAndStorageList;
+    private List<Cost> dedicatedStorageAndEncoderList;
     private Long currentTotalCost;
     private Long newTotalCost;
 
@@ -433,11 +433,11 @@ public class WorkspaceDetails implements Serializable {
         this.newTotalCost = newTotalCost;
     }
 
-    public List<Cost> getDedicatedEncoderAndStorageList() {
-        return dedicatedEncoderAndStorageList;
+    public List<Cost> getDedicatedStorageAndEncoderList() {
+        return dedicatedStorageAndEncoderList;
     }
 
-    public void setDedicatedEncoderAndStorageList(List<Cost> dedicatedEncoderAndStorageList) {
-        this.dedicatedEncoderAndStorageList = dedicatedEncoderAndStorageList;
+    public void setDedicatedStorageAndEncoderList(List<Cost> dedicatedStorageAndEncoderList) {
+        this.dedicatedStorageAndEncoderList = dedicatedStorageAndEncoderList;
     }
 }
