@@ -60,7 +60,10 @@ public class WorkspaceDetails implements Serializable {
     private List<Cost> dedicatedStorageAndEncoderList;
     private Long currentTotalCost;
     private Long newTotalCost;
-
+    private Long differenceBetweenCurrentAndNewForStorage;
+    private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_1;
+    private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_2;
+    private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_3;
 
 
     @Override
@@ -439,5 +442,37 @@ public class WorkspaceDetails implements Serializable {
 
     public void setDedicatedStorageAndEncoderList(List<Cost> dedicatedStorageAndEncoderList) {
         this.dedicatedStorageAndEncoderList = dedicatedStorageAndEncoderList;
+    }
+
+    public Long getDifferenceBetweenCurrentAndNewForStorage() {
+        return differenceBetweenCurrentAndNewForStorage;
+    }
+
+    public void setDifferenceBetweenCurrentAndNewForStorage(Long differenceBetweenCurrentAndNewForStorage) {
+        this.differenceBetweenCurrentAndNewForStorage = differenceBetweenCurrentAndNewForStorage;
+    }
+
+    public Long getDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_1() {
+        return differenceBetweenCurrentAndNewForDedicatedEncoder_power_1;
+    }
+
+    public void setDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_1(Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_1) {
+        this.differenceBetweenCurrentAndNewForDedicatedEncoder_power_1 = differenceBetweenCurrentAndNewForDedicatedEncoder_power_1;
+    }
+
+    public Long getDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_2() {
+        return differenceBetweenCurrentAndNewForDedicatedEncoder_power_2;
+    }
+
+    public void setDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_2(Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_2) {
+        this.differenceBetweenCurrentAndNewForDedicatedEncoder_power_2 = differenceBetweenCurrentAndNewForDedicatedEncoder_power_2;
+    }
+
+    public Long getDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_3() {
+        return differenceBetweenCurrentAndNewForDedicatedEncoder_power_3;
+    }
+
+    public void setDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_3(Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_3) {
+        this.differenceBetweenCurrentAndNewForDedicatedEncoder_power_3 = differenceBetweenCurrentAndNewForDedicatedEncoder_power_3;
     }
 }
