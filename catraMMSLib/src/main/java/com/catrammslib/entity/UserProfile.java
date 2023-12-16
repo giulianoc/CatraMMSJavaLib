@@ -14,6 +14,7 @@ public class UserProfile implements Serializable {
     private String password;
     private String country;
     private Date creationDate;
+    private Boolean insolvent;
     private Date expirationDate;
     private String creditCard_cardNumber;
     private String creditCard_nameOnCard;
@@ -106,6 +107,14 @@ public class UserProfile implements Serializable {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    public Boolean getInsolvent() {
+        return insolvent;
+    }
+
+    public void setInsolvent(Boolean insolvent) {
+        this.insolvent = insolvent;
     }
 
     public Date getExpirationDate() {

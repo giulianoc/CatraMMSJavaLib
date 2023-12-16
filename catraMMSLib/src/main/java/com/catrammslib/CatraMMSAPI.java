@@ -2041,6 +2041,67 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    public void getInvoiceList(String username, String password,
+                                 List<Invoice> invoicesList)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/invoice"
+                    ;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getInvoiceList. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaInvoices = joResponse.getJSONArray("invoices");
+
+            mLogger.info("jaInvoices.length(): " + jaInvoices.length());
+
+            invoicesList.clear();
+
+            for (int invoiceIndex = 0;
+                 invoiceIndex < jaInvoices.length();
+                 invoiceIndex++)
+            {
+                Invoice invoice = new Invoice();
+
+                JSONObject invoiceInfo = jaInvoices.getJSONObject(invoiceIndex);
+
+                fillInvoice(invoice, invoiceInfo);
+
+                invoicesList.add(invoice);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public Long getMediaItems(String username, String password,
                               long startIndex, long pageSize,
                               Long mediaItemKey, String uniqueName,
@@ -7484,6 +7545,7 @@ public class CatraMMSAPI implements Serializable {
             userProfile.setCountry(joUserProfileInfo.getString("country"));
             userProfile.setEmail(joUserProfileInfo.getString("email"));
             userProfile.setCreationDate(simpleDateFormat.parse(joUserProfileInfo.getString("creationDate")));
+            userProfile.setInsolvent(joUserProfileInfo.getBoolean("insolvent"));
             userProfile.setExpirationDate(simpleDateFormat.parse(joUserProfileInfo.getString("expirationDate")));
         }
         catch (Exception e)
@@ -7498,32 +7560,35 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    /*
-    private void fillWorkspaceDetailsList(List<WorkspaceDetails> workspaceDetailsList, JSONArray jaWorkspacesInfo)
+    private void fillInvoice(Invoice invoice, JSONObject joInvoiceInfo)
             throws Exception
     {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
         try
         {
-            for (int workspaceIndex = 0; workspaceIndex < jaWorkspacesInfo.length(); workspaceIndex++)
-            {
-                JSONObject joWorkspaceInfo = jaWorkspacesInfo.getJSONObject(workspaceIndex);
-
-                WorkspaceDetails workspaceDetails = new WorkspaceDetails();
-
-                fillWorkspaceDetails(workspaceDetails, joWorkspaceInfo);
-
-                workspaceDetailsList.add(workspaceDetails);
-            }
+            invoice.setInvoiceKey(joInvoiceInfo.getLong("invoiceKey"));
+            invoice.setUserKey(joInvoiceInfo.getLong("userKey"));
+            invoice.setCreationDate(simpleDateFormat.parse(joInvoiceInfo.getString("creationDate")));
+            invoice.setDescription(joInvoiceInfo.getString("description"));
+            invoice.setAmount(joInvoiceInfo.getLong("amount"));
+            invoice.setExpirationDate(simpleDateFormat.parse(joInvoiceInfo.getString("expirationDate")));
+            invoice.setPaid(joInvoiceInfo.getBoolean("paid"));
+            if (joInvoiceInfo.has("paymentDate") && !joInvoiceInfo.isNull("paymentDate"))
+                invoice.setPaymentDate(simpleDateFormat.parse(joInvoiceInfo.getString("paymentDate")));
         }
         catch (Exception e)
         {
-            String errorMessage = "fillWorkspaceDetailsList failed. Exception: " + e;
+            String errorMessage = "fillInvoice failed"
+                    + ", Exception: " + e
+                    + ", joInvoiceInfo: " + joInvoiceInfo.toString()
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
         }
     }
-     */
 
     private void fillWorkspaceDetails(WorkspaceDetails workspaceDetails, JSONObject jaWorkspaceInfo)
             throws Exception
