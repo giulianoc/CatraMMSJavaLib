@@ -854,6 +854,12 @@ public class CatraMMSAPI implements Serializable {
 		Boolean newEnabled, String newName, String newMaxEncodingPriority,
 		String newEncodingPeriod, Long newMaxIngestionsNumber,
 		Long newMaxStorageInMB, String newLanguageCode, Date newExpirationDate,
+
+        Long maxStorageInGB, Long currentCostForStorage,
+        Long dedicatedEncoder_power_1, Long currentCostForDedicatedEncoder_power_1,
+        Long dedicatedEncoder_power_2, Long currentCostForDedicatedEncoder_power_2,
+        Long dedicatedEncoder_power_3, Long currentCostForDedicatedEncoder_power_3,
+
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
 		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
 		Boolean newEditMedia, Boolean newEditConfiguration, Boolean newKillEncoding,
@@ -886,6 +892,23 @@ public class CatraMMSAPI implements Serializable {
 				joBodyRequest.put("maxStorageInMB", newMaxStorageInMB);
 			if (newLanguageCode != null)
 				joBodyRequest.put("languageCode", newLanguageCode);
+
+            if (maxStorageInGB != null)
+                joBodyRequest.put("maxStorageInGB", maxStorageInGB);
+            if (currentCostForStorage != null)
+                joBodyRequest.put("currentCostForStorage", currentCostForStorage);
+            if (dedicatedEncoder_power_1 != null)
+                joBodyRequest.put("dedicatedEncoder_power_1", dedicatedEncoder_power_1);
+            if (currentCostForDedicatedEncoder_power_1 != null)
+                joBodyRequest.put("currentCostForDedicatedEncoder_power_1", currentCostForDedicatedEncoder_power_1);
+            if (dedicatedEncoder_power_2 != null)
+                joBodyRequest.put("dedicatedEncoder_power_2", dedicatedEncoder_power_2);
+            if (currentCostForDedicatedEncoder_power_2 != null)
+                joBodyRequest.put("currentCostForDedicatedEncoder_power_2", currentCostForDedicatedEncoder_power_2);
+            if (dedicatedEncoder_power_3 != null)
+                joBodyRequest.put("dedicatedEncoder_power_3", dedicatedEncoder_power_3);
+            if (currentCostForDedicatedEncoder_power_3 != null)
+                joBodyRequest.put("currentCostForDedicatedEncoder_power_3", currentCostForDedicatedEncoder_power_3);
 
 			JSONObject joUserAPIKey = new JSONObject();
 			joBodyRequest.put("userAPIKey", joUserAPIKey);
@@ -3222,7 +3245,7 @@ public class CatraMMSAPI implements Serializable {
             long start = System.currentTimeMillis();
             mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
                     username, password, null, bodyRequest, outputToBeCompressed);
-            mLogger.info("updateWorkspace. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+            mLogger.info("updateIngestionJob_LiveRecorder. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
         }
         catch (Exception e)
         {
