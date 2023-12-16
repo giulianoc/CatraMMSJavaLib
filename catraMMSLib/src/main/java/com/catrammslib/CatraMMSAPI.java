@@ -2102,6 +2102,63 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    public Long addInvoice(String username, String password,
+                           Long userKey, String description,
+                           Long amount, Date expirationDate)
+            throws Exception
+    {
+        Long invoiceKey;
+
+        String mmsInfo;
+        try
+        {
+            JSONObject joInvoice = new JSONObject();
+
+            joInvoice.put("userKey", userKey);
+            joInvoice.put("description", description);
+            joInvoice.put("amount", amount);
+            joInvoice.put("expirationDate", expirationDate);
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/invoice";
+
+            mLogger.info("addInvoice"
+                    + ", mmsURL: " + mmsURL
+                    + ", joInvoice: " + joInvoice.toString()
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, joInvoice.toString(), outputToBeCompressed);
+            mLogger.info("addInvoice. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addInvoice MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            invoiceKey = joWMMSInfo.getLong("invoiceKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addInvoice failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return invoiceKey;
+    }
+
     public Long getMediaItems(String username, String password,
                               long startIndex, long pageSize,
                               Long mediaItemKey, String uniqueName,
