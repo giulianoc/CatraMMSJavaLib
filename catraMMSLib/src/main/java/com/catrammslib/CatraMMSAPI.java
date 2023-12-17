@@ -859,7 +859,7 @@ public class CatraMMSAPI implements Serializable {
         Long dedicatedEncoder_power_1, Long currentCostForDedicatedEncoder_power_1,
         Long dedicatedEncoder_power_2, Long currentCostForDedicatedEncoder_power_2,
         Long dedicatedEncoder_power_3, Long currentCostForDedicatedEncoder_power_3,
-        Boolean support24x7, Long currentCostForSupport24x7,
+        Boolean support_type_1, Long currentCostForSupport_type_1,
 
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
 		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
@@ -912,10 +912,10 @@ public class CatraMMSAPI implements Serializable {
             if (currentCostForDedicatedEncoder_power_3 != null)
                 joBodyRequest.put("currentCostForDedicatedEncoder_power_3", currentCostForDedicatedEncoder_power_3);
 
-            if (support24x7 != null)
-                joBodyRequest.put("support24x7", support24x7);
-            if (currentCostForSupport24x7 != null)
-                joBodyRequest.put("currentCostForSupport24x7", currentCostForSupport24x7);
+            if (support_type_1 != null)
+                joBodyRequest.put("support_type_1", support_type_1);
+            if (currentCostForSupport_type_1 != null)
+                joBodyRequest.put("currentCostForSupport_type_1", currentCostForSupport_type_1);
 
 			JSONObject joUserAPIKey = new JSONObject();
 			joBodyRequest.put("userAPIKey", joUserAPIKey);
@@ -7738,8 +7738,8 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setCurrentCostForDedicatedEncoder_power_2(joCostInfo.getLong("currentCostForDedicatedEncoder_power_2"));
                 workspaceDetails.setDedicatedEncoder_power_3(joCostInfo.getLong("dedicatedEncoder_power_3"));
                 workspaceDetails.setCurrentCostForDedicatedEncoder_power_3(joCostInfo.getLong("currentCostForDedicatedEncoder_power_3"));
-                workspaceDetails.setSupport24x7(joCostInfo.getBoolean("support24x7"));
-                workspaceDetails.setCurrentCostForSupport24x7(joCostInfo.getLong("currentCostForSupport24x7"));
+                workspaceDetails.setSupport_type_1(joCostInfo.getBoolean("support_type_1"));
+                workspaceDetails.setCurrentCostForSupport_type_1(joCostInfo.getLong("currentCostForSupport_type_1"));
             }
 
             /*

@@ -27,8 +27,8 @@ public class WorkspaceDetails implements Serializable {
     private Long currentCostForDedicatedEncoder_power_2;
     private Long dedicatedEncoder_power_3;
     private Long currentCostForDedicatedEncoder_power_3;
-    private Boolean support24x7;
-    private Long currentCostForSupport24x7;
+    private Boolean support_type_1;
+    private Long currentCostForSupport_type_1;
 
 
 
@@ -66,7 +66,7 @@ public class WorkspaceDetails implements Serializable {
     private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_1;
     private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_2;
     private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_3;
-    private Long differenceBetweenCurrentAndNewForSupport24x7;
+    private Long differenceBetweenCurrentAndNewForSupport_type_1;
 
 
     @Override
@@ -471,28 +471,28 @@ public class WorkspaceDetails implements Serializable {
         this.differenceBetweenCurrentAndNewForDedicatedEncoder_power_2 = differenceBetweenCurrentAndNewForDedicatedEncoder_power_2;
     }
 
-    public Boolean getSupport24x7() {
-        return support24x7;
+    public Boolean getSupport_type_1() {
+        return support_type_1;
     }
 
-    public void setSupport24x7(Boolean support24x7) {
-        this.support24x7 = support24x7;
+    public void setSupport_type_1(Boolean support_type_1) {
+        this.support_type_1 = support_type_1;
     }
 
-    public Long getCurrentCostForSupport24x7() {
-        return currentCostForSupport24x7;
+    public Long getCurrentCostForSupport_type_1() {
+        return currentCostForSupport_type_1;
     }
 
-    public void setCurrentCostForSupport24x7(Long currentCostForSupport24x7) {
-        this.currentCostForSupport24x7 = currentCostForSupport24x7;
+    public void setCurrentCostForSupport_type_1(Long currentCostForSupport_type_1) {
+        this.currentCostForSupport_type_1 = currentCostForSupport_type_1;
     }
 
-    public Long getDifferenceBetweenCurrentAndNewForSupport24x7() {
-        return differenceBetweenCurrentAndNewForSupport24x7;
+    public Long getDifferenceBetweenCurrentAndNewForSupport_type_1() {
+        return differenceBetweenCurrentAndNewForSupport_type_1;
     }
 
-    public void setDifferenceBetweenCurrentAndNewForSupport24x7(Long differenceBetweenCurrentAndNewForSupport24x7) {
-        this.differenceBetweenCurrentAndNewForSupport24x7 = differenceBetweenCurrentAndNewForSupport24x7;
+    public void setDifferenceBetweenCurrentAndNewForSupport_type_1(Long differenceBetweenCurrentAndNewForSupport_type_1) {
+        this.differenceBetweenCurrentAndNewForSupport_type_1 = differenceBetweenCurrentAndNewForSupport_type_1;
     }
 
     public Long getDifferenceBetweenCurrentAndNewForDedicatedEncoder_power_3() {
