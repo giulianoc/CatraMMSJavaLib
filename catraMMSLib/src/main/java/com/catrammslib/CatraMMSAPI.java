@@ -8980,6 +8980,20 @@ public class CatraMMSAPI implements Serializable {
 							ingestionJob.setEndProcessingEstimate(true);
 							ingestionJob.setEndProcessing(calendar.getTime());
 						}
+                        else if (ingestionJob.getDownloadingProgress() != null && ingestionJob.getDownloadingProgress() != 0 && ingestionJob.getDownloadingProgress() != -1)
+                        {
+                            Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
+
+                            // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+                            Long estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getDownloadingProgress();
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(ingestionJob.getStartProcessing());
+                            calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+                            ingestionJob.setEndProcessingEstimate(true);
+                            ingestionJob.setEndProcessing(calendar.getTime());
+                        }
 					}
                 }
 
