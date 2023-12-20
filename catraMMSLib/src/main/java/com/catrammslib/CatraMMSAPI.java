@@ -9000,7 +9000,49 @@ public class CatraMMSAPI implements Serializable {
                 ingestionJob.setEncodingJob(encodingJob);
             }
             else
-                ingestionJob.setEndProcessingEstimate(false);
+            {
+                // end processing estimation
+                {
+                    ingestionJob.setEndProcessingEstimate(false);
+
+                    long now = System.currentTimeMillis();
+
+                    if (ingestionJob.getEndProcessing() == null
+                            && ingestionJob.getStartProcessing() != null && ingestionJob.getStartProcessing().getTime() < now)
+                    {
+                        if (ingestionJob.getDownloadingProgress() != null && ingestionJob.getDownloadingProgress() != 0
+                                && ingestionJob.getDownloadingProgress() != -1)
+                        {
+                            Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
+
+                            // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+                            Long estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getDownloadingProgress();
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(ingestionJob.getStartProcessing());
+                            calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+                            ingestionJob.setEndProcessingEstimate(true);
+                            ingestionJob.setEndProcessing(calendar.getTime());
+                        }
+                        else if (ingestionJob.getUploadingProgress() != null && ingestionJob.getUploadingProgress() != 0
+                                && ingestionJob.getUploadingProgress() != -1)
+                        {
+                            Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
+
+                            // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
+                            Long estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getUploadingProgress();
+
+                            Calendar calendar = Calendar.getInstance();
+                            calendar.setTime(ingestionJob.getStartProcessing());
+                            calendar.add(Calendar.MILLISECOND, estimateMillisecs.intValue());
+
+                            ingestionJob.setEndProcessingEstimate(true);
+                            ingestionJob.setEndProcessing(calendar.getTime());
+                        }
+                    }
+                }
+            }
         }
         catch (Exception e)
         {
