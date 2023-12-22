@@ -33,8 +33,8 @@ public class IngestionJob implements Serializable, Comparable {
     private String errorMessage;
     private Boolean errorMessageTruncated;
     private String processorMMS;
-    private Long downloadingProgress;
-    private Long uploadingProgress;
+    private Double downloadingProgress;
+    private Double uploadingProgress;
     private List<IngestionJobMediaItem> ingestionJobMediaItemList = new ArrayList<>();
     private EncodingJob encodingJob = null;
     private Long ingestionRootKey;
@@ -462,19 +462,20 @@ public class IngestionJob implements Serializable, Comparable {
         this.ingester = ingester;
     }
 
-    public Long getDownloadingProgress() {
+
+    public Double getDownloadingProgress() {
         return downloadingProgress;
     }
 
-    public void setDownloadingProgress(Long downloadingProgress) {
+    public void setDownloadingProgress(Double downloadingProgress) {
         this.downloadingProgress = downloadingProgress;
     }
 
-    public Long getUploadingProgress() {
+    public Double getUploadingProgress() {
         return uploadingProgress;
     }
 
-    public void setUploadingProgress(Long uploadingProgress) {
+    public void setUploadingProgress(Double uploadingProgress) {
         this.uploadingProgress = uploadingProgress;
     }
 

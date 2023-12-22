@@ -16,6 +16,7 @@ public class PhysicalPath implements Serializable{
     private String fileFormat;
     private String deliveryTechnology;
     private boolean externalReadOnlyStorage;
+    private String metaData;
     private Long partitionNumber;
     private String relativePath;
     private String fileName;
@@ -68,6 +69,14 @@ public class PhysicalPath implements Serializable{
 
     public void setFileFormat(String fileFormat) {
         this.fileFormat = fileFormat;
+    }
+
+    public String getMetaData() {
+        return metaData;
+    }
+
+    public void setMetaData(String metaData) {
+        this.metaData = metaData;
     }
 
     public String getDeliveryTechnology() {

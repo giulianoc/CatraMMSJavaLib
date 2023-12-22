@@ -7808,7 +7808,7 @@ public class CatraMMSAPI implements Serializable {
             if (encodingJobInfo.isNull("progress"))
                 encodingJob.setProgress(null);
             else
-                encodingJob.setProgress(encodingJobInfo.getLong("progress"));
+                encodingJob.setProgress(encodingJobInfo.getDouble("progress"));
 
 			encodingJob.setEndEstimate(false);
 
@@ -7836,7 +7836,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -7867,7 +7867,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -7894,7 +7894,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -7921,7 +7921,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -7948,7 +7948,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -7982,7 +7982,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -8008,7 +8008,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -8035,7 +8035,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -8063,7 +8063,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(encodingJob.getStart());
@@ -8522,8 +8522,6 @@ public class CatraMMSAPI implements Serializable {
             }
             if (mediaItemInfo.has("userData") && !mediaItemInfo.isNull("userData"))
                 mediaItem.setUserData(mediaItemInfo.getString("userData"));
-            if (mediaItemInfo.has("metadata") && !mediaItemInfo.isNull("metadata"))
-                mediaItem.setMetadata(mediaItemInfo.getString("metadata"));
 			if (mediaItemInfo.has("retentionInMinutes") && !mediaItemInfo.isNull("retentionInMinutes"))
 				mediaItem.setRetentionInMinutes(mediaItemInfo.getLong("retentionInMinutes"));
             if (mediaItemInfo.has("willBeRemovedAt") && !mediaItemInfo.isNull("willBeRemovedAt"))
@@ -8549,6 +8547,9 @@ public class CatraMMSAPI implements Serializable {
                         physicalPath.setDeliveryTechnology(null);
                     else
                         physicalPath.setDeliveryTechnology(physicalPathInfo.getString("deliveryTechnology"));
+
+                    if (physicalPathInfo.has("metaData") && !physicalPathInfo.isNull("metaData"))
+                        physicalPath.setMetaData(physicalPathInfo.getString("metaData"));
 
                     // partitionNumber, relativePath and fileName are present only if the APIKey has the admin rights
                     try {
@@ -8894,11 +8895,11 @@ public class CatraMMSAPI implements Serializable {
             if (ingestionJobInfo.isNull("downloadingProgress"))
                 ingestionJob.setDownloadingProgress(null);
             else
-                ingestionJob.setDownloadingProgress(ingestionJobInfo.getLong("downloadingProgress"));
+                ingestionJob.setDownloadingProgress(ingestionJobInfo.getDouble("downloadingProgress"));
             if (ingestionJobInfo.isNull("uploadingProgress"))
                 ingestionJob.setUploadingProgress(null);
             else
-                ingestionJob.setUploadingProgress(ingestionJobInfo.getLong("uploadingProgress"));
+                ingestionJob.setUploadingProgress(ingestionJobInfo.getDouble("uploadingProgress"));
 
             if (ingestionJobInfo.isNull("ingestionRootKey"))
                 ingestionJob.setIngestionRootKey(null);
@@ -8973,7 +8974,7 @@ public class CatraMMSAPI implements Serializable {
 							Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
 	
 							// elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-							Long estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
+							Double estimateMillisecs = elapsedInMillisecs * 100 / encodingJob.getProgress();
 	
 							Calendar calendar = Calendar.getInstance();
 							calendar.setTime(ingestionJob.getStartProcessing());
@@ -8987,7 +8988,7 @@ public class CatraMMSAPI implements Serializable {
                             Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
 
                             // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-                            Long estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getDownloadingProgress();
+                            Double estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getDownloadingProgress();
 
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(ingestionJob.getStartProcessing());
@@ -9018,7 +9019,7 @@ public class CatraMMSAPI implements Serializable {
                             Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
 
                             // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-                            Long estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getDownloadingProgress();
+                            Double estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getDownloadingProgress();
 
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(ingestionJob.getStartProcessing());
@@ -9033,7 +9034,7 @@ public class CatraMMSAPI implements Serializable {
                             Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
 
                             // elapsedInMillisecs : actual percentage = X (estimateMillisecs) : 100
-                            Long estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getUploadingProgress();
+                            Double estimateMillisecs = elapsedInMillisecs * 100 / ingestionJob.getUploadingProgress();
 
                             Calendar calendar = Calendar.getInstance();
                             calendar.setTime(ingestionJob.getStartProcessing());

@@ -17,7 +17,7 @@ public class EncodingJob implements Serializable {
     private Date start;
     private Boolean endEstimate;
     private Date end;
-    private Long progress;
+    private Double progress;
     private Long failuresNumber;
     private String encodingPriority;
     private int encodingPriorityCode;
@@ -132,11 +132,11 @@ public class EncodingJob implements Serializable {
         this.end = end;
     }
 
-    public Long getProgress() {
+    public Double getProgress() {
         return progress;
     }
 
-    public void setProgress(Long progress) {
+    public void setProgress(Double progress) {
         this.progress = progress;
     }
 

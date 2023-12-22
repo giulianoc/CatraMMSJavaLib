@@ -22,7 +22,6 @@ public class MediaItem implements Serializable{
     private List<String> tags = new ArrayList<>();
     private List<MediaItemCrossReference> crossReferences = new ArrayList<>();
     private String userData;
-    private String metadata;
     private Long retentionInMinutes;
     private Date willBeRemovedAt;
 
@@ -156,14 +155,6 @@ public class MediaItem implements Serializable{
 
     public void setUserData(String userData) {
         this.userData = userData;
-    }
-
-    public String getMetadata() {
-        return metadata;
-    }
-
-    public void setMetadata(String metadata) {
-        this.metadata = metadata;
     }
 
     public List<MediaItemCrossReference> getCrossReferences() {
