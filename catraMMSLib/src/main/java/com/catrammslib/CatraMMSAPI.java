@@ -7169,6 +7169,73 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    public Long getLoginStatistics(String username, String password,
+                                     Date startStatisticDate, Date endStatisticDate,
+                                     long startIndex, long pageSize,
+                                     List<LoginStatistic> loginStatisticsList)
+            throws Exception
+    {
+        Long numFound;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/login"
+                    + "?start=" + startIndex
+                    + "&rows=" + pageSize
+                    + (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
+                    + (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
+                    ;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getLoginStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getLoginStatistics MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            loginStatisticsList.clear();
+
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            numFound = joResponse.getLong("numFound");
+            JSONArray jaLoginStatistics = joResponse.getJSONArray("loginStatistics");
+
+            for (int loginStatisticIndex = 0; loginStatisticIndex < jaLoginStatistics.length(); loginStatisticIndex++)
+            {
+                JSONObject loginStatisticInfo = jaLoginStatistics.getJSONObject(loginStatisticIndex);
+
+                LoginStatistic loginStatistic = new LoginStatistic();
+
+                fillLoginStatistic(loginStatistic, loginStatisticInfo);
+
+                loginStatisticsList.add(loginStatistic);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getLoginStatistics failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return numFound;
+    }
+
     public Long getRequestStatistics(String username, String password,
 		String userId, String title, Date startStatisticDate, Date endStatisticDate,
 		long startIndex, long pageSize,
@@ -7831,7 +7898,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -7862,7 +7929,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -7889,7 +7956,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -7916,7 +7983,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -7943,7 +8010,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -7977,7 +8044,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -8003,7 +8070,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -8030,7 +8097,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 								&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+								&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -8058,7 +8125,7 @@ public class CatraMMSAPI implements Serializable {
 
 						if (encodingJob.getEnd() == null
 							&& encodingJob.getStart() != null && encodingJob.getStart().getTime() < now
-							&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+							&& encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - encodingJob.getStart().getTime();
 
@@ -8244,6 +8311,54 @@ public class CatraMMSAPI implements Serializable {
             String errorMessage = "fillEncodingJob failed. Exception: " + e
                 + ", encodingJob.getType: " + (encodingJob == null ? "null" : encodingJob.getType())
                 + ", joParameters: " + (joParameters == null ? "null" : joParameters.toString());
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillLoginStatistic(LoginStatistic loginStatistic, JSONObject loginStatisticInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try
+        {
+            loginStatistic.setLoginStatisticKey(loginStatisticInfo.getLong("loginStatisticKey"));
+
+            if (loginStatisticInfo.has("userName") && !loginStatisticInfo.isNull("userName"))
+                loginStatistic.setUserName(loginStatisticInfo.getString("userName"));
+            if (loginStatisticInfo.has("userKey") && !loginStatisticInfo.isNull("userKey"))
+                loginStatistic.setUserKey(loginStatisticInfo.getLong("userKey"));
+            if (loginStatisticInfo.has("ip") && !loginStatisticInfo.isNull("ip"))
+                loginStatistic.setIp(loginStatisticInfo.getString("ip"));
+            if (loginStatisticInfo.has("continent") && !loginStatisticInfo.isNull("continent"))
+                loginStatistic.setContinent(loginStatisticInfo.getString("continent"));
+            if (loginStatisticInfo.has("continentCode") && !loginStatisticInfo.isNull("continentCode"))
+                loginStatistic.setContinentCode(loginStatisticInfo.getString("continentCode"));
+            if (loginStatisticInfo.has("country") && !loginStatisticInfo.isNull("country"))
+                loginStatistic.setCountry(loginStatisticInfo.getString("country"));
+            if (loginStatisticInfo.has("countryCode") && !loginStatisticInfo.isNull("countryCode"))
+                loginStatistic.setCountryCode(loginStatisticInfo.getString("countryCode"));
+            if (loginStatisticInfo.has("region") && !loginStatisticInfo.isNull("region"))
+                loginStatistic.setRegion(loginStatisticInfo.getString("region"));
+            if (loginStatisticInfo.has("city") && !loginStatisticInfo.isNull("city"))
+                loginStatistic.setCity(loginStatisticInfo.getString("city"));
+            if (loginStatisticInfo.has("org") && !loginStatisticInfo.isNull("org"))
+                loginStatistic.setOrg(loginStatisticInfo.getString("org"));
+            if (loginStatisticInfo.has("isp") && !loginStatisticInfo.isNull("isp"))
+                loginStatistic.setIsp(loginStatisticInfo.getString("isp"));
+            if (loginStatisticInfo.has("timezoneGMTOffset") && !loginStatisticInfo.isNull("timezoneGMTOffset"))
+                loginStatistic.setTimezoneGMTOffset(loginStatisticInfo.getLong("timezoneGMTOffset"));
+            if (loginStatisticInfo.has("successfulLogin") && !loginStatisticInfo.isNull("successfulLogin"))
+                loginStatistic.setSuccessfulLogin(simpleDateFormat.parse(loginStatisticInfo.getString("successfulLogin")));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillLoginStatistic failed. Exception: " + e
+                    + ", loginStatisticInfo: " + loginStatisticInfo.toString()
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -8969,7 +9084,7 @@ public class CatraMMSAPI implements Serializable {
 								ingestionJob.setEndProcessing(ingestionJob.getProxyPeriodEnd());
 							}
 						}
-						else if (encodingJob.getProgress() != null && encodingJob.getProgress() != 0 && encodingJob.getProgress() != -1)
+						else if (encodingJob.getProgress() != null && encodingJob.getProgress() != 0.0 && encodingJob.getProgress() != -1.0)
 						{
 							Long elapsedInMillisecs = now - ingestionJob.getStartProcessing().getTime();
 	
