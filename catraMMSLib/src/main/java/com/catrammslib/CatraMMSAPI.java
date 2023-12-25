@@ -4579,7 +4579,7 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube"
-                + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
+                + "?label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
             ;
 
             mLogger.info("mmsURL: " + mmsURL);
