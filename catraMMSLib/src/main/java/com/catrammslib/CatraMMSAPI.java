@@ -4570,7 +4570,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<YouTubeConf> getYouTubeConf(String username, String password)
+    public List<YouTubeConf> getYouTubeConf(String username, String password, String label)
             throws Exception
     {
         List<YouTubeConf> youTubeConfList = new ArrayList<>();
@@ -4578,7 +4578,9 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube";
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/youtube"
+                + "&label=" + (label == null ? "" : java.net.URLEncoder.encode(label, "UTF-8")) // requires unescape server side
+            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
