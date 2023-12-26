@@ -3270,6 +3270,8 @@ public class CatraMMSAPI implements Serializable {
     {
 		String httpReturn = null;
 		// InputStream binaryFileInputStream = null;
+        long chunksNumber = 0;
+        long chunkIndex = 0;
         try
         {
 			String mmsURL = mmsBinaryProtocol + "://" + mmsBinaryHostName + ":" + mmsBinaryPort
@@ -3295,11 +3297,11 @@ public class CatraMMSAPI implements Serializable {
 				return httpReturn;
 			}
 
-			long chunksNumber = (long) (fileSizeInBytes / chunkSize);
+			chunksNumber = (long) (fileSizeInBytes / chunkSize);
 			if (fileSizeInBytes % chunkSize != 0)                                                                     
-				chunksNumber++;                                                                                       
-																													  
-			for(long chunkIndex = 0; chunkIndex < chunksNumber; chunkIndex++)
+				chunksNumber++;
+
+			for(chunkIndex = 0; chunkIndex < chunksNumber; chunkIndex++)
 			{                                                                                                         
 				long contentRangeStart = chunkIndex * chunkSize;                                                   
 				long contentRangeEnd_Excluded = chunkIndex + 1 < chunksNumber ?                                    
@@ -3322,7 +3324,10 @@ public class CatraMMSAPI implements Serializable {
         }
         catch (Exception e)
         {
-            String errorMessage = "ingestWorkflow MMS failed. Exception: " + e;
+            String errorMessage = "ingestWorkflow MMS failed"
+                + ", chunkIndex: " + chunkIndex
+                + ", chunksNumber: " + chunksNumber
+                + ", Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
