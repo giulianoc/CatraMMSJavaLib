@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by multi on 08.06.18.
@@ -18,7 +19,20 @@ public class RTMPChannelConf implements Serializable{
     private Long reservedByIngestionJobKey;
 	private String configurationLabel;
 
-    public Long getConfKey() {
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		RTMPChannelConf that = (RTMPChannelConf) o;
+		return confKey.equals(that.confKey);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(confKey);
+	}
+
+	public Long getConfKey() {
         return confKey;
     }
 

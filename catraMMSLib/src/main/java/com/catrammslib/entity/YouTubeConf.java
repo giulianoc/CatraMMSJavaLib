@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Created by multi on 08.06.18.
@@ -13,7 +14,19 @@ public class YouTubeConf implements Serializable{
     private String refreshToken;
     private String accessToken;
 
-	
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        YouTubeConf that = (YouTubeConf) o;
+        return confKey.equals(that.confKey);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(confKey);
+    }
+
     public Long getConfKey() {
         return confKey;
     }
