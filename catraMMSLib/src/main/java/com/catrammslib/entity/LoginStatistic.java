@@ -9,6 +9,7 @@ import java.util.Date;
 public class LoginStatistic implements Serializable{
 	private Long loginStatisticKey;
 	private String userName;
+	private String emailAddress;
     private Long userKey;
 	private String ip;
 	private String continent;
@@ -61,6 +62,14 @@ public class LoginStatistic implements Serializable{
 
 	public void setUserName(String userName) {
 		this.userName = userName;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public Long getUserKey() {

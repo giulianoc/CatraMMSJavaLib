@@ -8336,6 +8336,8 @@ public class CatraMMSAPI implements Serializable {
 
             if (loginStatisticInfo.has("userName") && !loginStatisticInfo.isNull("userName"))
                 loginStatistic.setUserName(loginStatisticInfo.getString("userName"));
+            if (loginStatisticInfo.has("emailAddress") && !loginStatisticInfo.isNull("emailAddress"))
+                loginStatistic.setEmailAddress(loginStatisticInfo.getString("emailAddress"));
             if (loginStatisticInfo.has("userKey") && !loginStatisticInfo.isNull("userKey"))
                 loginStatistic.setUserKey(loginStatisticInfo.getLong("userKey"));
             if (loginStatisticInfo.has("ip") && !loginStatisticInfo.isNull("ip"))
