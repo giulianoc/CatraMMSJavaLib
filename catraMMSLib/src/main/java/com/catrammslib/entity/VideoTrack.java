@@ -32,7 +32,9 @@ public class VideoTrack implements Serializable{
             int endIndexOfFrameRate = avgFrameRate.indexOf('/');
             if (endIndexOfFrameRate != -1)
             {
+                // la prima parte penso sia il numero di frames
                 Float totalDuration = new Float(Long.parseLong(avgFrameRate.substring(0, endIndexOfFrameRate)));
+                // la seconda parte penso sia il numero di secondi
                 Float totalNumberOfFrames = new Float(Long.parseLong(avgFrameRate.substring(endIndexOfFrameRate + 1)));
 
                 fAvgFrameRate = totalDuration / totalNumberOfFrames;
