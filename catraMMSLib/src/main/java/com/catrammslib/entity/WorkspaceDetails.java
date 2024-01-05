@@ -17,7 +17,6 @@ public class WorkspaceDetails implements Serializable {
     private String maxEncodingPriority;
     private String encodingPeriod;
     private Long maxIngestionsNumber;
-    private Long maxStorageInMB; // da rimuovere in modo da usare maxStorageInGB
 
     private Long maxStorageInGB;
     private Long currentCostForStorage;
@@ -78,7 +77,6 @@ public class WorkspaceDetails implements Serializable {
                 ", maxEncodingPriority='" + maxEncodingPriority + '\'' +
                 ", encodingPeriod='" + encodingPeriod + '\'' +
                 ", maxIngestionsNumber=" + maxIngestionsNumber +
-                ", maxStorageInMB=" + maxStorageInMB +
                 ", workspaceOwnerUserKey=" + workspaceOwnerUserKey +
                 ", workspaceOwnerUserName=" + workspaceOwnerUserName +
                 ", usageInMB=" + usageInMB +
@@ -277,15 +275,6 @@ public class WorkspaceDetails implements Serializable {
     public void setMaxIngestionsNumber(Long maxIngestionsNumber) {
         this.maxIngestionsNumber = maxIngestionsNumber;
     }
-
-    public Long getMaxStorageInMB() {
-        return maxStorageInMB;
-    }
-
-    public void setMaxStorageInMB(Long maxStorageInMB) {
-        this.maxStorageInMB = maxStorageInMB;
-    }
-
 
     public Long getUsageInMB() {
         return usageInMB;
