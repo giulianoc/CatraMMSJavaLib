@@ -9049,6 +9049,7 @@ public class CatraMMSAPI implements Serializable {
 
                 IngestionJobMediaItem ingestionJobMediaItem = new IngestionJobMediaItem();
                 ingestionJobMediaItem.setMediaItemKey(joMediaItem.getLong("mediaItemKey"));
+                ingestionJobMediaItem.setPhysicalPathKey(joMediaItem.getLong("physicalPathKey"));
                 if (joMediaItem.has("position") && !joMediaItem.isNull("position"))
                     ingestionJobMediaItem.setPosition(joMediaItem.getLong("position"));
 
