@@ -8,6 +8,7 @@ import java.io.Serializable;
 public class IngestionJobMediaItem implements Serializable {
     private Long mediaItemKey;
     private Long physicalPathKey;
+    private Long position;
 
     public Long getMediaItemKey() {
         return mediaItemKey;
@@ -15,6 +16,14 @@ public class IngestionJobMediaItem implements Serializable {
 
     public void setMediaItemKey(Long mediaItemKey) {
         this.mediaItemKey = mediaItemKey;
+    }
+
+    public Long getPosition() {
+        return position;
+    }
+
+    public void setPosition(Long position) {
+        this.position = position;
     }
 
     public Long getPhysicalPathKey() {
