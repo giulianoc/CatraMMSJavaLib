@@ -1676,6 +1676,7 @@ public class CatraMMSWorkflow {
             String label, String title, List<String> tags, String ingester,
             String outputFileFormat,
             String startTime, String endTime, String cutType,
+            String timesRelativeToMetaDataField,
             Boolean fixEndTimeIfOvercomeDuration,
             String retention, JSONObject joUserData,
             Date startPublishing, Date endPublishing,
@@ -1709,6 +1710,8 @@ public class CatraMMSWorkflow {
             joParameters.put("startTime", startTime);
             joParameters.put("endTime", endTime);
             joParameters.put("cutType", cutType);
+            if (timesRelativeToMetaDataField != null && !timesRelativeToMetaDataField.isBlank())
+                joParameters.put("timesRelativeToMetaDataField", timesRelativeToMetaDataField);
             if (fixEndTimeIfOvercomeDuration != null)
                 joParameters.put("fixEndTimeIfOvercomeDuration", fixEndTimeIfOvercomeDuration);
 
