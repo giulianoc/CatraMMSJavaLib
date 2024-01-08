@@ -13,6 +13,7 @@ public class UserProfile implements Serializable {
     private String email;
     private String password;
     private String country;
+    private String timezone;
     private Date creationDate;
     private Boolean insolvent;
     private Date expirationDate;
@@ -91,6 +92,14 @@ public class UserProfile implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
     public String getCountry() {

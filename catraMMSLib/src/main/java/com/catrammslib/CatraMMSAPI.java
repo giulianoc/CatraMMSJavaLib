@@ -380,7 +380,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public Long registerAndAddWorkspace(String userNameToRegister, String emailAddressToRegister,
-        String passwordToRegister, String countryToRegister,
+        String passwordToRegister, String countryToRegister, String timezoneToRegister,
         String workspaceNameToRegister)
         throws Exception
     {
@@ -397,6 +397,8 @@ public class CatraMMSAPI implements Serializable {
 			joObject.put("password", passwordToRegister);
 			if (countryToRegister != null && !countryToRegister.isEmpty())
 				joObject.put("country", countryToRegister);
+            if (timezoneToRegister != null && !timezoneToRegister.isEmpty())
+                joObject.put("timezone", timezoneToRegister);
 			if (workspaceNameToRegister != null && !workspaceNameToRegister.isEmpty())
 				joObject.put("workspaceName", workspaceNameToRegister);
 
@@ -443,7 +445,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public Long registerAndShareWorkspace(String userNameToRegister, String emailAddressToRegister,
-        String passwordToRegister, String countryToRegister,
+        String passwordToRegister, String countryToRegister, String timezoneToRegister,
         String shareWorkspaceCode)
         throws Exception
     {
@@ -461,6 +463,8 @@ public class CatraMMSAPI implements Serializable {
 				joObject.put("name", userNameToRegister);
 			if (countryToRegister != null && !countryToRegister.isEmpty())
 				joObject.put("country", countryToRegister);
+            if (timezoneToRegister != null && !timezoneToRegister.isEmpty())
+                joObject.put("timezone", timezoneToRegister);
 
 			String postBodyRequest = joObject.toString();
 
@@ -728,6 +732,7 @@ public class CatraMMSAPI implements Serializable {
 		String newName,
 		String newEmailAddress,
 		String newCountry,
+        String newTimezone,
 		Date newExpirationDate,	// backend update this field only if you are an admin
 		String oldPassword,
 		String newPassword)
@@ -752,6 +757,8 @@ public class CatraMMSAPI implements Serializable {
 				joUser.put("oldPassword", oldPassword);
 			if (newCountry != null)
 				joUser.put("country", newCountry);
+            if (newTimezone != null)
+                joUser.put("timezone", newTimezone);
 			if (newExpirationDate != null)
 				joUser.put("expirationDate", simpleDateFormat.format(newExpirationDate));
 
@@ -7702,6 +7709,8 @@ public class CatraMMSAPI implements Serializable {
             userProfile.setLdapEnabled(joUserProfileInfo.getBoolean("ldapEnabled"));
             userProfile.setName(joUserProfileInfo.getString("name"));
             userProfile.setCountry(joUserProfileInfo.getString("country"));
+            if (joUserProfileInfo.has("timezone") && !joUserProfileInfo.isNull("timezone"))
+                userProfile.setTimezone(joUserProfileInfo.getString("timezone"));
             userProfile.setEmail(joUserProfileInfo.getString("email"));
             userProfile.setCreationDate(simpleDateFormat.parse(joUserProfileInfo.getString("creationDate")));
             userProfile.setInsolvent(joUserProfileInfo.getBoolean("insolvent"));
