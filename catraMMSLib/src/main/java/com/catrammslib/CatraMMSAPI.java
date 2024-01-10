@@ -866,6 +866,7 @@ public class CatraMMSAPI implements Serializable {
         Long dedicatedEncoder_power_1, Long currentCostForDedicatedEncoder_power_1,
         Long dedicatedEncoder_power_2, Long currentCostForDedicatedEncoder_power_2,
         Long dedicatedEncoder_power_3, Long currentCostForDedicatedEncoder_power_3,
+        Long CDN_type_1, Long currentCostForCDN_type_1,
         Boolean support_type_1, Long currentCostForSupport_type_1,
 
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
@@ -916,6 +917,11 @@ public class CatraMMSAPI implements Serializable {
                 joBodyRequest.put("dedicatedEncoder_power_3", dedicatedEncoder_power_3);
             if (currentCostForDedicatedEncoder_power_3 != null)
                 joBodyRequest.put("currentCostForDedicatedEncoder_power_3", currentCostForDedicatedEncoder_power_3);
+
+            if (CDN_type_1 != null)
+                joBodyRequest.put("CDN_type_1", CDN_type_1);
+            if (currentCostForCDN_type_1 != null)
+                joBodyRequest.put("currentCostForCDN_type_1", currentCostForCDN_type_1);
 
             if (support_type_1 != null)
                 joBodyRequest.put("support_type_1", support_type_1);
@@ -7818,6 +7824,8 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setCurrentCostForDedicatedEncoder_power_2(joCostInfo.getLong("currentCostForDedicatedEncoder_power_2"));
                 workspaceDetails.setDedicatedEncoder_power_3(joCostInfo.getLong("dedicatedEncoder_power_3"));
                 workspaceDetails.setCurrentCostForDedicatedEncoder_power_3(joCostInfo.getLong("currentCostForDedicatedEncoder_power_3"));
+                workspaceDetails.setCDN_type_1(joCostInfo.getLong("CDN_type_1"));
+                workspaceDetails.setCurrentCostForCDN_type_1(joCostInfo.getLong("currentCostForCDN_type_1"));
                 workspaceDetails.setSupport_type_1(joCostInfo.getBoolean("support_type_1"));
                 workspaceDetails.setCurrentCostForSupport_type_1(joCostInfo.getLong("currentCostForSupport_type_1"));
             }

@@ -26,6 +26,8 @@ public class WorkspaceDetails implements Serializable {
     private Long currentCostForDedicatedEncoder_power_2;
     private Long dedicatedEncoder_power_3;
     private Long currentCostForDedicatedEncoder_power_3;
+    private Long CDN_type_1;
+    private Long currentCostForCDN_type_1;
     private Boolean support_type_1;
     private Long currentCostForSupport_type_1;
 
@@ -58,13 +60,14 @@ public class WorkspaceDetails implements Serializable {
 
 
     // this field is used by the GUI
-    private List<Cost> dedicatedStorageAndEncoderList;
+    private List<Cost> dedicatedResources;
     private Long currentTotalCost;
     private Long newTotalCost;
     private Long differenceBetweenCurrentAndNewForStorage;
     private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_1;
     private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_2;
     private Long differenceBetweenCurrentAndNewForDedicatedEncoder_power_3;
+    private Long differenceBetweenCurrentAndNewForCDN_type_1;
     private Long differenceBetweenCurrentAndNewForSupport_type_1;
 
 
@@ -428,12 +431,20 @@ public class WorkspaceDetails implements Serializable {
         this.newTotalCost = newTotalCost;
     }
 
-    public List<Cost> getDedicatedStorageAndEncoderList() {
-        return dedicatedStorageAndEncoderList;
+    public List<Cost> getDedicatedResources() {
+        return dedicatedResources;
     }
 
-    public void setDedicatedStorageAndEncoderList(List<Cost> dedicatedStorageAndEncoderList) {
-        this.dedicatedStorageAndEncoderList = dedicatedStorageAndEncoderList;
+    public void setDedicatedResources(List<Cost> dedicatedResources) {
+        this.dedicatedResources = dedicatedResources;
+    }
+
+    public Long getDifferenceBetweenCurrentAndNewForCDN_type_1() {
+        return differenceBetweenCurrentAndNewForCDN_type_1;
+    }
+
+    public void setDifferenceBetweenCurrentAndNewForCDN_type_1(Long differenceBetweenCurrentAndNewForCDN_type_1) {
+        this.differenceBetweenCurrentAndNewForCDN_type_1 = differenceBetweenCurrentAndNewForCDN_type_1;
     }
 
     public Long getDifferenceBetweenCurrentAndNewForStorage() {
@@ -474,6 +485,22 @@ public class WorkspaceDetails implements Serializable {
 
     public void setCurrentCostForSupport_type_1(Long currentCostForSupport_type_1) {
         this.currentCostForSupport_type_1 = currentCostForSupport_type_1;
+    }
+
+    public Long getCDN_type_1() {
+        return CDN_type_1;
+    }
+
+    public void setCDN_type_1(Long CDN_type_1) {
+        this.CDN_type_1 = CDN_type_1;
+    }
+
+    public Long getCurrentCostForCDN_type_1() {
+        return currentCostForCDN_type_1;
+    }
+
+    public void setCurrentCostForCDN_type_1(Long currentCostForCDN_type_1) {
+        this.currentCostForCDN_type_1 = currentCostForCDN_type_1;
     }
 
     public Long getDifferenceBetweenCurrentAndNewForSupport_type_1() {
