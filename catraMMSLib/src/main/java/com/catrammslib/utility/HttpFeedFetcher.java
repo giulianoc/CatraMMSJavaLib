@@ -161,7 +161,7 @@ public class HttpFeedFetcher {
                     requestBuilder.header("Content-Type", contentType);
 
                 HttpRequest request = requestBuilder
-                        .POST(HttpRequest.BodyPublishers.ofString(postBodyRequest, StandardCharsets.UTF_8))
+                        .POST(HttpRequest.BodyPublishers.ofString(postBodyRequest == null ? "" : postBodyRequest, StandardCharsets.UTF_8))
                         .build();
 
                 body = getResponseBody(client, request, outputToBeCompressed);
@@ -274,7 +274,7 @@ public class HttpFeedFetcher {
                 requestBuilder.header("Content-Type", "application/json");
 
                 HttpRequest request = requestBuilder
-                        .PUT(HttpRequest.BodyPublishers.ofString(putBodyRequest, StandardCharsets.UTF_8))
+                        .PUT(HttpRequest.BodyPublishers.ofString(putBodyRequest == null ? "" : putBodyRequest, StandardCharsets.UTF_8))
                         .build();
 
                 body = getResponseBody(client, request, outputToBeCompressed);
