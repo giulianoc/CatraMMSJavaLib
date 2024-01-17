@@ -1436,7 +1436,8 @@ public class CatraMMSWorkflow {
     static public JSONObject buildMediaCrossReferenceJson(
             String label,
             String mediaCrossReferenceType,
-            String firstReferenceLabel, String secondReferenceLabel
+            String firstReferenceLabel, Long firstReferenceMediaItemKey, // solo uno dei due è necessario
+            String secondReferenceLabel, Long secondReferenceMediaItemKey // solo uno dei due è necessario
     )
             throws Exception
     {
@@ -1450,13 +1451,30 @@ public class CatraMMSWorkflow {
             JSONObject joParameters = new JSONObject();
             joTask.put("parameters", joParameters);
 
+            if (mediaCrossReferenceType == null)
+            {
+                String errorMessage = "mediaCrossReferenceType cannot be null";
+                mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+
             joParameters.put("type", mediaCrossReferenceType);
 
-            if (firstReferenceLabel != null && secondReferenceLabel != null)
+            if (firstReferenceLabel != null || secondReferenceLabel != null
+                || firstReferenceMediaItemKey != null || secondReferenceMediaItemKey != null)
             {
                 JSONArray joReferences = new JSONArray();
                 joParameters.put("references", joReferences);
 
+                if (firstReferenceMediaItemKey != null)
+                {
+                    JSONObject joReference = new JSONObject();
+                    joReferences.put(joReference);
+
+                    joReference.put("mediaItemKey", firstReferenceMediaItemKey);
+                }
+                else if (firstReferenceLabel != null)
                 {
                     JSONObject joReference = new JSONObject();
                     joReferences.put(joReference);
@@ -1464,6 +1482,14 @@ public class CatraMMSWorkflow {
                     joReference.put("label", firstReferenceLabel);
                 }
 
+                if (secondReferenceMediaItemKey != null)
+                {
+                    JSONObject joReference = new JSONObject();
+                    joReferences.put(joReference);
+
+                    joReference.put("mediaItemKey", secondReferenceMediaItemKey);
+                }
+                else if (secondReferenceLabel != null)
                 {
                     JSONObject joReference = new JSONObject();
                     joReferences.put(joReference);
