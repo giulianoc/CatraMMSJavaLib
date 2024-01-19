@@ -4051,7 +4051,7 @@ public class CatraMMSAPI implements Serializable {
 
     public String getVODDeliveryURL(String username, String password,
 
-        // first option (encodingProfileKey or encodingProfileLabel)
+        // first option (encodingProfileKey or encodingProfileLabel potrebbe essere anche null, vedi commento sotto)
         Long mediaItemKey, String uniqueName, Long encodingProfileKey, String encodingProfileLabel,
 
         // second option

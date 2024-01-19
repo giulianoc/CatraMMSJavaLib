@@ -1437,7 +1437,8 @@ public class CatraMMSWorkflow {
             String label,
             String mediaCrossReferenceType,
             String firstReferenceLabel, Long firstReferenceMediaItemKey, // solo uno dei due è necessario
-            String secondReferenceLabel, Long secondReferenceMediaItemKey // solo uno dei due è necessario
+            String secondReferenceLabel, Long secondReferenceMediaItemKey, // solo uno dei due è necessario
+            String dependenciesToBeAddedToReferencesAt
     )
             throws Exception
     {
@@ -1497,6 +1498,9 @@ public class CatraMMSWorkflow {
                     joReference.put("label", secondReferenceLabel);
                 }
             }
+
+            if (dependenciesToBeAddedToReferencesAt != null && !dependenciesToBeAddedToReferencesAt.isBlank())
+                joParameters.put("dependenciesToBeAddedToReferencesAt", dependenciesToBeAddedToReferencesAt);
 
 
             return joTask;
