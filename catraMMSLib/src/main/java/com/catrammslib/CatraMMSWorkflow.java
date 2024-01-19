@@ -1438,7 +1438,7 @@ public class CatraMMSWorkflow {
             String mediaCrossReferenceType,
             String firstReferenceLabel, Long firstReferenceMediaItemKey, // solo uno dei due è necessario
             String secondReferenceLabel, Long secondReferenceMediaItemKey, // solo uno dei due è necessario
-            String dependenciesToBeAddedToReferencesAt
+            String dependenciesToBeAddedToReferencesAt  // Beginning, End, 0, 1, ...
     )
             throws Exception
     {
