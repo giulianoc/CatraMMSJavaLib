@@ -3829,9 +3829,11 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         String mmsInfo;
-        Map<String, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByUniqueName = new HashMap<>();
-        Map<Long, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByMediaItemKey = new HashMap<>();
-        Map<Long, BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByLiveIngestionJobKey = new HashMap<>();
+        // non posso usare mappe perchè se viene richiesto piu volte lo stesso mediaItemKey, la mappa sovrascrive il dato.
+        // Per cui uso delle list, inoltre il ritorno mandiene l'ordine di input e quindi non ci sono problemi
+        List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByUniqueName = new ArrayList<>();
+        List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByMediaItemKey = new ArrayList<>();
+        List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataMapByLiveIngestionJobKey = new ArrayList<>();
         try
         {
             /*
@@ -3894,7 +3896,7 @@ public class CatraMMSAPI implements Serializable {
 						if (bulkOfDeliveryURLData.getUserId() != null && !bulkOfDeliveryURLData.getUserId().isEmpty())
 							joMediaItemKey.put("userId", bulkOfDeliveryURLData.getUserId());
 
-						bulkOfDeliveryURLDataMapByMediaItemKey.put(bulkOfDeliveryURLData.getMediaItemKey(), bulkOfDeliveryURLData);
+						bulkOfDeliveryURLDataMapByMediaItemKey.add(bulkOfDeliveryURLData);
                     }
                     else if (bulkOfDeliveryURLData.getUniqueName() != null)
                     {
@@ -3916,7 +3918,7 @@ public class CatraMMSAPI implements Serializable {
 						if (bulkOfDeliveryURLData.getUserId() != null && !bulkOfDeliveryURLData.getUserId().isEmpty())
 							joUniqueName.put("userId", bulkOfDeliveryURLData.getUserId());
 
-						bulkOfDeliveryURLDataMapByUniqueName.put(bulkOfDeliveryURLData.getUniqueName(), bulkOfDeliveryURLData);
+						bulkOfDeliveryURLDataMapByUniqueName.add(bulkOfDeliveryURLData);
                     }
                     else if (bulkOfDeliveryURLData.getLiveIngestionJobKey() != null)
                     {
@@ -3935,7 +3937,7 @@ public class CatraMMSAPI implements Serializable {
 						if (bulkOfDeliveryURLData.getUserId() != null && !bulkOfDeliveryURLData.getUserId().isEmpty())
 							joLiveIngestionJobKey.put("userId", bulkOfDeliveryURLData.getUserId());
 
-                        bulkOfDeliveryURLDataMapByLiveIngestionJobKey.put(bulkOfDeliveryURLData.getLiveIngestionJobKey(), bulkOfDeliveryURLData);
+                        bulkOfDeliveryURLDataMapByLiveIngestionJobKey.add(bulkOfDeliveryURLData);
                     }
                 }
             }
@@ -3995,7 +3997,7 @@ public class CatraMMSAPI implements Serializable {
                 for (int mediaItemKeyIndex = 0; mediaItemKeyIndex < jaMediaItemKeyList.length(); mediaItemKeyIndex++)
                 {
                     JSONObject joMediaItemKey = jaMediaItemKeyList.getJSONObject(mediaItemKeyIndex);
-
+                    /*
                     if (joMediaItemKey.has("mediaItemKey") && joMediaItemKey.has("deliveryURL")
                         && !joMediaItemKey.isNull("mediaItemKey") && !joMediaItemKey.isNull("deliveryURL"))
                     {
@@ -4003,6 +4005,10 @@ public class CatraMMSAPI implements Serializable {
                                 = bulkOfDeliveryURLDataMapByMediaItemKey.get(joMediaItemKey.getLong("mediaItemKey"));
                         bulkOfDeliveryURLData.setDeliveryURL(joMediaItemKey.getString("deliveryURL"));
                     }
+                    */
+                    if (joMediaItemKey.has("deliveryURL") && !joMediaItemKey.isNull("deliveryURL"))
+                        bulkOfDeliveryURLDataMapByMediaItemKey.get(mediaItemKeyIndex).setDeliveryURL(
+                                joMediaItemKey.getString("deliveryURL"));
                 }
             }
 
@@ -4013,6 +4019,7 @@ public class CatraMMSAPI implements Serializable {
                 {
                     JSONObject joUniqueName = jaUniqueNameList.getJSONObject(uniqueNameIndex);
 
+                    /*
                     if (joUniqueName.has("uniqueName") && joUniqueName.has("deliveryURL")
                         && !joUniqueName.isNull("uniqueName") && !joUniqueName.isNull("deliveryURL"))
                     {
@@ -4020,6 +4027,10 @@ public class CatraMMSAPI implements Serializable {
                                 = bulkOfDeliveryURLDataMapByUniqueName.get(joUniqueName.getString("uniqueName"));
                         bulkOfDeliveryURLData.setDeliveryURL(joUniqueName.getString("deliveryURL"));
                     }
+                    */
+                    if (joUniqueName.has("deliveryURL") && !joUniqueName.isNull("deliveryURL"))
+                        bulkOfDeliveryURLDataMapByUniqueName.get(uniqueNameIndex).setDeliveryURL(
+                                joUniqueName.getString("deliveryURL"));
                 }
             }
 
@@ -4030,6 +4041,7 @@ public class CatraMMSAPI implements Serializable {
                 {
                     JSONObject joLiveIngestionJobKey = jaLiveIngestionJobKeyList.getJSONObject(liveIngestionJobKeyIndex);
 
+                    /*
                     if (joLiveIngestionJobKey.has("ingestionJobKey") && joLiveIngestionJobKey.has("deliveryURL")
                             && !joLiveIngestionJobKey.isNull("ingestionJobKey") && !joLiveIngestionJobKey.isNull("deliveryURL"))
                     {
@@ -4037,6 +4049,10 @@ public class CatraMMSAPI implements Serializable {
                                 = bulkOfDeliveryURLDataMapByLiveIngestionJobKey.get(joLiveIngestionJobKey.getLong("ingestionJobKey"));
                         bulkOfDeliveryURLData.setDeliveryURL(joLiveIngestionJobKey.getString("deliveryURL"));
                     }
+                    */
+                    if (joLiveIngestionJobKey.has("deliveryURL") && !joLiveIngestionJobKey.isNull("deliveryURL"))
+                        bulkOfDeliveryURLDataMapByLiveIngestionJobKey.get(liveIngestionJobKeyIndex).setDeliveryURL(
+                                joLiveIngestionJobKey.getString("deliveryURL"));
                 }
             }
         }
