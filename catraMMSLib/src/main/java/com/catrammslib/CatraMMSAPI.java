@@ -9310,7 +9310,7 @@ public class CatraMMSAPI implements Serializable {
                             JSONObject joBitRate = jaBitRates.getJSONObject(bitRateIndex);
 
                             AudioBitRate audioBitRate = new AudioBitRate();
-                            encodingProfile.getVideoDetails().getAudioBitRateList().add(audioBitRate);
+                            encodingProfile.getAudioDetails().getAudioBitRateList().add(audioBitRate);
 
                             if (!joBitRate.has("kBitRate") || joBitRate.isNull("kBitRate"))
                                 audioBitRate.setkBitRate(null);
