@@ -16,7 +16,7 @@ public class EncodingProfileVideo implements Serializable {
     private Long keyFrameIntervalInSeconds;
 
     private List<VideoBitRate> videoBitRateList = new ArrayList<>();
-    private List<AudioBitRate> audioBitRateList = new ArrayList<>();
+    // private List<AudioBitRate> audioBitRateList = new ArrayList<>();
 
 
     public String getCodec() {
@@ -50,15 +50,7 @@ public class EncodingProfileVideo implements Serializable {
     public void setVideoBitRateList(List<VideoBitRate> videoBitRateList) {
         this.videoBitRateList = videoBitRateList;
     }
-
-    public List<AudioBitRate> getAudioBitRateList() {
-        return audioBitRateList;
-    }
-
-    public void setAudioBitRateList(List<AudioBitRate> audioBitRateList) {
-        this.audioBitRateList = audioBitRateList;
-    }
-
+    
     public String getOtherOutputParameters() {
         return otherOutputParameters;
     }
