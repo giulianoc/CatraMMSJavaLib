@@ -50,7 +50,7 @@ public class EncodingProfileVideo implements Serializable {
     public void setVideoBitRateList(List<VideoBitRate> videoBitRateList) {
         this.videoBitRateList = videoBitRateList;
     }
-    
+
     public String getOtherOutputParameters() {
         return otherOutputParameters;
     }

@@ -12,6 +12,18 @@ public class MediaItemCrossReference implements Serializable{
     private Long targetMediaItemKey;
     private String parameters;
 
+    public MediaItemCrossReference clone()
+    {
+        MediaItemCrossReference mediaItemCrossReference = new MediaItemCrossReference();
+
+        mediaItemCrossReference.setSourceMediaItemKey(sourceMediaItemKey);
+        mediaItemCrossReference.setType(type);
+        mediaItemCrossReference.setTargetMediaItemKey(targetMediaItemKey);
+        mediaItemCrossReference.setParameters(parameters);
+
+        return mediaItemCrossReference;
+    }
+
     public String getType() {
         return type;
     }
