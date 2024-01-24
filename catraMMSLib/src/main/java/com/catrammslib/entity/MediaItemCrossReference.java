@@ -24,6 +24,16 @@ public class MediaItemCrossReference implements Serializable{
         return mediaItemCrossReference;
     }
 
+    @Override
+    public String toString() {
+        return "MediaItemCrossReference{" +
+                "sourceMediaItemKey=" + sourceMediaItemKey +
+                ", type='" + type + '\'' +
+                ", targetMediaItemKey=" + targetMediaItemKey +
+                ", parameters='" + parameters + '\'' +
+                '}';
+    }
+
     public String getType() {
         return type;
     }
