@@ -26,7 +26,7 @@ public class MediaItemCrossReference implements Serializable{
 
     @Override
     public String toString() {
-        return "MediaItemCrossReference{" +
+        return "{" +
                 "sourceMediaItemKey=" + sourceMediaItemKey +
                 ", type='" + type + '\'' +
                 ", targetMediaItemKey=" + targetMediaItemKey +

@@ -2637,7 +2637,7 @@ public class CatraMMSAPI implements Serializable {
                     if (crossReference.getSourceMediaItemKey().equals(mediaItemKey))
                         joCrossReference.put("mediaItemKey", crossReference.getTargetMediaItemKey());
                     else
-                        joCrossReference.put("targetMediaItemKey", crossReference.getSourceMediaItemKey());
+                        joCrossReference.put("mediaItemKey", crossReference.getSourceMediaItemKey());
 
                     if (crossReference.getParameters() != null && !crossReference.getParameters().isBlank())
                         joCrossReference.put("parameters", new JSONObject(crossReference.getParameters()));
