@@ -24,10 +24,7 @@ import java.util.TimeZone;
 import com.amazonaws.services.cloudfront.CloudFrontUrlSigner;
 import com.amazonaws.services.cloudfront.util.SignerUtils.Protocol;
 import com.catrammslib.entity.*;
-import com.catrammslib.utility.BroadcastPlaylistItem;
-import com.catrammslib.utility.BulkOfDeliveryURLData;
-import com.catrammslib.utility.HttpFeedFetcher;
-import com.catrammslib.utility.IngestionResult;
+import com.catrammslib.utility.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -2572,7 +2569,10 @@ public class CatraMMSAPI implements Serializable {
                                      String newUserData,
                                      String newTags,    // json array of string
                                      Long newRetentionInMinutes,
-                                     String newUniqueName
+                                     String newUniqueName,
+                                     // inizializzare a null se non si vogliono cambiamenti.
+                                     // Inizializzato con una lista vuota elimina tutti i cross references se presenti
+                                     List<MediaItemCrossReference> mediaItemCrossReferenceList
     )
             throws Exception
     {
@@ -2624,6 +2624,25 @@ public class CatraMMSAPI implements Serializable {
                 joEdit.put("RetentionInMinutes", newRetentionInMinutes);
             if (newUniqueName != null)
                 joEdit.put("uniqueName", newUniqueName);
+            if (mediaItemCrossReferenceList != null)
+            {
+                JSONArray jaCrossReferences = new JSONArray();
+                joEdit.put("crossReferences", jaCrossReferences);
+                for (MediaItemCrossReference crossReference: mediaItemCrossReferenceList)
+                {
+                    JSONObject joCrossReference = new JSONObject();
+                    jaCrossReferences.put(joCrossReference);
+
+                    joCrossReference.put("type", crossReference.getType());
+                    if (crossReference.getSourceMediaItemKey().equals(mediaItemKey))
+                        joCrossReference.put("mediaItemKey", crossReference.getTargetMediaItemKey());
+                    else
+                        joCrossReference.put("targetMediaItemKey", crossReference.getSourceMediaItemKey());
+
+                    if (crossReference.getParameters() != null && !crossReference.getParameters().isBlank())
+                        joCrossReference.put("parameters", new JSONObject(crossReference.getParameters()));
+                }
+            }
 
             String sEdit = joEdit.toString(4);
 
