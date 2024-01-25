@@ -2206,7 +2206,8 @@ public class CatraMMSAPI implements Serializable {
                               String title, Boolean bLiveRecordingChunk,
                               List<String> tagsIn, List<String> tagsNotIn,
                               Long recordingCode, String jsonCondition,
-                              String orderBy, String jsonOrderBy,
+                              String orderBy, // i.e.: ingestionDate desc, title asc
+                              String jsonOrderBy,
 							  JSONObject joResponseFields,
                               List<MediaItem> mediaItemsList    // has to be already initialized (new ArrayList<>())
     )
