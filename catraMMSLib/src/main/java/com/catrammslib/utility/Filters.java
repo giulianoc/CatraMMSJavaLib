@@ -39,6 +39,15 @@ public class Filters implements Serializable {
 	private Boolean fade;
 	private Long fade_Duration;
 
+	public Filters()
+	{
+		this.drawTextDetails = new DrawTextDetails(null);
+
+		timeInSecondsDecimalsPrecision = (long) 1;
+
+		reset();
+	}
+
 	public Filters(boolean drawTextEnable, DrawTextDetails drawTextDetails)
 	{
 		this.drawTextEnable = drawTextEnable;
