@@ -9,6 +9,7 @@ import java.util.TimeZone;
 
 import com.catrammslib.entity.WorkflowVariable;
 import com.catrammslib.utility.DrawTextDetails;
+import com.catrammslib.utility.Filters;
 import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
 
@@ -1112,7 +1113,7 @@ public class CatraMMSWorkflow {
                         "MMS_JPG_W240", null,
                         null,
                         null, null,
-                        null,
+                        null, null,
                         utcProcessingStartingFrom
                 ));
             }
@@ -1139,7 +1140,7 @@ public class CatraMMSWorkflow {
                         "MMS_JPG_W240", null,
                         null,
                         null, null,
-                        null,
+                        null, null,
                         utcProcessingStartingFrom
                 ));
             }
@@ -1879,6 +1880,7 @@ public class CatraMMSWorkflow {
 			String encodingProfileLabel, String encodingProfilesSetLabel,
             String encodersPool,
             Long videoTrackIndex, Long audioTrackIndex,
+            Filters filters,
             List<MediaItemReference> mediaItemReferenceList,
             Long utcProcessingStartingFrom
     )
@@ -1909,16 +1911,19 @@ public class CatraMMSWorkflow {
                 joParameters.put("encodersPool", encodersPool);
 
             if (videoTrackIndex != null && videoTrackIndex >= 0)
-                joParameters.put("VideoTrackIndex", videoTrackIndex);
+                joParameters.put("videoTrackIndex", videoTrackIndex);
             if (audioTrackIndex != null && audioTrackIndex >= 0)
-                joParameters.put("AudioTrackIndex", audioTrackIndex);
+                joParameters.put("audioTrackIndex", audioTrackIndex);
+
+            if (filters != null)
+                joParameters.put("filters", filters.toJson());
 
             if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             setCommonParameters(joParameters,

@@ -1636,7 +1636,7 @@ public class LiveStreams {
                             "Medium", encodingProfileLabel, null,
                             null,
                             null, null,
-                            null,
+                            null, null,
                             null); // utcLiveRecorderStart);
 
                     jaConcatOnSuccessGOT.put(joEncode);
