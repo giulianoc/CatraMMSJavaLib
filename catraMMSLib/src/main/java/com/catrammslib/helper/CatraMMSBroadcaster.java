@@ -354,8 +354,8 @@ public class CatraMMSBroadcaster {
 					*/
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 					{
-						outputStream.setFade(true);
-						outputStream.setFade_Duration(3L);
+						outputStream.getFilters().setFade(true);
+						outputStream.getFilters().setFade_Duration(3L);
 						/*
 						JSONObject joFilters = new JSONObject();
 						
@@ -554,8 +554,8 @@ public class CatraMMSBroadcaster {
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
 					if (drawTextDetails != null){
-						outputStream.setDrawTextEnable(true);
-						outputStream.setDrawTextDetails(drawTextDetails);
+						outputStream.getFilters().setDrawTextEnable(true);
+						outputStream.getFilters().setDrawTextDetails(drawTextDetails);
 					}
 
 					outputStreamList.add(outputStream);
@@ -571,8 +571,8 @@ public class CatraMMSBroadcaster {
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
 					if (drawTextDetails != null){
-						outputStream.setDrawTextEnable(true);
-						outputStream.setDrawTextDetails(drawTextDetails);
+						outputStream.getFilters().setDrawTextEnable(true);
+						outputStream.getFilters().setDrawTextDetails(drawTextDetails);
 					}
 
 					outputStreamList.add(outputStream);

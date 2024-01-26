@@ -52,10 +52,6 @@ public class OutputStream implements Serializable {
 	// HLS_Channel
 	private HLSChannelConf hlsChannel;
 
-	// drawTextEnable serve per la GUI (altrimenti sarebbe bastato il controllo (drawTextDetails != null)
-	private Boolean drawTextEnable;
-	private DrawTextDetails drawTextDetails;
-
 	// HLS
 	private String otherOutputOptions;
 
@@ -64,31 +60,11 @@ public class OutputStream implements Serializable {
 	// In alcuni casi abbiamo solamente encodingProfileLabel e non l'EncodingProfile, per cui lasciamo la doppia opzione
     private String encodingProfileLabel;
 
-	// filters
-	private Double audioVolumeChange;
-
-	private Boolean blackdetect;
-	private Float blackdetect_BlackMinDuration;
-	private Float blackdetect_PixelBlackTh;
-
-	private Boolean blackframe;
-	private Long blackframe_Amount;
-	private Long blackframe_Threshold;
-
-	private Boolean freezedetect;
-	private Long freezedetect_Duration;
-	private Long freezedetect_NoiseInDb;
-
-	private Boolean silencedetect;
-	private Float silencedetect_Noise;
-
-	private Boolean fade;
-	private Long fade_Duration;
+	private Filters filters;
 
 	public OutputStream(boolean drawTextEnable, DrawTextDetails drawTextDetails)
 	{
-		this.drawTextEnable = drawTextEnable;
-		this.drawTextDetails = drawTextDetails;
+		filters = new Filters(drawTextEnable, drawTextDetails);
 
 		awsSignedURL = false;
 		awsExpirationInMinutes = (long) 1440;	// 1 day
@@ -96,36 +72,11 @@ public class OutputStream implements Serializable {
 
 		videoMap = "default";
 		audioMap = "default";
-
-		resetFilter();
-	}
-
-	private void resetFilter()
-	{
-		audioVolumeChange = null;
-
-		blackdetect = false;
-		blackdetect_BlackMinDuration = null;
-		blackdetect_PixelBlackTh = null;
-
-		blackframe = false;
-		blackframe_Amount = null;
-		blackframe_Threshold = null;
-
-		freezedetect = false;
-		freezedetect_Duration = null;
-		freezedetect_NoiseInDb = null;
-
-		silencedetect = false;
-		silencedetect_Noise = null;
-
-		fade = false;
-		fade_Duration = null;
 	}
 
 	public OutputStream clone()
 	{
-		OutputStream outputStream = new OutputStream(getDrawTextEnable(), getDrawTextDetails());
+		OutputStream outputStream = new OutputStream(filters.getDrawTextEnable(), filters.getDrawTextDetails());
 
 		outputStream.setVideoMap(getVideoMap());
 		outputStream.setAudioMap(getAudioMap());
@@ -142,97 +93,9 @@ public class OutputStream implements Serializable {
 		outputStream.setEncodingProfile(getEncodingProfile());
 		outputStream.setEncodingProfileLabel(getEncodingProfileLabel());
 
-		outputStream.setAudioVolumeChange(getAudioVolumeChange());
-
-		outputStream.setBlackdetect(getBlackdetect());
-		outputStream.setBlackdetect_BlackMinDuration(getBlackdetect_BlackMinDuration());
-		outputStream.setBlackdetect_PixelBlackTh(getBlackdetect_PixelBlackTh());
-
-		outputStream.setBlackframe(getBlackframe());
-		outputStream.setBlackframe_Amount(getBlackframe_Amount());
-		outputStream.setBlackframe_Threshold(getBlackframe_Threshold());
-
-		outputStream.setFreezedetect(getFreezedetect());
-		outputStream.setFreezedetect_Duration(getFreezedetect_Duration());
-		outputStream.setFreezedetect_NoiseInDb(getFreezedetect_NoiseInDb());
-
-		outputStream.setSilencedetect(getSilencedetect());
-		outputStream.setSilencedetect_Noise(getSilencedetect_Noise());
-
-		outputStream.setFade(getFade());
-		outputStream.setFade_Duration(getFade_Duration());
+		outputStream.setFilters(filters.clone());
 
 		return outputStream;
-	}
-
-	public void filtersFromJson(JSONObject joFilters)
-	{
-		try
-		{
-			resetFilter();
-
-			if (joFilters.has("video"))
-			{
-				JSONArray jaVideo = joFilters.getJSONArray("video");
-
-				for (int filterIndex = 0; filterIndex < jaVideo.length(); filterIndex++)
-				{
-					JSONObject joFilter = jaVideo.getJSONObject(filterIndex);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackdetect"))
-						setBlackdetect(true);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackframe"))
-						setBlackframe(true);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("freezedetect"))
-					{
-						setFreezedetect(true);
-
-						if (joFilter.has("duration"))
-						{
-							Object o = joFilter.get("duration");
-								setFreezedetect_Duration(joFilter.getLong("duration"));
-						}
-					}
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("fade"))
-					{
-						setFade(true);
-
-						if (joFilter.has("duration"))
-						{
-							Object o = joFilter.get("duration");
-							setFade_Duration(joFilter.getLong("duration"));
-						}
-					}
-				}
-			}
-
-			if (joFilters.has("audio"))
-			{
-				JSONArray jaAudio = joFilters.getJSONArray("audio");
-
-				for (int filterIndex = 0; filterIndex < jaAudio.length(); filterIndex++)
-				{
-					JSONObject joFilter = jaAudio.getJSONObject(filterIndex);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("volume"))
-					{
-						if (joFilter.has("factor") && !joFilter.isNull("factor"))
-							setAudioVolumeChange(joFilter.getDouble("factor"));
-					}
-					else if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("silencedetect"))
-					{
-						setSilencedetect(true);
-					}
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			mLogger.error("Exception: " + e);
-		}
 	}
 
 	public JSONObject toJson()
@@ -293,106 +156,13 @@ public class OutputStream implements Serializable {
 
 			// filters
 			{
-				boolean videoFilterPresent = false;
-				JSONArray jaVideo = new JSONArray();
-
-				boolean audioFilterPresent = false;
-				JSONArray jaAudio = new JSONArray();
-
-				// video filters
-				if (getBlackdetect() != null && getBlackdetect())
-				{
-					videoFilterPresent = true;
-
-					JSONObject joBlackDetect = new JSONObject();
-					jaVideo.put(joBlackDetect);
-
-					joBlackDetect.put("type", "blackdetect");
-					if (getBlackdetect_BlackMinDuration() != null)
-						joBlackDetect.put("black_min_duration", getBlackdetect_BlackMinDuration());
-					if (getBlackdetect_PixelBlackTh() != null)
-						joBlackDetect.put("pixel_black_th", getBlackdetect_PixelBlackTh());
-				}
-
-				if (getBlackframe() != null && getBlackframe())
-				{
-					videoFilterPresent = true;
-
-					JSONObject joBlackFrame = new JSONObject();
-					jaVideo.put(joBlackFrame);
-
-					joBlackFrame.put("type", "blackframe");
-					if (getBlackframe_Amount() != null)
-						joBlackFrame.put("amount", getBlackframe_Amount());
-					if (getBlackframe_Threshold() != null)
-						joBlackFrame.put("threshold", getBlackframe_Threshold());
-				}
-
-				if (getFreezedetect() != null && getFreezedetect())
-				{
-					videoFilterPresent = true;
-
-					JSONObject joFreezeDetect = new JSONObject();
-					jaVideo.put(joFreezeDetect);
-
-					joFreezeDetect.put("type", "freezedetect");
-					if (getFreezedetect_Duration() != null && getFreezedetect_Duration() > 0)
-						joFreezeDetect.put("duration", getFreezedetect_Duration());
-					if (getFreezedetect_NoiseInDb() != null)
-						joFreezeDetect.put("noiseInDb", getFreezedetect_NoiseInDb());
-				}
-
-				if (getFade() != null && getFade())
-				{
-					videoFilterPresent = true;
-
-					JSONObject joFade = new JSONObject();
-					jaVideo.put(joFade);
-
-					joFade.put("type", "fade");
-
-					if (getFade_Duration() != null && getFade_Duration() > 0)
-						joFade.put("duration", getFade_Duration());
-				}
-
-				// audio filters
-				if (getSilencedetect() != null && getSilencedetect())
-				{
-					audioFilterPresent = true;
-
-					JSONObject joSilenceDetect = new JSONObject();
-					jaAudio.put(joSilenceDetect);
-
-					joSilenceDetect.put("type", "silencedetect");
-					if (getSilencedetect_Noise() != null)
-						joSilenceDetect.put("noise", getSilencedetect_Noise());
-				}
-
-				if (getAudioVolumeChange() != null)
-				{
-					audioFilterPresent = true;
-
-					JSONObject joVolume = new JSONObject();
-					jaAudio.put(joVolume);
-
-					joVolume.put("type", "volume");
-					joVolume.put("factor", getAudioVolumeChange());
-				}
-
-				if (videoFilterPresent || audioFilterPresent)
-				{
-					JSONObject joFilters = new JSONObject();
+				JSONObject joFilters = filters.toJson();
+				if (joFilters != null)
 					joOutput.put("filters", joFilters);
-
-					if (videoFilterPresent)
-						joFilters.put("video", jaVideo);
-					if (audioFilterPresent)
-						joFilters.put("audio", jaAudio);
-				}
 			}
 
-			if (drawTextEnable && drawTextDetails != null)
-				joOutput.put("drawTextDetails", drawTextDetails.toJson());
+			if (filters.getDrawTextEnable() && filters.getDrawTextDetails() != null)
+				joOutput.put("drawTextDetails", filters.getDrawTextDetails().toJson());
 		}
 		catch(Exception e)
 		{
@@ -560,21 +330,21 @@ public class OutputStream implements Serializable {
 			if (joOutputStream.has("filters"))
 			{
 				JSONObject joFilters = joOutputStream.getJSONObject("filters");
-				filtersFromJson(joFilters);
+				filters.filtersFromJson(joFilters);
 			}
 
 			{
 				if (joOutputStream.has("drawTextDetails"))
 				{
-					setDrawTextEnable(true);
+					filters.setDrawTextEnable(true);
 
 					JSONObject joDrawTextDetails = joOutputStream.getJSONObject("drawTextDetails");
 
-					getDrawTextDetails().fromJson(joDrawTextDetails);
+					filters.getDrawTextDetails().fromJson(joDrawTextDetails);
 				}
 				else
 				{
-					setDrawTextEnable(false);
+					filters.setDrawTextEnable(false);
 				}
 			}
 		}
@@ -683,68 +453,12 @@ public class OutputStream implements Serializable {
         this.encodingProfileLabel = encodingProfileLabel;
     }
 
-	public Double getAudioVolumeChange() {
-		return audioVolumeChange;
-	}
-
-	public void setAudioVolumeChange(Double audioVolumeChange) {
-		this.audioVolumeChange = audioVolumeChange;
-	}
-
-	public Boolean getBlackdetect() {
-		return blackdetect;
-	}
-
-	public void setBlackdetect(Boolean blackdetect) {
-		this.blackdetect = blackdetect;
-	}
-
-	public Boolean getBlackframe() {
-		return blackframe;
-	}
-
-	public void setBlackframe(Boolean blackframe) {
-		this.blackframe = blackframe;
-	}
-
-	public Boolean getFreezedetect() {
-		return freezedetect;
-	}
-
-	public void setFreezedetect(Boolean freezedetect) {
-		this.freezedetect = freezedetect;
-	}
-
-	public Boolean getSilencedetect() {
-		return silencedetect;
-	}
-
-	public void setSilencedetect(Boolean silencedetect) {
-		this.silencedetect = silencedetect;
-	}
-
 	public Long getAwsExpirationInMinutes() {
 		return awsExpirationInMinutes;
 	}
 
 	public void setAwsExpirationInMinutes(Long awsExpirationInMinutes) {
 		this.awsExpirationInMinutes = awsExpirationInMinutes;
-	}
-
-	public Boolean getDrawTextEnable() {
-		return drawTextEnable;
-	}
-
-	public void setDrawTextEnable(Boolean drawTextEnable) {
-		this.drawTextEnable = drawTextEnable;
-	}
-
-	public DrawTextDetails getDrawTextDetails() {
-		return drawTextDetails;
-	}
-
-	public void setDrawTextDetails(DrawTextDetails drawTextDetails) {
-		this.drawTextDetails = drawTextDetails;
 	}
 
 	public String getOtherOutputOptions() {
@@ -755,75 +469,13 @@ public class OutputStream implements Serializable {
         this.otherOutputOptions = otherOutputOptions;
     }
 
-	public Boolean getFade() {
-		return fade;
+
+	public Filters getFilters() {
+		return filters;
 	}
 
-	public void setFade(Boolean fade) {
-		this.fade = fade;
+	public void setFilters(Filters filters) {
+		this.filters = filters;
 	}
 
-	public Float getBlackdetect_BlackMinDuration() {
-		return blackdetect_BlackMinDuration;
-	}
-
-	public void setBlackdetect_BlackMinDuration(Float blackdetect_BlackMinDuration) {
-		this.blackdetect_BlackMinDuration = blackdetect_BlackMinDuration;
-	}
-
-	public Float getBlackdetect_PixelBlackTh() {
-		return blackdetect_PixelBlackTh;
-	}
-
-	public void setBlackdetect_PixelBlackTh(Float blackdetect_PixelBlackTh) {
-		this.blackdetect_PixelBlackTh = blackdetect_PixelBlackTh;
-	}
-
-	public Long getFreezedetect_Duration() {
-		return freezedetect_Duration;
-	}
-
-	public void setFreezedetect_Duration(Long freezedetect_Duration) {
-		this.freezedetect_Duration = freezedetect_Duration;
-	}
-
-	public Long getFade_Duration() {
-		return fade_Duration;
-	}
-
-	public void setFade_Duration(Long fade_Duration) {
-		this.fade_Duration = fade_Duration;
-	}
-
-	public Long getBlackframe_Amount() {
-		return blackframe_Amount;
-	}
-
-	public void setBlackframe_Amount(Long blackframe_Amount) {
-		this.blackframe_Amount = blackframe_Amount;
-	}
-
-	public Long getBlackframe_Threshold() {
-		return blackframe_Threshold;
-	}
-
-	public void setBlackframe_Threshold(Long blackframe_Threshold) {
-		this.blackframe_Threshold = blackframe_Threshold;
-	}
-
-	public Long getFreezedetect_NoiseInDb() {
-		return freezedetect_NoiseInDb;
-	}
-
-	public void setFreezedetect_NoiseInDb(Long freezedetect_NoiseInDb) {
-		this.freezedetect_NoiseInDb = freezedetect_NoiseInDb;
-	}
-
-	public Float getSilencedetect_Noise() {
-		return silencedetect_Noise;
-	}
-
-	public void setSilencedetect_Noise(Float silencedetect_Noise) {
-		this.silencedetect_Noise = silencedetect_Noise;
-	}
 }
