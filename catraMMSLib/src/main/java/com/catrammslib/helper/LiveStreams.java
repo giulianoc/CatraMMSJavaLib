@@ -1310,7 +1310,7 @@ public class LiveStreams {
                 List<OutputStream> outputStreamList = new ArrayList<>();
                 if (cdn77Channel != null)
                 {
-                    OutputStream outputStream = new OutputStream(false, null);
+                    OutputStream outputStream = new OutputStream();
 
                     outputStream.setOutputType("CDN_CDN77");
                     outputStream.setCdn77Channel(cdn77Channel);

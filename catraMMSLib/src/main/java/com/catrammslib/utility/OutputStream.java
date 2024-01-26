@@ -60,12 +60,10 @@ public class OutputStream implements Serializable {
 	// In alcuni casi abbiamo solamente encodingProfileLabel e non l'EncodingProfile, per cui lasciamo la doppia opzione
     private String encodingProfileLabel;
 
-	private Filters filters;
+	private Filters filters = new Filters();
 
-	public OutputStream(boolean drawTextEnable, DrawTextDetails drawTextDetails)
+	public OutputStream()
 	{
-		filters = new Filters(drawTextEnable, drawTextDetails);
-
 		awsSignedURL = false;
 		awsExpirationInMinutes = (long) 1440;	// 1 day
 		cdn77ExpirationInMinutes = (long) 1440;	// 1 day
@@ -76,7 +74,7 @@ public class OutputStream implements Serializable {
 
 	public OutputStream clone()
 	{
-		OutputStream outputStream = new OutputStream(filters.getDrawTextEnable(), filters.getDrawTextDetails());
+		OutputStream outputStream = new OutputStream();
 
 		outputStream.setVideoMap(getVideoMap());
 		outputStream.setAudioMap(getAudioMap());
@@ -161,8 +159,8 @@ public class OutputStream implements Serializable {
 					joOutput.put("filters", joFilters);
 			}
 
-			if (filters.getDrawTextEnable() && filters.getDrawTextDetails() != null)
-				joOutput.put("drawTextDetails", filters.getDrawTextDetails().toJson());
+			// if (filters.getDrawTextEnable() && filters.getDrawTextDetails() != null)
+			//	joOutput.put("drawTextDetails", filters.getDrawTextDetails().toJson());
 		}
 		catch(Exception e)
 		{
@@ -330,9 +328,10 @@ public class OutputStream implements Serializable {
 			if (joOutputStream.has("filters"))
 			{
 				JSONObject joFilters = joOutputStream.getJSONObject("filters");
-				filters.filtersFromJson(joFilters);
+				filters.fromJson(joFilters);
 			}
 
+			/*
 			{
 				if (joOutputStream.has("drawTextDetails"))
 				{
@@ -347,6 +346,7 @@ public class OutputStream implements Serializable {
 					filters.setDrawTextEnable(false);
 				}
 			}
+			 */
 		}
 		catch(Exception e)
 		{

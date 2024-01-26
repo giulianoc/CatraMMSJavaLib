@@ -65,6 +65,8 @@ public class DrawTextDetails implements Serializable {
 
 		try
 		{
+			joOutput.put("type", "drawtext");
+
 			if (text != null && !text.isEmpty())
 				joOutput.put("text", text);
 

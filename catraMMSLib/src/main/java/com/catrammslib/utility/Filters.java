@@ -1,23 +1,17 @@
 package com.catrammslib.utility;
 
-import com.catrammslib.entity.*;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.List;
 
 public class Filters implements Serializable {
 
     private static final Logger mLogger = LoggerFactory.getLogger(Filters.class);
 
 	private Long timeInSecondsDecimalsPrecision;
-
-	// drawTextEnable serve per la GUI (altrimenti sarebbe bastato il controllo (drawTextDetails != null)
-	private Boolean drawTextEnable;
-	private DrawTextDetails drawTextDetails;
 
 	private Double audioVolumeChange;
 
@@ -29,6 +23,29 @@ public class Filters implements Serializable {
 	private Long blackframe_Amount;
 	private Long blackframe_Threshold;
 
+	private Boolean crop;
+	private String crop_OutputWidth;
+	private String crop_OutputHeight;
+	private String crop_X;
+	private String crop_Y;
+	private Boolean crop_KeepAspect;
+	private Boolean crop_Exact;
+
+	private Boolean drawBox;
+	private String drawBox_X;
+	private String drawBox_Y;
+	private String drawBox_Width;
+	private String drawBox_Height;
+	private String drawBox_FontColor;
+	private Long drawBox_PercentageOpacity;
+	private String drawBox_Thickness;
+
+	private Boolean drawText;
+	private DrawTextDetails drawTextDetails;
+
+	private Boolean fade;
+	private Long fade_Duration;
+
 	private Boolean freezedetect;
 	private Long freezedetect_Duration;
 	private Long freezedetect_NoiseInDb;
@@ -36,8 +53,6 @@ public class Filters implements Serializable {
 	private Boolean silencedetect;
 	private Float silencedetect_Noise;
 
-	private Boolean fade;
-	private Long fade_Duration;
 
 	public Filters()
 	{
@@ -48,15 +63,17 @@ public class Filters implements Serializable {
 		reset();
 	}
 
-	public Filters(boolean drawTextEnable, DrawTextDetails drawTextDetails)
+	/*
+	public Filters(boolean drawText, DrawTextDetails drawTextDetails)
 	{
-		this.drawTextEnable = drawTextEnable;
+		this.drawText = drawText;
 		this.drawTextDetails = drawTextDetails;
 
 		timeInSecondsDecimalsPrecision = (long) 1;
 
 		reset();
 	}
+	 */
 
 	private void reset()
 	{
@@ -70,20 +87,39 @@ public class Filters implements Serializable {
 		blackframe_Amount = null;
 		blackframe_Threshold = null;
 
+		crop = false;
+		crop_OutputWidth = "in_w";
+		crop_OutputHeight = "in_h";
+		crop_X = "(in_w-out_w)/2";
+		crop_Y = "(in_h-out_h)/2";
+		crop_KeepAspect = false;
+		crop_Exact = false;
+
+		drawBox = false;
+		drawBox_X = "0";
+		drawBox_Y = "0";
+		drawBox_Width = "0";
+		drawBox_Height = "0";
+		drawBox_FontColor = null;
+		drawBox_PercentageOpacity = null;
+		drawBox_Thickness = "fill";
+
+		drawText = false;
+
+		fade = false;
+		fade_Duration = null;
+
 		freezedetect = false;
 		freezedetect_Duration = null;
 		freezedetect_NoiseInDb = null;
 
 		silencedetect = false;
 		silencedetect_Noise = null;
-
-		fade = false;
-		fade_Duration = null;
 	}
 
 	public Filters clone()
 	{
-		Filters filters = new Filters(getDrawTextEnable(), getDrawTextDetails());
+		Filters filters = new Filters();
 
 		filters.setAudioVolumeChange(getAudioVolumeChange());
 
@@ -95,6 +131,29 @@ public class Filters implements Serializable {
 		filters.setBlackframe_Amount(getBlackframe_Amount());
 		filters.setBlackframe_Threshold(getBlackframe_Threshold());
 
+		filters.setCrop(getCrop());
+		filters.setCrop_OutputWidth(getCrop_OutputWidth());
+		filters.setCrop_OutputHeight(getCrop_OutputHeight());
+		filters.setCrop_X(getCrop_X());
+		filters.setCrop_Y(getCrop_Y());
+		filters.setCrop_KeepAspect(getCrop_KeepAspect());
+		filters.setCrop_Exact(getCrop_Exact());
+
+		filters.setDrawBox(getDrawBox());
+		filters.setDrawBox_X(getDrawBox_X());
+		filters.setDrawBox_Y(getDrawBox_Y());
+		filters.setDrawBox_Width(getDrawBox_Width());
+		filters.setDrawBox_Height(getDrawBox_Height());
+		filters.setDrawBox_FontColor(getDrawBox_FontColor());
+		filters.setDrawBox_PercentageOpacity(getDrawBox_PercentageOpacity());
+		filters.setDrawBox_Thickness(getDrawBox_Thickness());
+
+		filters.setDrawText(getDrawText());
+		filters.setDrawTextDetails(getDrawTextDetails().clone());
+
+		filters.setFade(getFade());
+		filters.setFade_Duration(getFade_Duration());
+
 		filters.setFreezedetect(getFreezedetect());
 		filters.setFreezedetect_Duration(getFreezedetect_Duration());
 		filters.setFreezedetect_NoiseInDb(getFreezedetect_NoiseInDb());
@@ -102,13 +161,10 @@ public class Filters implements Serializable {
 		filters.setSilencedetect(getSilencedetect());
 		filters.setSilencedetect_Noise(getSilencedetect_Noise());
 
-		filters.setFade(getFade());
-		filters.setFade_Duration(getFade_Duration());
-
 		return filters;
 	}
 
-	public void filtersFromJson(JSONObject joFilters)
+	public void fromJson(JSONObject joFilters)
 	{
 		try
 		{
@@ -128,15 +184,49 @@ public class Filters implements Serializable {
 					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackframe"))
 						setBlackframe(true);
 
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("freezedetect"))
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("crop"))
 					{
-						setFreezedetect(true);
+						setCrop(true);
 
-						if (joFilter.has("duration"))
-						{
-							Object o = joFilter.get("duration");
-								setFreezedetect_Duration(joFilter.getLong("duration"));
-						}
+						if (joFilter.has("out_w"))
+							setCrop_OutputWidth(joFilter.getString("out_w"));
+						if (joFilter.has("out_h"))
+							setCrop_OutputHeight(joFilter.getString("out_h"));
+						if (joFilter.has("x"))
+							setCrop_X(joFilter.getString("x"));
+						if (joFilter.has("y"))
+							setCrop_Y(joFilter.getString("y"));
+						if (joFilter.has("keep_aspect"))
+							setCrop_KeepAspect(joFilter.getBoolean("keep_aspect"));
+						if (joFilter.has("exact"))
+							setCrop_Exact(joFilter.getBoolean("exact"));
+					}
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("drawbox"))
+					{
+						setDrawBox(true);
+
+						if (joFilter.has("x"))
+							setDrawBox_X(joFilter.getString("x"));
+						if (joFilter.has("y"))
+							setDrawBox_Y(joFilter.getString("y"));
+						if (joFilter.has("width"))
+							setDrawBox_Width(joFilter.getString("width"));
+						if (joFilter.has("height"))
+							setDrawBox_Height(joFilter.getString("height"));
+						if (joFilter.has("fontColor"))
+							setDrawBox_FontColor(joFilter.getString("fontColor"));
+						if (joFilter.has("percentageOpacity"))
+							setDrawBox_PercentageOpacity(joFilter.getLong("percentageOpacity"));
+						if (joFilter.has("thickness"))
+							setDrawBox_Thickness(joFilter.getString("thickness"));
+					}
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("drawtext"))
+					{
+						setDrawText(true);
+
+						getDrawTextDetails().fromJson(joFilter);
 					}
 
 					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("fade"))
@@ -147,6 +237,17 @@ public class Filters implements Serializable {
 						{
 							Object o = joFilter.get("duration");
 							setFade_Duration(joFilter.getLong("duration"));
+						}
+					}
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("freezedetect"))
+					{
+						setFreezedetect(true);
+
+						if (joFilter.has("duration"))
+						{
+							Object o = joFilter.get("duration");
+								setFreezedetect_Duration(joFilter.getLong("duration"));
 						}
 					}
 				}
@@ -219,18 +320,58 @@ public class Filters implements Serializable {
 					joBlackFrame.put("threshold", getBlackframe_Threshold());
 			}
 
-			if (getFreezedetect() != null && getFreezedetect())
+			if (getCrop() != null && getCrop())
 			{
 				videoFilterPresent = true;
 
-				JSONObject joFreezeDetect = new JSONObject();
-				jaVideo.put(joFreezeDetect);
+				JSONObject joCrop = new JSONObject();
+				jaVideo.put(joCrop);
 
-				joFreezeDetect.put("type", "freezedetect");
-				if (getFreezedetect_Duration() != null && getFreezedetect_Duration() > 0)
-					joFreezeDetect.put("duration", getFreezedetect_Duration());
-				if (getFreezedetect_NoiseInDb() != null)
-					joFreezeDetect.put("noiseInDb", getFreezedetect_NoiseInDb());
+				joCrop.put("type", "crop");
+
+				if (getCrop_OutputWidth() != null)
+					joCrop.put("out_w", getCrop_OutputWidth());
+				if (getCrop_OutputHeight() != null)
+					joCrop.put("out_h", getCrop_OutputHeight());
+				if (getCrop_X() != null)
+					joCrop.put("x", getCrop_X());
+				if (getCrop_Y() != null)
+					joCrop.put("y", getCrop_Y());
+				if (getCrop_KeepAspect() != null)
+					joCrop.put("keep_aspect", getCrop_KeepAspect());
+				if (getCrop_Exact() != null)
+					joCrop.put("exact", getCrop_Exact());
+			}
+
+			if (getDrawBox() != null && getDrawBox())
+			{
+				videoFilterPresent = true;
+
+				JSONObject joDrawBox = new JSONObject();
+				jaVideo.put(joDrawBox);
+
+				joDrawBox.put("type", "drawbox");
+
+				if (getDrawBox_X() != null)
+					joDrawBox.put("x", getDrawBox_X());
+				if (getDrawBox_Y() != null)
+					joDrawBox.put("y", getDrawBox_Y());
+				if (getDrawBox_Width() != null)
+					joDrawBox.put("width", getDrawBox_Width());
+				if (getDrawBox_Height() != null)
+					joDrawBox.put("height", getDrawBox_Height());
+				if (getDrawBox_FontColor() != null)
+					joDrawBox.put("fontColor", getDrawBox_FontColor());
+				if (getDrawBox_PercentageOpacity() != null)
+					joDrawBox.put("percentageOpacity", getDrawBox_PercentageOpacity());
+				if (getDrawBox_Thickness() != null)
+					joDrawBox.put("thickness", getDrawBox_Thickness());
+			}
+
+			if (getDrawText() != null && getDrawText()) {
+				videoFilterPresent = true;
+
+				jaVideo.put(getDrawTextDetails().toJson());
 			}
 
 			if (getFade() != null && getFade())
@@ -244,6 +385,20 @@ public class Filters implements Serializable {
 
 				if (getFade_Duration() != null && getFade_Duration() > 0)
 					joFade.put("duration", getFade_Duration());
+			}
+
+			if (getFreezedetect() != null && getFreezedetect())
+			{
+				videoFilterPresent = true;
+
+				JSONObject joFreezeDetect = new JSONObject();
+				jaVideo.put(joFreezeDetect);
+
+				joFreezeDetect.put("type", "freezedetect");
+				if (getFreezedetect_Duration() != null && getFreezedetect_Duration() > 0)
+					joFreezeDetect.put("duration", getFreezedetect_Duration());
+				if (getFreezedetect_NoiseInDb() != null)
+					joFreezeDetect.put("noiseInDb", getFreezedetect_NoiseInDb());
 			}
 
 			// audio filters
@@ -288,6 +443,7 @@ public class Filters implements Serializable {
 		return joFilters;
 	}
 
+	/*
 	public void fromJson(JSONObject joOutputStream,
 						 List<EncodingProfile> encodingProfileList,
 						 List<HLSChannelConf> hlsChannelList,
@@ -304,19 +460,17 @@ public class Filters implements Serializable {
 				filtersFromJson(joFilters);
 			}
 
+			if (joOutputStream.has("drawTextDetails"))
 			{
-				if (joOutputStream.has("drawTextDetails"))
-				{
-					setDrawTextEnable(true);
+				setDrawTextEnable(true);
 
-					JSONObject joDrawTextDetails = joOutputStream.getJSONObject("drawTextDetails");
+				JSONObject joDrawTextDetails = joOutputStream.getJSONObject("drawTextDetails");
 
-					getDrawTextDetails().fromJson(joDrawTextDetails);
-				}
-				else
-				{
-					setDrawTextEnable(false);
-				}
+				getDrawTextDetails().fromJson(joDrawTextDetails);
+			}
+			else
+			{
+				setDrawTextEnable(false);
 			}
 		}
 		catch(Exception e)
@@ -324,6 +478,7 @@ public class Filters implements Serializable {
 			mLogger.error("Exception: " + e);
 		}
 	}
+	 */
 
 	public Double getAudioVolumeChange() {
 		return audioVolumeChange;
@@ -365,12 +520,12 @@ public class Filters implements Serializable {
 		this.silencedetect = silencedetect;
 	}
 
-	public Boolean getDrawTextEnable() {
-		return drawTextEnable;
+	public Boolean getDrawText() {
+		return drawText;
 	}
 
-	public void setDrawTextEnable(Boolean drawTextEnable) {
-		this.drawTextEnable = drawTextEnable;
+	public void setDrawText(Boolean drawText) {
+		this.drawText = drawText;
 	}
 
 	public DrawTextDetails getDrawTextDetails() {
@@ -451,6 +606,126 @@ public class Filters implements Serializable {
 
 	public void setTimeInSecondsDecimalsPrecision(Long timeInSecondsDecimalsPrecision) {
 		this.timeInSecondsDecimalsPrecision = timeInSecondsDecimalsPrecision;
+	}
+
+	public Boolean getCrop() {
+		return crop;
+	}
+
+	public void setCrop(Boolean crop) {
+		this.crop = crop;
+	}
+
+	public String getCrop_OutputWidth() {
+		return crop_OutputWidth;
+	}
+
+	public void setCrop_OutputWidth(String crop_OutputWidth) {
+		this.crop_OutputWidth = crop_OutputWidth;
+	}
+
+	public String getCrop_OutputHeight() {
+		return crop_OutputHeight;
+	}
+
+	public void setCrop_OutputHeight(String crop_OutputHeight) {
+		this.crop_OutputHeight = crop_OutputHeight;
+	}
+
+	public String getCrop_X() {
+		return crop_X;
+	}
+
+	public void setCrop_X(String crop_X) {
+		this.crop_X = crop_X;
+	}
+
+	public String getCrop_Y() {
+		return crop_Y;
+	}
+
+	public void setCrop_Y(String crop_Y) {
+		this.crop_Y = crop_Y;
+	}
+
+	public Boolean getCrop_KeepAspect() {
+		return crop_KeepAspect;
+	}
+
+	public void setCrop_KeepAspect(Boolean crop_KeepAspect) {
+		this.crop_KeepAspect = crop_KeepAspect;
+	}
+
+	public Boolean getCrop_Exact() {
+		return crop_Exact;
+	}
+
+	public void setCrop_Exact(Boolean crop_Exact) {
+		this.crop_Exact = crop_Exact;
+	}
+
+	public Boolean getDrawBox() {
+		return drawBox;
+	}
+
+	public void setDrawBox(Boolean drawBox) {
+		this.drawBox = drawBox;
+	}
+
+	public String getDrawBox_X() {
+		return drawBox_X;
+	}
+
+	public void setDrawBox_X(String drawBox_X) {
+		this.drawBox_X = drawBox_X;
+	}
+
+	public String getDrawBox_Y() {
+		return drawBox_Y;
+	}
+
+	public void setDrawBox_Y(String drawBox_Y) {
+		this.drawBox_Y = drawBox_Y;
+	}
+
+	public String getDrawBox_Width() {
+		return drawBox_Width;
+	}
+
+	public void setDrawBox_Width(String drawBox_Width) {
+		this.drawBox_Width = drawBox_Width;
+	}
+
+	public String getDrawBox_Height() {
+		return drawBox_Height;
+	}
+
+	public void setDrawBox_Height(String drawBox_Height) {
+		this.drawBox_Height = drawBox_Height;
+	}
+
+	public String getDrawBox_FontColor() {
+		return drawBox_FontColor;
+	}
+
+	public void setDrawBox_FontColor(String drawBox_FontColor) {
+		this.drawBox_FontColor = drawBox_FontColor;
+	}
+
+	public Long getDrawBox_PercentageOpacity() {
+		return drawBox_PercentageOpacity;
+	}
+
+	public void setDrawBox_PercentageOpacity(Long drawBox_PercentageOpacity) {
+		this.drawBox_PercentageOpacity = drawBox_PercentageOpacity;
+	}
+
+	public String getDrawBox_Thickness() {
+		return drawBox_Thickness;
+	}
+
+	public void setDrawBox_Thickness(String drawBox_Thickness) {
+		this.drawBox_Thickness = drawBox_Thickness;
 	}
 
 	public Float getSilencedetect_Noise() {
