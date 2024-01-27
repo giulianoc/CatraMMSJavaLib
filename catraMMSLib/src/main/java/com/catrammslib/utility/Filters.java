@@ -101,7 +101,7 @@ public class Filters implements Serializable {
 		drawBox_Width = "in_w";
 		drawBox_Height = "in_h";
 		drawBox_FontColor = "black";
-		drawBox_PercentageOpacity = 0L;
+		drawBox_PercentageOpacity = 100L;
 		drawBox_Thickness = "fill";
 
 		drawText = false;
