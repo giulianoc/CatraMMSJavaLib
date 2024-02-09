@@ -16,6 +16,15 @@ public class EncodingProfilesSet implements Serializable {
     private List<EncodingProfile> encodingProfileList = new ArrayList<>();
 
 
+    public String getEncodingProfilesSetInfo()
+    {
+        String encodingProfilesSetInfo = "";
+        for (EncodingProfile encodingProfile: encodingProfileList)
+            encodingProfilesSetInfo += (encodingProfile.getLabel() + "<br/>");
+
+        return encodingProfilesSetInfo;
+    }
+
     public Long getEncodingProfilesSetKey() {
         return encodingProfilesSetKey;
     }
