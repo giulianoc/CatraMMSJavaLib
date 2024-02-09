@@ -20,7 +20,7 @@ public class EncodingProfilesSet implements Serializable {
     {
         String encodingProfilesSetInfo = "";
         for (EncodingProfile encodingProfile: encodingProfileList)
-            encodingProfilesSetInfo += (encodingProfile.getLabel() + "<br/>");
+            encodingProfilesSetInfo += (encodingProfile.getEncodingProfileKey() + ": " + encodingProfile.getLabel() + "<br/>");
 
         return encodingProfilesSetInfo;
     }
