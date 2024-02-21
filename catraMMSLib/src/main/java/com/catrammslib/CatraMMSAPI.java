@@ -8406,24 +8406,27 @@ public class CatraMMSAPI implements Serializable {
                 loginStatistic.setUserKey(loginStatisticInfo.getLong("userKey"));
             if (loginStatisticInfo.has("ip") && !loginStatisticInfo.isNull("ip"))
                 loginStatistic.setIp(loginStatisticInfo.getString("ip"));
-            if (loginStatisticInfo.has("continent") && !loginStatisticInfo.isNull("continent"))
-                loginStatistic.setContinent(loginStatisticInfo.getString("continent"));
-            if (loginStatisticInfo.has("continentCode") && !loginStatisticInfo.isNull("continentCode"))
-                loginStatistic.setContinentCode(loginStatisticInfo.getString("continentCode"));
-            if (loginStatisticInfo.has("country") && !loginStatisticInfo.isNull("country"))
-                loginStatistic.setCountry(loginStatisticInfo.getString("country"));
-            if (loginStatisticInfo.has("countryCode") && !loginStatisticInfo.isNull("countryCode"))
-                loginStatistic.setCountryCode(loginStatisticInfo.getString("countryCode"));
-            if (loginStatisticInfo.has("region") && !loginStatisticInfo.isNull("region"))
-                loginStatistic.setRegion(loginStatisticInfo.getString("region"));
-            if (loginStatisticInfo.has("city") && !loginStatisticInfo.isNull("city"))
-                loginStatistic.setCity(loginStatisticInfo.getString("city"));
-            if (loginStatisticInfo.has("org") && !loginStatisticInfo.isNull("org"))
-                loginStatistic.setOrg(loginStatisticInfo.getString("org"));
-            if (loginStatisticInfo.has("isp") && !loginStatisticInfo.isNull("isp"))
-                loginStatistic.setIsp(loginStatisticInfo.getString("isp"));
-            if (loginStatisticInfo.has("timezoneGMTOffset") && !loginStatisticInfo.isNull("timezoneGMTOffset"))
-                loginStatistic.setTimezoneGMTOffset(loginStatisticInfo.getLong("timezoneGMTOffset"));
+            if (loginStatisticInfo.has("geoInfo") && !loginStatisticInfo.isNull("geoInfo"))
+            {
+                JSONObject joGeoInfo = loginStatisticInfo.getJSONObject("geoInfo");
+
+                if (joGeoInfo.has("continent") && !joGeoInfo.isNull("continent"))
+                    loginStatistic.setContinent(joGeoInfo.getString("continent"));
+                if (joGeoInfo.has("continentCode") && !joGeoInfo.isNull("continentCode"))
+                    loginStatistic.setContinentCode(joGeoInfo.getString("continentCode"));
+                if (joGeoInfo.has("country") && !joGeoInfo.isNull("country"))
+                    loginStatistic.setCountry(joGeoInfo.getString("country"));
+                if (joGeoInfo.has("countryCode") && !joGeoInfo.isNull("countryCode"))
+                    loginStatistic.setCountryCode(joGeoInfo.getString("countryCode"));
+                if (joGeoInfo.has("region") && !joGeoInfo.isNull("region"))
+                    loginStatistic.setRegion(joGeoInfo.getString("region"));
+                if (joGeoInfo.has("city") && !joGeoInfo.isNull("city"))
+                    loginStatistic.setCity(joGeoInfo.getString("city"));
+                if (joGeoInfo.has("org") && !joGeoInfo.isNull("org"))
+                    loginStatistic.setOrg(joGeoInfo.getString("org"));
+                if (joGeoInfo.has("isp") && !joGeoInfo.isNull("isp"))
+                    loginStatistic.setIsp(joGeoInfo.getString("isp"));
+            }
             if (loginStatisticInfo.has("successfulLogin") && !loginStatisticInfo.isNull("successfulLogin"))
                 loginStatistic.setSuccessfulLogin(simpleDateFormat.parse(loginStatisticInfo.getString("successfulLogin")));
         }

@@ -20,7 +20,6 @@ public class LoginStatistic implements Serializable{
 	private String city;
 	private String org;
 	private String isp;
-	private Long timezoneGMTOffset;
     private Date successfulLogin;
 
 	@Override
@@ -150,14 +149,6 @@ public class LoginStatistic implements Serializable{
 
 	public void setIsp(String isp) {
 		this.isp = isp;
-	}
-
-	public Long getTimezoneGMTOffset() {
-		return timezoneGMTOffset;
-	}
-
-	public void setTimezoneGMTOffset(Long timezoneGMTOffset) {
-		this.timezoneGMTOffset = timezoneGMTOffset;
 	}
 
 	public Date getSuccessfulLogin() {
