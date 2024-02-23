@@ -8426,6 +8426,10 @@ public class CatraMMSAPI implements Serializable {
                     loginStatistic.setOrg(joGeoInfo.getString("org"));
                 if (joGeoInfo.has("isp") && !joGeoInfo.isNull("isp"))
                     loginStatistic.setIsp(joGeoInfo.getString("isp"));
+                if (joGeoInfo.has("lastGEOUpdate") && !joGeoInfo.isNull("lastGEOUpdate"))
+                    loginStatistic.setLastGEOUpdate(simpleDateFormat.parse(joGeoInfo.getString("lastGEOUpdate")));
+                if (joGeoInfo.has("lastTimeUsed") && !joGeoInfo.isNull("lastTimeUsed"))
+                    loginStatistic.setLastGEOUpdate(simpleDateFormat.parse(joGeoInfo.getString("lastTimeUsed")));
             }
             if (loginStatisticInfo.has("successfulLogin") && !loginStatisticInfo.isNull("successfulLogin"))
                 loginStatistic.setSuccessfulLogin(simpleDateFormat.parse(loginStatisticInfo.getString("successfulLogin")));
