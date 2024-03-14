@@ -1014,6 +1014,35 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    public void unshareWorkspace(String username, String password)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workspace/share";
+
+            mLogger.info("unshareWorkspace"
+                    + ", mmsURL: " + mmsURL
+            );
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("unshareWorkspace. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "unshareWorkspace failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public void mmsSupport(String username, String password,
                            String userEmailAddress,
                            String subject,
