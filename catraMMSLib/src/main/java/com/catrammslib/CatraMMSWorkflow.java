@@ -344,7 +344,8 @@ public class CatraMMSWorkflow {
             Long waitingSecondsBetweenAttemptsInCaseOfErrors,
             List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
-			Boolean defaultBroadcast
+			Boolean defaultBroadcast,
+            Boolean monitoringFrameIncreasingEnabled
     )
             throws Exception
     {
@@ -419,6 +420,9 @@ public class CatraMMSWorkflow {
 			if (joInternalMMSParameters != null)
 				joParameters.put("internalMMS", joInternalMMSParameters);
 
+            if (monitoringFrameIncreasingEnabled != null)
+                joParameters.put("monitoringFrameIncreasingEnabled", monitoringFrameIncreasingEnabled);
+
             return joTask;
         }
         catch (Exception e)
@@ -464,7 +468,7 @@ public class CatraMMSWorkflow {
             JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, null,
                 encodersPool, proxyStartTime, proxyEndTime, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
-                    outputStreamList, joInternalMMSParameters, defaultBroadcast);
+                    outputStreamList, joInternalMMSParameters, defaultBroadcast, null);
 
 			if (drawTextDetails != null)
 			{
