@@ -14,6 +14,9 @@ public class Encoder implements Serializable{
     private Boolean external;
     private Boolean enabled;
     private String protocol;
+
+    // it is used by the GUI, true publicServerName is used, false internalServerName is used
+    private Boolean publicServerNameToBeUsed;
     private String publicServerName;
     private String internalServerName;
     private Long port;
@@ -35,6 +38,33 @@ public class Encoder implements Serializable{
     @Override
     public int hashCode() {
         return Objects.hash(encoderKey);
+    }
+
+    public String getServerName()
+    {
+        if (getPublicServerNameToBeUsed())
+            return publicServerName;
+        else
+            return internalServerName;
+    }
+
+    public Encoder clone()
+    {
+        Encoder encoder = new Encoder();
+        encoder.setEncoderKey(encoderKey);
+        encoder.setLabel(label);
+        encoder.setExternal(external);
+        encoder.setEnabled(enabled);
+        encoder.setProtocol(protocol);
+        encoder.setPublicServerNameToBeUsed(publicServerNameToBeUsed);
+        encoder.setPublicServerName(publicServerName);
+        encoder.setInternalServerName(internalServerName);
+        encoder.setPort(port);
+        encoder.setRunning(running);
+        encoder.setCpuUsage(cpuUsage);
+        encoder.setWorkspacesAssociated(workspacesAssociated);
+
+        return encoder;
     }
 
     public Long getEncoderKey() {
@@ -108,6 +138,14 @@ public class Encoder implements Serializable{
 
     public void setExternal(Boolean external) {
         this.external = external;
+    }
+
+    public Boolean getPublicServerNameToBeUsed() {
+        return publicServerNameToBeUsed;
+    }
+
+    public void setPublicServerNameToBeUsed(Boolean publicServerNameToBeUsed) {
+        this.publicServerNameToBeUsed = publicServerNameToBeUsed;
     }
 
     public Boolean getEnabled() {
