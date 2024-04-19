@@ -5746,6 +5746,48 @@ public class CatraMMSAPI implements Serializable {
         return stream;
     }
 
+    public Long getStreamFreePushEncoderPort(String username, String password,
+                            Long encoderKey)
+            throws Exception
+    {
+        Long streamFreePushEncoderPort = null;
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/conf/stream/freePushEncoderPort" + "/" + encoderKey;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getStreamFreePushEncoderPort. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+            // mLogger.info("mmsInfo: " + mmsInfo);
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            return joMMSInfo.getLong("freePushEncoderPort");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing streams failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public Long addSourceTVStream(String username, String password,
                                         String type, Long serviceId, Long networkId, Long transportStreamId,
                                         String name, String satellite, Long frequency, String lnb,
