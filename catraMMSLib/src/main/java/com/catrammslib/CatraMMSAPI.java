@@ -5315,7 +5315,7 @@ public class CatraMMSAPI implements Serializable {
 		String url, 
 		String pushProtocol,
 		Long pushEncoderKey,
-		String pushServerName,	// indica il nome del server (public or internal)
+		Boolean pushPublicEncoderName,	// indica se deve essere usato l'encoder pubblico (true) o quello privato (false)
 		Long pushServerPort,
 		String pushURI,
 		Long pushListenTimeout,
@@ -5351,8 +5351,8 @@ public class CatraMMSAPI implements Serializable {
                 	joStreamConf.put("pushProtocol", pushProtocol);
 				if (pushEncoderKey != null)
                 	joStreamConf.put("pushEncoderKey", pushEncoderKey);
-				if (pushServerName != null)
-                	joStreamConf.put("pushServerName", pushServerName);
+				if (pushPublicEncoderName != null)
+                	joStreamConf.put("pushPublicEncoderName", pushPublicEncoderName);
 				if (pushServerPort != null)
                 	joStreamConf.put("pushServerPort", pushServerPort);
 				if (pushURI != null)
@@ -5442,7 +5442,7 @@ public class CatraMMSAPI implements Serializable {
 		String url, 
 		String pushProtocol,
 		Long pushEncoderKey,
-		String pushServerName,	// indica il nome del server (public or internal)
+         Boolean pushPublicEncoderName,	// indica se deve essere usato l'encoder pubblico (true) o quello privato (false)
 		Long pushServerPort,
 		String pushURI,
 		Long pushListenTimeout,
@@ -5496,8 +5496,8 @@ public class CatraMMSAPI implements Serializable {
                 	joStreamConf.put("pushProtocol", pushProtocol);
 				if (pushEncoderKey != null)
                 	joStreamConf.put("pushEncoderKey", pushEncoderKey);
-				if (pushServerName != null)
-                	joStreamConf.put("pushServerName", pushServerName);
+				if (pushPublicEncoderName != null)
+                	joStreamConf.put("pushPublicEncoderName", pushPublicEncoderName);
 				if (pushServerPort != null)
                 	joStreamConf.put("pushServerPort", pushServerPort);
 				if (pushURI != null)
@@ -9649,10 +9649,12 @@ public class CatraMMSAPI implements Serializable {
             	stream.setPushProtocol(streamInfo.getString("pushProtocol"));
 			if (streamInfo.has("pushEncoderKey") && !streamInfo.isNull("pushEncoderKey"))
                 stream.setPushEncoderKey(streamInfo.getLong("pushEncoderKey"));
-			if (streamInfo.has("pushEncoderLabel") && !streamInfo.isNull("pushEncoderLabel"))
+            if (streamInfo.has("pushPublicEncoderName") && !streamInfo.isNull("pushPublicEncoderName"))
+                stream.setPushPublicEncoderName(streamInfo.getBoolean("pushPublicEncoderName"));
+            if (streamInfo.has("pushEncoderLabel") && !streamInfo.isNull("pushEncoderLabel"))
                 stream.setPushEncoderLabel(streamInfo.getString("pushEncoderLabel"));
-			if (streamInfo.has("pushServerName") && !streamInfo.isNull("pushServerName"))
-            	stream.setPushServerName(streamInfo.getString("pushServerName"));
+			if (streamInfo.has("pushEncoderName") && !streamInfo.isNull("pushEncoderName"))
+            	stream.setPushEncoderName(streamInfo.getString("pushEncoderName"));
 			if (streamInfo.has("pushServerPort") && !streamInfo.isNull("pushServerPort"))
                 stream.setPushServerPort(streamInfo.getLong("pushServerPort"));
 			if (streamInfo.has("pushUri") && !streamInfo.isNull("pushUri"))

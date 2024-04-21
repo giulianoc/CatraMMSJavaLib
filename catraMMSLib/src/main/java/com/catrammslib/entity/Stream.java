@@ -27,8 +27,9 @@ public class Stream implements Serializable{
 
 	private String pushProtocol;
 	private Long pushEncoderKey;
+	private Boolean pushPublicEncoderName; // encoderKey non è sufficiente, pushEncoderName indica il nome del server publico o privato
 	private String pushEncoderLabel;	// this is a calculated field
-	private String pushServerName;	// encoderKey non è sufficiente, pushServerName indica il nome del server (public or internal)
+	private String pushEncoderName;	// this is a calculated field
 	private Long pushServerPort;
 	private String pushURI;
 	private Long pushListenTimeout;
@@ -256,12 +257,20 @@ public class Stream implements Serializable{
 		this.captureLiveChannelsNumber = captureLiveChannelsNumber;
 	}
 
-	public String getPushServerName() {
-		return pushServerName;
+	public Boolean getPushPublicEncoderName() {
+		return pushPublicEncoderName;
 	}
 
-	public void setPushServerName(String pushServerName) {
-		this.pushServerName = pushServerName;
+	public void setPushPublicEncoderName(Boolean pushPublicEncoderName) {
+		this.pushPublicEncoderName = pushPublicEncoderName;
+	}
+
+	public String getPushEncoderName() {
+		return pushEncoderName;
+	}
+
+	public void setPushEncoderName(String pushEncoderName) {
+		this.pushEncoderName = pushEncoderName;
 	}
 
 	public String getEncodersPoolLabel() {

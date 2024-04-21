@@ -76,7 +76,7 @@ public class CatraMMSBroadcaster {
 					throw new Exception(errorMessage);
 				}
 				broadcastURL = broadcasterStream.getPushProtocol() + "://" 
-					+ broadcasterStream.getPushServerName() 
+					+ broadcasterStream.getPushEncoderName()
 					+ ":" + broadcasterStream.getPushServerPort();
 			}
 
@@ -98,7 +98,7 @@ public class CatraMMSBroadcaster {
 					// 2021-12-27: we are forcing here the broadcast to use the same encodersPool of the broadcaster
 					// This is not mandatory but, since they communicate through udp, it is recommended
 					// 2022-05-18: encoderspool removed because the broadcaster channel is IP_PUSH, for this reason it does not use
-					//		the encoderspool but only pushServerName
+					//		the encoderspool but only pushEncoderName
 					// 2022-05-20: added the broadcastEncodersPool parameter
 					broadcastEncodersPoolLabel,
 					broadcastIngestionJobLabel,
