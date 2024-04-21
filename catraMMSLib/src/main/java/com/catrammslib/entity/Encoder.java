@@ -16,7 +16,7 @@ public class Encoder implements Serializable{
     private String protocol;
 
     // it is used by the GUI, true publicServerName is used, false internalServerName is used
-    private Boolean publicEncoderName;
+    private Boolean publicEncoderNameToBeUsed;
     private String publicServerName;
     private String internalServerName;
     private Long port;
@@ -42,7 +42,7 @@ public class Encoder implements Serializable{
 
     public String getEncoderName()
     {
-        if (getPublicEncoderName())
+        if (getPublicEncoderNameToBeUsed())
             return publicServerName;
         else
             return internalServerName;
@@ -56,7 +56,7 @@ public class Encoder implements Serializable{
         encoder.setExternal(external);
         encoder.setEnabled(enabled);
         encoder.setProtocol(protocol);
-        encoder.setPublicEncoderName(publicEncoderName);
+        encoder.setPublicEncoderNameToBeUsed(publicEncoderNameToBeUsed);
         encoder.setPublicServerName(publicServerName);
         encoder.setInternalServerName(internalServerName);
         encoder.setPort(port);
@@ -140,12 +140,12 @@ public class Encoder implements Serializable{
         this.external = external;
     }
 
-    public Boolean getPublicEncoderName() {
-        return publicEncoderName;
+    public Boolean getPublicEncoderNameToBeUsed() {
+        return publicEncoderNameToBeUsed;
     }
 
-    public void setPublicEncoderName(Boolean publicEncoderName) {
-        this.publicEncoderName = publicEncoderName;
+    public void setPublicEncoderNameToBeUsed(Boolean publicEncoderNameToBeUsed) {
+        this.publicEncoderNameToBeUsed = publicEncoderNameToBeUsed;
     }
 
     public Boolean getEnabled() {
