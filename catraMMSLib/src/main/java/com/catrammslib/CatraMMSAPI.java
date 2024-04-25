@@ -3450,7 +3450,7 @@ public class CatraMMSAPI implements Serializable {
     public void changeLiveProxyPlaylist(String username, String password,
         Long broadcasterIngestionJobKey,
         List<BroadcastPlaylistItem> broadcastPlaylistItems,
-		String switchBehaviour	// applyNewPlaylistNow or applyNewPlaylistAtTheEndOfCurrentMedia
+		boolean interruptPlaylist
 	)
         throws Exception
     {
@@ -3462,7 +3462,7 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/ingestionJob/liveProxy/playlist/" + broadcasterIngestionJobKey
-					+ "?switchBehaviour=" + switchBehaviour;
+					+ "?interruptPlaylist=" + Boolean.toString(interruptPlaylist);
 
             JSONArray jaBodyRequest = new JSONArray();
 
