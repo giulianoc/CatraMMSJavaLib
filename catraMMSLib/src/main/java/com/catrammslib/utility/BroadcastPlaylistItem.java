@@ -161,24 +161,51 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	{
 		try
 		{
+			String durationAsString = "";
+			Date durationElapsed = null;
+			boolean inDaylightTime = TimeZone.getDefault().inDaylightTime(new Date());
+			Date epochDate = null;
+
 			if (start != null && end != null)
 			{
-				SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
-				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+				SimpleDateFormat dateFormat_date = new SimpleDateFormat("yyyy-MM-dd");
+				dateFormat_date.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-				Date durationDate = new Date(end.getTime() - start.getTime());	// 1970-01-01 + (end-start)
-	
-				Date epochDate = new SimpleDateFormat("yyyy-MM-dd").parse("1970-01-01");
-	
-				Long days = (durationDate.getTime() - epochDate.getTime()) / (1000 * 60 * 60 * 24);
+				SimpleDateFormat dateFormat_time = new SimpleDateFormat("HH:mm:ss");
+				dateFormat_time.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-				if (TimeZone.getDefault().inDaylightTime(new Date()))
-					durationDate = new Date(durationDate.getTime() - (3600 * 1000));
+				// se end-start == 1h, durationElapsed.getTime è 3600000
+				durationElapsed = new Date(end.getTime() - start.getTime());
 
-				return (days + " days " + dateFormat.format(durationDate));
+				// epochDate.getTime è 0
+				epochDate = dateFormat_date.parse("1970-01-01");
+
+				Long oneDayInSeconds = 1000L * 60 * 60 * 24;
+				Long days = (durationElapsed.getTime() - epochDate.getTime()) / oneDayInSeconds;
+
+				// 2024-04-26: inDaylightTime risulta true e toglie un ora quando in realtà non si doveva togliere
+				// 		Per questo motivo ho commentato
+				// if (inDaylightTime)
+				//	durationElapsed = new Date(durationElapsed.getTime() - (3600 * 1000));
+
+				durationAsString = days + " days " + dateFormat_time.format(durationElapsed);
 			}
-	
-			return "";	
+
+			{
+				SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+				mLogger.info("durationAsString"
+						+ ", start: " + (start == null ? "null" : dateFormat.format(start))
+						+ ", end: " + (end == null ? "null" : dateFormat.format(end))
+						+ ", epochDate: " + (epochDate == null ? "null" : dateFormat.format(epochDate))
+						+ ", epochDate.getTime: " + (epochDate == null ? "null" : epochDate.getTime())
+						+ ", durationElapsed: " + (durationElapsed == null ? "null" : durationElapsed.getTime())
+						+ ", inDaylightTime: " + inDaylightTime
+						+ ", durationAsString: " + durationAsString
+				);
+			}
+
+			return durationAsString;
 		}
 		catch (Exception e)
 		{
