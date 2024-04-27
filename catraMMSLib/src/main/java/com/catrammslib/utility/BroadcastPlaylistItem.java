@@ -23,6 +23,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
     private Date start;
     private Date end;
+	private Date minStart;	// usato dalla GUI
 	
 	private String mediaType;					// Stream, Media, Countdown, Direct URL
 
@@ -950,5 +951,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public Long getPhysicalPathKey() {
 		return physicalPathKey;
+	}
+
+	public Date getMinStart() {
+		return minStart;
+	}
+
+	public void setMinStart(Date minStart) {
+		this.minStart = minStart;
 	}
 }
