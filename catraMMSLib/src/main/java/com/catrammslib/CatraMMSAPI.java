@@ -3095,7 +3095,7 @@ public class CatraMMSAPI implements Serializable {
                                  boolean ingestionDateAscending,
                                  boolean dependencyInfo,	// if true adds: dependOnIngestionJobKey, dependOnSuccess, dependencyIngestionStatus				 
                                  boolean ingestionJobOutputs,
-								 Boolean fromMaster,
+								 Boolean fromMaster, Boolean cacheAllowed,
                                  List<IngestionJob> ingestionJobsList)
             throws Exception
     {
@@ -3130,6 +3130,7 @@ public class CatraMMSAPI implements Serializable {
                     + (end == null ? "" : ("&endIngestionDate=" + simpleDateFormat.format(end)))
                     + (startScheduleDate == null ? "" : ("&startScheduleDate=" + simpleDateFormat.format(startScheduleDate)))
 					+ (fromMaster == null ? "" : "&fromMaster=" + fromMaster)
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
 					;
 
             mLogger.info("mmsURL: " + mmsURL);

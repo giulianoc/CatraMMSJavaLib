@@ -121,6 +121,7 @@ public class LiveStreams {
                                                 false, false,
                                                 // 2022-12-18: normal list
                                                 false,
+                                                false, // bisogna sapere se un canale è attivo oppure no, non ammettiamo cache
                                                 ingestionJobList);
                                         for (IngestionJob ingestionJob: ingestionJobList)
                                         {
@@ -307,6 +308,7 @@ public class LiveStreams {
                                             true, false,
                                             // 2022-12-18: this is important because it could generate a new Workflow in case status is 'not running'
                                             true,
+                                            false, // bisogna sapere se un canale è attivo oppure no, non ammettiamo cache
                                             ingestionJobList);
                                     mLogger.info("liveStreamsFillList statistics (liveProxy)"
                                             + ", localStartIndex: " + localStartIndex
@@ -526,6 +528,7 @@ public class LiveStreams {
                                                 true, false,
                                                 // 2022-12-18: this is important because it could generare a new Workflow in case status is 'not running'
                                                 true,
+                                                false, // bisogna sapere se un canale è attivo oppure no, non ammettiamo cache
                                                 ingestionJobList);
                                         IngestionJob notEndedIngestionJob = null;
                                         for (IngestionJob ingestionJob: ingestionJobList)
