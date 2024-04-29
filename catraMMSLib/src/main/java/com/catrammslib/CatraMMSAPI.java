@@ -5596,13 +5596,14 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public Long getStream(String username, String password,
-                               long startIndex, long pageSize,
-                               Long confKey, String label, Boolean labelLike,
-                               String url,
-                               String sourceType, String type, 
-							   String name, String region, String country,
-                               String labelOrder,   // asc or desc
-                               List<Stream> streamList)
+           long startIndex, long pageSize,
+           Long confKey, String label, Boolean labelLike,
+           String url,
+           String sourceType, String type,
+           String name, String region, String country,
+           String labelOrder,   // asc or desc
+          Boolean cacheAllowed,
+       List<Stream> streamList)
             throws Exception
     {
         Long numFound;
@@ -5623,6 +5624,7 @@ public class CatraMMSAPI implements Serializable {
                     + "&region=" + (region == null ? "" : java.net.URLEncoder.encode(region, "UTF-8"))
                     + "&country=" + (country == null ? "" : java.net.URLEncoder.encode(country, "UTF-8"))
                     + "&labelOrder=" + (labelOrder == null ? "" : labelOrder)
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);

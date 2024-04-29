@@ -1129,7 +1129,7 @@ public class LiveStreams {
                 catraMMS.getStream(userName, password,
                         0, 1, channelKey, configurationLabel, false,
                         null, null, null, null, null, null,
-                        null, channelConfList);
+                        null, null, channelConfList);
 
                 if (channelConfList.size() != 1)
                 {
