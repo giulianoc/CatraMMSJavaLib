@@ -2237,7 +2237,8 @@ public class CatraMMSAPI implements Serializable {
                               Long recordingCode, String jsonCondition,
                               String orderBy, // i.e.: ingestionDate desc, title asc
                               String jsonOrderBy,
-							  JSONObject joResponseFields,
+                              List<String> responseFields,
+                              Boolean cacheAllowed,
                               List<MediaItem> mediaItemsList    // has to be already initialized (new ArrayList<>())
     )
             throws Exception
@@ -2270,6 +2271,57 @@ public class CatraMMSAPI implements Serializable {
                 newMediaItemKey = mediaItemKey;
             }
 
+            String sTagsIn = null;
+            {
+                if (tagsIn != null && tagsIn.size() > 0)
+                {
+                    for(String tagIn: tagsIn)
+                    {
+                        if (tagIn != null && !tagIn.isBlank())
+                        {
+                            if (sTagsIn == null)
+                                sTagsIn = tagIn;
+                            else
+                                sTagsIn += ("," + tagIn);
+                        }
+                    }
+                }
+            }
+
+            String sTagsNotIn = null;
+            {
+                if (tagsNotIn != null && tagsNotIn.size() > 0)
+                {
+                    for(String tagNotIn: tagsNotIn)
+                    {
+                        if (tagNotIn != null && !tagNotIn.isBlank())
+                        {
+                            if (sTagsNotIn == null)
+                                sTagsNotIn = tagNotIn;
+                            else
+                                sTagsNotIn += ("," + tagNotIn);
+                        }
+                    }
+                }
+            }
+
+            String sResponseFields = null;
+            {
+                if (responseFields != null && responseFields.size() > 0)
+                {
+                    for(String responseField: responseFields)
+                    {
+                        if (responseField != null && !responseField.isBlank())
+                        {
+                            if (sResponseFields == null)
+                                sResponseFields = responseField;
+                            else
+                                sResponseFields += ("," + responseField);
+                        }
+                    }
+                }
+            }
+
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
                     + (newMediaItemKey == null ? "" : ("/" + newMediaItemKey))
                     + "?start=" + startIndex
@@ -2278,19 +2330,20 @@ public class CatraMMSAPI implements Serializable {
                     + (uniqueName == null || uniqueName.isEmpty() ? "" : ("&uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8")))
                     + "&title=" + (title == null ? "" : java.net.URLEncoder.encode(title, "UTF-8")) // requires unescape server side
                     + liveRecordingChunkParameter
-                    // + "&tags=" + (tags == null ? "" : java.net.URLEncoder.encode(tags, "UTF-8"))
                     + (ingestionStart != null ? ("&startIngestionDate=" + simpleDateFormat.format(ingestionStart)) : "")
                     + (ingestionEnd != null ? ("&endIngestionDate=" + simpleDateFormat.format(ingestionEnd)) : "")
                     + (recordingCode == null ? "" : ("&recordingCode=" + recordingCode))
                     + (jsonCondition == null ? "" : ("&jsonCondition=" +  java.net.URLEncoder.encode(jsonCondition, "UTF-8")))
+                    + (sTagsIn == null ? "" : ("&tagsIn=" + sTagsIn))
+                    + (sTagsNotIn == null ? "" : ("&tagsNotIn=" + sTagsNotIn))
+                    + (sResponseFields == null ? "" : ("&responseFields=" + sResponseFields))
                     + "&orderBy=" + (orderBy == null ? "" : java.net.URLEncoder.encode(orderBy, "UTF-8"))
                     + "&jsonOrderBy=" + (jsonOrderBy == null ? "" : java.net.URLEncoder.encode(jsonOrderBy, "UTF-8"))
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
                     ;
 
+            /*
 			String body = null;
-			// if ((tagsIn != null && tagsIn.size() > 0)
-			//	|| (tagsNotIn != null && tagsNotIn.size() > 0)
-			//	|| joResponseFields != null)
 			{
 				JSONObject joOtherInputs = new JSONObject();
 				{
@@ -2329,13 +2382,15 @@ public class CatraMMSAPI implements Serializable {
 				}
 				body = joOtherInputs.toString(4);
 			}
+            */
 
             mLogger.info("mmsURL: " + mmsURL
-                    + ", body: " + body
+                    // + ", body: " + body
                     + ", username: " + username
             );
 
             long start = System.currentTimeMillis();
+            /*
 			if (newMediaItemKey == null && body != null && body.length() > 0)
 			{
 				String postContentType = null;
@@ -2343,6 +2398,7 @@ public class CatraMMSAPI implements Serializable {
 						username, password, null, body, outputToBeCompressed);
 			}
 			else
+            */
 			{
 				mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
 						username, password, null, outputToBeCompressed);
