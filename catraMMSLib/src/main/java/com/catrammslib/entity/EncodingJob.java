@@ -14,6 +14,8 @@ public class EncodingJob implements Serializable {
     private String processorMMS;
     private Long encoderKey;
     private Long encodingPid;
+    private Long realTimeFrameRate;
+    private Long realTimeBitRate;
     private Date start;
     private Boolean endEstimate;
     private Date end;
@@ -332,6 +334,22 @@ public class EncodingJob implements Serializable {
 
     public void setEncodingPid(Long encodingPid) {
         this.encodingPid = encodingPid;
+    }
+
+    public Long getRealTimeFrameRate() {
+        return realTimeFrameRate;
+    }
+
+    public void setRealTimeFrameRate(Long realTimeFrameRate) {
+        this.realTimeFrameRate = realTimeFrameRate;
+    }
+
+    public Long getRealTimeBitRate() {
+        return realTimeBitRate;
+    }
+
+    public void setRealTimeBitRate(Long realTimeBitRate) {
+        this.realTimeBitRate = realTimeBitRate;
     }
 
     public Boolean getOwnedByCurrentWorkspace() {

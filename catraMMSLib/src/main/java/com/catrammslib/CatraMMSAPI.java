@@ -8283,6 +8283,15 @@ public class CatraMMSAPI implements Serializable {
             encodingJob.setEncoderKey(encodingJobInfo.getLong("encoderKey"));
             encodingJob.setEncodingPid(encodingJobInfo.getLong("encodingPid"));
 
+            if (encodingJobInfo.has("realTimeFrameRate") && !encodingJobInfo.isNull("realTimeFrameRate"))
+                encodingJob.setRealTimeFrameRate(encodingJobInfo.getLong("realTimeFrameRate"));
+            else
+                encodingJob.setRealTimeFrameRate(-1L);
+            if (encodingJobInfo.has("realTimeBitRate") && !encodingJobInfo.isNull("realTimeBitRate"))
+                encodingJob.setRealTimeBitRate(encodingJobInfo.getLong("realTimeBitRate"));
+            else
+                encodingJob.setRealTimeBitRate(-1L);
+
             if (encodingJobInfo.isNull("processorMMS"))
                 encodingJob.setProcessorMMS(null);
             else
