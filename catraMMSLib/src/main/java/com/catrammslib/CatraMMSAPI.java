@@ -2451,6 +2451,233 @@ public class CatraMMSAPI implements Serializable {
         return numFound;
     }
 
+    public Long getMediaItems_PER_AWS(String username, String password,
+                              long startIndex, long pageSize,
+                              Long mediaItemKey, String uniqueName,
+                              List<Long> otherMediaItemsKey,
+                              String contentType,   // video, audio, image
+                              Date ingestionStart, Date ingestionEnd,
+                              String title, Boolean bLiveRecordingChunk,
+                              List<String> tagsIn, List<String> tagsNotIn,
+                              Long recordingCode, String jsonCondition,
+                              String orderBy, // i.e.: ingestionDate desc, title asc
+                              String jsonOrderBy,
+                              List<String> responseFields,
+                              Boolean cacheAllowed,
+                              List<MediaItem> mediaItemsList    // has to be already initialized (new ArrayList<>())
+    )
+            throws Exception
+    {
+        Long numFound;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String liveRecordingChunkParameter = "";
+            if (bLiveRecordingChunk != null)
+            {
+                if (bLiveRecordingChunk == true)
+                    liveRecordingChunkParameter = "&liveRecordingChunk=true";
+                else
+                    liveRecordingChunkParameter = "&liveRecordingChunk=false";
+            }
+
+            Long newMediaItemKey;
+            if (mediaItemKey == null && otherMediaItemsKey != null && otherMediaItemsKey.size() > 0)
+            {
+                newMediaItemKey = otherMediaItemsKey.get(0);
+                otherMediaItemsKey.remove(0);
+            }
+            else
+            {
+                newMediaItemKey = mediaItemKey;
+            }
+
+            String sTagsIn = null;
+            {
+                if (tagsIn != null && tagsIn.size() > 0)
+                {
+                    for(String tagIn: tagsIn)
+                    {
+                        if (tagIn != null && !tagIn.isBlank())
+                        {
+                            if (sTagsIn == null)
+                                sTagsIn = tagIn;
+                            else
+                                sTagsIn += ("," + tagIn);
+                        }
+                    }
+                }
+            }
+
+            String sTagsNotIn = null;
+            {
+                if (tagsNotIn != null && tagsNotIn.size() > 0)
+                {
+                    for(String tagNotIn: tagsNotIn)
+                    {
+                        if (tagNotIn != null && !tagNotIn.isBlank())
+                        {
+                            if (sTagsNotIn == null)
+                                sTagsNotIn = tagNotIn;
+                            else
+                                sTagsNotIn += ("," + tagNotIn);
+                        }
+                    }
+                }
+            }
+
+            String sResponseFields = null;
+            {
+                if (responseFields != null && responseFields.size() > 0)
+                {
+                    for(String responseField: responseFields)
+                    {
+                        if (responseField != null && !responseField.isBlank())
+                        {
+                            if (sResponseFields == null)
+                                sResponseFields = responseField;
+                            else
+                                sResponseFields += ("," + responseField);
+                        }
+                    }
+                }
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
+                    + (newMediaItemKey == null ? "" : ("/" + newMediaItemKey))
+                    + "?start=" + startIndex
+                    + "&rows=" + pageSize
+                    + "&contentType=" + contentType
+                    + (uniqueName == null || uniqueName.isEmpty() ? "" : ("&uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8")))
+                    + "&title=" + (title == null ? "" : java.net.URLEncoder.encode(title, "UTF-8")) // requires unescape server side
+                    + liveRecordingChunkParameter
+                    + (ingestionStart != null ? ("&startIngestionDate=" + simpleDateFormat.format(ingestionStart)) : "")
+                    + (ingestionEnd != null ? ("&endIngestionDate=" + simpleDateFormat.format(ingestionEnd)) : "")
+                    + (recordingCode == null ? "" : ("&recordingCode=" + recordingCode))
+                    + (jsonCondition == null ? "" : ("&jsonCondition=" +  java.net.URLEncoder.encode(jsonCondition, "UTF-8")))
+                    // + (sTagsIn == null ? "" : ("&tagsIn=" + sTagsIn))
+                    // + (sTagsNotIn == null ? "" : ("&tagsNotIn=" + sTagsNotIn))
+                    // + (sResponseFields == null ? "" : ("&responseFields=" + sResponseFields))
+                    + "&orderBy=" + (orderBy == null ? "" : java.net.URLEncoder.encode(orderBy, "UTF-8"))
+                    + "&jsonOrderBy=" + (jsonOrderBy == null ? "" : java.net.URLEncoder.encode(jsonOrderBy, "UTF-8"))
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
+                    ;
+
+			String body = null;
+			{
+				JSONObject joOtherInputs = new JSONObject();
+				{
+					JSONArray jaTagsIn = new JSONArray();
+					if (tagsIn != null)
+					{
+						for(String tag: tagsIn)
+						{
+							jaTagsIn.put(tag);
+						}
+					}
+					joOtherInputs.put("tagsIn", jaTagsIn);
+
+					JSONArray jaTagsNotIn = new JSONArray();
+					if (tagsNotIn != null)
+					{
+						for(String tag: tagsNotIn)
+						{
+							jaTagsNotIn.put(tag);
+						}
+					}
+					joOtherInputs.put("tagsNotIn", jaTagsNotIn);
+
+					JSONArray jaOtherMediaItemsKey = new JSONArray();
+					if (newMediaItemKey != null && otherMediaItemsKey != null)
+					{
+						for(Long localMediaItemKey: otherMediaItemsKey)
+						{
+							jaOtherMediaItemsKey.put(localMediaItemKey);
+						}
+					}
+					joOtherInputs.put("otherMediaItemsKey", jaOtherMediaItemsKey);
+
+					if (responseFields != null && responseFields.size() > 0)
+                    {
+                        JSONObject joResponseFields = new JSONObject();
+                        for(String responseField: responseFields)
+                            joResponseFields.put(responseField, true);
+
+                        joOtherInputs.put("responseFields", joResponseFields);
+                    }
+				}
+				body = joOtherInputs.toString(4);
+			}
+
+            mLogger.info("mmsURL: " + mmsURL
+                    // + ", body: " + body
+                    + ", username: " + username
+            );
+
+            long start = System.currentTimeMillis();
+			if (newMediaItemKey == null && body != null && body.length() > 0)
+			{
+				String postContentType = null;
+				mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType, timeoutInSeconds, maxRetriesNumber,
+						username, password, null, body, outputToBeCompressed);
+			}
+			else
+            {
+                mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                        username, password, null, outputToBeCompressed);
+            }
+            mLogger.info("getMediaItems. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getMediaItems MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            mediaItemsList.clear();
+
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            numFound = joResponse.getLong("numFound");
+
+            JSONArray jaMediaItems = joResponse.getJSONArray("mediaItems");
+
+            for (int mediaItemIndex = 0; mediaItemIndex < jaMediaItems.length(); mediaItemIndex++)
+            {
+                JSONObject mediaItemInfo = jaMediaItems.getJSONObject(mediaItemIndex);
+
+                MediaItem mediaItem = new MediaItem();
+
+                boolean deep = true;
+                fillMediaItem(mediaItem, mediaItemInfo, deep);
+
+                mediaItemsList.add(mediaItem);
+            }
+
+            mLogger.info("getMediaItems. mediaItemsList.size: " + mediaItemsList.size());
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getMediaItems failed"
+                    + ", Exception: " + e
+                    + ", mmsInfo: " + mmsInfo
+                    ;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return numFound;
+    }
+
     public MediaItem getMediaItemByMediaItemKey(String username, String password,
                                   Long mediaItemKey)
             throws Exception
