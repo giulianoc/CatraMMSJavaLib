@@ -15,7 +15,7 @@ public class EncodingJob implements Serializable {
     private Long encoderKey;
     private Long encodingPid;
     private Long realTimeFrameRate;
-    private Long realTimeBitRate;
+    private Double realTimeBitRate;
     private Date start;
     private Boolean endEstimate;
     private Date end;
@@ -344,11 +344,11 @@ public class EncodingJob implements Serializable {
         this.realTimeFrameRate = realTimeFrameRate;
     }
 
-    public Long getRealTimeBitRate() {
+    public Double getRealTimeBitRate() {
         return realTimeBitRate;
     }
 
-    public void setRealTimeBitRate(Long realTimeBitRate) {
+    public void setRealTimeBitRate(Double realTimeBitRate) {
         this.realTimeBitRate = realTimeBitRate;
     }
 
