@@ -3485,7 +3485,7 @@ public class CatraMMSAPI implements Serializable {
 
     public IngestionJob getIngestionJob(String username, String password,
         Long ingestionJobKey, boolean ingestionJobOutputs,
-		Boolean fromMaster)
+		Boolean fromMaster, Boolean cacheAllowed)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -3498,6 +3498,7 @@ public class CatraMMSAPI implements Serializable {
                 + "/catramms/1.0.1/ingestionJob/" + ingestionJobKey
                 + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
 				+ (fromMaster == null ? "" : "&fromMaster=" + fromMaster)
+                + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
             ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -3781,7 +3782,7 @@ public class CatraMMSAPI implements Serializable {
                                 Long encoderKey, Boolean alsoEncodingJobsFromOtherWorkspaces,
                                 String status, String typesCommaSeparated,
                                 boolean ascending,
-								Boolean fromMaster,
+								Boolean fromMaster, Boolean cacheAllowed,
                                 List<EncodingJob> encodingJobsList)
             throws Exception
     {
@@ -3807,6 +3808,7 @@ public class CatraMMSAPI implements Serializable {
 				+ (alsoEncodingJobsFromOtherWorkspaces != null
 					? ("&alsoEncodingJobsFromOtherWorkspaces=" + alsoEncodingJobsFromOtherWorkspaces) : "")
 				+ (fromMaster == null ? "" : "&fromMaster=" + fromMaster)
+                + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
 			;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -3856,7 +3858,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public EncodingJob getEncodingJob(String username, String password,
-        Long encodingJobKey, Boolean fromMaster)
+        Long encodingJobKey, Boolean fromMaster, Boolean cacheAllowed)
         throws Exception
     {
         Long numFound;
@@ -3869,7 +3871,11 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingJob/" + encodingJobKey
 				+ (fromMaster == null ? "" : "?fromMaster=" + fromMaster)
-			;
+            ;
+            if (mmsURL.indexOf("?") == -1)
+                mmsURL += (cacheAllowed == null || cacheAllowed ? "" : "?should_bypass_cache=true");
+            else
+                mmsURL += (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true");
 
             mLogger.info("mmsURL: " + mmsURL);
 
