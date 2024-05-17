@@ -3775,6 +3775,42 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    public void changeLiveProxyOverlayText(String username, String password,
+                                        Long broadcasterIngestionJobKey,
+                                        String newOverlayText
+    )
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/ingestionJob/liveProxy/overlayText/" + broadcasterIngestionJobKey;
+
+            String bodyRequest = newOverlayText;
+
+            mLogger.info("changeLiveProxyOverlayText"
+                    + ", mmsURL: " + mmsURL
+                    + ", bodyRequest: " + bodyRequest
+            );
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, bodyRequest, outputToBeCompressed);
+            mLogger.info("changeLiveProxyOverlayText. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "changeLiveProxyOverlayText failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public Long getEncodingJobs(String username, String password,
                                 long startIndex, long pageSize,
                                 Date ingestionStart, Date ingestionEnd,
