@@ -4,10 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.catrammslib.entity.*;
+import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class OutputStream implements Serializable {

@@ -1,4 +1,4 @@
-package com.catrammslib.utility;
+package com.catrammslib.utility.filters;
 
 import java.io.Serializable;
 import org.slf4j.Logger;

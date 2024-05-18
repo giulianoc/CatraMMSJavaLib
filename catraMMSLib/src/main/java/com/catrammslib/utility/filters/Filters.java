@@ -1,4 +1,4 @@
-package com.catrammslib.utility;
+package com.catrammslib.utility.filters;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -43,6 +43,9 @@ public class Filters implements Serializable {
 	private Boolean drawText;
 	private DrawTextDetails drawTextDetails;
 
+	private Boolean imageOverlay;
+	private ImageOverlayDetails imageOverlayDetails;
+
 	private Boolean fade;
 	private Long fade_Duration;
 
@@ -57,23 +60,12 @@ public class Filters implements Serializable {
 	public Filters()
 	{
 		this.drawTextDetails = new DrawTextDetails(null);
+		this.imageOverlayDetails = new ImageOverlayDetails();
 
 		timeInSecondsDecimalsPrecision = (long) 1;
 
 		reset();
 	}
-
-	/*
-	public Filters(boolean drawText, DrawTextDetails drawTextDetails)
-	{
-		this.drawText = drawText;
-		this.drawTextDetails = drawTextDetails;
-
-		timeInSecondsDecimalsPrecision = (long) 1;
-
-		reset();
-	}
-	 */
 
 	private void reset()
 	{
@@ -105,6 +97,8 @@ public class Filters implements Serializable {
 		drawBox_Thickness = "fill";
 
 		drawText = false;
+
+		imageOverlay = false;
 
 		fade = false;
 		fade_Duration = null;
@@ -150,6 +144,9 @@ public class Filters implements Serializable {
 
 		filters.setDrawText(getDrawText());
 		filters.setDrawTextDetails(getDrawTextDetails().clone());
+
+		filters.setImageOverlay(getImageOverlay());
+		filters.setImageOverlayDetails(getImageOverlayDetails().clone());
 
 		filters.setFade(getFade());
 		filters.setFade_Duration(getFade_Duration());
@@ -227,6 +224,13 @@ public class Filters implements Serializable {
 						setDrawText(true);
 
 						getDrawTextDetails().fromJson(joFilter);
+					}
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("imageoverlay"))
+					{
+						setImageOverlay(true);
+
+						getImageOverlayDetails().fromJson(joFilter);
 					}
 
 					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("fade"))
@@ -374,6 +378,12 @@ public class Filters implements Serializable {
 				jaVideo.put(getDrawTextDetails().toJson());
 			}
 
+			if (getImageOverlay() != null && getImageOverlay()) {
+				videoFilterPresent = true;
+
+				jaVideo.put(getImageOverlayDetails().toJson());
+			}
+
 			if (getFade() != null && getFade())
 			{
 				videoFilterPresent = true;
@@ -442,43 +452,6 @@ public class Filters implements Serializable {
 
 		return joFilters;
 	}
-
-	/*
-	public void fromJson(JSONObject joOutputStream,
-						 List<EncodingProfile> encodingProfileList,
-						 List<HLSChannelConf> hlsChannelList,
-						 List<RTMPChannelConf> rtmpChannelList,
-						 List<CDN77ChannelConf> cdn77ChannelList,
-						 List<AWSChannelConf> awsChannelList
-	)
-	{
-		try
-		{
-			if (joOutputStream.has("filters"))
-			{
-				JSONObject joFilters = joOutputStream.getJSONObject("filters");
-				filtersFromJson(joFilters);
-			}
-
-			if (joOutputStream.has("drawTextDetails"))
-			{
-				setDrawTextEnable(true);
-
-				JSONObject joDrawTextDetails = joOutputStream.getJSONObject("drawTextDetails");
-
-				getDrawTextDetails().fromJson(joDrawTextDetails);
-			}
-			else
-			{
-				setDrawTextEnable(false);
-			}
-		}
-		catch(Exception e)
-		{
-			mLogger.error("Exception: " + e);
-		}
-	}
-	 */
 
 	public Double getAudioVolumeChange() {
 		return audioVolumeChange;
@@ -726,6 +699,22 @@ public class Filters implements Serializable {
 
 	public void setDrawBox_Thickness(String drawBox_Thickness) {
 		this.drawBox_Thickness = drawBox_Thickness;
+	}
+
+	public Boolean getImageOverlay() {
+		return imageOverlay;
+	}
+
+	public void setImageOverlay(Boolean imageOverlay) {
+		this.imageOverlay = imageOverlay;
+	}
+
+	public ImageOverlayDetails getImageOverlayDetails() {
+		return imageOverlayDetails;
+	}
+
+	public void setImageOverlayDetails(ImageOverlayDetails imageOverlayDetails) {
+		this.imageOverlayDetails = imageOverlayDetails;
 	}
 
 	public Float getSilencedetect_Noise() {

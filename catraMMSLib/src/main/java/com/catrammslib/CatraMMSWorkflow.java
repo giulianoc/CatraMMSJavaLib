@@ -8,8 +8,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import com.catrammslib.entity.WorkflowVariable;
-import com.catrammslib.utility.DrawTextDetails;
-import com.catrammslib.utility.Filters;
+import com.catrammslib.utility.filters.Filters;
 import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
 
@@ -455,7 +454,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-			DrawTextDetails drawTextDetails,
+			Filters filters,
 
             List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
@@ -470,11 +469,11 @@ public class CatraMMSWorkflow {
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
                     outputStreamList, joInternalMMSParameters, defaultBroadcast, null);
 
-			if (drawTextDetails != null)
+			if (filters != null)
 			{
 				JSONObject joParameters = joTask.getJSONObject("parameters");
 
-				joParameters.put("broadcastDrawTextDetails", drawTextDetails.toJson());	
+				joParameters.put("broadcastFilters", filters.toJson());
 			}
 
             return joTask;
@@ -588,7 +587,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-			DrawTextDetails drawTextDetails,
+			Filters filters,
 			
             List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
@@ -600,11 +599,11 @@ public class CatraMMSWorkflow {
             JSONObject joTask = buildVODProxyJson(label, mediaItemReferenceList, encodersPool, 
 				proxyStartTime, proxyEndTime, otherInputOptions, outputStreamList, defaultBroadcast);
 
-			if (drawTextDetails != null)
+			if (filters != null)
 			{
 				JSONObject joParameters = joTask.getJSONObject("parameters");
 
-				joParameters.put("broadcastDrawTextDetails", drawTextDetails.toJson());	
+				joParameters.put("broadcastFilters", filters.toJson());
 			}
 
             return joTask;
@@ -709,7 +708,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-			DrawTextDetails drawTextDetails,
+			Filters filters,
 
 			List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
@@ -721,11 +720,11 @@ public class CatraMMSWorkflow {
             JSONObject joTask = buildCountdownJson(label, mediaItemReferenceList, encodersPool, 
 				proxyStartTime, proxyEndTime, outputStreamList, defaultBroadcast);
 
-			if (drawTextDetails != null)
+			if (filters != null)
 			{
 				JSONObject joParameters = joTask.getJSONObject("parameters");
 
-				joParameters.put("broadcastDrawTextDetails", drawTextDetails.toJson());	
+				joParameters.put("broadcastFilters", filters.toJson());
 			}
 	
             return joTask;

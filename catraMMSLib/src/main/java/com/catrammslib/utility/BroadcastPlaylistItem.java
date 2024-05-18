@@ -1,5 +1,6 @@
 package com.catrammslib.utility;
 
+import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -36,11 +37,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	// in case of Countdown
 	private Long physicalPathKey;
+
 	// drawTextDetails is mandatory in case of Countdown, it is optional for the other media.
 	// Per i media 'non-countdown', drawTextEnable indica se drawTextDetails deve essere usato oppure no
-	private DrawTextDetails drawTextDetails = new DrawTextDetails(null);
-	private Boolean drawTextEnable;
-
+	// private DrawTextDetails drawTextDetails = new DrawTextDetails(null);
+	// private Boolean drawTextEnable;
+	private Filters filters = new Filters();
 
 	// got from physicalPathKey or referencePhysicalPathKeys
 	private List<MediaItem> mediaItems = new ArrayList<>();
@@ -66,7 +68,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		mediaTypeList.add("Countdown");
 		mediaType = "Media";
 
-		drawTextEnable = false;
+		// drawTextEnable = false;
 
 		endBasedOnMediaDuration = false;
 	}
@@ -301,29 +303,26 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				if (stream != null)
 					joBroadcastPlaylistItem.put("streamConfigurationLabel", stream.getLabel());
 
-				if (drawTextEnable)
-					joBroadcastPlaylistItem.put("drawTextDetails", drawTextDetails.toJson());
+				joBroadcastPlaylistItem.put("filters", filters.toJson());
 			}
 			else if (mediaType.equalsIgnoreCase("Media"))
 			{
 				JSONArray jaLocalReferencePhysicalPathKeys = new JSONArray(referencePhysicalPathKeys.toString());
 				joBroadcastPlaylistItem.put("referencePhysicalPathKeys", jaLocalReferencePhysicalPathKeys);
 
-				if (drawTextEnable)
-					joBroadcastPlaylistItem.put("drawTextDetails", drawTextDetails.toJson());
+				joBroadcastPlaylistItem.put("filters", filters.toJson());
 			}
 			else if (mediaType.equalsIgnoreCase("Countdown"))
 			{
 				joBroadcastPlaylistItem.put("physicalPathKey", physicalPathKey);
 
-				joBroadcastPlaylistItem.put("drawTextDetails", drawTextDetails.toJson());
+				joBroadcastPlaylistItem.put("filters", filters.toJson());
 			}
 			else if (mediaType.equalsIgnoreCase("Direct URL"))
 			{
 				joBroadcastPlaylistItem.put("url", url);
 
-				if (drawTextEnable)
-					joBroadcastPlaylistItem.put("drawTextDetails", drawTextDetails.toJson());
+				joBroadcastPlaylistItem.put("filters", filters.toJson());
 			}
 			else
 			{
@@ -363,14 +362,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 						broadcastPlaylistItem.setStream(streamList.get(0));
 				}
 
-				if (joBroadcastPlaylistItem.has("drawTextDetails"))
-				{
-					broadcastPlaylistItem.getDrawTextDetails().fromJson(
-						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
-					broadcastPlaylistItem.setDrawTextEnable(true);
-				}
-				else
-					broadcastPlaylistItem.setDrawTextEnable(false);
+				if (joBroadcastPlaylistItem.has("filters") && !joBroadcastPlaylistItem.isNull("filters"))
+					broadcastPlaylistItem.getFilters().fromJson(joBroadcastPlaylistItem.getJSONObject("filters"));
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Media"))
 			{
@@ -388,37 +381,22 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					}
 				}
 
-				if (joBroadcastPlaylistItem.has("drawTextDetails"))
-				{
-					broadcastPlaylistItem.getDrawTextDetails().fromJson(
-						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
-					broadcastPlaylistItem.setDrawTextEnable(true);
-				}
-				else
-					broadcastPlaylistItem.setDrawTextEnable(false);
+				if (joBroadcastPlaylistItem.has("filters") && !joBroadcastPlaylistItem.isNull("filters"))
+					broadcastPlaylistItem.getFilters().fromJson(joBroadcastPlaylistItem.getJSONObject("filters"));
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Countdown"))
 			{
 				broadcastPlaylistItem.setPhysicalPathKey(joBroadcastPlaylistItem.getLong("physicalPathKey"));
 
-				if (joBroadcastPlaylistItem.has("drawTextDetails"))
-				{
-					broadcastPlaylistItem.getDrawTextDetails().fromJson(
-						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
-				}
+				if (joBroadcastPlaylistItem.has("filters") && !joBroadcastPlaylistItem.isNull("filters"))
+					broadcastPlaylistItem.getFilters().fromJson(joBroadcastPlaylistItem.getJSONObject("filters"));
 			}
 			else if (broadcastPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL"))
 			{
 				broadcastPlaylistItem.setUrl(joBroadcastPlaylistItem.getString("url"));
 
-				if (joBroadcastPlaylistItem.has("drawTextDetails"))
-				{
-					broadcastPlaylistItem.getDrawTextDetails().fromJson(
-						joBroadcastPlaylistItem.getJSONObject("drawTextDetails"));
-					broadcastPlaylistItem.setDrawTextEnable(true);
-				}
-				else
-					broadcastPlaylistItem.setDrawTextEnable(false);
+				if (joBroadcastPlaylistItem.has("filters") && !joBroadcastPlaylistItem.isNull("filters"))
+					broadcastPlaylistItem.getFilters().fromJson(joBroadcastPlaylistItem.getJSONObject("filters"));
 			}
 			else
 			{
@@ -457,14 +435,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				joBroadcastStreamInput.getLong("streamConfKey"));
 			broadcastPlaylistItem.setStream(stream);
 
-			if (joBroadcastStreamInput.has("drawTextDetails") && !joBroadcastStreamInput.isNull("drawTextDetails"))
-			{
-				broadcastPlaylistItem.setDrawTextEnable(true);
-
-				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastStreamInput.getJSONObject("drawTextDetails"));
-			}
-			else
-				broadcastPlaylistItem.setDrawTextEnable(false);
+			if (joBroadcastStreamInput.has("filters") && !joBroadcastStreamInput.isNull("filters"))
+				broadcastPlaylistItem.getFilters().fromJson(joBroadcastStreamInput.getJSONObject("filters"));
 
 			broadcastPlaylistItem.setStart(broadcastInputStart);
 			broadcastPlaylistItem.setEnd(broadcastInputEnd);
@@ -503,16 +475,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				}
 			}
 
-			if (joBroadcastVODInput.has("drawTextDetails") && !joBroadcastVODInput.isNull("drawTextDetails"))
-			{
-				broadcastPlaylistItem.setDrawTextEnable(true);
-
-				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastVODInput.getJSONObject("drawTextDetails"));
-			}
-			else
-			{
-				broadcastPlaylistItem.setDrawTextEnable(false);
-			}
+			if (joBroadcastVODInput.has("filters") && !joBroadcastVODInput.isNull("filters"))
+				broadcastPlaylistItem.getFilters().fromJson(joBroadcastVODInput.getJSONObject("filters"));
 
 			broadcastPlaylistItem.setStart(broadcastInputStart);
 			broadcastPlaylistItem.setEnd(broadcastInputEnd);
@@ -524,15 +488,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			broadcastPlaylistItem.setMediaType("Countdown");
 
 			broadcastPlaylistItem.setPhysicalPathKey(joBroadcastCountdownInput.getLong("physicalPathKey"));
-			if (joBroadcastCountdownInput.has("drawTextDetails"))
-				broadcastPlaylistItem.getDrawTextDetails().fromJson(
-					joBroadcastCountdownInput.getJSONObject("drawTextDetails"));
-
-			{
-				broadcastPlaylistItem.setDrawTextEnable(true);
-
-				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastCountdownInput.getJSONObject("drawTextDetails"));
-			}
+			if (joBroadcastCountdownInput.has("filters") && !joBroadcastCountdownInput.isNull("filters"))
+				broadcastPlaylistItem.getFilters().fromJson(joBroadcastCountdownInput.getJSONObject("filters"));
 
 			broadcastPlaylistItem.setStart(broadcastInputStart);
 			broadcastPlaylistItem.setEnd(broadcastInputEnd);
@@ -545,14 +502,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			broadcastPlaylistItem.setUrl(joBroadcastDirectURLInput.getString("url"));
 
-			if (joBroadcastDirectURLInput.has("drawTextDetails") && !joBroadcastDirectURLInput.isNull("drawTextDetails"))
-			{
-				broadcastPlaylistItem.setDrawTextEnable(true);
-
-				broadcastPlaylistItem.getDrawTextDetails().fromJson(joBroadcastDirectURLInput.getJSONObject("drawTextDetails"));
-			}
-			else
-				broadcastPlaylistItem.setDrawTextEnable(false);
+			if (joBroadcastDirectURLInput.has("filters") && !joBroadcastDirectURLInput.isNull("filters"))
+				broadcastPlaylistItem.getFilters().fromJson(joBroadcastDirectURLInput.getJSONObject("filters"));
 
 			broadcastPlaylistItem.setStart(broadcastInputStart);
 			broadcastPlaylistItem.setEnd(broadcastInputEnd);
@@ -582,8 +533,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		broadcastPlaylistItem.setReferencePhysicalPathKeys(getReferencePhysicalPathKeys());
 		broadcastPlaylistItem.setPhysicalPathKey(getPhysicalPathKey());
 		broadcastPlaylistItem.setUrl(getUrl());
-		broadcastPlaylistItem.setDrawTextEnable(getDrawTextEnable());
-		broadcastPlaylistItem.setDrawTextDetails(getDrawTextDetails().clone());
+		broadcastPlaylistItem.setFilters(filters.clone());
 
 		return broadcastPlaylistItem;
 	}
@@ -617,8 +567,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					if (getStream().getSourceType().equalsIgnoreCase("IP_PULL"))
 						joStreamInput.put("url", getStream().getUrl());	
 
-					if (drawTextEnable)
-						joStreamInput.put("drawTextDetails", drawTextDetails.toJson());	
+					joStreamInput.put("filters", filters.toJson());
 				}
 				else
 				{
@@ -646,8 +595,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 						joSource.put("mediaItemTitle", joReferencePhysicalPathKey.getString("mediaItemTitle"));
 				}
 
-				if (drawTextEnable)
-					joVODInput.put("drawTextDetails", drawTextDetails.toJson());	
+				joVODInput.put("filters", filters.toJson());
 			}
 			else if (getMediaType().equalsIgnoreCase("Countdown"))
 			{
@@ -656,7 +604,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				joCountdownInput.put("physicalPathKey", getPhysicalPathKey());
 
-				joCountdownInput.put("drawTextDetails", drawTextDetails.toJson());
+				joCountdownInput.put("filters", filters.toJson());
 			}
 			else if (getMediaType().equalsIgnoreCase("Direct URL"))
 			{
@@ -665,8 +613,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 				joDirectURLInput.put("url", getUrl());
 
-				if (drawTextEnable)
-					joDirectURLInput.put("drawTextDetails", drawTextDetails.toJson());	
+				joDirectURLInput.put("filters", filters.toJson());
 			}
 			else
 			{
@@ -691,9 +638,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	public void setMediaType(String mediaType) {
 		this.mediaType = mediaType;
 		if (mediaType.equals("Countdown"))
-			drawTextDetails.setCountdown(true);
+			filters.getDrawTextDetails().setCountdown(true);
 		else
-			drawTextDetails.setCountdown(false);
+			filters.getDrawTextDetails().setCountdown(false);
 	}
 
 	/*
@@ -934,20 +881,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		this.endBasedOnMediaDuration = endBasedOnMediaDuration;
 	}
 
-	public DrawTextDetails getDrawTextDetails() {
-		return drawTextDetails;
+	public Filters getFilters() {
+		return filters;
 	}
 
-	public void setDrawTextDetails(DrawTextDetails drawTextDetails) {
-		this.drawTextDetails = drawTextDetails;
-	}
-
-	public Boolean getDrawTextEnable() {
-		return drawTextEnable;
-	}
-
-	public void setDrawTextEnable(Boolean drawTextEnable) {
-		this.drawTextEnable = drawTextEnable;
+	public void setFilters(Filters filters) {
+		this.filters = filters;
 	}
 
 	public Long getPhysicalPathKey() {

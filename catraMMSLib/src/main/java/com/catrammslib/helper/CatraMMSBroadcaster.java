@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.HLSChannelConf;
+import com.catrammslib.utility.*;
+import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -15,11 +17,6 @@ import com.catrammslib.CatraMMSAPI;
 import com.catrammslib.CatraMMSWorkflow;
 import com.catrammslib.entity.IngestionJob;
 import com.catrammslib.entity.Stream;
-import com.catrammslib.utility.BroadcastPlaylistItem;
-import com.catrammslib.utility.DrawTextDetails;
-import com.catrammslib.utility.IngestionResult;
-import com.catrammslib.utility.OutputStream;
-import com.catrammslib.utility.MediaItemReference;
 
 public class CatraMMSBroadcaster {
 
@@ -28,7 +25,7 @@ public class CatraMMSBroadcaster {
 	static public Long addBroadcaster(Stream broadcasterStream,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		String broadcasterIngestionJobLabel,
-		DrawTextDetails drawTextDetails,
+		Filters filters,
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
@@ -147,7 +144,7 @@ public class CatraMMSBroadcaster {
 				JSONObject joWorkflow = buildBroadcasterJson(
 					broadcasterIngestionJobLabel,
 					broadcasterStream.getLabel(),	// udp://<server>:<port>
-					drawTextDetails,
+					filters,
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
 					editBroadcasterCdn77Channel, editBroadcasterHlsChannel,
@@ -390,8 +387,7 @@ public class CatraMMSBroadcaster {
 						null,
 						null,
 
-						broadcastDefaultPlaylistItem.getDrawTextEnable() ?
-							broadcastDefaultPlaylistItem.getDrawTextDetails() : null,
+							broadcastDefaultPlaylistItem.getFilters(),
 
 							outputStreamList,
 						null,
@@ -428,8 +424,7 @@ public class CatraMMSBroadcaster {
 						broadcasterStart, broadcasterEnd,
 
 						null,
-						broadcastDefaultPlaylistItem.getDrawTextEnable() ?
-							broadcastDefaultPlaylistItem.getDrawTextDetails() : null,
+							broadcastDefaultPlaylistItem.getFilters(),
 							outputStreamList,
 						true
         	        );
@@ -450,7 +445,7 @@ public class CatraMMSBroadcaster {
 
 						broadcasterStart, broadcasterEnd,
 
-						broadcastDefaultPlaylistItem.getDrawTextDetails(),
+						broadcastDefaultPlaylistItem.getFilters(),
 
 							outputStreamList,
 						true
@@ -482,7 +477,7 @@ public class CatraMMSBroadcaster {
 	private static JSONObject buildBroadcasterJson(
 		String broadcasterIngestionJobLabel,
 		String broadcasterStreamConfigurationLabel,	
-		DrawTextDetails drawTextDetails,
+		Filters filters,
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,
@@ -553,10 +548,8 @@ public class CatraMMSBroadcaster {
 
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
-					if (drawTextDetails != null){
-						outputStream.getFilters().setDrawText(true);
-						outputStream.getFilters().setDrawTextDetails(drawTextDetails);
-					}
+					if (filters != null)
+						outputStream.setFilters(filters);
 
 					outputStreamList.add(outputStream);
 				}
@@ -570,10 +563,8 @@ public class CatraMMSBroadcaster {
 
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
-					if (drawTextDetails != null){
-						outputStream.getFilters().setDrawText(true);
-						outputStream.getFilters().setDrawTextDetails(drawTextDetails);
-					}
+					if (filters != null)
+						outputStream.setFilters(filters);
 
 					outputStreamList.add(outputStream);
 				}
