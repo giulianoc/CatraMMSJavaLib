@@ -448,7 +448,7 @@ public class Filters implements Serializable {
 
 				jaComplex.put(getImageOverlayDetails().toJson());
 			}
-			
+
 			// build the filters json
 			if (videoFilterPresent || audioFilterPresent || complexFilterPresent)
 			{

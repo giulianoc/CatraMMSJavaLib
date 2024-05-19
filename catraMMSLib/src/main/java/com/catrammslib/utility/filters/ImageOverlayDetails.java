@@ -18,7 +18,7 @@ public class ImageOverlayDetails implements Serializable {
 	{
 		imagePhysicalPathKey = null;
 		setPositionXInPixel("(video_width-image_width)/2");
-		setPositionYInPixel("(video_height-image_width)/2");
+		setPositionYInPixel("(video_height-image_height)/2");
 	}
 	
 	public JSONObject toJson()
