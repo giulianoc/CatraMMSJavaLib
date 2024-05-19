@@ -442,7 +442,15 @@ public class Filters implements Serializable {
 				joVolume.put("factor", getAudioVolumeChange());
 			}
 
-			if (videoFilterPresent || audioFilterPresent)
+			// complex filter
+			if (getImageOverlay() != null && getImageOverlay()) {
+				complexFilterPresent = true;
+
+				jaComplex.put(getImageOverlayDetails().toJson());
+			}
+			
+			// build the filters json
+			if (videoFilterPresent || audioFilterPresent || complexFilterPresent)
 			{
 				joFilters = new JSONObject();
 
@@ -450,13 +458,8 @@ public class Filters implements Serializable {
 					joFilters.put("video", jaVideo);
 				if (audioFilterPresent)
 					joFilters.put("audio", jaAudio);
-			}
-
-			// complex filter
-			if (getImageOverlay() != null && getImageOverlay()) {
-				complexFilterPresent = true;
-
-				jaComplex.put(getImageOverlayDetails().toJson());
+				if (complexFilterPresent)
+					joFilters.put("complex", jaComplex);
 			}
 		}
 		catch(Exception e)
