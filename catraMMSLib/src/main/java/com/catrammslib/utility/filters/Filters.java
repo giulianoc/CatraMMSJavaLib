@@ -226,13 +226,6 @@ public class Filters implements Serializable {
 						getDrawTextDetails().fromJson(joFilter);
 					}
 
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("imageoverlay"))
-					{
-						setImageOverlay(true);
-
-						getImageOverlayDetails().fromJson(joFilter);
-					}
-
 					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("fade"))
 					{
 						setFade(true);
@@ -276,6 +269,23 @@ public class Filters implements Serializable {
 					}
 				}
 			}
+
+			if (joFilters.has("complex"))
+			{
+				JSONArray jaComplex = joFilters.getJSONArray("complex");
+
+				for (int filterIndex = 0; filterIndex < jaComplex.length(); filterIndex++)
+				{
+					JSONObject joFilter = jaComplex.getJSONObject(filterIndex);
+
+					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("imageoverlay"))
+					{
+						setImageOverlay(true);
+
+						getImageOverlayDetails().fromJson(joFilter);
+					}
+				}
+			}
 		}
 		catch(Exception e)
 		{
@@ -294,6 +304,9 @@ public class Filters implements Serializable {
 
 			boolean audioFilterPresent = false;
 			JSONArray jaAudio = new JSONArray();
+
+			boolean complexFilterPresent = false;
+			JSONArray jaComplex = new JSONArray();
 
 			// video filters
 			if (getBlackdetect() != null && getBlackdetect())
@@ -378,12 +391,6 @@ public class Filters implements Serializable {
 				jaVideo.put(getDrawTextDetails().toJson());
 			}
 
-			if (getImageOverlay() != null && getImageOverlay()) {
-				videoFilterPresent = true;
-
-				jaVideo.put(getImageOverlayDetails().toJson());
-			}
-
 			if (getFade() != null && getFade())
 			{
 				videoFilterPresent = true;
@@ -443,6 +450,13 @@ public class Filters implements Serializable {
 					joFilters.put("video", jaVideo);
 				if (audioFilterPresent)
 					joFilters.put("audio", jaAudio);
+			}
+
+			// complex filter
+			if (getImageOverlay() != null && getImageOverlay()) {
+				complexFilterPresent = true;
+
+				jaComplex.put(getImageOverlayDetails().toJson());
 			}
 		}
 		catch(Exception e)
