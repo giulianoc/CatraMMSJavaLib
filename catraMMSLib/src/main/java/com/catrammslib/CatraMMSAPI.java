@@ -4153,7 +4153,8 @@ public class CatraMMSAPI implements Serializable {
 
     public void getEncodingProfilesSets(String username, String password,
                                     String contentType,
-                                    List<EncodingProfilesSet> encodingProfilesSetList)
+                                        Boolean cacheAllowed,
+                                        List<EncodingProfilesSet> encodingProfilesSetList)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -4162,7 +4163,9 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfilesSets/" + contentType;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfilesSets/" + contentType
+                    + (cacheAllowed == null || cacheAllowed ? "" : "?should_bypass_cache=true")
+                    ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
