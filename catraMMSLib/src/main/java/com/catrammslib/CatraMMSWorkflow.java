@@ -1913,7 +1913,7 @@ public class CatraMMSWorkflow {
             if (encodingProfileLabel != null)
                 joParameters.put("encodingProfileLabel", encodingProfileLabel);
 			else if (encodingProfilesSetLabel != null)
-                joParameters.put("EncodingProfilesSetLabel", encodingProfilesSetLabel);
+                joParameters.put("encodingProfilesSetLabel", encodingProfilesSetLabel);
 
             if (encodersPool != null && !encodersPool.isEmpty())
                 joParameters.put("encodersPool", encodersPool);
