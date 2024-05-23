@@ -1582,6 +1582,7 @@ public class CatraMMSAPI implements Serializable {
     public void getEncoders(String username, String password,
                             Boolean runningInfo,	// running and cpu usage info 
 							Boolean allEncoders, Long workspaceKey,
+                            Boolean cacheAllowed,
                             List<Encoder> encoderList)
             throws Exception
     {
@@ -1606,6 +1607,7 @@ public class CatraMMSAPI implements Serializable {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                 + "/catramms/1.0.1/encoder?labelOrder=" + "asc"
 				+ (runningInfo == null ? "" : ("&runningInfo=" + runningInfo))
+                + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
                 + urlAdminParameters
             ;
 
@@ -1733,6 +1735,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public void getEncodersPool(String username, String password,
+                                Boolean cacheAllowed,
                             List<EncodersPool> encodersPoolList)
             throws Exception
     {
@@ -1744,6 +1747,7 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/encodersPool?labelOrder=" + "asc"
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
