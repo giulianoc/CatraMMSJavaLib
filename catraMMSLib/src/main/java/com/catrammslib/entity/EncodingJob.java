@@ -16,6 +16,7 @@ public class EncodingJob implements Serializable {
     private Long encodingPid;
     private Long realTimeFrameRate;
     private Double realTimeBitRate;
+    private Long numberOfRestartBecauseOfFailure;
     private Date start;
     private Boolean endEstimate;
     private Date end;
@@ -350,6 +351,14 @@ public class EncodingJob implements Serializable {
 
     public void setRealTimeBitRate(Double realTimeBitRate) {
         this.realTimeBitRate = realTimeBitRate;
+    }
+
+    public Long getNumberOfRestartBecauseOfFailure() {
+        return numberOfRestartBecauseOfFailure;
+    }
+
+    public void setNumberOfRestartBecauseOfFailure(Long numberOfRestartBecauseOfFailure) {
+        this.numberOfRestartBecauseOfFailure = numberOfRestartBecauseOfFailure;
     }
 
     public Boolean getOwnedByCurrentWorkspace() {
