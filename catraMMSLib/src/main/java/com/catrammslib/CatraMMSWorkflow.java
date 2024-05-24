@@ -335,7 +335,7 @@ public class CatraMMSWorkflow {
             Long useVideoTrackFromMediaItemKey,
 
             String encodersPool,
-            Date proxyStartTime, Date proxyEndTime,
+            Date proxyStartTime, Date proxyEndTime, Long maxStreamingDurationInMinutes,
             String userAgent,
             Long maxWidth,
             String otherInputOptions,
@@ -398,6 +398,9 @@ public class CatraMMSWorkflow {
             }
             else
                 joParameters.put("timePeriod", false);
+
+            if (maxStreamingDurationInMinutes != null)
+                joParameters.put("maxStreamingDurationInMinutes", maxStreamingDurationInMinutes);
 
             if (outputStreamList == null || outputStreamList.size() == 0)
             {
@@ -465,7 +468,7 @@ public class CatraMMSWorkflow {
         try
         {
             JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, null,
-                encodersPool, proxyStartTime, proxyEndTime, userAgent, maxWidth, otherInputOptions,
+                encodersPool, proxyStartTime, proxyEndTime, null, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
                     outputStreamList, joInternalMMSParameters, defaultBroadcast, null);
 

@@ -582,7 +582,7 @@ public class CatraMMSBroadcaster {
 					broadcasterStreamConfigurationLabel, null,
 					null,	// encodersPool,
 
-					broadcasterStart, broadcasterEnd,
+					broadcasterStart, broadcasterEnd, null,
 
 					null,
 					null,
