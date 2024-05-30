@@ -2683,7 +2683,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public MediaItem getMediaItemByMediaItemKey(String username, String password,
-                                  Long mediaItemKey)
+                                  Long mediaItemKey, Boolean cacheAllowed)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2692,7 +2692,8 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem/" + mediaItemKey;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem/" + mediaItemKey
+                    + (cacheAllowed == null || cacheAllowed ? "" : "?should_bypass_cache=true");
 
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -2745,7 +2746,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public MediaItem getMediaItemByPhysicalPathKey(String username, String password,
-		Long physicalPathKey)
+		Long physicalPathKey, Boolean cacheAllowed)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2764,6 +2765,7 @@ public class CatraMMSAPI implements Serializable {
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
 				+ "?physicalPathKey=" + physicalPathKey
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true");
 				;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -2817,7 +2819,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
 	public MediaItem getMediaItemByUniqueName(String username, String password,
-		String uniqueName)
+		String uniqueName, Boolean cacheAllowed)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -2828,7 +2830,8 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/mediaItem"
                     + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
-                    ;
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
+            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 

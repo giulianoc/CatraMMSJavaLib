@@ -714,7 +714,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		MediaItem mediaItem = null;
 		try
 		{
-			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey);
+			mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, localPhysicalPathKey, null);
 		}
 		catch (Exception e)
 		{
@@ -766,7 +766,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			Long physicalPathKey = joReferencePhysicalPathKey.getLong("physicalPathKey");
 
-			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey);
+			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey, null);
 
 			if (mediaItem != null)
 			{
