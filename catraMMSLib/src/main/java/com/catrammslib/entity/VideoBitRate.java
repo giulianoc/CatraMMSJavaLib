@@ -1,5 +1,7 @@
 package com.catrammslib.entity;
 
+import com.catrammslib.utility.VideoResolution;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -49,6 +51,11 @@ public class VideoBitRate implements Serializable {
                 ", kMaxRate=" + kMaxRate +
                 ", kBufferSize=" + kBufferSize +
                 '}';
+    }
+
+    public String getInfo()
+    {
+        return VideoResolution.getStandartDefinition(width.intValue(), height.intValue());
     }
 
     public String getsWidth() {
