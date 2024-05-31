@@ -1,6 +1,7 @@
 package com.catrammslib.helper;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -307,6 +308,151 @@ public class CatraMMSBroadcaster {
         }
     }
 
+	static public BroadcastPlaylistItem fillBroadcastPlaylistItemFromIngestionJob(
+			CatraMMSAPI catraMMS, String username, String password,
+			IngestionJob broadcasterIngestionJob,	// in
+			List<BroadcastPlaylistItem> playlistItemList	// out
+	)
+			throws Exception
+	{
+		BroadcastPlaylistItem defaultBroadcastPlaylistItem = null;
+
+		try
+		{
+			Date startBroadcaster = broadcasterIngestionJob.getProxyPeriodStart();
+			Date stopBroadcaster = broadcasterIngestionJob.getProxyPeriodEnd();
+
+			JSONObject joBroadcasterMetadataContent = new JSONObject(broadcasterIngestionJob.getMetaDataContent());
+
+			if (joBroadcasterMetadataContent.has("internalMMS"))
+			{
+				JSONObject joBroadcasterInternalMMS = joBroadcasterMetadataContent.getJSONObject("internalMMS");
+				if (joBroadcasterInternalMMS.has("broadcaster")) {
+					JSONObject joBroadcaster = joBroadcasterInternalMMS.getJSONObject("broadcaster");
+
+					if (joBroadcaster.has("broadcastDefaultPlaylistItem")
+							&& joBroadcaster.has("broadcastIngestionJobKey"))
+					{
+						// broadcasterElement.setDefaultBroadcastPlaylistItem
+						JSONObject joBroadcastDefaultPlaylistItem;
+						{
+							joBroadcastDefaultPlaylistItem = joBroadcaster.getJSONObject("broadcastDefaultPlaylistItem");
+							defaultBroadcastPlaylistItem = BroadcastPlaylistItem.fromBroadcasterJson(
+									joBroadcastDefaultPlaylistItem, catraMMS, username, password);
+						}
+
+						IngestionJob broadcastIngestionJob;
+						{
+							Long broadcastIngestionJobKey = joBroadcaster.getLong("broadcastIngestionJobKey");
+							mLogger.info("catraMMS.getIngestionJob"
+									+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
+							);
+							Date start = new Date();
+							broadcastIngestionJob = catraMMS.getIngestionJob(username, password,
+									broadcastIngestionJobKey, false,
+									// 2022-12-18: IngestionJob dovrebbe essere già presente da un po
+									false, true);
+							mLogger.info("catraMMS.getIngestionJob"
+									+ ", elapsed (millisecs): " + (new Date().getTime() - start.getTime())
+							);
+						}
+
+						mLogger.info("Broadcast metadata"
+								+ ", broadcastIngestionJob.getMetaDataContent(): " + broadcastIngestionJob.getMetaDataContent()
+						);
+						JSONArray jaBroadcastInputsRoot = null;
+						{
+							// Option 1: inputsRoot is into the EncodingJob metadata
+							if (broadcastIngestionJob.getEncodingJob() != null
+									&& broadcastIngestionJob.getEncodingJob().getParameters() != null
+									&& !broadcastIngestionJob.getEncodingJob().getParameters().isEmpty()) {
+								JSONObject joBroadcastParameters = new JSONObject(broadcastIngestionJob.getEncodingJob().getParameters());
+								if (joBroadcastParameters.has("inputsRoot"))
+									jaBroadcastInputsRoot = joBroadcastParameters.getJSONArray("inputsRoot");
+							}
+							// Option 2: inputsRoot is into the IngestionJob metadata (Broadcaster in the future)
+							else {
+								JSONObject joBroadcastParameters = new JSONObject(broadcastIngestionJob.getMetaDataContent());
+								if (joBroadcastParameters.has("internalMMS")) {
+									JSONObject joInternalMMS = joBroadcastParameters.getJSONObject("internalMMS");
+									if (joInternalMMS.has("broadcaster")) {
+										JSONObject joLocalBroadcaster = joInternalMMS.getJSONObject("broadcaster");
+										if (joLocalBroadcaster.has("broadcasterInputsRoot"))
+											jaBroadcastInputsRoot = joLocalBroadcaster.getJSONArray("broadcasterInputsRoot");
+									}
+								}
+							}
+						}
+
+						if (jaBroadcastInputsRoot != null)
+						{
+							playlistItemList.clear();
+
+							Date start = new Date();
+							for (int broadcastInputsIndex = 0; broadcastInputsIndex < jaBroadcastInputsRoot.length();
+								 broadcastInputsIndex++)
+							{
+								JSONObject jobroadcastInputRoot = jaBroadcastInputsRoot.getJSONObject(
+										broadcastInputsIndex);
+
+								{
+									if (jobroadcastInputRoot.has("defaultBroadcast")
+											&& jobroadcastInputRoot.getBoolean("defaultBroadcast"))
+										continue;
+								}
+
+								Date broadcastInputStart = new Date(jobroadcastInputRoot.getLong("utcScheduleStart") * 1000);
+								Date broadcastInputEnd = new Date(jobroadcastInputRoot.getLong("utcScheduleEnd") * 1000);
+
+								BroadcastPlaylistItem broadcastPlaylistItem = BroadcastPlaylistItem.fromBroadcastJson(
+										jobroadcastInputRoot, broadcastInputStart, broadcastInputEnd,
+										catraMMS, username, password);
+
+								{
+									// 2021-12-20: scenario: the first time the broadcast is created,
+									//		it is created an inputsRoot with the default 'countdown/liveproxychannel/vodproxy'
+									//		that it is not labelled with the flag 'addedAsDefault'.
+									//		The result is that the WEB APP display the playlist with this entry
+									//		whilst it should not.
+									//		For this reason, we will check and, if the playlist will have just one entry,
+									//		the same as the default and with the duration of the broadcaster,
+									//		we will remove it considering it as addedAsDefault
+									{
+										if (
+												jaBroadcastInputsRoot.length() == 1    // just one entry
+														&& broadcastPlaylistItem.isEqualsTo(joBroadcastDefaultPlaylistItem)
+														&& broadcastPlaylistItem.getStart().getTime() == startBroadcaster.getTime()
+														&& broadcastPlaylistItem.getEnd().getTime() == stopBroadcaster.getTime()
+										)
+											continue;
+									}
+								}
+
+								playlistItemList.add(broadcastPlaylistItem);
+							}
+							mLogger.info("broadcastInputs"
+									+ ", jaBroadcastInputsRoot.length: " + jaBroadcastInputsRoot.length()
+									+ ", elapsed (millisecs): " + (new Date().getTime() - start.getTime())
+							);
+
+							Collections.sort(playlistItemList);
+						} else {
+							mLogger.warn("InputsRoot was not found");
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			mLogger.error("Exception: " + e.getMessage(), e);
+
+			throw e;
+		}
+
+		return defaultBroadcastPlaylistItem;
+	}
+
     private static JSONObject buildBroadcastJson(
 		Date broadcasterStart, 
 		Date broadcasterEnd,
@@ -610,4 +756,5 @@ public class CatraMMSBroadcaster {
             throw e;
         }
     }
+
 }
