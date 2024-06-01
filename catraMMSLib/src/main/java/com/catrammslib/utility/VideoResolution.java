@@ -53,6 +53,6 @@ public class VideoResolution {
         else if (width == 7680 && height == 4320)
             return "8K 16:9";
         else
-            return "";
+            return "no std";
     }
 }
