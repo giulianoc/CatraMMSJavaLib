@@ -40,6 +40,7 @@ public class WorkspaceDetails implements Serializable {
     private Date lastUsageInMBUpdate;
 
     private String languageCode;
+    private String timezone;
     private Date creationDate;
     private String apiKey;
     private Boolean owner;
@@ -85,6 +86,7 @@ public class WorkspaceDetails implements Serializable {
                 ", usageInMB=" + usageInMB +
                 ", lastUsageInMBUpdate=" + lastUsageInMBUpdate +
                 ", languageCode='" + languageCode + '\'' +
+                ", timezone='" + timezone + '\'' +
                 ", creationDate=" + creationDate +
                 ", apiKey='" + apiKey + '\'' +
                 ", owner=" + owner +
@@ -293,6 +295,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setLanguageCode(String languageCode) {
         this.languageCode = languageCode;
+    }
+
+    public String getTimezone() {
+        return timezone;
+    }
+
+    public void setTimezone(String timezone) {
+        this.timezone = timezone;
     }
 
     public Date getCreationDate() {
