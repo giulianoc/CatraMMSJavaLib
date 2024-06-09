@@ -4475,8 +4475,8 @@ public class CatraMMSAPI implements Serializable {
         PhysicalPath physicalPath,
 
 		long ttlInSeconds, int maxRetries,
-		// MMS_Token: delivery by MMS with a Token
-		// MMS_SignedToken: delivery by MMS with a signed URL
+		// MMS_URLWithTokenAsParam: delivery by MMS with a Token
+		// MMS_SignedURL: delivery by MMS with a signed URL
 		// AWSCloudFront: delivery by AWS CloudFront without a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
 		String deliveryType,
@@ -4524,7 +4524,7 @@ public class CatraMMSAPI implements Serializable {
                         + "&save=" + save.toString()
                         + "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 						+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
-						+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
+						+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                         + "&redirect=false"
                 ;
             }
@@ -4544,7 +4544,7 @@ public class CatraMMSAPI implements Serializable {
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
-								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
+								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                                 + "&redirect=false"
                         ;
                     }
@@ -4558,7 +4558,7 @@ public class CatraMMSAPI implements Serializable {
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
-								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
+								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                                 + "&redirect=false"
                         ;
                     }
@@ -4575,7 +4575,7 @@ public class CatraMMSAPI implements Serializable {
                             + "&save=" + save.toString()
 							+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 							+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
-							+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
+							+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                             + "&redirect=false"
                         ;
                     }
@@ -4588,7 +4588,7 @@ public class CatraMMSAPI implements Serializable {
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
-								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
+								+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                                 + "&redirect=false"
                         ;
                     }
@@ -4639,9 +4639,9 @@ public class CatraMMSAPI implements Serializable {
 		//	- in caso di RTMP, il campo PlayURL nell'IngestionJob decide l'utl di delivery.
 		//		Infatti in questo scenario, solo chi crea il Task può sapere la deliveryURL  
 		//	- in caso di HLS viene invece utilizzato questo campo che potrà variare tra
-		//		tra MMS_Token o MMS_SignedToken
-		// MMS_Token: delivery by MMS with a Token
-		// MMS_SignedToken: delivery by MMS with a signed URL
+		//		tra MMS_URLWithTokenAsParam o MMS_SignedURL
+		// MMS_URLWithTokenAsParam: delivery by MMS with a Token
+		// MMS_SignedURL: delivery by MMS with a signed URL
 		// AWSCloudFront: delivery by AWS CloudFront with a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
 		String deliveryType,
@@ -4683,7 +4683,7 @@ public class CatraMMSAPI implements Serializable {
                     + "/catramms/1.0.1/delivery/live/" + ingestionJobKey
                     + "?ttlInSeconds=" + lTtlInSeconds
                     + "&maxRetries=" + lMaxRetries
-					+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedToken" : deliveryType)
+					+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                     + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + "&redirect=false"
 					+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
