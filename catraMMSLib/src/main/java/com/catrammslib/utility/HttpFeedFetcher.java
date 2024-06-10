@@ -15,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import java.util.Base64;
+import java.util.List;
 
 import static java.time.temporal.ChronoUnit.SECONDS;
 
@@ -472,6 +473,74 @@ public class HttpFeedFetcher {
 
                 if (tempFile != null && tempFile.toFile().exists())
                     tempFile.toFile().delete();
+
+                if (retryIndex >= maxRequestNumber)
+                    throw e;
+                else
+                    Thread.sleep(100);  // half second
+            }
+        }
+
+        return body;
+    }
+
+    public String fetchGetFormDataHttpsJson(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
+                                    List<String> formNames, List<String> formValues)
+            throws Exception
+    {
+        String body = null;
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        int retryIndex = 0;
+        int maxRequestNumber = maxRetriesNumber + 1;
+
+        while(retryIndex < maxRequestNumber) {
+            retryIndex++;
+
+            try {
+                String boundary = String.valueOf(System.currentTimeMillis());
+                String dashes =               "--------------------------";
+                String dashesForContentType = "------------------------";
+                String endOfLine = "\r\n";
+                // String endOfLine = "\n";
+                String formData = "";
+                for(int nameIndex = 0; nameIndex < formNames.size(); nameIndex++)
+                {
+                    formData += (dashes + boundary + endOfLine);
+                    formData += ("Content-Disposition: form-data; name=\"" + formNames.get(nameIndex) + "\"" + endOfLine + endOfLine
+                            + formValues.get(nameIndex) + endOfLine);
+                }
+                formData += (dashes + boundary + "--" + endOfLine);
+
+                mLogger.info("endpoint: " + endpoint);
+                HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                        .uri(URI.create(endpoint))
+                        .version(HttpClient.Version.HTTP_1_1)
+                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+
+                mLogger.info("Content-Type: " + "multipart/form-data; boundary=" + dashesForContentType + boundary);
+                requestBuilder.header("Content-Type", "multipart/form-data; boundary=" + dashesForContentType + boundary);
+
+                mLogger.info("Accept: **");
+                requestBuilder.header("Accept", "**");
+
+                mLogger.info("Body: " + formData);
+                HttpRequest request = requestBuilder
+                        .method("GET", HttpRequest.BodyPublishers.ofString(formData, StandardCharsets.UTF_8))
+                        // .method("GET", HttpRequest.BodyPublishers.ofByteArray(formData.getBytes(StandardCharsets.UTF_8)))
+                        .build();
+
+                body = getResponseBody(client, request, false);
+
+                break; // exit from the retry loop
+            } catch (Exception e) {
+                String errorMessage = "HttpFeedFetcher. fetchPostHttpsJson"
+                        + ", endpoint: " + endpoint
+                        + ", Fatal transport error: " + e
+                        + ", maxRequestNumber: " + maxRequestNumber
+                        + ", retryIndex: " + (retryIndex - 1);
+                mLogger.error(errorMessage);
 
                 if (retryIndex >= maxRequestNumber)
                     throw e;

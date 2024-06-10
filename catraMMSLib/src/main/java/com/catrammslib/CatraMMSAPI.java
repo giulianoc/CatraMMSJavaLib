@@ -4475,7 +4475,7 @@ public class CatraMMSAPI implements Serializable {
         PhysicalPath physicalPath,
 
 		long ttlInSeconds, int maxRetries,
-		// MMS_URLWithTokenAsParam: delivery by MMS with a Token
+		// MMS_URLWithTokenAsParam_DB, MMS_URLWithTokenAsParam_Signed: delivery by MMS with a Token
 		// MMS_SignedURL: delivery by MMS with a signed URL
 		// AWSCloudFront: delivery by AWS CloudFront without a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
@@ -4639,8 +4639,8 @@ public class CatraMMSAPI implements Serializable {
 		//	- in caso di RTMP, il campo PlayURL nell'IngestionJob decide l'utl di delivery.
 		//		Infatti in questo scenario, solo chi crea il Task può sapere la deliveryURL  
 		//	- in caso di HLS viene invece utilizzato questo campo che potrà variare tra
-		//		tra MMS_URLWithTokenAsParam o MMS_SignedURL
-		// MMS_URLWithTokenAsParam: delivery by MMS with a Token
+		//		tra MMS_URLWithTokenAsParam* o MMS_SignedURL
+		// MMS_URLWithTokenAsParam_DB, MMS_URLWithTokenAsParam_Signed: delivery by MMS with a Token
 		// MMS_SignedURL: delivery by MMS with a signed URL
 		// AWSCloudFront: delivery by AWS CloudFront with a signed URL
 		// AWSCloudFront_Signed: delivery by AWS CloudFront with a signed URL
