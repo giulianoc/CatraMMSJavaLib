@@ -3765,7 +3765,7 @@ public class CatraMMSAPI implements Serializable {
 
             String bodyRequest = jaBodyRequest.toString();
 
-            mLogger.info("changeLiveProxyPlaylist"
+            mLogger.info("changeLiveProxyPlaylist (PUT)"
                     + ", mmsURL: " + mmsURL
                     + ", bodyRequest: " + bodyRequest
             );
@@ -4035,6 +4035,7 @@ public class CatraMMSAPI implements Serializable {
                                     String contentType,
                                     Long encodingProfileKey,
                                     String label,
+                                    Boolean cacheAllowed,
                                     List<EncodingProfile> encodingProfileList)
             throws Exception
     {
@@ -4047,8 +4048,13 @@ public class CatraMMSAPI implements Serializable {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encodingProfiles/" + contentType;
             if (encodingProfileKey != null)
                 mmsURL += ("/" + encodingProfileKey);
+            String queryChar = "?";
             if (label != null && !label.isEmpty())
+            {
                 mmsURL += ("?label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+                queryChar = "&";
+            }
+            mmsURL += (cacheAllowed == null || cacheAllowed ? "" : (queryChar + "should_bypass_cache=true"));
 
             mLogger.info("mmsURL: " + mmsURL);
 

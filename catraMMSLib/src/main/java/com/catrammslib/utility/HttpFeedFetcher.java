@@ -513,19 +513,19 @@ public class HttpFeedFetcher {
                 }
                 formData += (dashes + boundary + "--" + endOfLine);
 
-                mLogger.info("endpoint: " + endpoint);
+                // mLogger.info("endpoint: " + endpoint);
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
                         .version(HttpClient.Version.HTTP_1_1)
                         .timeout(Duration.of(timeoutInSeconds, SECONDS));
 
-                mLogger.info("Content-Type: " + "multipart/form-data; boundary=" + dashesForContentType + boundary);
+                // mLogger.info("Content-Type: " + "multipart/form-data; boundary=" + dashesForContentType + boundary);
                 requestBuilder.header("Content-Type", "multipart/form-data; boundary=" + dashesForContentType + boundary);
 
-                mLogger.info("Accept: **");
-                requestBuilder.header("Accept", "**");
+                // mLogger.info("Accept: */*");
+                requestBuilder.header("Accept", "*/*");
 
-                mLogger.info("Body: " + formData);
+                // mLogger.info("Body: " + formData);
                 HttpRequest request = requestBuilder
                         .method("GET", HttpRequest.BodyPublishers.ofString(formData, StandardCharsets.UTF_8))
                         // .method("GET", HttpRequest.BodyPublishers.ofByteArray(formData.getBytes(StandardCharsets.UTF_8)))
