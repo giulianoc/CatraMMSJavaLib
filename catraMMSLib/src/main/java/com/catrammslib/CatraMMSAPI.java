@@ -3230,6 +3230,7 @@ public class CatraMMSAPI implements Serializable {
                                       Long ingestionRootKey, Long mediaItemKey,
                                       String status, boolean ascending,
                                       boolean ingestionJobOutputs,
+                                      Boolean cacheAllowed,
                                       List<IngestionWorkflow> ingestionWorkflowsList)
             throws Exception
     {
@@ -3251,7 +3252,9 @@ public class CatraMMSAPI implements Serializable {
                     + "&asc=" + (ascending ? "true" : "false")
                     + "&ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
                     + "&startIngestionDate=" + simpleDateFormat.format(start)
-                    + "&endIngestionDate=" + simpleDateFormat.format(end);
+                    + "&endIngestionDate=" + simpleDateFormat.format(end)
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
+                    ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
