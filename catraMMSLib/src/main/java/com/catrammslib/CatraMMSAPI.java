@@ -2970,6 +2970,10 @@ public class CatraMMSAPI implements Serializable {
                             joCrossReference.put("type", "VideoOfFace");
                         else if (crossReference.getType().equalsIgnoreCase("PosterOfVideo"))
                             joCrossReference.put("type", "VideoOfPoster");
+                        else if (crossReference.getType().equalsIgnoreCase("ImageForSlideShow"))
+                            joCrossReference.put("type", "SlideShowOfImage");
+                        else if (crossReference.getType().equalsIgnoreCase("AudioForSlideShow"))
+                            joCrossReference.put("type", "SlideShowOfAudio");
                         else
                             joCrossReference.put("type", crossReference.getType());
                         joCrossReference.put("mediaItemKey", crossReference.getSourceMediaItemKey());
