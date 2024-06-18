@@ -295,24 +295,20 @@ public class Filters implements Serializable {
 
 	public JSONObject toJson()
 	{
-		JSONObject joFilters = null;
+		// JSONObject joFilters = null;
+		JSONObject joFilters = new JSONObject();
 
 		try
 		{
-			int aaa = 0;
-			mLogger.info("aaaa: " + aaa++);
 			boolean videoFilterPresent = false;
 			JSONArray jaVideo = new JSONArray();
 
-			mLogger.info("aaaa: " + aaa++);
 			boolean audioFilterPresent = false;
 			JSONArray jaAudio = new JSONArray();
 
-			mLogger.info("aaaa: " + aaa++);
 			boolean complexFilterPresent = false;
 			JSONArray jaComplex = new JSONArray();
 
-			mLogger.info("aaaa: " + aaa++);
 			// video filters
 			if (getBlackdetect() != null && getBlackdetect())
 			{
@@ -328,7 +324,6 @@ public class Filters implements Serializable {
 					joBlackDetect.put("pixel_black_th", getBlackdetect_PixelBlackTh());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getBlackframe() != null && getBlackframe())
 			{
 				videoFilterPresent = true;
@@ -343,7 +338,6 @@ public class Filters implements Serializable {
 					joBlackFrame.put("threshold", getBlackframe_Threshold());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getCrop() != null && getCrop())
 			{
 				videoFilterPresent = true;
@@ -367,7 +361,6 @@ public class Filters implements Serializable {
 					joCrop.put("exact", getCrop_Exact());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getDrawBox() != null && getDrawBox())
 			{
 				videoFilterPresent = true;
@@ -393,14 +386,12 @@ public class Filters implements Serializable {
 					joDrawBox.put("thickness", getDrawBox_Thickness());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getDrawText() != null && getDrawText()) {
 				videoFilterPresent = true;
 
 				jaVideo.put(getDrawTextDetails().toJson());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getFade() != null && getFade())
 			{
 				videoFilterPresent = true;
@@ -414,7 +405,6 @@ public class Filters implements Serializable {
 					joFade.put("duration", getFade_Duration());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getFreezedetect() != null && getFreezedetect())
 			{
 				videoFilterPresent = true;
@@ -429,7 +419,6 @@ public class Filters implements Serializable {
 					joFreezeDetect.put("noiseInDb", getFreezedetect_NoiseInDb());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			// audio filters
 			if (getSilencedetect() != null && getSilencedetect())
 			{
@@ -443,7 +432,6 @@ public class Filters implements Serializable {
 					joSilenceDetect.put("noise", getSilencedetect_Noise());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			if (getAudioVolumeChange() != null)
 			{
 				audioFilterPresent = true;
@@ -455,7 +443,6 @@ public class Filters implements Serializable {
 				joVolume.put("factor", getAudioVolumeChange());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			// complex filter
 			if (getImageOverlay() != null && getImageOverlay()) {
 				complexFilterPresent = true;
@@ -463,11 +450,10 @@ public class Filters implements Serializable {
 				jaComplex.put(getImageOverlayDetails().toJson());
 			}
 
-			mLogger.info("aaaa: " + aaa++);
 			// build the filters json
 			if (videoFilterPresent || audioFilterPresent || complexFilterPresent)
 			{
-				joFilters = new JSONObject();
+				// joFilters = new JSONObject();
 
 				if (videoFilterPresent)
 					joFilters.put("video", jaVideo);
@@ -476,7 +462,6 @@ public class Filters implements Serializable {
 				if (complexFilterPresent)
 					joFilters.put("complex", jaComplex);
 			}
-			mLogger.info("aaaa: " + aaa++);
 		}
 		catch(Exception e)
 		{
