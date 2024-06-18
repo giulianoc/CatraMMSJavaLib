@@ -231,7 +231,10 @@ public class DrawTextDetails implements Serializable {
 		if (countdown)
 			setText("days_counter days hours_counter:mins_counter:secs_counter.cents_counter");
 		else
-			setText("Hello World");
+		{
+			if (getText().isBlank())
+				setText("Hello World");
+		}
 	}
 
 	public void setsFontSize(String sFontSize) 
