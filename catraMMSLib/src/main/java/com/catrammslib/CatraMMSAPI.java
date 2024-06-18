@@ -3308,7 +3308,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public IngestionWorkflow getIngestionWorkflow(String username, String password,
-                                  Long ingestionRootKey, boolean ingestionJobOutputs)
+                                  Long ingestionRootKey, boolean ingestionJobOutputs, Boolean cacheAllowed)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -3326,9 +3326,10 @@ public class CatraMMSAPI implements Serializable {
             }
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflow/"
-                    + ingestionRootKey
-                    + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
-                    ;
+                + ingestionRootKey
+                + "?ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
+                + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
+            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
