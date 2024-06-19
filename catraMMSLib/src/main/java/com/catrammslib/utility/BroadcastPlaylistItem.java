@@ -125,7 +125,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 						if (str != "")
 							str += "</br>";
 						str += (
-							"<b>" + localPhysicalPathKey.toString() + "</b>"
+							"<b>" + ((mediaItem != null ? (mediaItem.getMediaItemKey() + "-") : "") + localPhysicalPathKey) + "</b>"
 							+ mediaItemDetails
 						);	
 					}
