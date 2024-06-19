@@ -212,8 +212,8 @@ public class DrawTextDetails implements Serializable {
 		drawTextDetails.setPositionXInPixel(positionXInPixel);
 		drawTextDetails.setPositionYInPixel(positionYInPixel);
 		drawTextDetails.setFontType(fontType);
-		drawTextDetails.setFontSize(fontSize);
-		drawTextDetails.setsFontSize(sFontSize);
+		// drawTextDetails.setFontSize(fontSize);
+		drawTextDetails.setsFontSize(sFontSize);	// it set fontSize as well
 		drawTextDetails.setFontColor(fontColor);
 		drawTextDetails.setTextPercentageOpacity(textPercentageOpacity);
 		drawTextDetails.setShadowX(shadowX);
@@ -246,6 +246,7 @@ public class DrawTextDetails implements Serializable {
 		}
 		catch(Exception e)
 		{
+			mLogger.error("Exception: " + e);
 
 		}
 	}
