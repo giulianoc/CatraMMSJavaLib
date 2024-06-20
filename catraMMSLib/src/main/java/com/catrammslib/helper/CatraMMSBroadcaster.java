@@ -8,7 +8,7 @@ import java.util.List;
 import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.HLSChannelConf;
 import com.catrammslib.utility.*;
-import com.catrammslib.utility.filters.Filters;
+import com.catrammslib.utility.filters.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -26,7 +26,7 @@ public class CatraMMSBroadcaster {
 	static public Long addBroadcaster(Stream broadcasterStream,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		String broadcasterIngestionJobLabel,
-		Filters filters,
+		Filter filters,
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
@@ -623,7 +623,7 @@ public class CatraMMSBroadcaster {
 	private static JSONObject buildBroadcasterJson(
 		String broadcasterIngestionJobLabel,
 		String broadcasterStreamConfigurationLabel,	
-		Filters filters,
+		Filter filters,
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,

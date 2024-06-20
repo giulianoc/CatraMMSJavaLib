@@ -1,5 +1,6 @@
 package com.catrammslib.utility;
 
+import com.catrammslib.utility.filters.Filter;
 import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -637,35 +638,13 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public void setMediaType(String mediaType) {
 		this.mediaType = mediaType;
+		/*
 		if (mediaType.equals("Countdown"))
 			filters.getDrawTextDetails().setCountdown(true);
 		else
 			filters.getDrawTextDetails().setCountdown(false);
+		 */
 	}
-
-	/*
-	public void setStreamConfigurationLabel(String streamConfigurationLabel) 
-	{
-		this.streamConfigurationLabel = streamConfigurationLabel;
-
-		try
-		{
-			if (streamConfigurationLabel != null)
-			{
-				List<Stream> streamList = new ArrayList<>();
-				catraMMS.getStream(username, password, 0, 1, null, 
-					streamConfigurationLabel, false,
-					null, null, null, null, null, null, null, streamList);
-				if (streamList.size() > 0)
-					stream = streamList.get(0);	
-			}
-		}
-		catch (Exception e)
-		{
-			mLogger.error("Exception: " + e.getMessage());
-		}
-	}
-	 */
 
 	public void setReferencePhysicalPathKeys(String localReferencesPhysicalPathKeys) 
 	{

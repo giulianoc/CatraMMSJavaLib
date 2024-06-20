@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.catrammslib.entity.*;
-import com.catrammslib.utility.filters.Filters;
+import com.catrammslib.utility.filters.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public class OutputStream implements Serializable {
 	// In alcuni casi abbiamo solamente encodingProfileLabel e non l'EncodingProfile, per cui lasciamo la doppia opzione
     private String encodingProfileLabel;
 
-	private Filters filters = new Filters();
+	private Filter filters = new Filter();
 
 	public OutputStream()
 	{
@@ -470,11 +470,11 @@ public class OutputStream implements Serializable {
     }
 
 
-	public Filters getFilters() {
+	public Filter getFilters() {
 		return filters;
 	}
 
-	public void setFilters(Filters filters) {
+	public void setFilters(Filter filters) {
 		this.filters = filters;
 	}
 

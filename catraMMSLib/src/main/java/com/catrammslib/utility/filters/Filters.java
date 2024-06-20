@@ -5,741 +5,325 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Filters implements Serializable {
-
+public class Filters {
     private static final Logger mLogger = LoggerFactory.getLogger(Filters.class);
 
-	private Long timeInSecondsDecimalsPrecision;
-
-	private Double audioVolumeChange;
-
-	private Boolean blackdetect;
-	private Float blackdetect_BlackMinDuration;
-	private Float blackdetect_PixelBlackTh;
-
-	private Boolean blackframe;
-	private Long blackframe_Amount;
-	private Long blackframe_Threshold;
-
-	private Boolean crop;
-	private String crop_OutputWidth;
-	private String crop_OutputHeight;
-	private String crop_X;
-	private String crop_Y;
-	private Boolean crop_KeepAspect;
-	private Boolean crop_Exact;
-
-	private Boolean drawBox;
-	private String drawBox_X;
-	private String drawBox_Y;
-	private String drawBox_Width;
-	private String drawBox_Height;
-	private String drawBox_FontColor;
-	private Long drawBox_PercentageOpacity;
-	private String drawBox_Thickness;
-
-	private Boolean drawText;
-	private DrawTextDetails drawTextDetails;
-
-	private Boolean imageOverlay;
-	private ImageOverlayDetails imageOverlayDetails;
-
-	private Boolean fade;
-	private Long fade_Duration;
-
-	private Boolean freezedetect;
-	private Long freezedetect_Duration;
-	private Long freezedetect_NoiseInDb;
-
-	private Boolean silencedetect;
-	private Float silencedetect_Noise;
-
-
-	public Filters()
-	{
-		this.drawTextDetails = new DrawTextDetails(null);
-		this.imageOverlayDetails = new ImageOverlayDetails();
-
-		timeInSecondsDecimalsPrecision = (long) 1;
-
-		reset();
-	}
-
-	private void reset()
-	{
-		audioVolumeChange = null;
-
-		blackdetect = false;
-		blackdetect_BlackMinDuration = null;
-		blackdetect_PixelBlackTh = null;
-
-		blackframe = false;
-		blackframe_Amount = null;
-		blackframe_Threshold = null;
-
-		crop = false;
-		crop_OutputWidth = "in_w";
-		crop_OutputHeight = "in_h";
-		crop_X = "(in_w-out_w)/2";
-		crop_Y = "(in_h-out_h)/2";
-		crop_KeepAspect = false;
-		crop_Exact = false;
-
-		drawBox = false;
-		drawBox_X = "0";
-		drawBox_Y = "0";
-		drawBox_Width = "in_w";
-		drawBox_Height = "in_h";
-		drawBox_FontColor = "black";
-		drawBox_PercentageOpacity = 100L;
-		drawBox_Thickness = "fill";
-
-		drawText = false;
-
-		imageOverlay = false;
-
-		fade = false;
-		fade_Duration = null;
-
-		freezedetect = false;
-		freezedetect_Duration = null;
-		freezedetect_NoiseInDb = null;
-
-		silencedetect = false;
-		silencedetect_Noise = null;
-	}
-
-	public Filters clone()
-	{
-		Filters filters = new Filters();
-
-		filters.setAudioVolumeChange(getAudioVolumeChange());
-
-		filters.setBlackdetect(getBlackdetect());
-		filters.setBlackdetect_BlackMinDuration(getBlackdetect_BlackMinDuration());
-		filters.setBlackdetect_PixelBlackTh(getBlackdetect_PixelBlackTh());
-
-		filters.setBlackframe(getBlackframe());
-		filters.setBlackframe_Amount(getBlackframe_Amount());
-		filters.setBlackframe_Threshold(getBlackframe_Threshold());
-
-		filters.setCrop(getCrop());
-		filters.setCrop_OutputWidth(getCrop_OutputWidth());
-		filters.setCrop_OutputHeight(getCrop_OutputHeight());
-		filters.setCrop_X(getCrop_X());
-		filters.setCrop_Y(getCrop_Y());
-		filters.setCrop_KeepAspect(getCrop_KeepAspect());
-		filters.setCrop_Exact(getCrop_Exact());
-
-		filters.setDrawBox(getDrawBox());
-		filters.setDrawBox_X(getDrawBox_X());
-		filters.setDrawBox_Y(getDrawBox_Y());
-		filters.setDrawBox_Width(getDrawBox_Width());
-		filters.setDrawBox_Height(getDrawBox_Height());
-		filters.setDrawBox_FontColor(getDrawBox_FontColor());
-		filters.setDrawBox_PercentageOpacity(getDrawBox_PercentageOpacity());
-		filters.setDrawBox_Thickness(getDrawBox_Thickness());
-
-		filters.setDrawText(getDrawText());
-		filters.setDrawTextDetails(getDrawTextDetails().clone());
-
-		filters.setImageOverlay(getImageOverlay());
-		filters.setImageOverlayDetails(getImageOverlayDetails().clone());
-
-		filters.setFade(getFade());
-		filters.setFade_Duration(getFade_Duration());
-
-		filters.setFreezedetect(getFreezedetect());
-		filters.setFreezedetect_Duration(getFreezedetect_Duration());
-		filters.setFreezedetect_NoiseInDb(getFreezedetect_NoiseInDb());
-
-		filters.setSilencedetect(getSilencedetect());
-		filters.setSilencedetect_Noise(getSilencedetect_Noise());
-
-		return filters;
-	}
-
-	public void fromJson(JSONObject joFilters)
-	{
-		try
-		{
-			reset();
-
-			if (joFilters.has("video"))
-			{
-				JSONArray jaVideo = joFilters.getJSONArray("video");
-
-				for (int filterIndex = 0; filterIndex < jaVideo.length(); filterIndex++)
-				{
-					JSONObject joFilter = jaVideo.getJSONObject(filterIndex);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackdetect"))
-						setBlackdetect(true);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("blackframe"))
-						setBlackframe(true);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("crop"))
-					{
-						setCrop(true);
-
-						if (joFilter.has("out_w"))
-							setCrop_OutputWidth(joFilter.getString("out_w"));
-						if (joFilter.has("out_h"))
-							setCrop_OutputHeight(joFilter.getString("out_h"));
-						if (joFilter.has("x"))
-							setCrop_X(joFilter.getString("x"));
-						if (joFilter.has("y"))
-							setCrop_Y(joFilter.getString("y"));
-						if (joFilter.has("keep_aspect"))
-							setCrop_KeepAspect(joFilter.getBoolean("keep_aspect"));
-						if (joFilter.has("exact"))
-							setCrop_Exact(joFilter.getBoolean("exact"));
-					}
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("drawbox"))
-					{
-						setDrawBox(true);
-
-						if (joFilter.has("x"))
-							setDrawBox_X(joFilter.getString("x"));
-						if (joFilter.has("y"))
-							setDrawBox_Y(joFilter.getString("y"));
-						if (joFilter.has("width"))
-							setDrawBox_Width(joFilter.getString("width"));
-						if (joFilter.has("height"))
-							setDrawBox_Height(joFilter.getString("height"));
-						if (joFilter.has("fontColor"))
-							setDrawBox_FontColor(joFilter.getString("fontColor"));
-						if (joFilter.has("percentageOpacity"))
-							setDrawBox_PercentageOpacity(joFilter.getLong("percentageOpacity"));
-						if (joFilter.has("thickness"))
-							setDrawBox_Thickness(joFilter.getString("thickness"));
-					}
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("drawtext"))
-					{
-						setDrawText(true);
-
-						getDrawTextDetails().fromJson(joFilter);
-					}
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("fade"))
-					{
-						setFade(true);
-
-						if (joFilter.has("duration"))
-						{
-							Object o = joFilter.get("duration");
-							setFade_Duration(joFilter.getLong("duration"));
-						}
-					}
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("freezedetect"))
-					{
-						setFreezedetect(true);
-
-						if (joFilter.has("duration"))
-						{
-							Object o = joFilter.get("duration");
-								setFreezedetect_Duration(joFilter.getLong("duration"));
-						}
-					}
-				}
-			}
-
-			if (joFilters.has("audio"))
-			{
-				JSONArray jaAudio = joFilters.getJSONArray("audio");
-
-				for (int filterIndex = 0; filterIndex < jaAudio.length(); filterIndex++)
-				{
-					JSONObject joFilter = jaAudio.getJSONObject(filterIndex);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("volume"))
-					{
-						if (joFilter.has("factor") && !joFilter.isNull("factor"))
-							setAudioVolumeChange(joFilter.getDouble("factor"));
-					}
-					else if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("silencedetect"))
-					{
-						setSilencedetect(true);
-					}
-				}
-			}
-
-			if (joFilters.has("complex"))
-			{
-				JSONArray jaComplex = joFilters.getJSONArray("complex");
-
-				for (int filterIndex = 0; filterIndex < jaComplex.length(); filterIndex++)
-				{
-					JSONObject joFilter = jaComplex.getJSONObject(filterIndex);
-
-					if (joFilter.has("type") && joFilter.getString("type").equalsIgnoreCase("imageoverlay"))
-					{
-						setImageOverlay(true);
-
-						getImageOverlayDetails().fromJson(joFilter);
-					}
-				}
-			}
-		}
-		catch(Exception e)
-		{
-			mLogger.error("Exception: " + e);
-		}
-	}
-
-	public JSONObject toJson()
-	{
-		// JSONObject joFilters = null;
-		JSONObject joFilters = new JSONObject();
-
-		try
-		{
-			boolean videoFilterPresent = false;
-			JSONArray jaVideo = new JSONArray();
-
-			boolean audioFilterPresent = false;
-			JSONArray jaAudio = new JSONArray();
-
-			boolean complexFilterPresent = false;
-			JSONArray jaComplex = new JSONArray();
-
-			// video filters
-			if (getBlackdetect() != null && getBlackdetect())
-			{
-				videoFilterPresent = true;
-
-				JSONObject joBlackDetect = new JSONObject();
-				jaVideo.put(joBlackDetect);
-
-				joBlackDetect.put("type", "blackdetect");
-				if (getBlackdetect_BlackMinDuration() != null)
-					joBlackDetect.put("black_min_duration", getBlackdetect_BlackMinDuration());
-				if (getBlackdetect_PixelBlackTh() != null)
-					joBlackDetect.put("pixel_black_th", getBlackdetect_PixelBlackTh());
-			}
-
-			if (getBlackframe() != null && getBlackframe())
-			{
-				videoFilterPresent = true;
-
-				JSONObject joBlackFrame = new JSONObject();
-				jaVideo.put(joBlackFrame);
-
-				joBlackFrame.put("type", "blackframe");
-				if (getBlackframe_Amount() != null)
-					joBlackFrame.put("amount", getBlackframe_Amount());
-				if (getBlackframe_Threshold() != null)
-					joBlackFrame.put("threshold", getBlackframe_Threshold());
-			}
-
-			if (getCrop() != null && getCrop())
-			{
-				videoFilterPresent = true;
-
-				JSONObject joCrop = new JSONObject();
-				jaVideo.put(joCrop);
-
-				joCrop.put("type", "crop");
-
-				if (getCrop_OutputWidth() != null)
-					joCrop.put("out_w", getCrop_OutputWidth());
-				if (getCrop_OutputHeight() != null)
-					joCrop.put("out_h", getCrop_OutputHeight());
-				if (getCrop_X() != null)
-					joCrop.put("x", getCrop_X());
-				if (getCrop_Y() != null)
-					joCrop.put("y", getCrop_Y());
-				if (getCrop_KeepAspect() != null)
-					joCrop.put("keep_aspect", getCrop_KeepAspect());
-				if (getCrop_Exact() != null)
-					joCrop.put("exact", getCrop_Exact());
-			}
-
-			if (getDrawBox() != null && getDrawBox())
-			{
-				videoFilterPresent = true;
-
-				JSONObject joDrawBox = new JSONObject();
-				jaVideo.put(joDrawBox);
-
-				joDrawBox.put("type", "drawbox");
-
-				if (getDrawBox_X() != null)
-					joDrawBox.put("x", getDrawBox_X());
-				if (getDrawBox_Y() != null)
-					joDrawBox.put("y", getDrawBox_Y());
-				if (getDrawBox_Width() != null)
-					joDrawBox.put("width", getDrawBox_Width());
-				if (getDrawBox_Height() != null)
-					joDrawBox.put("height", getDrawBox_Height());
-				if (getDrawBox_FontColor() != null)
-					joDrawBox.put("fontColor", getDrawBox_FontColor());
-				if (getDrawBox_PercentageOpacity() != null)
-					joDrawBox.put("percentageOpacity", getDrawBox_PercentageOpacity());
-				if (getDrawBox_Thickness() != null)
-					joDrawBox.put("thickness", getDrawBox_Thickness());
-			}
-
-			if (getDrawText() != null && getDrawText()) {
-				videoFilterPresent = true;
-
-				jaVideo.put(getDrawTextDetails().toJson());
-			}
-
-			if (getFade() != null && getFade())
-			{
-				videoFilterPresent = true;
-
-				JSONObject joFade = new JSONObject();
-				jaVideo.put(joFade);
-
-				joFade.put("type", "fade");
-
-				if (getFade_Duration() != null && getFade_Duration() > 0)
-					joFade.put("duration", getFade_Duration());
-			}
-
-			if (getFreezedetect() != null && getFreezedetect())
-			{
-				videoFilterPresent = true;
-
-				JSONObject joFreezeDetect = new JSONObject();
-				jaVideo.put(joFreezeDetect);
-
-				joFreezeDetect.put("type", "freezedetect");
-				if (getFreezedetect_Duration() != null && getFreezedetect_Duration() > 0)
-					joFreezeDetect.put("duration", getFreezedetect_Duration());
-				if (getFreezedetect_NoiseInDb() != null)
-					joFreezeDetect.put("noiseInDb", getFreezedetect_NoiseInDb());
-			}
-
-			// audio filters
-			if (getSilencedetect() != null && getSilencedetect())
-			{
-				audioFilterPresent = true;
-
-				JSONObject joSilenceDetect = new JSONObject();
-				jaAudio.put(joSilenceDetect);
-
-				joSilenceDetect.put("type", "silencedetect");
-				if (getSilencedetect_Noise() != null)
-					joSilenceDetect.put("noise", getSilencedetect_Noise());
-			}
-
-			if (getAudioVolumeChange() != null)
-			{
-				audioFilterPresent = true;
-
-				JSONObject joVolume = new JSONObject();
-				jaAudio.put(joVolume);
-
-				joVolume.put("type", "volume");
-				joVolume.put("factor", getAudioVolumeChange());
-			}
-
-			// complex filter
-			if (getImageOverlay() != null && getImageOverlay()) {
-				complexFilterPresent = true;
-
-				jaComplex.put(getImageOverlayDetails().toJson());
-			}
-
-			// build the filters json
-			if (videoFilterPresent || audioFilterPresent || complexFilterPresent)
-			{
-				// joFilters = new JSONObject();
-
-				if (videoFilterPresent)
-					joFilters.put("video", jaVideo);
-				if (audioFilterPresent)
-					joFilters.put("audio", jaAudio);
-				if (complexFilterPresent)
-					joFilters.put("complex", jaComplex);
-			}
-		}
-		catch(Exception e)
-		{
-			mLogger.error("Exception: " + e);
-		}
-
-		return joFilters;
-	}
-
-	public Double getAudioVolumeChange() {
-		return audioVolumeChange;
-	}
-
-	public void setAudioVolumeChange(Double audioVolumeChange) {
-		this.audioVolumeChange = audioVolumeChange;
-	}
-
-	public Boolean getBlackdetect() {
-		return blackdetect;
-	}
-
-	public void setBlackdetect(Boolean blackdetect) {
-		this.blackdetect = blackdetect;
-	}
-
-	public Boolean getBlackframe() {
-		return blackframe;
-	}
-
-	public void setBlackframe(Boolean blackframe) {
-		this.blackframe = blackframe;
-	}
-
-	public Boolean getFreezedetect() {
-		return freezedetect;
-	}
-
-	public void setFreezedetect(Boolean freezedetect) {
-		this.freezedetect = freezedetect;
-	}
-
-	public Boolean getSilencedetect() {
-		return silencedetect;
-	}
-
-	public void setSilencedetect(Boolean silencedetect) {
-		this.silencedetect = silencedetect;
-	}
-
-	public Boolean getDrawText() {
-		return drawText;
-	}
-
-	public void setDrawText(Boolean drawText) {
-		this.drawText = drawText;
-	}
-
-	public DrawTextDetails getDrawTextDetails() {
-		return drawTextDetails;
-	}
-
-	public void setDrawTextDetails(DrawTextDetails drawTextDetails) {
-		this.drawTextDetails = drawTextDetails;
-	}
-
-	public Boolean getFade() {
-		return fade;
-	}
-
-	public void setFade(Boolean fade) {
-		this.fade = fade;
-	}
-
-	public Float getBlackdetect_BlackMinDuration() {
-		return blackdetect_BlackMinDuration;
-	}
-
-	public void setBlackdetect_BlackMinDuration(Float blackdetect_BlackMinDuration) {
-		this.blackdetect_BlackMinDuration = blackdetect_BlackMinDuration;
-	}
-
-	public Float getBlackdetect_PixelBlackTh() {
-		return blackdetect_PixelBlackTh;
-	}
-
-	public void setBlackdetect_PixelBlackTh(Float blackdetect_PixelBlackTh) {
-		this.blackdetect_PixelBlackTh = blackdetect_PixelBlackTh;
-	}
-
-	public Long getFreezedetect_Duration() {
-		return freezedetect_Duration;
-	}
-
-	public void setFreezedetect_Duration(Long freezedetect_Duration) {
-		this.freezedetect_Duration = freezedetect_Duration;
-	}
-
-	public Long getFade_Duration() {
-		return fade_Duration;
-	}
-
-	public void setFade_Duration(Long fade_Duration) {
-		this.fade_Duration = fade_Duration;
-	}
-
-	public Long getBlackframe_Amount() {
-		return blackframe_Amount;
-	}
-
-	public void setBlackframe_Amount(Long blackframe_Amount) {
-		this.blackframe_Amount = blackframe_Amount;
-	}
-
-	public Long getBlackframe_Threshold() {
-		return blackframe_Threshold;
-	}
-
-	public void setBlackframe_Threshold(Long blackframe_Threshold) {
-		this.blackframe_Threshold = blackframe_Threshold;
-	}
-
-	public Long getFreezedetect_NoiseInDb() {
-		return freezedetect_NoiseInDb;
-	}
-
-	public void setFreezedetect_NoiseInDb(Long freezedetect_NoiseInDb) {
-		this.freezedetect_NoiseInDb = freezedetect_NoiseInDb;
-	}
-
-	public Long getTimeInSecondsDecimalsPrecision() {
-		return timeInSecondsDecimalsPrecision;
-	}
-
-	public void setTimeInSecondsDecimalsPrecision(Long timeInSecondsDecimalsPrecision) {
-		this.timeInSecondsDecimalsPrecision = timeInSecondsDecimalsPrecision;
-	}
-
-	public Boolean getCrop() {
-		return crop;
-	}
-
-	public void setCrop(Boolean crop) {
-		this.crop = crop;
-	}
-
-	public String getCrop_OutputWidth() {
-		return crop_OutputWidth;
-	}
-
-	public void setCrop_OutputWidth(String crop_OutputWidth) {
-		this.crop_OutputWidth = crop_OutputWidth;
-	}
-
-	public String getCrop_OutputHeight() {
-		return crop_OutputHeight;
-	}
-
-	public void setCrop_OutputHeight(String crop_OutputHeight) {
-		this.crop_OutputHeight = crop_OutputHeight;
-	}
-
-	public String getCrop_X() {
-		return crop_X;
-	}
-
-	public void setCrop_X(String crop_X) {
-		this.crop_X = crop_X;
-	}
-
-	public String getCrop_Y() {
-		return crop_Y;
-	}
-
-	public void setCrop_Y(String crop_Y) {
-		this.crop_Y = crop_Y;
-	}
-
-	public Boolean getCrop_KeepAspect() {
-		return crop_KeepAspect;
-	}
-
-	public void setCrop_KeepAspect(Boolean crop_KeepAspect) {
-		this.crop_KeepAspect = crop_KeepAspect;
-	}
-
-	public Boolean getCrop_Exact() {
-		return crop_Exact;
-	}
-
-	public void setCrop_Exact(Boolean crop_Exact) {
-		this.crop_Exact = crop_Exact;
-	}
-
-	public Boolean getDrawBox() {
-		return drawBox;
-	}
-
-	public void setDrawBox(Boolean drawBox) {
-		this.drawBox = drawBox;
-	}
-
-	public String getDrawBox_X() {
-		return drawBox_X;
-	}
-
-	public void setDrawBox_X(String drawBox_X) {
-		this.drawBox_X = drawBox_X;
-	}
-
-	public String getDrawBox_Y() {
-		return drawBox_Y;
-	}
-
-	public void setDrawBox_Y(String drawBox_Y) {
-		this.drawBox_Y = drawBox_Y;
-	}
-
-	public String getDrawBox_Width() {
-		return drawBox_Width;
-	}
-
-	public void setDrawBox_Width(String drawBox_Width) {
-		this.drawBox_Width = drawBox_Width;
-	}
-
-	public String getDrawBox_Height() {
-		return drawBox_Height;
-	}
-
-	public void setDrawBox_Height(String drawBox_Height) {
-		this.drawBox_Height = drawBox_Height;
-	}
-
-	public String getDrawBox_FontColor() {
-		return drawBox_FontColor;
-	}
-
-	public void setDrawBox_FontColor(String drawBox_FontColor) {
-		this.drawBox_FontColor = drawBox_FontColor;
-	}
-
-	public Long getDrawBox_PercentageOpacity() {
-		return drawBox_PercentageOpacity;
-	}
-
-	public void setDrawBox_PercentageOpacity(Long drawBox_PercentageOpacity) {
-		this.drawBox_PercentageOpacity = drawBox_PercentageOpacity;
-	}
-
-	public String getDrawBox_Thickness() {
-		return drawBox_Thickness;
-	}
-
-	public void setDrawBox_Thickness(String drawBox_Thickness) {
-		this.drawBox_Thickness = drawBox_Thickness;
-	}
-
-	public Boolean getImageOverlay() {
-		return imageOverlay;
-	}
-
-	public void setImageOverlay(Boolean imageOverlay) {
-		this.imageOverlay = imageOverlay;
-	}
-
-	public ImageOverlayDetails getImageOverlayDetails() {
-		return imageOverlayDetails;
-	}
-
-	public void setImageOverlayDetails(ImageOverlayDetails imageOverlayDetails) {
-		this.imageOverlayDetails = imageOverlayDetails;
-	}
-
-	public Float getSilencedetect_Noise() {
-		return silencedetect_Noise;
-	}
-
-	public void setSilencedetect_Noise(Float silencedetect_Noise) {
-		this.silencedetect_Noise = silencedetect_Noise;
-	}
+    private List<Filter> filters = new ArrayList<>();
+
+    public void appendFilter() {
+        Filter filter = new Filter();
+        filters.add(filter);
+    }
+
+    public void removeLastFilter() {
+        if (filters.size() > 0)
+            filters.remove(filters.size() - 1);
+    }
+
+    public Filters clone() {
+        Filters newFilters = new Filters();
+        for (Filter filter : filters)
+            newFilters.getFilters().add(filter.clone());
+
+        return newFilters;
+    }
+
+    public void fromJson(JSONObject joFilters) {
+        try {
+            filters.clear();
+
+            if (joFilters.has("video")) {
+                JSONArray jaVideo = joFilters.getJSONArray("video");
+
+                for (int filterIndex = 0; filterIndex < jaVideo.length(); filterIndex++) {
+                    JSONObject joFilter = jaVideo.getJSONObject(filterIndex);
+
+                    if (joFilter.has("type")) {
+                        Filter filter = new Filter();
+                        filters.add(filter);
+
+                        switch (joFilter.getString("type").toLowerCase()) {
+                            case "blackdetect":
+                                filter.setFilterName("Black Detect");
+                                break;
+                            case "blackframe":
+                                filter.setFilterName("Black Frame");
+                                break;
+                            case "crop":
+                                filter.setFilterName("Crop");
+                                if (joFilter.has("out_w"))
+                                    filter.setCrop_OutputWidth(joFilter.getString("out_w"));
+                                if (joFilter.has("out_h"))
+                                    filter.setCrop_OutputHeight(joFilter.getString("out_h"));
+                                if (joFilter.has("x"))
+                                    filter.setCrop_X(joFilter.getString("x"));
+                                if (joFilter.has("y"))
+                                    filter.setCrop_Y(joFilter.getString("y"));
+                                if (joFilter.has("keep_aspect"))
+                                    filter.setCrop_KeepAspect(joFilter.getBoolean("keep_aspect"));
+                                if (joFilter.has("exact"))
+                                    filter.setCrop_Exact(joFilter.getBoolean("exact"));
+                                break;
+                            case "drawbox":
+                                filter.setFilterName("Draw Box");
+                                if (joFilter.has("x"))
+                                    filter.setDrawBox_X(joFilter.getString("x"));
+                                if (joFilter.has("y"))
+                                    filter.setDrawBox_Y(joFilter.getString("y"));
+                                if (joFilter.has("width"))
+                                    filter.setDrawBox_Width(joFilter.getString("width"));
+                                if (joFilter.has("height"))
+                                    filter.setDrawBox_Height(joFilter.getString("height"));
+                                if (joFilter.has("fontColor"))
+                                    filter.setDrawBox_FontColor(joFilter.getString("fontColor"));
+                                if (joFilter.has("percentageOpacity"))
+                                    filter.setDrawBox_PercentageOpacity(joFilter.getLong("percentageOpacity"));
+                                if (joFilter.has("thickness"))
+                                    filter.setDrawBox_Thickness(joFilter.getString("thickness"));
+                                break;
+                            case "drawtext":
+                                filter.setFilterName("Text Overlay");
+                                filter.getDrawTextDetails().fromJson(joFilter);
+                                break;
+                            case "fade":
+                                filter.setFilterName("Fade");
+                                if (joFilter.has("duration")) {
+                                    Object o = joFilter.get("duration");
+                                    filter.setFade_Duration(joFilter.getLong("duration"));
+                                }
+                                break;
+                            case "freezedetect":
+                                filter.setFilterName("Freeze Detect");
+                                if (joFilter.has("duration")) {
+                                    Object o = joFilter.get("duration");
+                                    filter.setFreezedetect_Duration(joFilter.getLong("duration"));
+                                }
+                                break;
+                            default:
+                                String errorMessage = "Unknown video filter type: " + joFilter.getString("type");
+                                mLogger.error(errorMessage);
+
+                                throw new Exception(errorMessage);
+                        }
+                    }
+                }
+            }
+
+            if (joFilters.has("audio")) {
+                JSONArray jaAudio = joFilters.getJSONArray("audio");
+
+                for (int filterIndex = 0; filterIndex < jaAudio.length(); filterIndex++) {
+                    JSONObject joFilter = jaAudio.getJSONObject(filterIndex);
+
+                    if (joFilter.has("type")) {
+                        Filter filter = new Filter();
+                        filters.add(filter);
+
+                        switch (joFilter.getString("type").toLowerCase()) {
+                            case "volume":
+                                filter.setFilterName("Audio Volume Change");
+                                if (joFilter.has("factor") && !joFilter.isNull("factor"))
+                                    filter.setAudioVolumeChange(joFilter.getDouble("factor"));
+                                break;
+                            case "silencedetect":
+                                filter.setFilterName("Silence Detect");
+                                break;
+                            default:
+                                String errorMessage = "Unknown audio filter type: " + joFilter.getString("type");
+                                mLogger.error(errorMessage);
+
+                                throw new Exception(errorMessage);
+                        }
+                    }
+                }
+            }
+
+            if (joFilters.has("complex")) {
+                JSONArray jaComplex = joFilters.getJSONArray("complex");
+
+                for (int filterIndex = 0; filterIndex < jaComplex.length(); filterIndex++) {
+                    JSONObject joFilter = jaComplex.getJSONObject(filterIndex);
+
+                    if (joFilter.has("type")) {
+                        Filter filter = new Filter();
+                        filters.add(filter);
+
+                        switch (joFilter.getString("type").toLowerCase()) {
+                            case "imageoverlay":
+                                filter.setFilterName("Image Overlay");
+                                filter.getImageOverlayDetails().fromJson(joFilter);
+                                break;
+                            default:
+                                String errorMessage = "Unknown complex filter type: " + joFilter.getString("type");
+                                mLogger.error(errorMessage);
+
+                                throw new Exception(errorMessage);
+                        }
+                    }
+                }
+            }
+        } catch (Exception e) {
+            mLogger.error("Exception: " + e);
+        }
+    }
+
+    public JSONObject toJson()
+            throws Exception
+    {
+        JSONObject joFilters = new JSONObject();
+
+        try {
+            boolean videoFilterPresent = false;
+            JSONArray jaVideo = new JSONArray();
+
+            boolean audioFilterPresent = false;
+            JSONArray jaAudio = new JSONArray();
+
+            boolean complexFilterPresent = false;
+            JSONArray jaComplex = new JSONArray();
+
+            for (Filter filter : filters) {
+                switch (filter.getFilterName()) {
+                    case "Black Detect":
+                        JSONObject joBlackDetect = new JSONObject();
+                        jaVideo.put(joBlackDetect);
+
+                        joBlackDetect.put("type", "blackdetect");
+                        if (filter.getBlackdetect_BlackMinDuration() != null)
+                            joBlackDetect.put("black_min_duration", filter.getBlackdetect_BlackMinDuration());
+                        if (filter.getBlackdetect_PixelBlackTh() != null)
+                            joBlackDetect.put("pixel_black_th", filter.getBlackdetect_PixelBlackTh());
+                        break;
+                    case "Black Frame":
+                        JSONObject joBlackFrame = new JSONObject();
+                        jaVideo.put(joBlackFrame);
+
+                        joBlackFrame.put("type", "blackframe");
+                        if (filter.getBlackframe_Amount() != null)
+                            joBlackFrame.put("amount", filter.getBlackframe_Amount());
+                        if (filter.getBlackframe_Threshold() != null)
+                            joBlackFrame.put("threshold", filter.getBlackframe_Threshold());
+
+                        break;
+                    case "Crop":
+                        JSONObject joCrop = new JSONObject();
+                        jaVideo.put(joCrop);
+
+                        joCrop.put("type", "crop");
+
+                        if (filter.getCrop_OutputWidth() != null)
+                            joCrop.put("out_w", filter.getCrop_OutputWidth());
+                        if (filter.getCrop_OutputHeight() != null)
+                            joCrop.put("out_h", filter.getCrop_OutputHeight());
+                        if (filter.getCrop_X() != null)
+                            joCrop.put("x", filter.getCrop_X());
+                        if (filter.getCrop_Y() != null)
+                            joCrop.put("y", filter.getCrop_Y());
+                        if (filter.getCrop_KeepAspect() != null)
+                            joCrop.put("keep_aspect", filter.getCrop_KeepAspect());
+                        if (filter.getCrop_Exact() != null)
+                            joCrop.put("exact", filter.getCrop_Exact());
+
+                        break;
+                    case "Draw Box":
+                        JSONObject joDrawBox = new JSONObject();
+                        jaVideo.put(joDrawBox);
+
+                        joDrawBox.put("type", "drawbox");
+
+                        if (filter.getDrawBox_X() != null)
+                            joDrawBox.put("x", filter.getDrawBox_X());
+                        if (filter.getDrawBox_Y() != null)
+                            joDrawBox.put("y", filter.getDrawBox_Y());
+                        if (filter.getDrawBox_Width() != null)
+                            joDrawBox.put("width", filter.getDrawBox_Width());
+                        if (filter.getDrawBox_Height() != null)
+                            joDrawBox.put("height", filter.getDrawBox_Height());
+                        if (filter.getDrawBox_FontColor() != null)
+                            joDrawBox.put("fontColor", filter.getDrawBox_FontColor());
+                        if (filter.getDrawBox_PercentageOpacity() != null)
+                            joDrawBox.put("percentageOpacity", filter.getDrawBox_PercentageOpacity());
+                        if (filter.getDrawBox_Thickness() != null)
+                            joDrawBox.put("thickness", filter.getDrawBox_Thickness());
+
+                        break;
+                    case "Text Overlay":
+                        jaVideo.put(filter.getDrawTextDetails().toJson());
+
+                        break;
+                    case "Fade":
+                        JSONObject joFade = new JSONObject();
+                        jaVideo.put(joFade);
+
+                        joFade.put("type", "fade");
+
+                        if (filter.getFade_Duration() != null && filter.getFade_Duration() > 0)
+                            joFade.put("duration", filter.getFade_Duration());
+
+                        break;
+                    case "Freeze Detect":
+                        JSONObject joFreezeDetect = new JSONObject();
+                        jaVideo.put(joFreezeDetect);
+
+                        joFreezeDetect.put("type", "freezedetect");
+                        if (filter.getFreezedetect_Duration() != null && filter.getFreezedetect_Duration() > 0)
+                            joFreezeDetect.put("duration", filter.getFreezedetect_Duration());
+                        if (filter.getFreezedetect_NoiseInDb() != null)
+                            joFreezeDetect.put("noiseInDb", filter.getFreezedetect_NoiseInDb());
+
+                        break;
+                    case "Audio Volume Change":
+                        JSONObject joVolume = new JSONObject();
+                        jaAudio.put(joVolume);
+
+                        joVolume.put("type", "volume");
+                        joVolume.put("factor", filter.getAudioVolumeChange());
+
+                        break;
+                    case "Silence Detect":
+                        JSONObject joSilenceDetect = new JSONObject();
+                        jaAudio.put(joSilenceDetect);
+
+                        joSilenceDetect.put("type", "silencedetect");
+                        if (filter.getSilencedetect_Noise() != null)
+                            joSilenceDetect.put("noise", filter.getSilencedetect_Noise());
+
+                        break;
+                    case "Image Overlay":
+                        jaComplex.put(filter.getImageOverlayDetails().toJson());
+
+                        break;
+                    default:
+                        String errorMessage = "Unknown filter name: " + filter.getFilterName();
+                        mLogger.error(errorMessage);
+
+                        throw new Exception(errorMessage);
+                }
+            }
+
+            // build the filters json
+            if (jaVideo.length() > 0)
+                joFilters.put("video", jaVideo);
+            if (jaAudio.length() > 0)
+                joFilters.put("audio", jaAudio);
+            if (jaComplex.length() > 0)
+                joFilters.put("complex", jaComplex);
+
+        } catch (Exception e) {
+            mLogger.error("Exception: " + e);
+        }
+
+        return joFilters;
+    }
+
+    public List<Filter> getFilters() {
+        return filters;
+    }
+
+    public void setFilters(List<Filter> filters) {
+        this.filters = filters;
+    }
 }
