@@ -9,6 +9,7 @@ import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.HLSChannelConf;
 import com.catrammslib.utility.*;
 import com.catrammslib.utility.filters.Filter;
+import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -26,7 +27,7 @@ public class CatraMMSBroadcaster {
 	static public Long addBroadcaster(Stream broadcasterStream,
 		String broadcasterName, Date broadcasterStart, Date broadcasterEnd,
 		String broadcasterIngestionJobLabel,
-		Filter filters,
+		Filters filters,
 		String broadcastIngestionJobLabel,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem,
 		String broadcastEncodersPoolLabel,
@@ -497,22 +498,11 @@ public class CatraMMSBroadcaster {
 					*/
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 					{
-						outputStream.getFilters().setFade(true);
-						outputStream.getFilters().setFade_Duration(3L);
-						/*
-						JSONObject joFilters = new JSONObject();
-						
-						JSONArray jaVideo = new JSONArray();
-						joFilters.put("video", jaVideo);
+						Filter fadeFilter = new Filter();
+						fadeFilter.setFilterName("Fade");
+						fadeFilter.setFade_Duration(3L);
 
-						JSONObject joFade = new JSONObject();
-						jaVideo.put(joFade);
-
-						joFade.put("type", "fade");
-						joFade.put("duration", 3);
-
-						outputStream.setFilters(joFilters);
-						 */
+						outputStream.getFilters().getFilters().add(fadeFilter);
 					}
 
 					outputStreamList.add(outputStream);
@@ -623,7 +613,7 @@ public class CatraMMSBroadcaster {
 	private static JSONObject buildBroadcasterJson(
 		String broadcasterIngestionJobLabel,
 		String broadcasterStreamConfigurationLabel,	
-		Filter filters,
+		Filters filters,
 		Date broadcasterStart, 
 		Date broadcasterEnd,
 		String encodingProfileLabel,

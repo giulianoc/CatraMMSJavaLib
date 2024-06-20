@@ -12,6 +12,7 @@ import com.catrammslib.utility.filters.Filter;
 import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
 
+import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -457,7 +458,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-			Filter filters,
+			Filters filters,
 
             List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
@@ -590,7 +591,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-			Filter filters,
+			Filters filters,
 			
             List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
@@ -711,7 +712,7 @@ public class CatraMMSWorkflow {
 			//		Per questo motivo:
 			//			1. aggiungiamo questi parametri in forma eccezionale per il Broadcast
 			//			2. questi parametri saranno gestiti dall'engine
-			Filter filters,
+			Filters filters,
 
 			List<OutputStream> outputStreamList,
 			Boolean defaultBroadcast
@@ -1891,7 +1892,7 @@ public class CatraMMSWorkflow {
 			String encodingProfileLabel, String encodingProfilesSetLabel,
             String encodersPool,
             Long videoTrackIndex, Long audioTrackIndex,
-            Filter filters,
+            Filters filters,
             List<MediaItemReference> mediaItemReferenceList,
             Long utcProcessingStartingFrom
     )
