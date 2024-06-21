@@ -13,14 +13,45 @@ public class Filters {
 
     private List<Filter> filters = new ArrayList<>();
 
-    public void appendFilter() {
+    // servono per la GUI
+    private Filter editFilter;
+    private String tableToBeUpdatedOnSave;
+
+
+    /*
+    public Filter appendFilter() {
         Filter filter = new Filter();
         filters.add(filter);
+
+        return filter;
     }
 
     public void removeLastFilter() {
         if (filters.size() > 0)
             filters.remove(filters.size() - 1);
+    }
+     */
+
+    public void prepareFilterDialog(String tableToBeUpdatedOnSave)
+    {
+        editFilter = new Filter();
+        this.tableToBeUpdatedOnSave = tableToBeUpdatedOnSave;
+    }
+
+    public void remove(int index)
+    {
+        mLogger.info("Received remove"
+                + ", index: " + index
+                + ", filters.size: " + filters.size()
+        );
+
+        if (index < getFilters().size())
+            filters.remove(index);
+    }
+
+    public void saveFilter()
+    {
+        getFilters().add(editFilter);
     }
 
     public Filters clone() {
@@ -317,6 +348,49 @@ public class Filters {
         }
 
         return joFilters;
+    }
+
+    public boolean isTextOverlayPresent()
+    {
+        for(Filter filter: filters)
+        {
+            if (filter.getFilterName().equalsIgnoreCase("Text Overlay"))
+                return true;
+        }
+
+        return false;
+    }
+
+    public Filter getFirstTextOverlay()
+    {
+        Filter textOverlayFilter = null;
+
+        for(Filter filter: filters)
+        {
+            if (filter.getFilterName().equalsIgnoreCase("Text Overlay"))
+            {
+                textOverlayFilter = filter;
+                break;
+            }
+        }
+
+        return textOverlayFilter;
+    }
+
+    public String getTableToBeUpdatedOnSave() {
+        return tableToBeUpdatedOnSave;
+    }
+
+    public void setTableToBeUpdatedOnSave(String tableToBeUpdatedOnSave) {
+        this.tableToBeUpdatedOnSave = tableToBeUpdatedOnSave;
+    }
+
+    public Filter getEditFilter() {
+        return editFilter;
+    }
+
+    public void setEditFilter(Filter editFilter) {
+        this.editFilter = editFilter;
     }
 
     public List<Filter> getFilters() {

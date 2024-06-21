@@ -1,5 +1,6 @@
 package com.catrammslib.utility.filters;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -144,6 +145,77 @@ public class Filter implements Serializable {
 		filter.setSilencedetect_Noise(getSilencedetect_Noise());
 
 		return filter;
+	}
+
+	@Override
+	public String toString() {
+		String toString = "";
+
+		switch (getFilterName()) {
+			case "Black Detect":
+				toString = "blackMinDuration: " + (getBlackdetect_BlackMinDuration() == null ? "<default>" : getBlackdetect_BlackMinDuration())
+					+ ", pixelBlackTh: " + (getBlackdetect_PixelBlackTh() == null ? "<default>" : getBlackdetect_PixelBlackTh())
+				;
+
+				break;
+			case "Black Frame":
+				toString = "amount: " + (getBlackframe_Amount() == null ? "<default>" : getBlackframe_Amount())
+						+ ", threshold: " + (getBlackframe_Threshold() == null ? "<default>" : getBlackframe_Threshold())
+				;
+
+				break;
+			case "Crop":
+				toString = "outputWidth: " + (getCrop_OutputWidth() == null ? "<default>" : getCrop_OutputWidth())
+						+ ", outputHeight: " + (getCrop_OutputHeight() == null ? "<default>" : getCrop_OutputHeight())
+						+ ", x: " + (getCrop_X() == null ? "<default>" : getCrop_X())
+						+ ", y: " + (getCrop_Y() == null ? "<default>" : getCrop_Y())
+				;
+
+				break;
+			case "Draw Box":
+				toString = "width: " + (getDrawBox_Width() == null ? "<default>" : getDrawBox_Width())
+						+ ", height: " + (getDrawBox_Height() == null ? "<default>" : getDrawBox_Height())
+						+ ", x: " + (getDrawBox_X() == null ? "<default>" : getDrawBox_X())
+						+ ", y: " + (getDrawBox_Y() == null ? "<default>" : getDrawBox_Y())
+				;
+
+				break;
+			case "Text Overlay":
+				toString = "text: " + (getDrawTextDetails().getText() == null ? "<default>" : getDrawTextDetails().getText())
+						;
+
+				break;
+			case "Fade":
+				toString = "duration: " + (getFade_Duration() == null ? "<default>" : getFade_Duration())
+				;
+
+				break;
+			case "Freeze Detect":
+				toString = "duration: " + (getFreezedetect_Duration() == null ? "<default>" : getFreezedetect_Duration())
+						+ ", noiseInDb: " + (getFreezedetect_NoiseInDb() == null ? "<default>" : getFreezedetect_NoiseInDb())
+				;
+
+				break;
+			case "Audio Volume Change":
+				toString = "audioVolumeChange: " + (getAudioVolumeChange() == null ? "<default>" : getAudioVolumeChange())
+				;
+
+				break;
+			case "Silence Detect":
+				toString = "noise: " + (getSilencedetect_Noise() == null ? "<default>" : getSilencedetect_Noise())
+				;
+
+				break;
+			case "Image Overlay":
+				toString = "imagePhysicalPathKey: " + (getImageOverlayDetails().getImagePhysicalPathKey() == null ? "<default>" : getImageOverlayDetails().getImagePhysicalPathKey())
+						+ ", positionXInPixel: " + (getImageOverlayDetails().getPositionXInPixel() == null ? "<default>" : getImageOverlayDetails().getPositionXInPixel())
+						+ ", positionYInPixel: " + (getImageOverlayDetails().getPositionYInPixel() == null ? "<default>" : getImageOverlayDetails().getPositionYInPixel())
+				;
+
+				break;
+		}
+
+		return toString;
 	}
 
 	/*
