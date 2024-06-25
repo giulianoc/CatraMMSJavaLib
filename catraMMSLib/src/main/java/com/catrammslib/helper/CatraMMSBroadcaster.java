@@ -5,8 +5,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import com.catrammslib.entity.CDN77ChannelConf;
-import com.catrammslib.entity.HLSChannelConf;
+import com.catrammslib.entity.*;
 import com.catrammslib.utility.*;
 import com.catrammslib.utility.filters.Filter;
 import com.catrammslib.utility.filters.Filters;
@@ -17,8 +16,6 @@ import org.json.JSONObject;
 
 import com.catrammslib.CatraMMSAPI;
 import com.catrammslib.CatraMMSWorkflow;
-import com.catrammslib.entity.IngestionJob;
-import com.catrammslib.entity.Stream;
 
 public class CatraMMSBroadcaster {
 
@@ -746,5 +743,45 @@ public class CatraMMSBroadcaster {
             throw e;
         }
     }
+
+	public static String addBroadcastEncodersPoolIfNeeded(CatraMMSAPI catraMMS, String username, String password, Stream broadcasterStream)
+			throws Exception {
+		// - look for an encodersPool containing ONLY the 'push server' of the broadcaster
+		// - if it is not found, create one and add it
+
+		String broadcastEncodersPoolLabel = null;
+
+		List<EncodersPool> encodersPoolsList = new ArrayList<>();
+		catraMMS.getEncodersPool(username, password, null, encodersPoolsList);
+
+		List<String> encodersPoolLabels = new ArrayList<>();
+
+		for (EncodersPool encodersPool : encodersPoolsList) {
+			encodersPoolLabels.add(encodersPool.getLabel());
+
+			if (encodersPool.getEncoderList().size() != 1)
+				continue;
+
+			if (encodersPool.getEncoderList().get(0).getEncoderKey() == broadcasterStream.getPushEncoderKey()) {
+				broadcastEncodersPoolLabel = encodersPool.getLabel();
+
+				break;
+			}
+		}
+
+		if (broadcastEncodersPoolLabel == null) {
+			broadcastEncodersPoolLabel = broadcasterStream.getPushEncoderLabel();
+			long counter = 1;
+			while (encodersPoolLabels.indexOf(broadcastEncodersPoolLabel) != -1)
+				broadcastEncodersPoolLabel = broadcasterStream.getPushEncoderLabel() + "_" + counter++;
+
+			List<Long> encordersPoolKeys = new ArrayList<>();
+			encordersPoolKeys.add(broadcasterStream.getPushEncoderKey());
+			catraMMS.addEncodersPoolByKeys(username, password, broadcastEncodersPoolLabel, encordersPoolKeys);
+		}
+
+		return broadcastEncodersPoolLabel;
+	}
+
 
 }
