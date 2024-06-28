@@ -217,6 +217,14 @@ public class Filters {
             JSONArray jaComplex = new JSONArray();
 
             for (Filter filter : filters) {
+                if (filter.getFilterName() == null)
+                {
+                    String errorMessage = "filterName is not initialized";
+                    mLogger.error(errorMessage);
+
+                    throw new Exception(errorMessage);
+                }
+
                 switch (filter.getFilterName()) {
                     case "Black Detect":
                         JSONObject joBlackDetect = new JSONObject();
