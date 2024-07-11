@@ -79,6 +79,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
         return getStart().compareTo(broadcastPlaylistItem.getStart());
 	}
 
+	/*
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) return true;
@@ -91,6 +92,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	public int hashCode() {
 		return Objects.hash(start);
 	}
+	 */
 
 	@Override
 	public String toString() // used in broadcasterEditorPlaylist.xhtml and broadcaster.xhtml
