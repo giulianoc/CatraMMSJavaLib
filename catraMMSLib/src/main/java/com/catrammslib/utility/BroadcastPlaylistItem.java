@@ -80,6 +80,19 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	}
 
 	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		BroadcastPlaylistItem that = (BroadcastPlaylistItem) o;
+		return start.equals(that.start);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(start);
+	}
+
+	@Override
 	public String toString() // used in broadcasterEditorPlaylist.xhtml and broadcaster.xhtml
 	{
 		String str = "";
