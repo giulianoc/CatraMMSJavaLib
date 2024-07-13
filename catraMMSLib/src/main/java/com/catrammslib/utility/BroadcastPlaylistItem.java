@@ -25,6 +25,10 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
     private Date start;
     private Date end;
+	// used by GUI, in caso di mediaType 'Media', indica se la lista dei media
+	// - deve essere considerata come unico BroadcastPlaylistItem e i media vengono trasmessi in loop (mediasAsLoop is true)
+	// - oppure bisogna creare un BroadcastPlaylistItem per ogni media (mediasAsLoop is false)
+	private Boolean mediasAsLoop;
 	private Date minStart;	// usato dalla GUI
 	
 	private String mediaType;					// Stream, Media, Countdown, Direct URL
@@ -885,6 +889,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public Long getPhysicalPathKey() {
 		return physicalPathKey;
+	}
+
+	public Boolean getMediasAsLoop() {
+		return mediasAsLoop;
+	}
+
+	public void setMediasAsLoop(Boolean mediasAsLoop) {
+		this.mediasAsLoop = mediasAsLoop;
 	}
 
 	public Date getMinStart() {
