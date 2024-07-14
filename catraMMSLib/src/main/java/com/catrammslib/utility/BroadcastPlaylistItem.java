@@ -144,10 +144,11 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		
 						if (str != "")
 							str += "</br>";
-						str += (
-							"<b>" + ((mediaItem != null ? (mediaItem.getMediaItemKey() + "-") : "") + localPhysicalPathKey) + "</b>"
-							+ mediaItemDetails
-						);	
+						String mediaItemLink = "";
+						if (mediaItem != null)
+							mediaItemLink = "<a href=\"/catramms/mediaItems.xhtml?mediaItemKey=" + mediaItem.getMediaItemKey()
+									+ "\" target=\"_blank\">" + mediaItem.getMediaItemKey() + "</a>" + "-";
+						str += ("<b>" + (mediaItemLink + localPhysicalPathKey) + "</b>" + mediaItemDetails);
 					}
 				}
 			}
