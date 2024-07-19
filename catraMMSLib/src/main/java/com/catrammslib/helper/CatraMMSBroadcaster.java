@@ -66,6 +66,7 @@ public class CatraMMSBroadcaster {
 						&& (broadcastDefaultPlaylistItem.getUrl() == null || broadcastDefaultPlaylistItem.getUrl().isBlank()))
 				)
 				{
+					// non cambiare il messaggio sotto perchè viene verificato nel catch del metodo chiamamnte (Broadcaster::startBroadcaster)
 					String errorMessage = "No default is present"
 						+ ", mediaType: " + broadcastDefaultPlaylistItem.getMediaType()
 					;
