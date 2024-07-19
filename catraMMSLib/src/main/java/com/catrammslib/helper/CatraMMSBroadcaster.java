@@ -54,6 +54,27 @@ public class CatraMMSBroadcaster {
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 			);
 
+			// check if the broadcastDefaultPlaylistItem has the media/stream/countdown/DirectUrl
+			{
+				if ((broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Stream")
+						&& broadcastDefaultPlaylistItem.getStream() == null)
+					|| (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Media")
+						&& (broadcastDefaultPlaylistItem.getMediaItems() == null || broadcastDefaultPlaylistItem.getMediaItems().size() == 0))
+					|| (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Countdown")
+						&& (broadcastDefaultPlaylistItem.getMediaItems() == null || broadcastDefaultPlaylistItem.getMediaItems().size() == 0))
+					|| (broadcastDefaultPlaylistItem.getMediaType().equalsIgnoreCase("Direct URL")
+						&& (broadcastDefaultPlaylistItem.getUrl() == null || broadcastDefaultPlaylistItem.getUrl().isBlank()))
+				)
+				{
+					String errorMessage = "No default is present"
+						+ ", mediaType: " + broadcastDefaultPlaylistItem.getMediaType()
+					;
+					mLogger.error(errorMessage);
+
+					throw new Exception(errorMessage);
+				}
+			}
+
 			String broadcastURL;
 			{
 				// it could be udp:// (we might have corrupt packets) or better rtmp://

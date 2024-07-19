@@ -900,6 +900,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		this.mediasAsLoop = mediasAsLoop;
 	}
 
+	public List<MediaItem> getMediaItems() {
+		return mediaItems;
+	}
+
+	public void setMediaItems(List<MediaItem> mediaItems) {
+		this.mediaItems = mediaItems;
+	}
+
 	public Date getMinStart() {
 		return minStart;
 	}
