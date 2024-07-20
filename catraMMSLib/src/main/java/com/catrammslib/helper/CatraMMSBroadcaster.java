@@ -200,13 +200,37 @@ public class CatraMMSBroadcaster {
 
 			if (broadcastPlaylistItems != null && broadcastPlaylistItems.size() > 0)
 			{
-				mLogger.info("changeLiveProxyPlaylist"
-					+ ", broadcasterIngestionJobKey: " + broadcasterIngestionJobKey
-					+ ", broadcastPlaylistItems: " + broadcastPlaylistItems
-				);
-				catraMMS.changeLiveProxyPlaylist(username, password, 
-					broadcasterIngestionJobKey, broadcastPlaylistItems,
-					true);
+				try {
+					mLogger.info("changeLiveProxyPlaylist"
+							+ ", broadcasterIngestionJobKey: " + broadcasterIngestionJobKey
+							+ ", broadcastPlaylistItems: " + broadcastPlaylistItems
+					);
+					catraMMS.changeLiveProxyPlaylist(username, password,
+							broadcasterIngestionJobKey, broadcastPlaylistItems,
+							true);
+				}
+				catch (Exception e)
+				{
+					mLogger.error("changeLiveProxyPlaylist failed, retrieving broadcasterIngestionJob to kill it"
+							+ ", broadcasterIngestionJobKey: " + broadcasterIngestionJobKey
+							+ ", exception: " + e.getMessage()
+					);
+					IngestionJob broadcasterIngestionJob = catraMMS.getIngestionJob(username, password,
+							broadcasterIngestionJobKey, false, true, false);
+					if (broadcasterIngestionJob != null)
+					{
+						mLogger.info("Killing broadcasterIngestionJob"
+								+ ", broadcasterIngestionJobKey: " + broadcasterIngestionJobKey
+						);
+						killBroadcaster(broadcasterIngestionJob, catraMMS, username, password);
+					}
+					else
+						mLogger.error("broadcasterIngestionJob is null"
+								+ ", broadcasterIngestionJobKey: " + broadcasterIngestionJobKey
+						);
+
+					throw e;
+				}
 			}
 
 			return broadcasterIngestionJobKey;
