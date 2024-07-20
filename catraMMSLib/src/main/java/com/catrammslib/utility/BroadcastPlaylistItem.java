@@ -750,6 +750,22 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				return 0;
 			}
 
+			Long physicalPathKey = joReferencePhysicalPathKey.getLong("physicalPathKey");
+
+			// Se abbiamo piu' di un contenuto, tutti devono usare lo stesso encoding profile.
+			// In catraMMS.changeLiveProxyPlaylist viene controllato che tutti i Media usino lo stesso encoding profile,
+			// ma, quando il broadcaster viene creato, la lista dei BroadcastPlaylistItem di default non passa da catraMMS.changeLiveProxyPlaylist
+			// perchè viene gestita dal metodo CatraMMSBroadcaster::buildBroadcastJson.
+			// Per cui dovremmo controllare che ogni PhysicalPathKey usi lo stesso encoding profile key.
+			// Il problema è che qui abbiamo la lista dei mediaItems ed il nuovo physicalPathKey, per cui dovremmo
+			// recuperare dal DB l'encoding profile key di ogni physicalPathKey.
+			// Per cui per ora mettiamo una label nella GUI che indica di selezionare lo stesso profilo
+			/*
+            if (mediaItems.size() > 0)
+            {
+            }
+			*/
+
 			// inizializzo jaReferencePhysicalPathKeys con i dati attuali (referencePhysicalPathKeys)
 			JSONArray jaReferencePhysicalPathKeys = new JSONArray();
 			if (!referencePhysicalPathKeys.toString().isEmpty())
@@ -762,8 +778,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			referencePhysicalPathKeys.append(jaReferencePhysicalPathKeys.toString(2));
 
 			positionIndex = jaReferencePhysicalPathKeys.length() - 1;
-
-			Long physicalPathKey = joReferencePhysicalPathKey.getLong("physicalPathKey");
 
 			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey, null);
 
