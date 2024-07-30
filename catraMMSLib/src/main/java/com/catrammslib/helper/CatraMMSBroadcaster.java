@@ -541,8 +541,8 @@ public class CatraMMSBroadcaster {
 					*/
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 					{
-						Filter fadeFilter = new Filter();
-						fadeFilter.setFilterName("Fade");
+						Filter fadeFilter = new Filter("Fade");
+						// fadeFilter.setFilterName("Fade");
 						fadeFilter.setFade_Duration(3L);
 
 						outputStream.getFilters().getFilters().add(fadeFilter);

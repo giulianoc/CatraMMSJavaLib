@@ -59,7 +59,9 @@ public class Filter implements Serializable {
 	private Float silencedetect_Noise;
 
 
-	public Filter()
+	public Filter(
+			String filterName // aggiunto filter name nel costruttore perchè è un campo mandatory
+	)
 	{
 		this.drawTextDetails = new DrawTextDetails(null);
 		this.imageOverlayDetails = new ImageOverlayDetails();
@@ -67,6 +69,8 @@ public class Filter implements Serializable {
 		timeInSecondsDecimalsPrecision = (long) 1;
 
 		reset();
+
+		this.filterName = filterName;
 	}
 
 	private void reset()
@@ -106,9 +110,9 @@ public class Filter implements Serializable {
 
 	public Filter clone()
 	{
-		Filter filter = new Filter();
+		Filter filter = new Filter(getFilterName());
 
-		filter.setFilterName(getFilterName());
+		// filter.setFilterName(getFilterName());
 
 		filter.setAudioVolumeChange(getAudioVolumeChange());
 
