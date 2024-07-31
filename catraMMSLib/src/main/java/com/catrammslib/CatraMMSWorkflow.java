@@ -1589,6 +1589,7 @@ public class CatraMMSWorkflow {
             String configurationLabel,  // only if inputType is Channel
             String streamingName,       // only if inputType is StreamingUrl
             String streamingUrl,        // only if inputType is StreamingUrl
+            Boolean isVideo,
             String waitForGlobalIngestionLabel,
             Long utcProcessingStartingFrom
     )
@@ -1626,6 +1627,9 @@ public class CatraMMSWorkflow {
                 joParameters.put("streamingUrl", streamingUrl);
 
             }
+
+            if (isVideo != null)
+                joParameters.put("isVideo", isVideo);
 
             if (utcProcessingStartingFrom != null)
             {
