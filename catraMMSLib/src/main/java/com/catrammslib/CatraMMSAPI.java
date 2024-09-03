@@ -9841,8 +9841,10 @@ public class CatraMMSAPI implements Serializable {
 
                     encodingProfile.getImageDetails().setWidth(joImageInfo.getLong("width"));
                     encodingProfile.getImageDetails().setHeight(joImageInfo.getLong("height"));
-                    encodingProfile.getImageDetails().setAspectRatio(joImageInfo.getBoolean("AspectRatio"));
-                    encodingProfile.getImageDetails().setInterlaceType(joImageInfo.getString("InterlaceType"));
+                    encodingProfile.getImageDetails().setAspectRatio(joImageInfo.getBoolean("aspectRatio"));
+                    encodingProfile.getImageDetails().setMaxWidth(joImageInfo.optLong("maxWidth", 0));
+                    encodingProfile.getImageDetails().setMaxHeight(joImageInfo.optLong("maxHeight", 0));
+                    encodingProfile.getImageDetails().setInterlaceType(joImageInfo.getString("interlaceType"));
                 }
             }
         }
