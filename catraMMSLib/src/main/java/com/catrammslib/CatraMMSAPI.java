@@ -26,6 +26,7 @@ import com.amazonaws.services.cloudfront.util.SignerUtils.Protocol;
 import com.catrammslib.entity.*;
 import com.catrammslib.utility.*;
 
+import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -6803,7 +6804,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, String type)
+    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, String type, Boolean cacheAllowed)
             throws Exception
     {
         List<CDN77ChannelConf> cdn77ChannelConfList = new ArrayList<>();
@@ -6811,6 +6812,16 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
+            URIBuilder uriBuilder = new URIBuilder(mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel");
+            if (label != null && !label.isBlank())
+                uriBuilder.addParameter("label", label);
+            if (cacheAllowed != null && !cacheAllowed)
+                uriBuilder.addParameter("should_bypass_cache", "true");
+            if (type != null && !type.isBlank())
+                uriBuilder.addParameter("type", type);
+
+            String mmsURL = uriBuilder.toString();
+            /*
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel"
                 + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
             ;
@@ -6822,6 +6833,7 @@ public class CatraMMSAPI implements Serializable {
                     mmsURL += "?";
                 mmsURL += ("type=" + type);
             }
+            */
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
