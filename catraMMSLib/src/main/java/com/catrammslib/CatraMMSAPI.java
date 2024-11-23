@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -26,7 +27,6 @@ import com.amazonaws.services.cloudfront.util.SignerUtils.Protocol;
 import com.catrammslib.entity.*;
 import com.catrammslib.utility.*;
 
-import org.apache.http.client.utils.URIBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.json.JSONArray;
@@ -6812,28 +6812,28 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
-            URIBuilder uriBuilder = new URIBuilder(mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel");
-            if (label != null && !label.isBlank())
-                uriBuilder.addParameter("label", label);
-            if (cacheAllowed != null && !cacheAllowed)
-                uriBuilder.addParameter("should_bypass_cache", "true");
-            if (type != null && !type.isBlank())
-                uriBuilder.addParameter("type", type);
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel";
+            boolean firstParameterAdded = false;
 
-            String mmsURL = uriBuilder.toString();
-            /*
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/cdn77/channel"
-                + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
-            ;
+            if (label != null && !label.isBlank())
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+            }
+            if (cacheAllowed != null && !cacheAllowed)
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("should_bypass_cache=" + "true");
+            }
             if (type != null && !type.isBlank())
             {
-                if (mmsURL.indexOf("channel?") != -1)
-                    mmsURL += "&";
-                else
-                    mmsURL += "?";
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
                 mmsURL += ("type=" + type);
             }
-            */
+
             mLogger.info("mmsURL: " + mmsURL);
 
             long start = System.currentTimeMillis();
