@@ -1586,9 +1586,9 @@ public class CatraMMSWorkflow {
     static public JSONObject buildCheckStreamingJson(
             String label,
             String inputType,           // Stream or URL
-            String configurationLabel,  // only if inputType is Channel
-            String streamingName,       // only if inputType is StreamingUrl
-            String streamingUrl,        // only if inputType is StreamingUrl
+            String configurationLabel,  // only if inputType is Stream
+            String streamingName,       // only if inputType is URL
+            String streamingUrl,        // only if inputType is URL
             Boolean isVideo,
             String waitForGlobalIngestionLabel,
             Long utcProcessingStartingFrom
@@ -1612,15 +1612,8 @@ public class CatraMMSWorkflow {
 
             joParameters.put("inputType", inputType);
 
-            if (inputType != null &&
-                    (inputType.equalsIgnoreCase("Stream")
-                            || inputType.equalsIgnoreCase("Channel"))) // riga da eliminare quando si userà il Cloud
-            {
-                if (inputType.equalsIgnoreCase("Stream"))
-                    joParameters.put("configurationLabel", configurationLabel);
-                else if (inputType.equalsIgnoreCase("Channel")) // 2 righe da eliminare quando si userà il Cloud
-                    joParameters.put("channelConfigurationLabel", configurationLabel);
-            }
+            if (inputType != null && inputType.equalsIgnoreCase("Stream"))
+                joParameters.put("configurationLabel", configurationLabel);
             else
             {
                 joParameters.put("streamingName", streamingName);
