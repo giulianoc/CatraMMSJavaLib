@@ -103,7 +103,7 @@ public class CatraMMSWorkflow {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                    joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                    joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
                 }
             }
 
@@ -1569,7 +1569,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;
@@ -1629,7 +1629,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;
@@ -1822,7 +1822,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
 
@@ -1866,7 +1866,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             return joTask;
@@ -2227,7 +2227,7 @@ public class CatraMMSWorkflow {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
 
-                joParameters.put("ProcessingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
+                joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
 
             setCommonParameters(joParameters,
