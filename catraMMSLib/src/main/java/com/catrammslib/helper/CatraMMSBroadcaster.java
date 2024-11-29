@@ -336,12 +336,10 @@ public class CatraMMSBroadcaster {
 			}
 
 			catraMMS.killEncodingJob(username, password,
-				broadcastIngestionJob.getEncodingJob().getEncodingJobKey(),
-				false);
+				broadcastIngestionJob.getEncodingJob().getEncodingJobKey(), "kill");
 
             catraMMS.killEncodingJob(username, password,
-                broadcasterIngestionJob.getEncodingJob().getEncodingJobKey(),
-				false);
+                broadcasterIngestionJob.getEncodingJob().getEncodingJobKey(), "kill");
         }
         catch (Exception e)
         {

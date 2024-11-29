@@ -1371,14 +1371,16 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public void killEncodingJob(String username, String password, Long encodingJobKey, Boolean lightKill)
+    public void killEncodingJob(String username, String password, Long encodingJobKey,
+                                String killType // "kill", "restartWithinEncoder", "killToRestartByEngine"
+    )
             throws Exception
     {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
 				+ "/catramms/1.0.1/encodingJob/" + encodingJobKey
-				+ "?lightKill=" + (lightKill == null ? "false" : lightKill.toString())
+				+ "?killType=" + killType
 			;
 
             mLogger.info("killEncodingJob"
