@@ -8192,6 +8192,82 @@ public class CatraMMSAPI implements Serializable {
         return numFound;
     }
 
+    public Long getRequestPerCountryStatistics(String username, String password,
+                                            String title, String userId, Long minimalNextRequestDistanceInSeconds,
+                                            Date startStatisticDate, Date endStatisticDate,
+                                            Long totalNumFoundToBeCalculated,
+                                            long startIndex, long pageSize,
+                                            List<RequestPerCountryStatistic> requestPerCountryStatisticsList)
+            throws Exception
+    {
+        Long numFound;
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/statistic/request/perCountry"
+                    + "?start=" + startIndex
+                    + "&rows=" + pageSize
+                    + (title != null && !title.isEmpty() ? ("&title=" + java.net.URLEncoder.encode(title, "UTF-8")) : "")
+                    + (userId != null && !userId.isEmpty() ? ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")) : "")
+                    + (minimalNextRequestDistanceInSeconds != null ? ("&minimalNextRequestDistanceInSeconds=" + minimalNextRequestDistanceInSeconds) : "")
+                    + (totalNumFoundToBeCalculated != null ? ("&totalNumFoundToBeCalculated=" + totalNumFoundToBeCalculated) : "")
+                    + (startStatisticDate != null ? ("&startStatisticDate=" + simpleDateFormat.format(startStatisticDate)) : "")
+                    + (endStatisticDate != null ? ("&endStatisticDate=" + simpleDateFormat.format(endStatisticDate)) : "")
+                    ;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, statisticsTimeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getRequestPerCountryStatistics. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getRequestPerCountryStatistics MMS failed"
+                    + ", statisticsTimeoutInSeconds: " + statisticsTimeoutInSeconds
+                    + ", exception: " + e
+                    ;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            requestPerCountryStatisticsList.clear();
+
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            numFound = joResponse.getLong("numFound");
+            JSONArray jaRequestStatistics = joResponse.getJSONArray("requestStatistics");
+
+            for (int requestStatisticIndex = 0; requestStatisticIndex < jaRequestStatistics.length(); requestStatisticIndex++)
+            {
+                JSONObject requestPerCountryStatisticInfo = jaRequestStatistics.getJSONObject(requestStatisticIndex);
+
+                RequestPerCountryStatistic requestPerCountryStatistic = new RequestPerCountryStatistic();
+
+                fillRequestPerCountryStatistic(requestPerCountryStatistic, requestPerCountryStatisticInfo);
+
+                requestPerCountryStatisticsList.add(requestPerCountryStatistic);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "getRequestPerCountryStatistics failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return numFound;
+    }
+
 	private void fillUserProfile(UserProfile userProfile, JSONObject joUserProfileInfo)
             throws Exception
     {
@@ -9044,7 +9120,30 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-	private void fillEncoder(Encoder encoder, JSONObject encoderInfo)
+    private void fillRequestPerCountryStatistic(RequestPerCountryStatistic requestPerCountryStatistic,
+                                             JSONObject requestPerCountryStatisticInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        try
+        {
+            requestPerCountryStatistic.setCountry(requestPerCountryStatisticInfo.getString("country"));
+            requestPerCountryStatistic.setCount(requestPerCountryStatisticInfo.getLong("count"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillRequestPerCountryStatistic failed. Exception: " + e
+                    + ", requestPerCountryStatisticInfo: " + requestPerCountryStatisticInfo.toString()
+                    ;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillEncoder(Encoder encoder, JSONObject encoderInfo)
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
