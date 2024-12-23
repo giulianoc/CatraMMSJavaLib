@@ -4241,6 +4241,7 @@ public class CatraMMSAPI implements Serializable {
 
     public void getBulkOfDeliveryURL(
 		String username, String password,
+        String remoteIPAddress, // puo' essere null, in tal caso MMS calcola lui l'iP address remoto
 		List<BulkOfDeliveryURLData> bulkOfDeliveryURLDataList,  // IN and OUT (deliveryURL)
 		long ttlInSeconds, int maxRetries
 	)
@@ -4364,6 +4365,7 @@ public class CatraMMSAPI implements Serializable {
                     + "/catramms/1.0.1/delivery/bulk"
                     + "?ttlInSeconds=" + ttlInSeconds
                     + "&maxRetries=" + maxRetries
+                    + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
 			;
             mLogger.info("mmsURL: " + mmsURL);
 
@@ -4484,6 +4486,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public String getVODDeliveryURL(String username, String password,
+        String remoteIPAddress, // puo' essere null, in tal caso MMS calcola lui l'iP address remoto
 
         // first option (encodingProfileKey or encodingProfileLabel potrebbe essere anche null, vedi commento sotto)
         Long mediaItemKey, String uniqueName, Long encodingProfileKey, String encodingProfileLabel,
@@ -4538,6 +4541,7 @@ public class CatraMMSAPI implements Serializable {
                         + "/catramms/1.0.1/delivery/vod/" + physicalPath.getPhysicalPathKey()
                         + "?ttlInSeconds=" + ttlInSeconds
                         + "&maxRetries=" + maxRetries
+                        + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
                         + "&save=" + save.toString()
                         + "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 						+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
@@ -4558,6 +4562,7 @@ public class CatraMMSAPI implements Serializable {
                                 + "&encodingProfileLabel=" + (encodingProfileLabel == null ? "" : java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8")) // requires unescape server side
                                 + "&ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
+                                + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
@@ -4572,6 +4577,7 @@ public class CatraMMSAPI implements Serializable {
                                 + "?uniqueName=" + java.net.URLEncoder.encode(uniqueName, "UTF-8") // requires unescape server side
                                 + "&ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
+                                + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
@@ -4589,6 +4595,7 @@ public class CatraMMSAPI implements Serializable {
                             + "?encodingProfileLabel=" + (encodingProfileLabel == null ? "" : java.net.URLEncoder.encode(encodingProfileLabel, "UTF-8")) // requires unescape server side
                             + "&ttlInSeconds=" + ttlInSeconds
                             + "&maxRetries=" + maxRetries
+                            + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
                             + "&save=" + save.toString()
 							+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 							+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
@@ -4602,6 +4609,7 @@ public class CatraMMSAPI implements Serializable {
                                 + "/catramms/1.0.1/delivery/vod/" + mediaItemKey + "/" + encodingProfileKey
                                 + "?ttlInSeconds=" + ttlInSeconds
                                 + "&maxRetries=" + maxRetries
+                                + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
                                 + "&save=" + save.toString()
 								+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 								+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
@@ -4647,6 +4655,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public String getLiveDeliveryURL(String username, String password,
+        String remoteIPAddress, // puo' essere null, in tal caso MMS calcola lui l'iP address remoto
 		Long ingestionJobKey,
 		Long deliveryCode,
 		Long ttlInSeconds, // if null -> 3600 * 24
@@ -4700,7 +4709,8 @@ public class CatraMMSAPI implements Serializable {
                     + "/catramms/1.0.1/delivery/live/" + ingestionJobKey
                     + "?ttlInSeconds=" + lTtlInSeconds
                     + "&maxRetries=" + lMaxRetries
-					+ "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
+                    + (remoteIPAddress == null || remoteIPAddress.isBlank() ? "" : ("&remoteIPAddress=" + remoteIPAddress))
+                    + "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "MMS_SignedURL" : deliveryType)
                     + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + "&redirect=false"
 					+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
