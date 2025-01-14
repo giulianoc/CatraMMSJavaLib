@@ -20,8 +20,6 @@ public class LoginStatistic implements Serializable{
 	private String city;
 	private String org;
 	private String isp;
-	private Date lastGEOUpdate;
-	private Date lastTimeUsed;
     private Date successfulLogin;
 
 	@Override
@@ -151,22 +149,6 @@ public class LoginStatistic implements Serializable{
 
 	public void setIsp(String isp) {
 		this.isp = isp;
-	}
-
-	public Date getLastGEOUpdate() {
-		return lastGEOUpdate;
-	}
-
-	public void setLastGEOUpdate(Date lastGEOUpdate) {
-		this.lastGEOUpdate = lastGEOUpdate;
-	}
-
-	public Date getLastTimeUsed() {
-		return lastTimeUsed;
-	}
-
-	public void setLastTimeUsed(Date lastTimeUsed) {
-		this.lastTimeUsed = lastTimeUsed;
 	}
 
 	public Date getSuccessfulLogin() {

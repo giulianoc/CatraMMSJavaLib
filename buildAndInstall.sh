@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#export JAVA_HOME=/opt/jdk-21.0.2.jdk/Contents/Home
+export JAVA_HOME=/opt/jdk-21.0.2.jdk/Contents/Home
 
 mvn --projects catraMMSLib clean compile install
 
