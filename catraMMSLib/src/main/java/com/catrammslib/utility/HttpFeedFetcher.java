@@ -482,7 +482,7 @@ public class HttpFeedFetcher {
         return body;
     }
 
-    public String fetchFormDataHttpsJson(String requestType, String endpoint, int timeoutInSeconds, int maxRetriesNumber,
+    static public String fetchFormDataHttpsJson(String requestType, String endpoint, int timeoutInSeconds, int maxRetriesNumber,
                                     List<String> formNames, List<String> formValues)
             throws Exception
     {
@@ -535,7 +535,7 @@ public class HttpFeedFetcher {
 
                 break; // exit from the retry loop
             } catch (Exception e) {
-                String errorMessage = "HttpFeedFetcher. fetchPostHttpsJson"
+                String errorMessage = "HttpFeedFetcher. fetchFormDataHttpsJson"
                         + ", endpoint: " + endpoint
                         + ", Fatal transport error: " + e
                         + ", maxRequestNumber: " + maxRequestNumber
