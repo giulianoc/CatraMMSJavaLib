@@ -518,7 +518,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcastUdpURL: " + broadcastUdpURL
 			);
 
-            JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcastIngestionJobLabel);
+            JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcastIngestionJobLabel, false);
 
             JSONObject joBroadcast = null;
             {
@@ -681,7 +681,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 			);
 
-            JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcasterIngestionJobLabel);
+            JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(broadcasterIngestionJobLabel, false);
 
             JSONObject joBroadcaster;
             {

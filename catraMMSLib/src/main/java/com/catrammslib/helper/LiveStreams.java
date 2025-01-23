@@ -1262,7 +1262,7 @@ public class LiveStreams {
         try
         {
             JSONObject joWorkflow = CatraMMSWorkflow.buildWorkflowRootJson(
-                    "Live Recorder: " + channel);
+                    "Live Recorder: " + channel, false);
 
             Long utcLiveRecorderStart;
             Long utcLiveRecorderEnd;

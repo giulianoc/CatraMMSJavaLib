@@ -3237,6 +3237,7 @@ public class CatraMMSAPI implements Serializable {
                                       Long ingestionRootKey, Long mediaItemKey,
                                       String status, boolean ascending,
                                       boolean ingestionJobOutputs,
+                                      boolean hiddenToo,
                                       Boolean cacheAllowed,
                                       List<IngestionWorkflow> ingestionWorkflowsList)
             throws Exception
@@ -3257,7 +3258,8 @@ public class CatraMMSAPI implements Serializable {
                     + "&ingestionRootKey=" + (ingestionRootKey == null ? "" : ingestionRootKey)
                     + "&mediaItemKey=" + (mediaItemKey == null ? "" : mediaItemKey)
                     + "&asc=" + (ascending ? "true" : "false")
-                    + "&ingestionJobOutputs=" + (ingestionJobOutputs ? "true" : "false")
+                    + "&ingestionJobOutputs=" + ingestionJobOutputs
+                    + "&hiddenToo=" + hiddenToo
                     + "&startIngestionDate=" + simpleDateFormat.format(start)
                     + "&endIngestionDate=" + simpleDateFormat.format(end)
                     + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")

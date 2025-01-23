@@ -17,8 +17,6 @@ import java.time.Duration;
 import java.util.Base64;
 import java.util.List;
 
-import static java.time.temporal.ChronoUnit.SECONDS;
-
 
 public class HttpFeedFetcher {
 
@@ -44,7 +42,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 if (authorizationHeader != null)
                     requestBuilder.header("Authorization", authorizationHeader);
                 else if (user != null && password != null)
@@ -99,7 +97,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 requestBuilder.header("Authorization", "Bearer " + authorization);
                 requestBuilder.header("Accept", acceptHeader);
 
@@ -146,7 +144,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 if (authorizationHeader != null)
                     requestBuilder.header("Authorization", authorizationHeader);
                 else if (user != null && password != null)
@@ -204,7 +202,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 if (authorizationHeader != null)
                     requestBuilder.header("Authorization", authorizationHeader);
                 else if (user != null && password != null)
@@ -262,7 +260,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 if (authorizationHeader != null)
                     requestBuilder.header("Authorization", authorizationHeader);
                 else if (user != null && password != null)
@@ -316,7 +314,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 if (user != null && password != null)
                 {
                     String encoded = Base64.getEncoder().encodeToString((user + ":" + password).getBytes("utf-8"));
@@ -372,7 +370,7 @@ public class HttpFeedFetcher {
             try {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
                 {
                     String encoded = Base64.getEncoder().encodeToString((user + ":" + password).getBytes("utf-8"));
                     requestBuilder.header("Authorization", "Basic " + encoded);
@@ -484,7 +482,7 @@ public class HttpFeedFetcher {
         return body;
     }
 
-    public String fetchGetFormDataHttpsJson(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
+    public String fetchFormDataHttpsJson(String requestType, String endpoint, int timeoutInSeconds, int maxRetriesNumber,
                                     List<String> formNames, List<String> formValues)
             throws Exception
     {
@@ -517,7 +515,7 @@ public class HttpFeedFetcher {
                 HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
                         .uri(URI.create(endpoint))
                         .version(HttpClient.Version.HTTP_1_1)
-                        .timeout(Duration.of(timeoutInSeconds, SECONDS));
+                        .timeout(Duration.ofSeconds(timeoutInSeconds));
 
                 // mLogger.info("Content-Type: " + "multipart/form-data; boundary=" + dashesForContentType + boundary);
                 requestBuilder.header("Content-Type", "multipart/form-data; boundary=" + dashesForContentType + boundary);
@@ -525,11 +523,13 @@ public class HttpFeedFetcher {
                 // mLogger.info("Accept: */*");
                 requestBuilder.header("Accept", "*/*");
 
+                if (requestType.equalsIgnoreCase("POST"))
+                    requestBuilder.POST(HttpRequest.BodyPublishers.ofString(formData, StandardCharsets.UTF_8));
+                else // if (requestType.equalsIgnoreCase("GET"))
+                    requestBuilder.method("GET", HttpRequest.BodyPublishers.ofString(formData, StandardCharsets.UTF_8));
+
                 // mLogger.info("Body: " + formData);
-                HttpRequest request = requestBuilder
-                        .method("GET", HttpRequest.BodyPublishers.ofString(formData, StandardCharsets.UTF_8))
-                        // .method("GET", HttpRequest.BodyPublishers.ofByteArray(formData.getBytes(StandardCharsets.UTF_8)))
-                        .build();
+                HttpRequest request = requestBuilder.build();
 
                 body = getResponseBody(client, request, false);
 

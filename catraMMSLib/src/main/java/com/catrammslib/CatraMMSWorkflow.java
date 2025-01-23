@@ -22,7 +22,7 @@ public class CatraMMSWorkflow {
 
     private static final Logger mLogger = LoggerFactory.getLogger(CatraMMSWorkflow.class);
 
-    static public JSONObject buildWorkflowRootJson(String label)
+    static public JSONObject buildWorkflowRootJson(String label, boolean hidden)
             throws Exception
     {
         try
@@ -30,6 +30,7 @@ public class CatraMMSWorkflow {
             JSONObject joWorkflow = new JSONObject();
             joWorkflow.put("label", label);
             joWorkflow.put("type", "Workflow");
+            joWorkflow.put("hidden", hidden);
 
             return joWorkflow;
         }
