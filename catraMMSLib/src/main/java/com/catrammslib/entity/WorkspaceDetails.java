@@ -14,6 +14,7 @@ public class WorkspaceDetails implements Serializable {
     private Long workspaceKey;
     private Boolean enabled;
     private String name;
+    private String notes;
     private String maxEncodingPriority;
     private String encodingPeriod;
     private Long maxIngestionsNumber;
@@ -78,6 +79,7 @@ public class WorkspaceDetails implements Serializable {
                 "workspaceKey=" + workspaceKey +
                 ", enabled=" + enabled +
                 ", name='" + name + '\'' +
+                ", notes='" + notes + '\'' +
                 ", maxEncodingPriority='" + maxEncodingPriority + '\'' +
                 ", encodingPeriod='" + encodingPeriod + '\'' +
                 ", maxIngestionsNumber=" + maxIngestionsNumber +
@@ -167,6 +169,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public void setNotes(String notes) {
+        this.notes = notes;
     }
 
     public String getApiKey() {

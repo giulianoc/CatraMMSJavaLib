@@ -856,7 +856,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public WorkspaceDetails updateWorkspace(String username, String password,
-		Boolean newEnabled, String newName, String newMaxEncodingPriority,
+		Boolean newEnabled, String newName, String newNotes, String newMaxEncodingPriority,
 		String newEncodingPeriod, Long newMaxIngestionsNumber,
 		String newLanguageCode, String newTimezone, Date newExpirationDate,
 
@@ -884,6 +884,8 @@ public class CatraMMSAPI implements Serializable {
             JSONObject joBodyRequest = new JSONObject();
 			if (newName != null)
 				joBodyRequest.put("workspaceName", newName);
+            if (newNotes != null)
+                joBodyRequest.put("workspaceNotes", newNotes);
 			if (newEnabled != null)
             {
                 joBodyRequest.put("isEnabled", newEnabled); // da eliminare dopo upgrade a Postgres
@@ -8358,6 +8360,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("enabled"));
 
             workspaceDetails.setName(jaWorkspaceInfo.getString("workspaceName"));
+            workspaceDetails.setNotes(jaWorkspaceInfo.getString("notes"));
             workspaceDetails.setMaxEncodingPriority(jaWorkspaceInfo.getString("maxEncodingPriority"));
             workspaceDetails.setEncodingPeriod(jaWorkspaceInfo.getString("encodingPeriod"));
             workspaceDetails.setMaxIngestionsNumber(jaWorkspaceInfo.getLong("maxIngestionsNumber"));

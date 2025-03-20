@@ -10,10 +10,12 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 
-cp catraMMSLib/target/catraMMSLib.jar ../cibortv/libs
-cp catraMMSLib/target/catraMMSLib.jar ../catrammswebservices/libs
-
 echo "Delivery: ./catraMMSLib/target/catraMMSLib.jar"
+
+echo "cp catraMMSLib/target/catraMMSLib.jar ../cibortv/libs"
+cp catraMMSLib/target/catraMMSLib.jar ../cibortv/libs
+echo "cp catraMMSLib/target/catraMMSLib.jar ../catrammswebservices/libs"
+cp catraMMSLib/target/catraMMSLib.jar ../catrammswebservices/libs
 
 echo "In case of push: git push https://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@github.com/giulianoc/CatraMMSJavaLib.git"
 
