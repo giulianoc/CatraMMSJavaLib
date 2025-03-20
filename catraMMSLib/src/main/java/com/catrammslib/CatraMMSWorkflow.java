@@ -102,7 +102,7 @@ public class CatraMMSWorkflow {
                 if (utcProcessingStartingFrom != null)
                 {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                     joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
                 }
@@ -158,14 +158,14 @@ public class CatraMMSWorkflow {
                 else if(workflowVariable.getType().equalsIgnoreCase("datetime"))
                 {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                     joParameters.put(workflowVariable.getName(), dateFormat.format(workflowVariable.getDatetimeValue()));
                 }
                 else if(workflowVariable.getType().equalsIgnoreCase("datetime-millisecs"))
                 {
                     DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                    dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                    dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                     joParameters.put(workflowVariable.getName(), dateFormat.format(workflowVariable.getDatetimeValue()));
                 }
@@ -276,7 +276,7 @@ public class CatraMMSWorkflow {
                     joRecordingPeriod.put("autoRenew", autoRenew);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joRecordingPeriod.put("start", dateFormat.format(utcLiveRecorderStart));
                 joRecordingPeriod.put("end", dateFormat.format(utcLiveRecorderEnd));
@@ -393,7 +393,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("schedule", joProxyPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joProxyPeriod.put("start", dateFormat.format(proxyStartTime));
                 joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
@@ -538,7 +538,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("schedule", joProxyPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joProxyPeriod.put("start", dateFormat.format(proxyStartTime));
                 joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
@@ -655,7 +655,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("schedule", joProxyPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joProxyPeriod.put("start", dateFormat.format(proxyStartTime));
                 joProxyPeriod.put("end", dateFormat.format(proxyEndTime));
@@ -881,7 +881,7 @@ public class CatraMMSWorkflow {
 				joParameters.put("youTubeSchedule", joProxyPeriod);
 
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+				dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 				joProxyPeriod.put("start", dateFormat.format(startTime));
 				joProxyPeriod.put("end", dateFormat.format(endTime));
@@ -1002,7 +1002,7 @@ public class CatraMMSWorkflow {
 				joParameters.put("facebookSchedule", joProxyPeriod);
 
 				DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-				dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+				dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
 				joProxyPeriod.put("start", dateFormat.format(startTime));
 				joProxyPeriod.put("end", dateFormat.format(endTime));
@@ -1568,7 +1568,7 @@ public class CatraMMSWorkflow {
             if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
@@ -1628,7 +1628,7 @@ public class CatraMMSWorkflow {
             if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
@@ -1811,7 +1811,7 @@ public class CatraMMSWorkflow {
                 joParameters.put("cutPeriod", joCutPeriod);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joCutPeriod.put("start", dateFormat.format(utcLiveCutStartInMilliSecs));
                 joCutPeriod.put("end", dateFormat.format(utcLiveCutEndInMilliSecs));
@@ -1821,7 +1821,7 @@ public class CatraMMSWorkflow {
 			if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
@@ -1865,7 +1865,7 @@ public class CatraMMSWorkflow {
             if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
@@ -1931,7 +1931,7 @@ public class CatraMMSWorkflow {
             if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
@@ -2226,7 +2226,7 @@ public class CatraMMSWorkflow {
             if (utcProcessingStartingFrom != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joParameters.put("processingStartingFrom", dateFormat.format(utcProcessingStartingFrom));
             }
@@ -2286,7 +2286,7 @@ public class CatraMMSWorkflow {
             if (startPublishing!= null && endPublishing != null)
             {
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 JSONObject joPublishing = new JSONObject();
                 joParameters.put("publishing", joPublishing);

@@ -737,7 +737,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -874,7 +874,7 @@ public class CatraMMSAPI implements Serializable {
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -991,7 +991,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -1021,7 +1021,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -1592,7 +1592,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -1668,7 +1668,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -1745,7 +1745,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2060,7 +2060,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2122,7 +2122,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2255,7 +2255,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2480,7 +2480,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2692,7 +2692,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2755,7 +2755,7 @@ public class CatraMMSAPI implements Serializable {
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2828,7 +2828,7 @@ public class CatraMMSAPI implements Serializable {
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -2902,7 +2902,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3046,7 +3046,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3245,7 +3245,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3317,7 +3317,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3407,7 +3407,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3511,7 +3511,7 @@ public class CatraMMSAPI implements Serializable {
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3607,7 +3607,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3762,7 +3762,7 @@ public class CatraMMSAPI implements Serializable {
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3804,7 +3804,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3847,7 +3847,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3922,7 +3922,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -3988,7 +3988,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -4053,7 +4053,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -4123,7 +4123,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -4186,7 +4186,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -4510,7 +4510,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -4679,7 +4679,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -7697,7 +7697,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -7764,7 +7764,7 @@ public class CatraMMSAPI implements Serializable {
 		Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -7835,7 +7835,7 @@ public class CatraMMSAPI implements Serializable {
 		Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -7911,7 +7911,7 @@ public class CatraMMSAPI implements Serializable {
 		Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -7987,7 +7987,7 @@ public class CatraMMSAPI implements Serializable {
 		Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -8063,7 +8063,7 @@ public class CatraMMSAPI implements Serializable {
 		Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -8139,7 +8139,7 @@ public class CatraMMSAPI implements Serializable {
 		Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -8215,7 +8215,7 @@ public class CatraMMSAPI implements Serializable {
         Long numFound;
 
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         String mmsInfo;
         try
@@ -8284,7 +8284,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -8315,7 +8315,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -8345,14 +8345,16 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
             workspaceDetails.setWorkspaceKey(jaWorkspaceInfo.getLong("workspaceKey"));
+            /*
             if (jaWorkspaceInfo.has("isEnabled")) // da eliminare dopo upgrade a Postgres
                 workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("isEnabled")); // da eliminare dopo upgrade a Postgres
             else if (jaWorkspaceInfo.has("enabled")) // da eliminare dopo upgrade a Postgres
+             */
                 workspaceDetails.setEnabled(jaWorkspaceInfo.getBoolean("enabled"));
 
             workspaceDetails.setName(jaWorkspaceInfo.getString("workspaceName"));
@@ -8440,7 +8442,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         JSONObject joParameters = null;
         try
@@ -8934,7 +8936,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -8987,7 +8989,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9018,7 +9020,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9041,7 +9043,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9064,7 +9066,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9087,7 +9089,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9110,7 +9112,7 @@ public class CatraMMSAPI implements Serializable {
 		throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9133,7 +9135,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9155,7 +9157,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9187,7 +9189,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9221,7 +9223,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             if (mediaItemInfo.has("mediaItemKey") && !mediaItemInfo.isNull("mediaItemKey"))
@@ -9455,7 +9457,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             ingestionWorkflow.setIngestionRootKey(ingestionWorkflowInfo.getLong("ingestionRootKey"));
@@ -9495,7 +9497,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             ingestionJob.setIngestionJobKey(ingestionJobInfo.getLong("ingestionJobKey"));
@@ -9519,7 +9521,7 @@ public class CatraMMSAPI implements Serializable {
                     if (joMetadataContent.has("schedule") && !joMetadataContent.isNull("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                         JSONObject joRecordingPeriod = joMetadataContent.getJSONObject("schedule");
 
@@ -9561,7 +9563,7 @@ public class CatraMMSAPI implements Serializable {
                     )
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                         JSONObject joProxyPeriod = joMetadataContent.getJSONObject("schedule");
 
@@ -9583,7 +9585,7 @@ public class CatraMMSAPI implements Serializable {
                     )
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                         JSONObject joProxyPeriod = joMetadataContent.getJSONObject("schedule");
 
@@ -9600,7 +9602,7 @@ public class CatraMMSAPI implements Serializable {
 					if (joMetadataContent.has("schedule"))
                     {
                         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                        dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                         JSONObject joProxyPeriod = joMetadataContent.getJSONObject("schedule");
 
@@ -9819,7 +9821,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try
         {
@@ -9869,14 +9871,14 @@ public class CatraMMSAPI implements Serializable {
                             videoBitRate.setWidth(joBitRate.getLong("width"));
                             videoBitRate.setHeight(joBitRate.getLong("height"));
                             videoBitRate.setkBitRate(joBitRate.getLong("kBitRate"));
-                            if (!joBitRate.has("ForceOriginalAspectRatio") || joBitRate.isNull("ForceOriginalAspectRatio"))
+                            if (!joBitRate.has("forceOriginalAspectRatio") || joBitRate.isNull("forceOriginalAspectRatio"))
                                 videoBitRate.setForceOriginalAspectRatio(null);
                             else
-                                videoBitRate.setForceOriginalAspectRatio(joBitRate.getString("ForceOriginalAspectRatio"));
-                            if (!joBitRate.has("Pad") || joBitRate.isNull("Pad"))
+                                videoBitRate.setForceOriginalAspectRatio(joBitRate.getString("forceOriginalAspectRatio"));
+                            if (!joBitRate.has("pad") || joBitRate.isNull("pad"))
                                 videoBitRate.setPad(null);
                             else
-                                videoBitRate.setPad(joBitRate.getBoolean("Pad"));
+                                videoBitRate.setPad(joBitRate.getBoolean("pad"));
                             if (!joBitRate.has("KMaxRate") || joBitRate.isNull("KMaxRate"))
                                 videoBitRate.setkMaxRate(null);
                             else
@@ -9986,7 +9988,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             encodingProfilesSet.setEncodingProfilesSetKey(encodingProfilesSetInfo.getLong("encodingProfilesSetKey"));
@@ -10043,7 +10045,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             facebookConf.setConfKey(facebookConfInfo.getLong("confKey"));
@@ -10064,7 +10066,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             twitchConf.setConfKey(twitchConfInfo.getLong("confKey"));
@@ -10085,7 +10087,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             costConf.setConfKey(costConfInfo.getLong("confKey"));
@@ -10107,7 +10109,7 @@ public class CatraMMSAPI implements Serializable {
             throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
         try {
             tiktokConf.setConfKey(tiktokConfInfo.getLong("confKey"));
@@ -10316,14 +10318,14 @@ public class CatraMMSAPI implements Serializable {
                         else if (workflowVariable.getType().equalsIgnoreCase("datetime"))
                         {
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-                            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                             workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("value")));
                         }
                         else if (workflowVariable.getType().equalsIgnoreCase("datetime-millisecs"))
                         {
                             DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-                            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
+                            dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                             workflowVariable.setDatetimeValue(dateFormat.parse(joWorkflowVariable.getString("value")));
                         }
