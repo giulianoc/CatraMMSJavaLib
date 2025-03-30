@@ -59,6 +59,7 @@ public class WorkspaceDetails implements Serializable {
     private Boolean cancelIngestionJob;
     private Boolean editEncodersPool;
     private Boolean applicationRecorder;
+    private Boolean createRemoveLiveChannel;
 
 
     // this field is used by the GUI
@@ -106,6 +107,7 @@ public class WorkspaceDetails implements Serializable {
                 ", cancelIngestionJob=" + cancelIngestionJob +
                 ", editEncodersPool=" + editEncodersPool +
                 ", applicationRecorder=" + applicationRecorder +
+                ", createRemoveLiveChannel=" + createRemoveLiveChannel +
 
                 ", maxStorageInGB=" + maxStorageInGB +
                 ", currentCostForStorage=" + currentCostForStorage +
@@ -433,6 +435,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setApplicationRecorder(Boolean applicationRecorder) {
         this.applicationRecorder = applicationRecorder;
+    }
+
+    public Boolean getCreateRemoveLiveChannel() {
+        return createRemoveLiveChannel;
+    }
+
+    public void setCreateRemoveLiveChannel(Boolean createRemoveLiveChannel) {
+        this.createRemoveLiveChannel = createRemoveLiveChannel;
     }
 
     public Long getCurrentTotalCost() {
