@@ -42,6 +42,7 @@ public class WorkspaceDetails implements Serializable {
 
     private String languageCode;
     private String timezone;
+    private String preferences;
     private Date creationDate;
     private String apiKey;
     private Boolean owner;
@@ -90,6 +91,7 @@ public class WorkspaceDetails implements Serializable {
                 ", lastUsageInMBUpdate=" + lastUsageInMBUpdate +
                 ", languageCode='" + languageCode + '\'' +
                 ", timezone='" + timezone + '\'' +
+                ", preferences='" + preferences + '\'' +
                 ", creationDate=" + creationDate +
                 ", apiKey='" + apiKey + '\'' +
                 ", owner=" + owner +
@@ -315,6 +317,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setTimezone(String timezone) {
         this.timezone = timezone;
+    }
+
+    public String getPreferences() {
+        return preferences;
+    }
+
+    public void setPreferences(String preferences) {
+        this.preferences = preferences;
     }
 
     public Date getCreationDate() {

@@ -859,7 +859,7 @@ public class CatraMMSAPI implements Serializable {
     public WorkspaceDetails updateWorkspace(String username, String password,
 		Boolean newEnabled, String newName, String newNotes, String newMaxEncodingPriority,
 		String newEncodingPeriod, Long newMaxIngestionsNumber,
-		String newLanguageCode, String newTimezone, Date newExpirationDate,
+		String newLanguageCode, String newTimezone, String newPreferences, Date newExpirationDate,
 
         Long maxStorageInGB, Long currentCostForStorage,
         Long dedicatedEncoder_power_1, Long currentCostForDedicatedEncoder_power_1,
@@ -902,6 +902,8 @@ public class CatraMMSAPI implements Serializable {
 				joBodyRequest.put("languageCode", newLanguageCode);
             if (newTimezone != null)
                 joBodyRequest.put("timezone", newTimezone);
+            if (newPreferences != null)
+                joBodyRequest.put("preferences", newPreferences);
 
             if (maxStorageInGB != null)
                 joBodyRequest.put("maxStorageInGB", maxStorageInGB);
@@ -8370,6 +8372,8 @@ public class CatraMMSAPI implements Serializable {
             workspaceDetails.setLanguageCode(jaWorkspaceInfo.getString("languageCode"));
             if (jaWorkspaceInfo.has("timezone"))
                 workspaceDetails.setTimezone(jaWorkspaceInfo.getString("timezone"));
+            if (jaWorkspaceInfo.has("preferences"))
+                workspaceDetails.setPreferences(jaWorkspaceInfo.getString("preferences"));
             workspaceDetails.setCreationDate(simpleDateFormat.parse(jaWorkspaceInfo.getString("creationDate")));
 			if (jaWorkspaceInfo.has("workspaceOwnerUserKey"))
 	            workspaceDetails.setWorkspaceOwnerUserKey(jaWorkspaceInfo.getLong("workspaceOwnerUserKey"));
