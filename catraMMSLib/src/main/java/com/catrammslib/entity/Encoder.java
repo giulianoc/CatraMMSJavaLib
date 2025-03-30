@@ -32,7 +32,12 @@ public class Encoder implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Encoder encoder = (Encoder) o;
-        return encoderKey.equals(encoder.encoderKey);
+        // in alcuni casi usiamo una List<Encoder> dove ogni encoder è duplicato a meno del PublicEncoderNameToBeUsed
+        // per differenziare l'encoder che utilizza il public IP da quello che utilizza il private IP
+        if (publicEncoderNameToBeUsed != null && encoder.getPublicEncoderNameToBeUsed() != null)
+            return encoderKey.equals(encoder.encoderKey) && publicEncoderNameToBeUsed.equals(encoder.getPublicEncoderNameToBeUsed());
+        else
+            return encoderKey.equals(encoder.encoderKey);
     }
 
     @Override
