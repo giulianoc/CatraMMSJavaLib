@@ -90,11 +90,11 @@ public class IngestionJob implements Serializable, Comparable {
 						// JSONObject joParameters = new JSONObject(metaDataContent);
 						if (joMetaDataContent.has("outputs") || joMetaDataContent.has("Outputs"))
 						{
-                            JSONArray jaOutputs;
-                            if (joMetaDataContent.has("outputs"))
-                                jaOutputs = joMetaDataContent.getJSONArray("outputs");
-                            else // if (joMetaDataContent.has("Outputs"))
-                                jaOutputs = joMetaDataContent.getJSONArray("Outputs");
+                            JSONArray jaOutputs = joMetaDataContent.optJSONArray("outputs");
+                            // if (joMetaDataContent.has("outputs"))
+                            //    jaOutputs = joMetaDataContent.getJSONArray("outputs");
+                            // else // if (joMetaDataContent.has("Outputs"))
+                            //    jaOutputs = joMetaDataContent.getJSONArray("Outputs");
 							for (int outputIndex = 0; outputIndex < jaOutputs.length(); outputIndex++)
 							{
 								JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
@@ -110,14 +110,18 @@ public class IngestionJob implements Serializable, Comparable {
 										|| joOutput.getString("outputType").equalsIgnoreCase("CDN_AWS")
                                         || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                     )
-									&& ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
-                                        || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
+                                    // la playURL è stata eliminata perchè le url temporizzate scadevano, non era possibile,
+                                    // mantenere sempre la stessa. Ora viene calcolata in tempo reale
+									// && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
+                                    //    || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
 									)
 								{
+                                    // assumiamo che in questo scenario sia sempre playable
 									playable = true;
 	
 									break;
 								}
+                                /*
                                 else if (joOutput.has("OutputType") && joOutput.getString("OutputType").equalsIgnoreCase("HLS"))
                                 {
                                     playable = true;
@@ -138,6 +142,7 @@ public class IngestionJob implements Serializable, Comparable {
 
                                     break;
                                 }
+                                 */
 							}
 						}
 					}
@@ -162,11 +167,11 @@ public class IngestionJob implements Serializable, Comparable {
 					// JSONObject joParameters = new JSONObject(metaDataContent);
 					if (joMetaDataContent.has("outputs") || joMetaDataContent.has("Outputs"))
 					{
-                        JSONArray jaOutputs;
-                        if (joMetaDataContent.has("outputs"))
-						    jaOutputs = joMetaDataContent.getJSONArray("outputs");
-                        else // if (joMetaDataContent.has("Outputs"))
-                            jaOutputs = joMetaDataContent.getJSONArray("Outputs");
+                        JSONArray jaOutputs = joMetaDataContent.optJSONArray("outputs");
+//                        if (joMetaDataContent.has("outputs"))
+//						    jaOutputs = joMetaDataContent.getJSONArray("outputs");
+//                        else // if (joMetaDataContent.has("Outputs"))
+//                            jaOutputs = joMetaDataContent.getJSONArray("Outputs");
 						for (int outputIndex = 0; outputIndex < jaOutputs.length(); outputIndex++)
 						{
 							JSONObject joOutput = jaOutputs.getJSONObject(outputIndex);
@@ -182,14 +187,18 @@ public class IngestionJob implements Serializable, Comparable {
 									|| joOutput.getString("outputType").equalsIgnoreCase("CDN_AWS")
                                     || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                 )
-                                && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
-                                    || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
+                                    // la playURL è stata eliminata perchè le url temporizzate scadevano, non era possibile,
+                                    // mantenere sempre la stessa. Ora viene calcolata in tempo reale
+//                                && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
+//                                    || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
 								)
 							{
+                                // assumiamo che in questo scenario sia sempre playable
 								playable = true;
 
 								break;
 							}
+                            /*
                             else if (joOutput.has("OutputType")
                                     && joOutput.getString("OutputType").equalsIgnoreCase("HLS_Channel"))
                             {
@@ -210,6 +219,7 @@ public class IngestionJob implements Serializable, Comparable {
 
                                 break;
                             }
+                             */
 						}
 					}
 				}
