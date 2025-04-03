@@ -7036,7 +7036,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<RTMPChannelConf> getRTMPChannelConf(String username, String password, String label, String type)
+    public List<RTMPChannelConf> getRTMPChannelConf(String username, String password, String label, String type, Boolean cacheAllowed)
             throws Exception
     {
         List<RTMPChannelConf> rtmpChannelConfList = new ArrayList<>();
@@ -7044,15 +7044,25 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel"
-                    + (label == null || label.isEmpty() ? "" : ("?label=" +  java.net.URLEncoder.encode(label, "UTF-8"))) // requires unescape server side
-                    ;
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/rtmp/channel";
+            boolean firstParameterAdded = false;
+
+            if (label != null && !label.isBlank())
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+            }
+            if (cacheAllowed != null && !cacheAllowed)
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("should_bypass_cache=" + "true");
+            }
             if (type != null && !type.isBlank())
             {
-                if (mmsURL.indexOf("channel?") != -1)
-                    mmsURL += "&";
-                else
-                    mmsURL += "?";
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
                 mmsURL += ("type=" + type);
             }
             mLogger.info("mmsURL: " + mmsURL);
