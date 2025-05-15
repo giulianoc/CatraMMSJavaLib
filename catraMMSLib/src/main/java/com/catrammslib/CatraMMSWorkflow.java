@@ -276,15 +276,15 @@ public class CatraMMSWorkflow {
                 if (autoRenew != null)
                     joRecordingPeriod.put("autoRenew", autoRenew);
 
-                if (utcTimeOverlay != null)
-                    joRecordingPeriod.put("utcTimeOverlay", utcTimeOverlay);
-
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
                 joRecordingPeriod.put("start", dateFormat.format(utcLiveRecorderStart));
                 joRecordingPeriod.put("end", dateFormat.format(utcLiveRecorderEnd));
             }
+
+            if (utcTimeOverlay != null)
+                joParameters.put("utcTimeOverlay", utcTimeOverlay);
 
             if (monitorHLS != null && monitorHLS)
             {
