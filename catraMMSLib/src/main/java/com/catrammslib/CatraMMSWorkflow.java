@@ -207,6 +207,7 @@ public class CatraMMSWorkflow {
             String chunkRetention, JSONObject joUserData,
             String encodingPriority,
             Boolean autoRenew,
+            Boolean utcTimeOverlay,
 			String otherInputOptions,
             Boolean monitorHLS,
             String monitorHLSEncodingProfileLabel,
@@ -274,6 +275,9 @@ public class CatraMMSWorkflow {
 
                 if (autoRenew != null)
                     joRecordingPeriod.put("autoRenew", autoRenew);
+
+                if (utcTimeOverlay != null)
+                    joRecordingPeriod.put("utcTimeOverlay", utcTimeOverlay);
 
                 DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
                 dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));

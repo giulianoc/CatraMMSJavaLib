@@ -1083,6 +1083,7 @@ public class LiveStreams {
             String retentionChunk, String retentionBuildVODAtTheEnd,
             String encodersPool,
             boolean autoRenew,
+            boolean utcTimeOverlay,
             boolean monitorHLS,
             CDN77ChannelConf cdn77Channel,
             boolean virtualVOD,
@@ -1107,6 +1108,7 @@ public class LiveStreams {
                 + ", retentionBuildVODAtTheEnd: " + retentionBuildVODAtTheEnd
                 + ", encodersPool: " + encodersPool
                 + ", autoRenew: " + autoRenew
+                + ", utcTimeOverlay: " + utcTimeOverlay
                 + ", monitorHLS: " + monitorHLS
                 + ", cdn77Channel: " + cdn77Channel
                 + ", virtualVOD: " + virtualVOD
@@ -1193,7 +1195,7 @@ public class LiveStreams {
                     channelConf.getLabel(), channelConf.getLabel(), startRecording, stopRecording, buildVODAtTheEnd,
                     localLiveRecorderIngestionJobLabel,
                     segmentDurationInSeconds, retentionChunk, retentionBuildVODAtTheEnd, ingester, thumbnail,
-                    autoRenew, monitorHLS, cdn77Channel,
+                    autoRenew, utcTimeOverlay, monitorHLS, cdn77Channel,
                     virtualVOD, virtualVODMaxDurationInMinutes, encodersPool,
                     monitoringFrameIncreasingEnabled);
             mLogger.info("joWorkflow: " + joWorkflow.toString(4));
@@ -1250,7 +1252,7 @@ public class LiveStreams {
                                                     String liveRecorderIngestionJobLabel,
                                                     Long segmentDurationInSeconds, String retentionChunk, String retentionBuildVODAtTheEnd, String ingester,
                                                     boolean chunkThumbnail,
-                                                    boolean autoRenew, boolean monitorHLS,
+                                                    boolean autoRenew, boolean utcTimeOverlay, boolean monitorHLS,
                                                     CDN77ChannelConf cdn77Channel,
                                                     boolean liveRecorderVirtualVOD,
                                                     Long liveRecorderVirtualVODMaxDurationInMinutes,
@@ -1391,6 +1393,7 @@ public class LiveStreams {
                         "Medium",
                         // highAvailability,
                         autoRenew,
+                        utcTimeOverlay,
                         null,
                         monitorHLS, // monitorHLS,
                         monitorHLSEncodingProfileLabel,
