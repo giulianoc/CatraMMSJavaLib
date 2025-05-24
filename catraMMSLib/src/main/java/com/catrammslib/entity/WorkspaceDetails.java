@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import com.catrammslib.utility.Cost;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -42,7 +43,7 @@ public class WorkspaceDetails implements Serializable {
 
     private String languageCode;
     private String timezone;
-    private String preferences;
+    private JSONObject preferences;
     private Date creationDate;
     private String apiKey;
     private Boolean owner;
@@ -91,7 +92,7 @@ public class WorkspaceDetails implements Serializable {
                 ", lastUsageInMBUpdate=" + lastUsageInMBUpdate +
                 ", languageCode='" + languageCode + '\'' +
                 ", timezone='" + timezone + '\'' +
-                ", preferences='" + preferences + '\'' +
+                ", preferences='" + preferences.toString() + '\'' +
                 ", creationDate=" + creationDate +
                 ", apiKey='" + apiKey + '\'' +
                 ", owner=" + owner +
@@ -319,11 +320,11 @@ public class WorkspaceDetails implements Serializable {
         this.timezone = timezone;
     }
 
-    public String getPreferences() {
+    public JSONObject getPreferences() {
         return preferences;
     }
 
-    public void setPreferences(String preferences) {
+    public void setPreferences(JSONObject preferences) {
         this.preferences = preferences;
     }
 
