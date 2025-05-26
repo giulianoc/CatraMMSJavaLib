@@ -92,7 +92,7 @@ public class WorkspaceDetails implements Serializable {
                 ", lastUsageInMBUpdate=" + lastUsageInMBUpdate +
                 ", languageCode='" + languageCode + '\'' +
                 ", timezone='" + timezone + '\'' +
-                ", preferences='" + preferences.toString() + '\'' +
+                ", preferences='" + (preferences != null ? preferences.toString() : "null") + '\'' +
                 ", creationDate=" + creationDate +
                 ", apiKey='" + apiKey + '\'' +
                 ", owner=" + owner +
