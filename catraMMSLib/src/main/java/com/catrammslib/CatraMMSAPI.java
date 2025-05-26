@@ -8386,12 +8386,14 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setTimezone(jaWorkspaceInfo.getString("timezone"));
             try {
                 workspaceDetails.setPreferences(null);
-                if (!jaWorkspaceInfo.isNull("preferences"))
+                if (!jaWorkspaceInfo.isNull("preferences") && !jaWorkspaceInfo.getString("preferences").isBlank())
                     workspaceDetails.setPreferences(new JSONObject(jaWorkspaceInfo.getString("preferences")));
             }
             catch (Exception e)
             {
-                mLogger.error("Exception: " + e);
+                mLogger.error("preferences"
+                        + ", jaWorkspaceInfo: " + jaWorkspaceInfo.toString()
+                        + ", Exception: " + e);
             }
             workspaceDetails.setCreationDate(simpleDateFormat.parse(jaWorkspaceInfo.getString("creationDate")));
 			if (jaWorkspaceInfo.has("workspaceOwnerUserKey"))
