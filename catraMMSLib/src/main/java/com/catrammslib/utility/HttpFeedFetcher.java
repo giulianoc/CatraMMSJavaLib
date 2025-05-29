@@ -23,6 +23,9 @@ public class HttpFeedFetcher {
     private static final Logger mLogger = LoggerFactory.getLogger(HttpFeedFetcher.class);
 
     public static final String configFileName = "mpCommon.properties";
+    private static final HttpClient CLIENT = HttpClient.newBuilder()
+            .connectTimeout(Duration.ofSeconds(10))
+            .build();
 
     static public String GET(String endpoint, int timeoutInSeconds, int maxRetriesNumber,
                                            String user, String password, String authorizationHeader,
@@ -31,7 +34,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -58,7 +61,7 @@ public class HttpFeedFetcher {
                     .GET()
                     .build();
 
-                body = getResponseBody(client, request, outputToBeCompressed);
+                body = getResponseBody(CLIENT, request, outputToBeCompressed);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
@@ -86,7 +89,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -105,7 +108,7 @@ public class HttpFeedFetcher {
                         .GET()
                         .build();
 
-                body = getResponseBody(client, request, false);
+                body = getResponseBody(CLIENT, request, false);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
@@ -133,7 +136,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -163,7 +166,7 @@ public class HttpFeedFetcher {
                         .POST(HttpRequest.BodyPublishers.ofString(postBodyRequest == null ? "" : postBodyRequest, StandardCharsets.UTF_8))
                         .build();
 
-                body = getResponseBody(client, request, outputToBeCompressed);
+                body = getResponseBody(CLIENT, request, outputToBeCompressed);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
@@ -191,7 +194,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -221,7 +224,7 @@ public class HttpFeedFetcher {
                         .method("PATCH", HttpRequest.BodyPublishers.ofString(patchBodyRequest, StandardCharsets.UTF_8))
                         .build();
 
-                body = getResponseBody(client, request, outputToBeCompressed);
+                body = getResponseBody(CLIENT, request, outputToBeCompressed);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
@@ -249,7 +252,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -276,7 +279,7 @@ public class HttpFeedFetcher {
                         .PUT(HttpRequest.BodyPublishers.ofString(putBodyRequest == null ? "" : putBodyRequest, StandardCharsets.UTF_8))
                         .build();
 
-                body = getResponseBody(client, request, outputToBeCompressed);
+                body = getResponseBody(CLIENT, request, outputToBeCompressed);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
@@ -303,7 +306,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -326,7 +329,7 @@ public class HttpFeedFetcher {
                         .DELETE()
                         .build();
 
-                body = getResponseBody(client, request, false);
+                body = getResponseBody(CLIENT, request, false);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
@@ -357,7 +360,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -452,7 +455,7 @@ public class HttpFeedFetcher {
                         .POST(HttpRequest.BodyPublishers.ofFile(tempFile))
                         .build();
 
-                body = getResponseBody(client, request, false);
+                body = getResponseBody(CLIENT, request, false);
 
                 if (tempFile.toFile().exists())
                     tempFile.toFile().delete();
@@ -488,7 +491,7 @@ public class HttpFeedFetcher {
     {
         String body = null;
 
-        HttpClient client = HttpClient.newHttpClient();
+        // HttpClient client = HttpClient.newHttpClient();
 
         int retryIndex = 0;
         int maxRequestNumber = maxRetriesNumber + 1;
@@ -531,7 +534,7 @@ public class HttpFeedFetcher {
                 // mLogger.info("Body: " + formData);
                 HttpRequest request = requestBuilder.build();
 
-                body = getResponseBody(client, request, false);
+                body = getResponseBody(CLIENT, request, false);
 
                 break; // exit from the retry loop
             } catch (Exception e) {
