@@ -6826,7 +6826,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, String type, Boolean cacheAllowed)
+    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, Boolean labelLike, String type, Boolean cacheAllowed)
             throws Exception
     {
         List<CDN77ChannelConf> cdn77ChannelConfList = new ArrayList<>();
@@ -6842,6 +6842,12 @@ public class CatraMMSAPI implements Serializable {
                 mmsURL += firstParameterAdded ? "&" : "?";
                 firstParameterAdded = true;
                 mmsURL += ("label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+            }
+            if (labelLike != null)
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("labelLike=" + labelLike);
             }
             if (cacheAllowed != null && !cacheAllowed)
             {
