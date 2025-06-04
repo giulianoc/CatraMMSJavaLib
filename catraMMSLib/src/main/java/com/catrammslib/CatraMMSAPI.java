@@ -188,7 +188,9 @@ public class CatraMMSAPI implements Serializable {
 
 	public String getCDN77SignedUrlPath(
 		String cdnResourceUrl, String filePath,
-        String secureToken, Long expiryTimestamp, String playerIP)
+        String secureToken,
+        Long expiryTimestamp, // numero di secondi a partire dal 1-1-1970
+        String playerIP)
     {
         try {
             mLogger.info("Received getCDN77SignedUrlPath"
@@ -6847,7 +6849,9 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
-    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, Boolean labelLike, String type, Boolean cacheAllowed)
+    public List<CDN77ChannelConf> getCDN77ChannelConf(String username, String password, String label, Boolean labelLike,
+                                                      String type, // <empty>, SHARED, DEDICATED
+                                                      Boolean cacheAllowed)
             throws Exception
     {
         List<CDN77ChannelConf> cdn77ChannelConfList = new ArrayList<>();
