@@ -7151,6 +7151,223 @@ public class CatraMMSAPI implements Serializable {
         return rtmpChannelConfList;
     }
 
+    public void addSRTChannelConf(String username, String password,
+                                   String label, String srtURL, String streamName, String userName, String srtPassword,
+                                   String playURL, String type)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String jsonSRTChannelConf;
+            {
+                JSONObject joSRTChannelConf = new JSONObject();
+
+                joSRTChannelConf.put("label", label);
+                joSRTChannelConf.put("srtURL", srtURL);
+                if (streamName != null)
+                    joSRTChannelConf.put("streamName", streamName);
+                if (userName != null)
+                    joSRTChannelConf.put("userName", userName);
+                if (srtPassword != null)
+                    joSRTChannelConf.put("password", srtPassword);
+                if (playURL != null)
+                    joSRTChannelConf.put("playURL", playURL);
+                joSRTChannelConf.put("type", type);
+
+                jsonSRTChannelConf = joSRTChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/srt/channel";
+
+            mLogger.info("addSRTChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonSRTChannelConf: " + jsonSRTChannelConf
+            );
+
+            long start = System.currentTimeMillis();
+            String contentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, contentType, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonSRTChannelConf, outputToBeCompressed);
+            mLogger.info("addSRTChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addSRTChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void modifySRTChannelConf(String username, String password, Long confKey,
+                                      String label, String srtURL, String streamName, String userName,
+                                      String srtPassword, String playURL, String type)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String jsonSRTChannelConf;
+            {
+                JSONObject joSRTChannelConf = new JSONObject();
+
+                joSRTChannelConf.put("label", label);
+                joSRTChannelConf.put("srtURL", srtURL);
+                if (streamName != null)
+                    joSRTChannelConf.put("streamName", streamName);
+                else
+                    joSRTChannelConf.put("streamName", "");
+                if (userName != null)
+                    joSRTChannelConf.put("userName", userName);
+                else
+                    joSRTChannelConf.put("userName", "");
+                if (srtPassword != null)
+                    joSRTChannelConf.put("password", srtPassword);
+                else
+                    joSRTChannelConf.put("password", "");
+                if (playURL != null)
+                    joSRTChannelConf.put("playURL", playURL);
+                else
+                    joSRTChannelConf.put("playURL", "");
+                joSRTChannelConf.put("type", type);
+
+                jsonSRTChannelConf = joSRTChannelConf.toString(4);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/srt/channel/" + confKey;
+
+            mLogger.info("modifySRTChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", jsonSRTChannelConf: " + jsonSRTChannelConf
+            );
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, jsonSRTChannelConf, outputToBeCompressed);
+            mLogger.info("modifySRTChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifySRTChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeSRTChannelConf(String username, String password,
+                                      Long confKey)
+            throws Exception
+    {
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/srt/channel/" + confKey;
+
+            mLogger.info("removeSRTChannelConf"
+                    + ", mmsURL: " + mmsURL
+                    + ", confKey: " + confKey
+            );
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("removeSRTChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeSRTChannelConf MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public List<SRTChannelConf> getSRTChannelConf(String username, String password, String label, Boolean labelLike, String type, Boolean cacheAllowed)
+            throws Exception
+    {
+        List<SRTChannelConf> srtChannelConfList = new ArrayList<>();
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/conf/cdn/srt/channel";
+            boolean firstParameterAdded = false;
+
+            if (label != null && !label.isBlank())
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("label=" + java.net.URLEncoder.encode(label, "UTF-8")); // requires unescape server side
+            }
+            if (labelLike != null)
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("labelLike=" + labelLike);
+            }
+            if (cacheAllowed != null && !cacheAllowed)
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("should_bypass_cache=" + "true");
+            }
+            if (type != null && !type.isBlank())
+            {
+                mmsURL += firstParameterAdded ? "&" : "?";
+                firstParameterAdded = true;
+                mmsURL += ("type=" + type);
+            }
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getSRTChannelConf. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaSRTChannelConf = joResponse.getJSONArray("srtChannelConf");
+
+            mLogger.info("jaSRTChannelConf.length(): " + jaSRTChannelConf.length());
+
+            srtChannelConfList.clear();
+
+            for (int confIndex = 0; confIndex < jaSRTChannelConf.length(); confIndex++)
+            {
+                SRTChannelConf srtChannelConf = new SRTChannelConf();
+
+                JSONObject srtChannelConfInfo = jaSRTChannelConf.getJSONObject(confIndex);
+
+                fillSRTChannelConf(srtChannelConf, srtChannelConfInfo);
+
+                srtChannelConfList.add(srtChannelConf);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "Parsing srtChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return srtChannelConfList;
+    }
+
     public void addHLSChannelConf(String username, String password,
                                    String label, Long deliveryCode, Long segmentDuration, Long playlistEntriesNumber,
                                    String type)
@@ -10548,6 +10765,52 @@ public class CatraMMSAPI implements Serializable {
         catch (Exception e)
         {
             String errorMessage = "fillRTMPChannelConf failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillSRTChannelConf(SRTChannelConf srtChannelConf, JSONObject srtChannelConfInfo)
+            throws Exception
+    {
+        try {
+            srtChannelConf.setConfKey(srtChannelConfInfo.getLong("confKey"));
+            srtChannelConf.setLabel(srtChannelConfInfo.getString("label"));
+            srtChannelConf.setSrtURL(srtChannelConfInfo.getString("srtURL"));
+            if (srtChannelConfInfo.isNull("streamName"))
+                srtChannelConf.setStreamName(null);
+            else
+                srtChannelConf.setStreamName(srtChannelConfInfo.getString("streamName"));
+            if (srtChannelConfInfo.isNull("userName"))
+                srtChannelConf.setUserName(null);
+            else
+                srtChannelConf.setUserName(srtChannelConfInfo.getString("userName"));
+            if (srtChannelConfInfo.isNull("password"))
+                srtChannelConf.setPassword(null);
+            else
+                srtChannelConf.setPassword(srtChannelConfInfo.getString("password"));
+            if (srtChannelConfInfo.isNull("playURL"))
+                srtChannelConf.setPlayURL(null);
+            else
+                srtChannelConf.setPlayURL(srtChannelConfInfo.getString("playURL"));
+            srtChannelConf.setType(srtChannelConfInfo.getString("type"));
+            if (srtChannelConfInfo.isNull("outputIndex"))
+                srtChannelConf.setOutputIndex(null);
+            else
+                srtChannelConf.setOutputIndex(srtChannelConfInfo.getLong("outputIndex"));
+            if (srtChannelConfInfo.isNull("reservedByIngestionJobKey"))
+                srtChannelConf.setReservedByIngestionJobKey(null);
+            else
+                srtChannelConf.setReservedByIngestionJobKey(srtChannelConfInfo.getLong("reservedByIngestionJobKey"));
+            if (srtChannelConfInfo.isNull("configurationLabel"))
+                srtChannelConf.setConfigurationLabel(null);
+            else
+                srtChannelConf.setConfigurationLabel(srtChannelConfInfo.getString("configurationLabel"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillSRTChannelConf failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
