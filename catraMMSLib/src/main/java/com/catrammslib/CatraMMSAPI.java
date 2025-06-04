@@ -188,7 +188,7 @@ public class CatraMMSAPI implements Serializable {
 
 	public String getCDN77SignedUrlPath(
 		String cdnResourceUrl, String filePath,
-        String secureToken, Long expiryTimestamp)
+        String secureToken, Long expiryTimestamp, String playerIP)
     {
         try {
             mLogger.info("Received getCDN77SignedUrlPath"
@@ -196,6 +196,7 @@ public class CatraMMSAPI implements Serializable {
                     + ", filePath: " + filePath				// i.e.: /1011683079/1/index.m3u8
                     + ", secureToken: " + secureToken		// i.e.: dp4h5ek2mx5tmcsf
                     + ", expiryTimestamp: " + expiryTimestamp
+                    + ", playerIP: " + playerIP
             );
 
             // because of hls/dash, anything included after the last slash (e.g. playlist/{chunk}) shouldn't be part of the path string,
@@ -210,7 +211,11 @@ public class CatraMMSAPI implements Serializable {
             if ((pos = strippedPath.indexOf("?")) != -1)
                 filePath = strippedPath.substring(0, pos);
 
-            String hashStr = strippedPath + secureToken;
+            String hashStr;
+            if (playerIP == null || playerIP.isBlank())
+                hashStr = strippedPath + secureToken;
+            else
+                hashStr = strippedPath + playerIP + " " + secureToken;
 
             String sExpiryTimestamp;
             if (expiryTimestamp != null)
