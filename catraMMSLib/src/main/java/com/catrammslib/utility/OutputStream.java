@@ -29,7 +29,7 @@ public class OutputStream implements Serializable {
 	// third audio track (0:a:2)
 	private String audioMap;
 
-	// RTMP_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
+	// RTMP_Channel, SRT_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
 
 	// UDP_Stream
@@ -49,6 +49,9 @@ public class OutputStream implements Serializable {
 
 	// RTMP_Channel
 	private RTMPChannelConf rtmpChannel;
+
+	// SRT_Channel
+	private SRTChannelConf srtChannel;
 
 	// HLS_Channel
 	private HLSChannelConf hlsChannel;
@@ -87,6 +90,7 @@ public class OutputStream implements Serializable {
 		outputStream.setCdn77Channel(getCdn77Channel());
 		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
 		outputStream.setRtmpChannel(getRtmpChannel());
+		outputStream.setSrtChannel(getSrtChannel());
 		outputStream.setHlsChannel(getHlsChannel());
 		outputStream.setOtherOutputOptions(getOtherOutputOptions());
 		outputStream.setEncodingProfile(getEncodingProfile());
@@ -129,6 +133,11 @@ public class OutputStream implements Serializable {
 			{
 				if (getRtmpChannel() != null && getRtmpChannel().getLabel() != null && !getRtmpChannel().getLabel().isBlank())
 					joOutput.put("rtmpChannelConfigurationLabel", getRtmpChannel().getLabel());
+			}
+			else if (getOutputType().equalsIgnoreCase("SRT_Channel"))
+			{
+				if (getSrtChannel() != null && getSrtChannel().getLabel() != null && !getSrtChannel().getLabel().isBlank())
+					joOutput.put("srtChannelConfigurationLabel", getSrtChannel().getLabel());
 			}
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
@@ -175,6 +184,7 @@ public class OutputStream implements Serializable {
 						 List<EncodingProfile> encodingProfileList,
 						 List<HLSChannelConf> hlsChannelList,
 						 List<RTMPChannelConf> rtmpChannelList,
+						 List<SRTChannelConf> srtChannelList,
 						 List<CDN77ChannelConf> cdn77ChannelList,
 						 List<AWSChannelConf> awsChannelList
 	)
@@ -301,6 +311,27 @@ public class OutputStream implements Serializable {
 				else
 					setRtmpChannel(null);
 			}
+			else if (getOutputType().equalsIgnoreCase("SRT_Channel"))
+			{
+				if (joOutputStream.has("srtChannelConfigurationLabel") && !joOutputStream.getString("srtChannelConfigurationLabel").isEmpty())
+				{
+					String srtChannelConfigurationLabel = joOutputStream.getString("srtChannelConfigurationLabel");
+
+					{
+						for (SRTChannelConf srtChannelConf: srtChannelList)
+						{
+							if (srtChannelConf.getLabel().equals(srtChannelConfigurationLabel))
+							{
+								setSrtChannel(srtChannelConf);
+
+								break;
+							}
+						}
+					}
+				}
+				else
+					setSrtChannel(null);
+			}
 			else if (getOutputType().equalsIgnoreCase("HLS_Channel"))
 			{
 				if (joOutputStream.has("hlsChannelConfigurationLabel") && !joOutputStream.getString("hlsChannelConfigurationLabel").isEmpty())
@@ -396,6 +427,14 @@ public class OutputStream implements Serializable {
 
 	public void setRtmpChannel(RTMPChannelConf rtmpChannel) {
 		this.rtmpChannel = rtmpChannel;
+	}
+
+	public SRTChannelConf getSrtChannel() {
+		return srtChannel;
+	}
+
+	public void setSrtChannel(SRTChannelConf srtChannel) {
+		this.srtChannel = srtChannel;
 	}
 
 	public String getUdpURL() {
