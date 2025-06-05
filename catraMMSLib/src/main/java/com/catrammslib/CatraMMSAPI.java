@@ -10700,7 +10700,7 @@ public class CatraMMSAPI implements Serializable {
             cdn77ChannelConf.setConfKey(cdn77ChannelConfInfo.getLong("confKey"));
             cdn77ChannelConf.setLabel(cdn77ChannelConfInfo.getString("label"));
             cdn77ChannelConf.setSrtFeed(cdn77ChannelConfInfo.optBoolean("srtFeed", false));
-            cdn77ChannelConf.setRtmpURL(cdn77ChannelConfInfo.optString("srtURL", ""));
+            cdn77ChannelConf.setSrtURL(cdn77ChannelConfInfo.optString("srtURL", ""));
             cdn77ChannelConf.setRtmpURL(cdn77ChannelConfInfo.optString("rtmpURL", ""));
             cdn77ChannelConf.setResourceURL(cdn77ChannelConfInfo.getString("resourceURL"));
             cdn77ChannelConf.setFilePath(cdn77ChannelConfInfo.getString("filePath"));
