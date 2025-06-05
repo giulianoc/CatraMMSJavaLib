@@ -1086,6 +1086,7 @@ public class LiveStreams {
             boolean utcTimeOverlay,
             boolean monitorHLS,
             CDN77ChannelConf cdn77Channel,
+            String encodingProfileForCDN,
             boolean virtualVOD,
             Long virtualVODMaxDurationInMinutes,
             Boolean monitoringFrameIncreasingEnabled)
@@ -1111,6 +1112,7 @@ public class LiveStreams {
                 + ", utcTimeOverlay: " + utcTimeOverlay
                 + ", monitorHLS: " + monitorHLS
                 + ", cdn77Channel: " + cdn77Channel
+                + ", encodingProfileForCDN: " + encodingProfileForCDN
                 + ", virtualVOD: " + virtualVOD
                 + ", virtualVODMaxDurationInMinutes: " + virtualVODMaxDurationInMinutes
                 + ", monitoringFrameIncreasingEnabled: " + monitoringFrameIncreasingEnabled
@@ -1195,7 +1197,7 @@ public class LiveStreams {
                     channelConf.getLabel(), channelConf.getLabel(), startRecording, stopRecording, buildVODAtTheEnd,
                     localLiveRecorderIngestionJobLabel,
                     segmentDurationInSeconds, retentionChunk, retentionBuildVODAtTheEnd, ingester, thumbnail,
-                    autoRenew, utcTimeOverlay, monitorHLS, cdn77Channel,
+                    autoRenew, utcTimeOverlay, monitorHLS, cdn77Channel, encodingProfileForCDN,
                     virtualVOD, virtualVODMaxDurationInMinutes, encodersPool,
                     monitoringFrameIncreasingEnabled);
             mLogger.info("joWorkflow: " + joWorkflow.toString(4));
@@ -1253,7 +1255,7 @@ public class LiveStreams {
                                                     Long segmentDurationInSeconds, String retentionChunk, String retentionBuildVODAtTheEnd, String ingester,
                                                     boolean chunkThumbnail,
                                                     boolean autoRenew, boolean utcTimeOverlay, boolean monitorHLS,
-                                                    CDN77ChannelConf cdn77Channel,
+                                                    CDN77ChannelConf cdn77Channel, String encodingProfileForCDN,
                                                     boolean liveRecorderVirtualVOD,
                                                     Long liveRecorderVirtualVODMaxDurationInMinutes,
                                                     String encodersPool,
@@ -1319,6 +1321,8 @@ public class LiveStreams {
 
                     outputStream.setOutputType("CDN_CDN77");
                     outputStream.setCdn77Channel(cdn77Channel);
+                    if (encodingProfileForCDN != null && !encodingProfileForCDN.isBlank())
+                        outputStream.setEncodingProfileLabel(encodingProfileForCDN);
 
                     // liveProxyOutput.setEncodingProfileLabel(monitorHLSEncodingProfileLabel);
 
