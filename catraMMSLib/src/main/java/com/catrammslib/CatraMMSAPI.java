@@ -6732,7 +6732,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public void addCDN77ChannelConf(String username, String password,
-                                    String label, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
+                                    String label, Boolean srtFeed, String srtURL, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
             throws Exception
     {
 
@@ -6744,6 +6744,8 @@ public class CatraMMSAPI implements Serializable {
                 JSONObject joCDN77ChannelConf = new JSONObject();
 
                 joCDN77ChannelConf.put("label", label);
+                joCDN77ChannelConf.put("srtFeed", srtFeed);
+                joCDN77ChannelConf.put("srtURL", srtURL);
                 joCDN77ChannelConf.put("rtmpURL", rtmpURL);
                 joCDN77ChannelConf.put("resourceURL", resourceURL);
                 joCDN77ChannelConf.put("filePath", filePath);
@@ -6777,7 +6779,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public void modifyCDN77ChannelConf(String username, String password, Long confKey,
-                                       String label, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
+                                       String label, Boolean srtFeed, String srtURL, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
             throws Exception
     {
 
@@ -6789,6 +6791,8 @@ public class CatraMMSAPI implements Serializable {
                 JSONObject joCDN77ChannelConf = new JSONObject();
 
                 joCDN77ChannelConf.put("label", label);
+                joCDN77ChannelConf.put("srtFeed", srtFeed);
+                joCDN77ChannelConf.put("srtURL", srtURL);
                 joCDN77ChannelConf.put("rtmpURL", rtmpURL);
                 joCDN77ChannelConf.put("resourceURL", resourceURL);
                 joCDN77ChannelConf.put("filePath", filePath);
@@ -7152,7 +7156,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public void addSRTChannelConf(String username, String password,
-                                   String label, String srtURL, String streamName, String userName, String srtPassword,
+                                   String label, String srtURL, String mode, String streamId, String srtPassphrase,
                                    String playURL, String type)
             throws Exception
     {
@@ -7165,12 +7169,12 @@ public class CatraMMSAPI implements Serializable {
 
                 joSRTChannelConf.put("label", label);
                 joSRTChannelConf.put("srtURL", srtURL);
-                if (streamName != null)
-                    joSRTChannelConf.put("streamName", streamName);
-                if (userName != null)
-                    joSRTChannelConf.put("userName", userName);
-                if (srtPassword != null)
-                    joSRTChannelConf.put("password", srtPassword);
+                if (mode != null)
+                    joSRTChannelConf.put("mode", mode);
+                if (streamId != null)
+                    joSRTChannelConf.put("streamId", streamId);
+                if (srtPassphrase != null)
+                    joSRTChannelConf.put("passphrase", srtPassphrase);
                 if (playURL != null)
                     joSRTChannelConf.put("playURL", playURL);
                 joSRTChannelConf.put("type", type);
@@ -7201,8 +7205,8 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public void modifySRTChannelConf(String username, String password, Long confKey,
-                                      String label, String srtURL, String streamName, String userName,
-                                      String srtPassword, String playURL, String type)
+                                      String label, String srtURL, String mode, String streamId,
+                                      String srtPassphrase, String playURL, String type)
             throws Exception
     {
 
@@ -7215,18 +7219,18 @@ public class CatraMMSAPI implements Serializable {
 
                 joSRTChannelConf.put("label", label);
                 joSRTChannelConf.put("srtURL", srtURL);
-                if (streamName != null)
-                    joSRTChannelConf.put("streamName", streamName);
+                if (mode != null)
+                    joSRTChannelConf.put("mode", mode);
                 else
-                    joSRTChannelConf.put("streamName", "");
-                if (userName != null)
-                    joSRTChannelConf.put("userName", userName);
+                    joSRTChannelConf.put("mode", "caller");
+                if (streamId != null)
+                    joSRTChannelConf.put("streamId", streamId);
                 else
-                    joSRTChannelConf.put("userName", "");
-                if (srtPassword != null)
-                    joSRTChannelConf.put("password", srtPassword);
+                    joSRTChannelConf.put("streamId", "");
+                if (srtPassphrase != null)
+                    joSRTChannelConf.put("passphrase", srtPassphrase);
                 else
-                    joSRTChannelConf.put("password", "");
+                    joSRTChannelConf.put("passphrase", "");
                 if (playURL != null)
                     joSRTChannelConf.put("playURL", playURL);
                 else
@@ -10695,7 +10699,9 @@ public class CatraMMSAPI implements Serializable {
         try {
             cdn77ChannelConf.setConfKey(cdn77ChannelConfInfo.getLong("confKey"));
             cdn77ChannelConf.setLabel(cdn77ChannelConfInfo.getString("label"));
-            cdn77ChannelConf.setRtmpURL(cdn77ChannelConfInfo.getString("rtmpURL"));
+            cdn77ChannelConf.setSrtFeed(cdn77ChannelConfInfo.optBoolean("srtFeed", false));
+            cdn77ChannelConf.setRtmpURL(cdn77ChannelConfInfo.optString("srtURL", ""));
+            cdn77ChannelConf.setRtmpURL(cdn77ChannelConfInfo.optString("rtmpURL", ""));
             cdn77ChannelConf.setResourceURL(cdn77ChannelConfInfo.getString("resourceURL"));
             cdn77ChannelConf.setFilePath(cdn77ChannelConfInfo.getString("filePath"));
             if (cdn77ChannelConfInfo.isNull("secureToken"))
@@ -10778,18 +10784,18 @@ public class CatraMMSAPI implements Serializable {
             srtChannelConf.setConfKey(srtChannelConfInfo.getLong("confKey"));
             srtChannelConf.setLabel(srtChannelConfInfo.getString("label"));
             srtChannelConf.setSrtURL(srtChannelConfInfo.getString("srtURL"));
-            if (srtChannelConfInfo.isNull("streamName"))
-                srtChannelConf.setStreamName(null);
+            if (srtChannelConfInfo.isNull("mode"))
+                srtChannelConf.setMode("caller");
             else
-                srtChannelConf.setStreamName(srtChannelConfInfo.getString("streamName"));
-            if (srtChannelConfInfo.isNull("userName"))
-                srtChannelConf.setUserName(null);
+                srtChannelConf.setMode(srtChannelConfInfo.getString("mode"));
+            if (srtChannelConfInfo.isNull("streamId"))
+                srtChannelConf.setStreamId(null);
             else
-                srtChannelConf.setUserName(srtChannelConfInfo.getString("userName"));
-            if (srtChannelConfInfo.isNull("password"))
-                srtChannelConf.setPassword(null);
+                srtChannelConf.setStreamId(srtChannelConfInfo.getString("streamId"));
+            if (srtChannelConfInfo.isNull("passphrase"))
+                srtChannelConf.setPassphrase(null);
             else
-                srtChannelConf.setPassword(srtChannelConfInfo.getString("password"));
+                srtChannelConf.setPassphrase(srtChannelConfInfo.getString("passphrase"));
             if (srtChannelConfInfo.isNull("playURL"))
                 srtChannelConf.setPlayURL(null);
             else

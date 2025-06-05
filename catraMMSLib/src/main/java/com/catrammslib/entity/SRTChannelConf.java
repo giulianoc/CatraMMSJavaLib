@@ -10,9 +10,9 @@ public class SRTChannelConf implements Serializable{
     private Long confKey;
     private String label;
     private String srtURL;
-    private String streamName;
-    private String userName;
-	private String password;
+    private String mode;
+    private String streamId;
+	private String passphrase;
 	private String playURL;
     private String type;
 	private Long outputIndex;
@@ -64,29 +64,6 @@ public class SRTChannelConf implements Serializable{
 		this.srtURL = srtURL;
 	}
 
-	public String getStreamName() {
-		return streamName;
-	}
-
-	public void setStreamName(String streamName) {
-		this.streamName = streamName;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
 
 	public String getConfigurationLabel() {
 		return configurationLabel;
@@ -110,6 +87,30 @@ public class SRTChannelConf implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public String getMode() {
+		return mode;
+	}
+
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	public String getStreamId() {
+		return streamId;
+	}
+
+	public void setStreamId(String streamId) {
+		this.streamId = streamId;
+	}
+
+	public String getPassphrase() {
+		return passphrase;
+	}
+
+	public void setPassphrase(String passphrase) {
+		this.passphrase = passphrase;
 	}
 
 	public Long getReservedByIngestionJobKey() {

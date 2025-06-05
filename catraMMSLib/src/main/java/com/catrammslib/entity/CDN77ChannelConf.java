@@ -9,7 +9,9 @@ import java.util.Objects;
 public class CDN77ChannelConf implements Serializable{
     private Long confKey;
     private String label;
-    private String rtmpURL;
+    private Boolean srtFeed = false;
+	private String srtURL;
+	private String rtmpURL;
     private String resourceURL;
     private String filePath;
 	private String secureToken;
@@ -101,6 +103,22 @@ public class CDN77ChannelConf implements Serializable{
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public Boolean getSrtFeed() {
+		return srtFeed;
+	}
+
+	public void setSrtFeed(Boolean srtFeed) {
+		this.srtFeed = srtFeed;
+	}
+
+	public String getSrtURL() {
+		return srtURL;
+	}
+
+	public void setSrtURL(String srtURL) {
+		this.srtURL = srtURL;
 	}
 
 	public Long getReservedByIngestionJobKey() {
