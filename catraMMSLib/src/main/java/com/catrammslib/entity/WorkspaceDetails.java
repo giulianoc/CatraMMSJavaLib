@@ -44,6 +44,7 @@ public class WorkspaceDetails implements Serializable {
     private String languageCode;
     private String timezone;
     private JSONObject preferences;
+    private JSONObject externalDeliveries;
     private Date creationDate;
     private String apiKey;
     private Boolean owner;
@@ -93,6 +94,7 @@ public class WorkspaceDetails implements Serializable {
                 ", languageCode='" + languageCode + '\'' +
                 ", timezone='" + timezone + '\'' +
                 ", preferences='" + (preferences != null ? preferences.toString() : "null") + '\'' +
+                ", externalDeliveries='" + (externalDeliveries != null ? externalDeliveries.toString() : "null") + '\'' +
                 ", creationDate=" + creationDate +
                 ", apiKey='" + apiKey + '\'' +
                 ", owner=" + owner +
@@ -326,6 +328,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setPreferences(JSONObject preferences) {
         this.preferences = preferences;
+    }
+
+    public JSONObject getExternalDeliveries() {
+        return externalDeliveries;
+    }
+
+    public void setExternalDeliveries(JSONObject externalDeliveries) {
+        this.externalDeliveries = externalDeliveries;
     }
 
     public Date getCreationDate() {

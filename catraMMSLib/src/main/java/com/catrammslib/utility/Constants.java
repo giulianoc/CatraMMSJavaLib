@@ -41,6 +41,7 @@ public class Constants implements Serializable {
         {
             videoFileFormatsList = new ArrayList<>();
             videoFileFormatsList.add("mp4");
+            videoFileFormatsList.add("m4v");
             videoFileFormatsList.add("mkv");
             videoFileFormatsList.add("mov");
             videoFileFormatsList.add("ts");

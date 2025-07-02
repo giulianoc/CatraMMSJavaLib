@@ -866,7 +866,7 @@ public class CatraMMSAPI implements Serializable {
     public WorkspaceDetails updateWorkspace(String username, String password,
 		Boolean newEnabled, String newName, String newNotes, String newMaxEncodingPriority,
 		String newEncodingPeriod, Long newMaxIngestionsNumber,
-		String newLanguageCode, String newTimezone, String newPreferences, Date newExpirationDate,
+		String newLanguageCode, String newTimezone, String newPreferences, String newExternalDeliveries, Date newExpirationDate,
 
         Long maxStorageInGB, Long currentCostForStorage,
         Long dedicatedEncoder_power_1, Long currentCostForDedicatedEncoder_power_1,
@@ -911,6 +911,8 @@ public class CatraMMSAPI implements Serializable {
                 joBodyRequest.put("timezone", newTimezone);
             if (newPreferences != null)
                 joBodyRequest.put("preferences", newPreferences);
+            if (newExternalDeliveries != null)
+                joBodyRequest.put("externalDeliveries", newExternalDeliveries);
 
             if (maxStorageInGB != null)
                 joBodyRequest.put("maxStorageInGB", maxStorageInGB);
@@ -8666,6 +8668,17 @@ public class CatraMMSAPI implements Serializable {
             catch (Exception e)
             {
                 mLogger.error("preferences"
+                        + ", jaWorkspaceInfo: " + jaWorkspaceInfo.toString()
+                        + ", Exception: " + e);
+            }
+            try {
+                workspaceDetails.setExternalDeliveries(null);
+                if (!jaWorkspaceInfo.isNull("externalDeliveries") && !jaWorkspaceInfo.getString("externalDeliveries").isBlank())
+                    workspaceDetails.setExternalDeliveries(new JSONObject(jaWorkspaceInfo.getString("externalDeliveries")));
+            }
+            catch (Exception e)
+            {
+                mLogger.error("externalDeliveries"
                         + ", jaWorkspaceInfo: " + jaWorkspaceInfo.toString()
                         + ", Exception: " + e);
             }
