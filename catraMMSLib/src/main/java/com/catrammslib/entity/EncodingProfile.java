@@ -12,6 +12,7 @@ public class EncodingProfile implements Serializable, Comparable<EncodingProfile
     private String label;
     private String contentType;
     private String fileFormat;
+    private String description;
     private EncodingProfileVideo videoDetails = new EncodingProfileVideo();
     private EncodingProfileAudio audioDetails = new EncodingProfileAudio();
     private EncodingProfileImage imageDetails = new EncodingProfileImage();
@@ -53,6 +54,14 @@ public class EncodingProfile implements Serializable, Comparable<EncodingProfile
 
     public void setFileFormat(String fileFormat) {
         this.fileFormat = fileFormat;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public Long getEncodingProfileKey() {

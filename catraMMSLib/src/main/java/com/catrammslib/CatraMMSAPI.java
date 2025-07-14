@@ -10153,6 +10153,11 @@ public class CatraMMSAPI implements Serializable {
             JSONObject joProfileInfo = encodingProfileInfo.getJSONObject("profile");
             encodingProfile.setFileFormat(joProfileInfo.getString("fileFormat"));
 
+            if (joProfileInfo.isNull("description"))
+                encodingProfile.setDescription(null);
+            else
+                encodingProfile.setDescription(joProfileInfo.getString("description"));
+
             if (deep)
             {
                 if (encodingProfile.getContentType().equalsIgnoreCase("video"))
@@ -10199,14 +10204,14 @@ public class CatraMMSAPI implements Serializable {
                                 videoBitRate.setPad(null);
                             else
                                 videoBitRate.setPad(joBitRate.getBoolean("pad"));
-                            if (!joBitRate.has("KMaxRate") || joBitRate.isNull("KMaxRate"))
+                            if (!joBitRate.has("kMaxRate") || joBitRate.isNull("kMaxRate"))
                                 videoBitRate.setkMaxRate(null);
                             else
-                                videoBitRate.setkMaxRate(joBitRate.getLong("KMaxRate"));
-                            if (!joBitRate.has("KBufferSize") || joBitRate.isNull("KBufferSize"))
+                                videoBitRate.setkMaxRate(joBitRate.getLong("kMaxRate"));
+                            if (!joBitRate.has("kBufferSize") || joBitRate.isNull("kBufferSize"))
                                 videoBitRate.setkBufferSize(null);
                             else
-                                videoBitRate.setkBufferSize(joBitRate.getLong("KBufferSize"));
+                                videoBitRate.setkBufferSize(joBitRate.getLong("kBufferSize"));
                         }
                     }
 
