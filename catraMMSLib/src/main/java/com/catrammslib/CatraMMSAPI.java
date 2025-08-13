@@ -1165,7 +1165,9 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public String getMetaDataContent(String username, String password,
-                                     Long ingestionRootKey, Boolean processedMetadata)
+                                     Long ingestionRootKey, Boolean processedMetadata,
+                                     Boolean cacheAllowed
+                                     )
             throws Exception
     {
         String metaDataContent;
@@ -1175,6 +1177,7 @@ public class CatraMMSAPI implements Serializable {
             mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/workflow/metaDataContent/" + ingestionRootKey
                     + "?processedMetadata=" + (processedMetadata == null ? "false" : processedMetadata)
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
             ;
 
             mLogger.info("getMetaDataContent"
@@ -4772,6 +4775,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public Long getWorkflowsLibrary(String username, String password,
+                                    Boolean cacheAllowed,
                                     List<WorkflowLibrary> mmsWorkflowLibraryList,
                                     List<WorkflowLibrary> userWorkflowLibraryList
     ) throws Exception
@@ -4782,6 +4786,7 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflowAsLibrary"
+                    + (cacheAllowed == null || cacheAllowed ? "" : "?should_bypass_cache=true")
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
@@ -4843,13 +4848,15 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public String getWorkflowLibraryContent(String username, String password,
-                                          Long workflowLibraryKey
+                                          Long workflowLibraryKey,
+                                            Boolean cacheAllowed
     ) throws Exception
     {
         String mmsInfo;
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/workflowAsLibrary/" + workflowLibraryKey
+                    + (cacheAllowed == null || cacheAllowed ? "" : "?should_bypass_cache=true")
                     ;
 
             mLogger.info("mmsURL: " + mmsURL);
