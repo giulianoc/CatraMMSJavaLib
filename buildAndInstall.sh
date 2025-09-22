@@ -18,6 +18,8 @@ echo "cp catraMMSLib/target/catraMMSLib.jar ../catrammswebservices/libs"
 cp catraMMSLib/target/catraMMSLib.jar ../catrammswebservices/libs
 echo "cp catraMMSLib/target/catraMMSLib.jar ../icml/libs"
 cp catraMMSLib/target/catraMMSLib.jar ../icml/libs
+echo "cp catraMMSLib/target/catraMMSLib.jar ../groupItalianTelevision/libs"
+cp catraMMSLib/target/catraMMSLib.jar ../groupItalianTelevision/libs
 
 echo "In case of push: git push https://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@github.com/giulianoc/CatraMMSJavaLib.git"
 

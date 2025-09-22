@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import com.catrammslib.entity.WorkflowVariable;
+import com.catrammslib.utility.filters.DrawTextDetails;
 import com.catrammslib.utility.filters.Filter;
 import com.catrammslib.utility.OutputStream;
 import com.catrammslib.utility.MediaItemReference;
@@ -1893,7 +1894,7 @@ public class CatraMMSWorkflow {
 			// encodingProfileLabel or encodingProfileSetLabel has to be present
 			String encodingProfileLabel, String encodingProfilesSetLabel,
             String encodersPool,
-            Long videoTrackIndex, Long audioTrackIndex,
+            Long videoTrackIndex, Long audioTrackIndex, // null se non si vuole specificare la traccia
             Filters filters,
             List<MediaItemReference> mediaItemReferenceList,
             Long utcProcessingStartingFrom
@@ -2164,14 +2165,7 @@ public class CatraMMSWorkflow {
 	static public JSONObject buildOverlayTextOnVideo(
             String label, String ingester,
 
-			String text,
-			String textPosition_X_InPixel,
-			String textPosition_Y_InPixel,
-			String fontType,
-			Long fontSize,
-			String fontColor,
-			Long textPercentageOpacity,
-			Long shadowX, Long shadowY,
+            DrawTextDetails drawTextDetails,
 
 			String encodingPriority,	// Low, Medium, High 
 			String encodingProfileLabel,
@@ -2198,23 +2192,7 @@ public class CatraMMSWorkflow {
 
             joParameters.put("ingester", ingester);
 
-			{
-				JSONObject joDrawTextDetails = new JSONObject();
-				joParameters.put("drawTextDetails", joDrawTextDetails);
-
-				joDrawTextDetails.put("text", text);
-
-				joDrawTextDetails.put("textPosition_X_InPixel", textPosition_X_InPixel);
-				joDrawTextDetails.put("textPosition_Y_InPixel", textPosition_Y_InPixel);
-	
-				joDrawTextDetails.put("fontType", fontType);
-				joDrawTextDetails.put("fontSize", fontSize);
-				joDrawTextDetails.put("fontColor", fontColor);
-	
-				joDrawTextDetails.put("textPercentageOpacity", textPercentageOpacity);
-				joDrawTextDetails.put("shadowX", shadowX);
-				joDrawTextDetails.put("shadowY", shadowY);
-			}
+            joParameters.put("drawTextDetails", drawTextDetails.toJson());
 
 			joParameters.put("encodingPriority", encodingPriority);
 
