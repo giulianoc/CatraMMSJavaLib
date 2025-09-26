@@ -2029,6 +2029,7 @@ public class CatraMMSWorkflow {
 			String parameters,	// ?param1=value1&....
             boolean formData,
 			String httpBody,
+            Boolean forwardInputMedia,
             int timeoutInSeconds, int maxRetries,
             List<MediaItemReference> mediaItemReferenceList
     )
@@ -2062,6 +2063,8 @@ public class CatraMMSWorkflow {
             joParameters.put("method", method);
 			if (httpBody != null && httpBody.length() > 0)
 	            joParameters.put("httpBody", httpBody);
+            if (forwardInputMedia != null)
+                joParameters.put("forwardInputMedia", forwardInputMedia);
             joParameters.put("timeout", timeoutInSeconds);
             joParameters.put("maxRetries", maxRetries);
 
