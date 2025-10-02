@@ -180,6 +180,7 @@ public class Constants implements Serializable {
             fontSizesList.add("24");
             fontSizesList.add("30");
             fontSizesList.add("36");
+            fontSizesList.add("40");
             fontSizesList.add("48");
             fontSizesList.add("60");
             fontSizesList.add("72");

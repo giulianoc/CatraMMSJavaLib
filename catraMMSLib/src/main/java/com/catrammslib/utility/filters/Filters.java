@@ -79,13 +79,13 @@ public class Filters {
 
                         switch (filterName.toLowerCase()) {
                             case "blackdetect":
-                                // filter.setFilterName("Black Detect");
+                                filter.setFilterName("Black Detect");
                                 break;
                             case "blackframe":
-                                // filter.setFilterName("Black Frame");
+                                filter.setFilterName("Black Frame");
                                 break;
                             case "crop":
-                                // filter.setFilterName("Crop");
+                                filter.setFilterName("Crop");
                                 if (joFilter.has("out_w"))
                                     filter.setCrop_OutputWidth(joFilter.getString("out_w"));
                                 if (joFilter.has("out_h"))
@@ -100,7 +100,7 @@ public class Filters {
                                     filter.setCrop_Exact(joFilter.getBoolean("exact"));
                                 break;
                             case "drawbox":
-                                // filter.setFilterName("Draw Box");
+                                filter.setFilterName("Draw Box");
                                 if (joFilter.has("x"))
                                     filter.setDrawBox_X(joFilter.getString("x"));
                                 if (joFilter.has("y"))
@@ -117,18 +117,23 @@ public class Filters {
                                     filter.setDrawBox_Thickness(joFilter.getString("thickness"));
                                 break;
                             case "drawtext":
-                                // filter.setFilterName("Text Overlay");
-                                filter.getDrawTextDetails().fromJson(joFilter);
+                                filter.setFilterName("Text Overlay");
+
+                                DrawTextDetails drawTextDetails = new DrawTextDetails(null);
+                                drawTextDetails.fromJson(joFilter);
+
+                                filter.setDrawTextDetails(drawTextDetails);
+                                // filter.getDrawTextDetails().fromJson(joFilter);
                                 break;
                             case "fade":
-                                // filter.setFilterName("Fade");
+                                filter.setFilterName("Fade");
                                 if (joFilter.has("duration")) {
                                     Object o = joFilter.get("duration");
                                     filter.setFade_Duration(joFilter.getLong("duration"));
                                 }
                                 break;
                             case "freezedetect":
-                                // filter.setFilterName("Freeze Detect");
+                                filter.setFilterName("Freeze Detect");
                                 if (joFilter.has("duration")) {
                                     Object o = joFilter.get("duration");
                                     filter.setFreezedetect_Duration(joFilter.getLong("duration"));
@@ -157,12 +162,12 @@ public class Filters {
 
                         switch (filterName.toLowerCase()) {
                             case "volume":
-                                // filter.setFilterName("Audio Volume Change");
+                                filter.setFilterName("Audio Volume Change");
                                 if (joFilter.has("factor") && !joFilter.isNull("factor"))
                                     filter.setAudioVolumeChange(joFilter.getDouble("factor"));
                                 break;
                             case "silencedetect":
-                                // filter.setFilterName("Silence Detect");
+                                filter.setFilterName("Silence Detect");
                                 break;
                             default:
                                 String errorMessage = "Unknown audio filter type: " + filterName;
@@ -187,7 +192,7 @@ public class Filters {
 
                         switch (filterName.toLowerCase()) {
                             case "imageoverlay":
-                                // filter.setFilterName("Image Overlay");
+                                filter.setFilterName("Image Overlay");
                                 filter.getImageOverlayDetails().fromJson(joFilter);
                                 break;
                             default:
