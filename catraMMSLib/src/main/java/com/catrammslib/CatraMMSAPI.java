@@ -3419,7 +3419,8 @@ public class CatraMMSAPI implements Serializable {
                                  boolean dependencyInfo,	// if true adds: dependOnIngestionJobKey, dependOnSuccess, dependencyIngestionStatus				 
                                  boolean ingestionJobOutputs,
 								 Boolean fromMaster, Boolean cacheAllowed,
-                                 List<IngestionJob> ingestionJobsList)
+                                 List<IngestionJob> ingestionJobsList   // deve essere già allocata
+    )
             throws Exception
     {
         Long numFound;
