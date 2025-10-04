@@ -788,7 +788,7 @@ public class CatraMMSBroadcaster {
         }
     }
 
-	public static String addBroadcastEncodersPoolIfNeeded(CatraMMSAPI catraMMS, String username, String password, Stream broadcasterStream)
+	public static String createBroadcastEncodersPoolIfNeeded(CatraMMSAPI catraMMS, String username, String password, Stream broadcasterStream)
 			throws Exception {
 		// - look for an encodersPool containing ONLY the 'push server' of the broadcaster
 		// - if it is not found, create one and add it
