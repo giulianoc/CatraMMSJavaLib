@@ -1,9 +1,6 @@
 package com.catrammslib.helper;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import com.catrammslib.entity.*;
 import com.catrammslib.utility.*;
@@ -827,5 +824,115 @@ public class CatraMMSBroadcaster {
 		return broadcastEncodersPoolLabel;
 	}
 
+	// copia gli items del Live Channel e li incolla nello stesso Live Channel a partire da 'startPaste'
+	public static void broadcasterCopyAndPasteItems(
+			// Vengono copiati gli items aventi gli start >= startCopy e < endCopy
+			Date startCopy, // data locale
+			Date endCopy, // data locale
 
+			// tutti gli items della playlist >= startPaste vengono shift-ati
+			Date startPaste, // data locale
+
+			List<BroadcastPlaylistItem> playlistItemList // in/out
+	) {
+		if (startCopy == null || endCopy == null || startPaste == null || startCopy.getTime() > endCopy.getTime())
+		{
+			mLogger.error("broadcasterCopyAndPasteItems. wrong input"
+					+ ", startCopy: " + startCopy
+					+ ", endCopy: " + endCopy
+					+ ", startPaste: " + startPaste
+			);
+			return;
+		}
+
+		if (playlistItemList.size() == 0)
+			return;
+
+		// caso 1:          startCopy                endCopy           firstPlaylistStart
+		if (playlistItemList.get(0).getStart().getTime() > endCopy.getTime())
+			return;
+
+		// caso 2:          lastPlaylistStart       startCopy         endCopy
+		if (playlistItemList.get(playlistItemList.size() - 1).getStart().getTime() < startCopy.getTime())
+			return;
+
+		// caso 3:          playlistStart     startCopy     playlistStart     playlistStart      endCopy     playlistStart
+		int startCopyIndex = -1; // indici inclusivi
+		int endCopyIndex = -1;   // indici inclusivi
+		for (int broadcastPlaylistIndex = 0; broadcastPlaylistIndex < playlistItemList.size(); broadcastPlaylistIndex++)
+		{
+			BroadcastPlaylistItem broadcastPlaylistItem = playlistItemList.get(broadcastPlaylistIndex);
+
+			if (startCopyIndex == -1 && broadcastPlaylistItem.getStart().getTime() >= startCopy.getTime())
+				startCopyIndex = broadcastPlaylistIndex;
+
+			if (startCopyIndex != -1)
+			{
+				if (broadcastPlaylistItem.getStart().getTime() < endCopy.getTime())
+					endCopyIndex = broadcastPlaylistIndex;
+				else
+					break;
+			}
+		}
+		if (startCopyIndex == -1 || endCopyIndex == -1)
+		{
+			mLogger.error("broadcasterCopyAndPasteItems. startCopyIndex and endCopyIndex are both -1"
+			);
+			return;
+		}
+
+		int startPasteIndex = -1; // vengono spostati gli items a partire da questo indiceo
+		// caso 1:          startPaste           firstPlaylistStart
+		// caso 2:          lastPlaylistStart   startPaste
+		// caso 3:          firstPlaylistStart  startPaste    lastPlaylistStart
+		if (startPaste.getTime() < playlistItemList.get(0).getStart().getTime())
+			startPasteIndex = 0;
+		else if (playlistItemList.get(playlistItemList.size() - 1).getStart().getTime() < startPaste.getTime())
+			startPasteIndex = playlistItemList.size();
+		else
+		{
+			for (int broadcastPlaylistIndex = 0; broadcastPlaylistIndex < playlistItemList.size(); broadcastPlaylistIndex++)
+			{
+				BroadcastPlaylistItem broadcastPlaylistItem = playlistItemList.get(broadcastPlaylistIndex);
+
+				if (broadcastPlaylistItem.getStart().getTime() >= startPaste.getTime()) {
+					startPasteIndex = broadcastPlaylistIndex;
+					break;
+				}
+			}
+		}
+
+		// shift-o gli items successivi a startPaste
+		long shiftAmount = playlistItemList.get(endCopyIndex).getEnd().getTime() - playlistItemList.get(startCopyIndex).getStart().getTime();
+		for (int broadcastPlaylistIndex = startPasteIndex; broadcastPlaylistIndex < playlistItemList.size(); broadcastPlaylistIndex++)
+		{
+			BroadcastPlaylistItem broadcastPlaylistItem = playlistItemList.get(broadcastPlaylistIndex);
+			broadcastPlaylistItem.setStart(new Date(
+					broadcastPlaylistItem.getStart().getTime() + shiftAmount));
+			broadcastPlaylistItem.setEnd(new Date(
+					broadcastPlaylistItem.getEnd().getTime() + shiftAmount));
+		}
+
+		// inserisco
+		{
+			// clone degli items da inserire
+			List<BroadcastPlaylistItem> newPlaylistItemList = new ArrayList<>();
+			for (int broadcastPlaylistIndex = startCopyIndex; broadcastPlaylistIndex <= endCopyIndex; broadcastPlaylistIndex++)
+				newPlaylistItemList.add(playlistItemList.get(broadcastPlaylistIndex).clone());
+
+			// aggiorno i times e inserisco a partire da startPasteIndex
+			Date newStart = startPaste;
+			for (BroadcastPlaylistItem newBroadcastPlaylistItem: newPlaylistItemList)
+			{
+				long elapsed = newBroadcastPlaylistItem.getEnd().getTime() - newBroadcastPlaylistItem.getStart().getTime();
+				newBroadcastPlaylistItem.setStart(newStart);
+				newBroadcastPlaylistItem.setEnd(new Date(newStart.getTime() + elapsed));
+
+				playlistItemList.add(startPasteIndex, newBroadcastPlaylistItem);
+
+				newStart = newBroadcastPlaylistItem.getEnd();
+				startPasteIndex++;
+			}
+		}
+	}
 }
