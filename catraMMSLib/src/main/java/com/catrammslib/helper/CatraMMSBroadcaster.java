@@ -833,6 +833,10 @@ public class CatraMMSBroadcaster {
 			// tutti gli items della playlist >= startPaste vengono shift-ati
 			Date startPaste, // data locale
 
+			// se true esegue uno shift dei programmi successivi in avanti
+			// se false (replace) rimpiazza i programmi presenti con i nuovo
+			boolean insert,
+
 			List<BroadcastPlaylistItem> playlistItemList // in/out
 	) {
 		if (startCopy == null || endCopy == null || startPaste == null || startCopy.getTime() > endCopy.getTime())
@@ -881,14 +885,14 @@ public class CatraMMSBroadcaster {
 			return;
 		}
 
-		int startPasteIndex = -1; // vengono spostati gli items a partire da questo indiceo
+		int startPasteIndex = -1;
 		// caso 1:          startPaste           firstPlaylistStart
-		// caso 2:          lastPlaylistStart   startPaste
-		// caso 3:          firstPlaylistStart  startPaste    lastPlaylistStart
 		if (startPaste.getTime() < playlistItemList.get(0).getStart().getTime())
 			startPasteIndex = 0;
+		// caso 2:          lastPlaylistStart   startPaste
 		else if (playlistItemList.get(playlistItemList.size() - 1).getStart().getTime() < startPaste.getTime())
 			startPasteIndex = playlistItemList.size();
+		// caso 3:          firstPlaylistStart  startPaste    lastPlaylistStart
 		else
 		{
 			for (int broadcastPlaylistIndex = 0; broadcastPlaylistIndex < playlistItemList.size(); broadcastPlaylistIndex++)
@@ -902,15 +906,41 @@ public class CatraMMSBroadcaster {
 			}
 		}
 
-		// shift-o gli items successivi a startPaste
-		long shiftAmount = playlistItemList.get(endCopyIndex).getEnd().getTime() - playlistItemList.get(startCopyIndex).getStart().getTime();
-		for (int broadcastPlaylistIndex = startPasteIndex; broadcastPlaylistIndex < playlistItemList.size(); broadcastPlaylistIndex++)
+		if (insert)
 		{
-			BroadcastPlaylistItem broadcastPlaylistItem = playlistItemList.get(broadcastPlaylistIndex);
-			broadcastPlaylistItem.setStart(new Date(
-					broadcastPlaylistItem.getStart().getTime() + shiftAmount));
-			broadcastPlaylistItem.setEnd(new Date(
-					broadcastPlaylistItem.getEnd().getTime() + shiftAmount));
+			// shift-o gli items successivi a startPaste
+			long shiftAmount = playlistItemList.get(endCopyIndex).getEnd().getTime() - playlistItemList.get(startCopyIndex).getStart().getTime();
+			for (int broadcastPlaylistIndex = startPasteIndex; broadcastPlaylistIndex < playlistItemList.size(); broadcastPlaylistIndex++)
+			{
+				BroadcastPlaylistItem broadcastPlaylistItem = playlistItemList.get(broadcastPlaylistIndex);
+				broadcastPlaylistItem.setStart(new Date(
+						broadcastPlaylistItem.getStart().getTime() + shiftAmount));
+				broadcastPlaylistItem.setEnd(new Date(
+						broadcastPlaylistItem.getEnd().getTime() + shiftAmount));
+			}
+		}
+		else	// replace
+		{
+			// eliminiamo i programmi presenti nel periodo [startPaste - (startPast + elapsedToBeCopied)]
+
+			// se il paste è in append alla playlist non bisogna eliminare nulla
+			if (startPasteIndex < playlistItemList.size())
+			{
+				long elapsedToBeCopied = playlistItemList.get(endCopyIndex).getEnd().getTime()
+						- playlistItemList.get(startCopyIndex).getStart().getTime();
+				Date endPaste = new Date(startPaste.getTime() + elapsedToBeCopied);
+
+				int localStartRemovingIndex = startPasteIndex;
+				while (localStartRemovingIndex < playlistItemList.size()
+						&& playlistItemList.get(localStartRemovingIndex).getStart().getTime() < endPaste.getTime())
+					localStartRemovingIndex++;
+
+				if (localStartRemovingIndex != startPasteIndex)
+				{
+					// startPasteIndex incluso, localStartRemovingIndex escluso
+					playlistItemList.subList(startPasteIndex, localStartRemovingIndex).clear();
+				}
+			}
 		}
 
 		// inserisco
