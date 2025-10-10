@@ -821,21 +821,36 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
+	public String getStartAsDay() {
+
 		if (start != null)
 		{
 			try
 			{
 				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
-				startAsDay = simpleDateFormat.format(start);
+				return simpleDateFormat.format(start);
 			}
 			catch (Exception e)
 			{
 				mLogger.error("Exception: " + e);
+				return "";
 			}
 		}
+		else
+			return "";
 	}
+
+	public void setStartAsDay(String startAsDay) {
+		this.startAsDay = startAsDay;
+	}
+
+	public void setStart(Date start) {
+		this.start = start;
+	}
+	public Date getStart() {
+		return start;
+	}
+
 	public StringBuilder getStringBuilderReferencePhysicalPathKeys() {
 		return referencePhysicalPathKeys;
 	}
@@ -872,18 +887,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 	public void setStream(Stream stream) {
 		this.stream = stream;
-	}
-
-	public Date getStart() {
-		return start;
-	}
-
-	public String getStartAsDay() {
-		return startAsDay;
-	}
-
-	public void setStartAsDay(String startAsDay) {
-		this.startAsDay = startAsDay;
 	}
 
 	public Date getEnd() {
