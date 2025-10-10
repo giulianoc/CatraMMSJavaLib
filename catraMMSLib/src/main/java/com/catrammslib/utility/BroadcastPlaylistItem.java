@@ -30,6 +30,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	// - oppure bisogna creare un BroadcastPlaylistItem per ogni media (mediasAsLoop is false)
 	private Boolean mediasAsLoop;
 	private Date minStart;	// usato dalla GUI
+	private String startAsDay; // usato dalla GUI
 	
 	private String mediaType;					// Stream, Media, Countdown, Direct URL
 
@@ -820,6 +821,21 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
+	public void setStart(Date start) {
+		this.start = start;
+		if (start != null)
+		{
+			try
+			{
+				SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+				startAsDay = simpleDateFormat.format(start);
+			}
+			catch (Exception e)
+			{
+				mLogger.error("Exception: " + e);
+			}
+		}
+	}
 	public StringBuilder getStringBuilderReferencePhysicalPathKeys() {
 		return referencePhysicalPathKeys;
 	}
@@ -862,8 +878,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return start;
 	}
 
-	public void setStart(Date start) {
-		this.start = start;
+	public String getStartAsDay() {
+		return startAsDay;
+	}
+
+	public void setStartAsDay(String startAsDay) {
+		this.startAsDay = startAsDay;
 	}
 
 	public Date getEnd() {
