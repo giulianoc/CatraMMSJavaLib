@@ -890,7 +890,7 @@ public class CatraMMSBroadcaster {
 		if (startPaste.getTime() < playlistItemList.get(0).getStart().getTime())
 			startPasteIndex = 0;
 		// caso 2:          lastPlaylistStart   startPaste
-		else if (playlistItemList.get(playlistItemList.size() - 1).getStart().getTime() < startPaste.getTime())
+		else if (playlistItemList.get(playlistItemList.size() - 1).getEnd().getTime() < startPaste.getTime())
 			startPasteIndex = playlistItemList.size();
 		// caso 3:          firstPlaylistStart  startPaste    lastPlaylistStart
 		else
@@ -899,7 +899,7 @@ public class CatraMMSBroadcaster {
 			{
 				BroadcastPlaylistItem broadcastPlaylistItem = playlistItemList.get(broadcastPlaylistIndex);
 
-				if (broadcastPlaylistItem.getStart().getTime() >= startPaste.getTime()) {
+				if (broadcastPlaylistItem.getEnd().getTime() >= startPaste.getTime()) {
 					startPasteIndex = broadcastPlaylistIndex;
 					break;
 				}
@@ -926,6 +926,8 @@ public class CatraMMSBroadcaster {
 			// se il paste è in append alla playlist non bisogna eliminare nulla
 			if (startPasteIndex < playlistItemList.size())
 			{
+				// è necessario eliminare
+
 				long elapsedToBeCopied = playlistItemList.get(endCopyIndex).getEnd().getTime()
 						- playlistItemList.get(startCopyIndex).getStart().getTime();
 				Date endPaste = new Date(startPaste.getTime() + elapsedToBeCopied);

@@ -15,7 +15,6 @@ public class Filters {
 
     // servono per la GUI
     private Filter editFilter;
-    private String tableToBeUpdatedOnSave;
 
 
     /*
@@ -32,10 +31,9 @@ public class Filters {
     }
      */
 
-    public void prepareFilterDialog(String tableToBeUpdatedOnSave)
+    public void prepareFilterDialog()
     {
         editFilter = new Filter(null);
-        this.tableToBeUpdatedOnSave = tableToBeUpdatedOnSave;
     }
 
     public void remove(int index)
@@ -391,14 +389,6 @@ public class Filters {
         }
 
         return textOverlayFilter;
-    }
-
-    public String getTableToBeUpdatedOnSave() {
-        return tableToBeUpdatedOnSave;
-    }
-
-    public void setTableToBeUpdatedOnSave(String tableToBeUpdatedOnSave) {
-        this.tableToBeUpdatedOnSave = tableToBeUpdatedOnSave;
     }
 
     public Filter getEditFilter() {

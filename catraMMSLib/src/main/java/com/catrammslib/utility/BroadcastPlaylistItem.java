@@ -9,6 +9,8 @@ import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import com.catrammslib.CatraMMSAPI;
@@ -82,21 +84,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	public int compareTo(BroadcastPlaylistItem broadcastPlaylistItem) {
         return getStart().compareTo(broadcastPlaylistItem.getStart());
 	}
-
-	/*
-	@Override
-	public boolean equals(Object o) {
-		if (this == o) return true;
-		if (o == null || getClass() != o.getClass()) return false;
-		BroadcastPlaylistItem that = (BroadcastPlaylistItem) o;
-		return start.equals(that.start);
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(start);
-	}
-	 */
 
 	@Override
 	public String toString() // used in broadcasterEditorPlaylist.xhtml and broadcaster.xhtml
@@ -239,7 +226,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 	}
 
-	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem) 
+	public boolean isStartToday() {
+		if (start == null) return false;
+		LocalDate today = LocalDate.now();
+		LocalDate startDate = start.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		return startDate.equals(today);
+	}
+
+	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem)
 	{
 		try
 		{
