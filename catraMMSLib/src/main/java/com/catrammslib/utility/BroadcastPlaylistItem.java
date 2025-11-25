@@ -233,6 +233,12 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		return startDate.equals(today);
 	}
 
+	public String getStartAsDate() {
+		if (start != null)
+			return new SimpleDateFormat("yyyy-MM-dd").format(start);
+		return "";
+	}
+
 	public boolean isEqualsTo(JSONObject joBroadcastPlaylistItem)
 	{
 		try

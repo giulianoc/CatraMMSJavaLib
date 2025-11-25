@@ -8781,14 +8781,10 @@ public class CatraMMSAPI implements Serializable {
             encodingJob.setEncoderKey(encodingJobInfo.getLong("encoderKey"));
             encodingJob.setEncodingPid(encodingJobInfo.getLong("encodingPid"));
 
-            if (encodingJobInfo.has("realTimeFrameRate") && !encodingJobInfo.isNull("realTimeFrameRate"))
-                encodingJob.setRealTimeFrameRate(encodingJobInfo.getLong("realTimeFrameRate"));
+            if (encodingJobInfo.has("realTimeInfo") && !encodingJobInfo.isNull("realTimeInfo"))
+                encodingJob.setRealTimeInfo(encodingJobInfo.getJSONObject("realTimeInfo"));
             else
-                encodingJob.setRealTimeFrameRate(null);
-            if (encodingJobInfo.has("realTimeBitRate") && !encodingJobInfo.isNull("realTimeBitRate"))
-                encodingJob.setRealTimeBitRate(encodingJobInfo.getDouble("realTimeBitRate"));
-            else
-                encodingJob.setRealTimeBitRate(null);
+                encodingJob.setRealTimeInfo(null);
             if (encodingJobInfo.has("numberOfRestartBecauseOfFailure") && !encodingJobInfo.isNull("numberOfRestartBecauseOfFailure"))
                 encodingJob.setNumberOfRestartBecauseOfFailure(encodingJobInfo.getLong("numberOfRestartBecauseOfFailure"));
             else

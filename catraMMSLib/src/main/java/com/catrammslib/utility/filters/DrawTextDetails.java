@@ -13,6 +13,9 @@ public class DrawTextDetails implements Serializable {
 	private boolean countdown;
 
     private String text;
+	private String timecode; // none, editorialTimecode, ptsTimecode
+	private Long ptsTimecodeRate;
+	private String sPtsTimecodeRate; //it's String because I need ptsTimecodeRateList as String
     private String positionXInPixel;
     private String positionYInPixel;
     private String fontType;
@@ -34,6 +37,8 @@ public class DrawTextDetails implements Serializable {
 		countdown = false;
 
 		setText("Hello World");
+		timecode = "none";
+		setsPtsTimecodeRate("25");
 
 		setPositionXInPixel("(video_width-text_width)/2");
 		setPositionYInPixel("(video_height-text_height)/2");
@@ -69,6 +74,12 @@ public class DrawTextDetails implements Serializable {
 
 			if (text != null && !text.isEmpty())
 				joOutput.put("text", text);
+
+			if (timecode != null)
+				joOutput.put("timecode", timecode);
+
+			if (ptsTimecodeRate != null)
+				joOutput.put("ptsTimecodeRate", ptsTimecodeRate);
 
 			if (positionXInPixel != null && !positionXInPixel.isEmpty())
 				joOutput.put("textPosition_X_InPixel", positionXInPixel);
@@ -125,6 +136,20 @@ public class DrawTextDetails implements Serializable {
 				text = joDrawTextDetails.getString("text");
 			else
 				text = "";
+
+			if (joDrawTextDetails.has("timecode") && !joDrawTextDetails.isNull("timecode"))
+				timecode = joDrawTextDetails.getString("timecode");
+			else
+				timecode = null;
+
+			if (joDrawTextDetails.has("ptsTimecodeRate") && !joDrawTextDetails.isNull("ptsTimecodeRate")) {
+				ptsTimecodeRate = joDrawTextDetails.getLong("ptsTimecodeRate");
+				sPtsTimecodeRate = ptsTimecodeRate.toString();
+			}
+			else {
+				ptsTimecodeRate = 25L;
+				sPtsTimecodeRate = "25";
+			}
 
 			if (joDrawTextDetails.has("textPosition_X_InPixel") && !joDrawTextDetails.isNull("textPosition_X_InPixel"))
 				positionXInPixel = joDrawTextDetails.getString("textPosition_X_InPixel");
@@ -209,6 +234,9 @@ public class DrawTextDetails implements Serializable {
 
 		drawTextDetails.setCountdown(countdown);
 		drawTextDetails.setText(text);
+		drawTextDetails.setTimecode(timecode);
+		// drawTextDetails.setPtsTimecodeRate(ptsTimecodeRate);
+		drawTextDetails.setsPtsTimecodeRate(sPtsTimecodeRate);
 		drawTextDetails.setPositionXInPixel(positionXInPixel);
 		drawTextDetails.setPositionYInPixel(positionYInPixel);
 		drawTextDetails.setFontType(fontType);
@@ -247,8 +275,23 @@ public class DrawTextDetails implements Serializable {
 		catch(Exception e)
 		{
 			mLogger.error("Exception: " + e);
-
 		}
+	}
+
+	public void setsPtsTimecodeRate(String sPtsTimecodeRate) {
+		this.sPtsTimecodeRate = sPtsTimecodeRate;
+		try
+		{
+			ptsTimecodeRate = Long.parseLong(sPtsTimecodeRate);
+		}
+		catch(Exception e)
+		{
+			mLogger.error("Exception: " + e);
+		}
+	}
+
+	public String getsPtsTimecodeRate() {
+		return sPtsTimecodeRate;
 	}
 
 	public boolean isCountdown() {
@@ -322,6 +365,22 @@ public class DrawTextDetails implements Serializable {
 
 	public void setFontColor(String fontColor) {
 		this.fontColor = fontColor;
+	}
+
+	public String getTimecode() {
+		return timecode;
+	}
+
+	public void setTimecode(String timecode) {
+		this.timecode = timecode;
+	}
+
+	public Long getPtsTimecodeRate() {
+		return ptsTimecodeRate;
+	}
+
+	public void setPtsTimecodeRate(Long ptsTimecodeRate) {
+		this.ptsTimecodeRate = ptsTimecodeRate;
 	}
 
 	public Long getTextPercentageOpacity() {

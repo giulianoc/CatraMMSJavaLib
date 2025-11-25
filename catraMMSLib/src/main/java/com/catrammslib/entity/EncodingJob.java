@@ -1,21 +1,24 @@
 package com.catrammslib.entity;
 
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Iterator;
 
 /**
  * Created by multi on 09.06.18.
  */
 public class EncodingJob implements Serializable {
+    private final Logger mLogger = LoggerFactory.getLogger(this.getClass());
     private Long encodingJobKey;
     private String status;
     private String processorMMS;
     private Long encoderKey;
     private Long encodingPid;
-    private Long realTimeFrameRate;
-    private Double realTimeBitRate;
+    private JSONObject realTimeInfo;
     private Long numberOfRestartBecauseOfFailure;
     private Date start;
     private Boolean endEstimate;
@@ -94,6 +97,43 @@ public class EncodingJob implements Serializable {
 			return false;
 		return true;
 	}
+
+    public String getRealTimeInfoAsHTML()
+    {
+        try {
+            if (realTimeInfo == null)
+                return null;
+
+            StringBuilder sb = new StringBuilder();
+            sb.append("<ul>");
+            Iterator<String> keys = realTimeInfo.keys();
+            while (keys.hasNext())
+            {
+                String key = keys.next();
+                Object value = realTimeInfo.get(key);
+
+                String valueStr;
+                if (value instanceof String) {
+                    valueStr = (String) value;
+                } else if (value instanceof Number || value instanceof Boolean || value instanceof Double) {
+                    valueStr = value.toString();
+                } else {
+                    // JSONObject, JSONArray, ecc.
+                    valueStr = value.toString();
+                }
+
+                sb.append("<li>").append(key).append(": ").append(valueStr).append("</li>");
+            }
+            sb.append("</ul>");
+
+            return sb.toString();
+        }
+        catch (Exception e)
+        {
+            mLogger.error("exception: " + e);
+            return null;
+        }
+    }
 
 	public Long getEncodingJobKey() {
         return encodingJobKey;
@@ -337,20 +377,12 @@ public class EncodingJob implements Serializable {
         this.encodingPid = encodingPid;
     }
 
-    public Long getRealTimeFrameRate() {
-        return realTimeFrameRate;
+    public JSONObject getRealTimeInfo() {
+        return realTimeInfo;
     }
 
-    public void setRealTimeFrameRate(Long realTimeFrameRate) {
-        this.realTimeFrameRate = realTimeFrameRate;
-    }
-
-    public Double getRealTimeBitRate() {
-        return realTimeBitRate;
-    }
-
-    public void setRealTimeBitRate(Double realTimeBitRate) {
-        this.realTimeBitRate = realTimeBitRate;
+    public void setRealTimeInfo(JSONObject realTimeInfo) {
+        this.realTimeInfo = realTimeInfo;
     }
 
     public Long getNumberOfRestartBecauseOfFailure() {

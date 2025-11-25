@@ -35,6 +35,8 @@ public class Constants implements Serializable {
     private List<String> addSilentAudioTypes;
     private List<Cost> dedicatedResources;
     private List<String> filtersList;
+    private List<String> timecodeList;
+    private List<String> ptsTimecodeRateList;
 
     public Constants()
     {
@@ -253,6 +255,19 @@ public class Constants implements Serializable {
             frameRateModeList.add("vfr");
             frameRateModeList.add("drop");
             frameRateModeList.add("auto");
+        }
+
+        {
+            timecodeList = new ArrayList<>();
+            timecodeList.add("none");
+            timecodeList.add("editorialTimecode");
+            timecodeList.add("ptsTimecode");
+        }
+
+        {
+            ptsTimecodeRateList = new ArrayList<>();
+            ptsTimecodeRateList.add("25");
+            ptsTimecodeRateList.add("50");
         }
 
         {
@@ -507,7 +522,15 @@ public class Constants implements Serializable {
         return frameRateModeList;
     }
 
-	public List<String> getOverlayTextXList() {
+    public List<String> getTimecodeList() {
+        return timecodeList;
+    }
+
+    public List<String> getPtsTimecodeRateList() {
+        return ptsTimecodeRateList;
+    }
+
+    public List<String> getOverlayTextXList() {
 		return overlayTextXList;
 	}
 
