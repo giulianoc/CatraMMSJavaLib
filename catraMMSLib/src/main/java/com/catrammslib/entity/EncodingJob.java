@@ -110,8 +110,13 @@ public class EncodingJob implements Serializable {
             }
             Collections.sort(sortedKeys); // alfabetico crescente
 
-            StringBuilder sb = new StringBuilder();
-            sb.append("<ul>");
+            StringBuilder sb = new StringBuilder(1024);
+            sb.append("<table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n");
+            sb.append("  <thead>\n");
+            sb.append("    <tr><th>Key</th><th>Value</th></tr>\n");
+            sb.append("  </thead>\n");
+            sb.append("  <tbody>\n");
+
             for (String key : sortedKeys)
             {
                 Object value = realTimeInfo.get(key);
@@ -126,9 +131,13 @@ public class EncodingJob implements Serializable {
                     valueStr = value.toString();
                 }
 
-                sb.append("<li>").append(key).append(": ").append(valueStr).append("</li>");
+                sb.append("    <tr>");
+                sb.append("<td>").append(key).append("</td>");
+                sb.append("<td>").append(valueStr).append("</td>");
+                sb.append("</tr>\n");
             }
-            sb.append("</ul>");
+            sb.append("  </tbody>\n");
+            sb.append("</table>\n");
 
             return sb.toString();
         }
