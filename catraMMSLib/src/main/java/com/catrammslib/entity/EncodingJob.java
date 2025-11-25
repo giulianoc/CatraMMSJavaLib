@@ -113,7 +113,7 @@ public class EncodingJob implements Serializable {
             StringBuilder sb = new StringBuilder(1024);
             sb.append("<table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">\n");
             sb.append("  <thead>\n");
-            sb.append("    <tr><th>Key</th><th>Value</th></tr>\n");
+            sb.append("    <tr><th>Property</th><th>Value</th></tr>\n");
             sb.append("  </thead>\n");
             sb.append("  <tbody>\n");
 
