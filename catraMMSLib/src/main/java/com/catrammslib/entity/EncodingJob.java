@@ -5,8 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Iterator;
+import java.util.*;
 
 /**
  * Created by multi on 09.06.18.
@@ -104,12 +103,17 @@ public class EncodingJob implements Serializable {
             if (realTimeInfo == null)
                 return null;
 
+            List<String> sortedKeys = new ArrayList<>();
+            Iterator<String> keys = realTimeInfo.keys();
+            while (keys.hasNext()) {
+                sortedKeys.add(keys.next());
+            }
+            Collections.sort(sortedKeys); // alfabetico crescente
+
             StringBuilder sb = new StringBuilder();
             sb.append("<ul>");
-            Iterator<String> keys = realTimeInfo.keys();
-            while (keys.hasNext())
+            for (String key : sortedKeys)
             {
-                String key = keys.next();
                 Object value = realTimeInfo.get(key);
 
                 String valueStr;
