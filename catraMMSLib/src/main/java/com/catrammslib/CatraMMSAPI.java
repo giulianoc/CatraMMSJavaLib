@@ -9958,14 +9958,16 @@ public class CatraMMSAPI implements Serializable {
             else
                 ingestionJob.setEndProcessing(simpleDateFormat.parse(ingestionJobInfo.getString("endProcessing")));
             ingestionJob.setStatus(ingestionJobInfo.getString("status"));
-            if (ingestionJobInfo.isNull("errorMessage"))
-                ingestionJob.setErrorMessage(null);
+            if (ingestionJobInfo.isNull("errorMessages"))
+                ingestionJob.setErrorMessages(null);
             else
-                ingestionJob.setErrorMessage(ingestionJobInfo.getString("errorMessage"));
+                ingestionJob.setErrorMessages(ingestionJobInfo.getJSONArray("errorMessages"));
+            /*
             if (ingestionJobInfo.isNull("errorMessageTruncated"))
                 ingestionJob.setErrorMessageTruncated(null);
             else
                 ingestionJob.setErrorMessageTruncated(ingestionJobInfo.getBoolean("errorMessageTruncated"));
+            */
             if (ingestionJobInfo.isNull("processorMMS"))
                 ingestionJob.setProcessorMMS(null);
             else

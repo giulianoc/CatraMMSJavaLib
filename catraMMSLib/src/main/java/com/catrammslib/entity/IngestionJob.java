@@ -30,8 +30,8 @@ public class IngestionJob implements Serializable, Comparable {
     private Boolean endProcessingEstimate;
     private Date endProcessing;
     private String status;
-    private String errorMessage;
-    private Boolean errorMessageTruncated;
+    private JSONArray errorMessages;
+    // private Boolean errorMessageTruncated;
     private String processorMMS;
     private Double downloadingProgress;
     private Double uploadingProgress;
@@ -356,25 +356,41 @@ public class IngestionJob implements Serializable, Comparable {
             }
         }
     }
-	public Date getIngestionDate() {
+
+    public String getErrorMessagesAsHTML() {
+        if (errorMessages == null)
+            return null;
+
+        StringBuilder sb = new StringBuilder(1024);
+        try {
+            sb.append("<ol>");
+            for(int index = 0; index < errorMessages.length(); index++)
+                sb.append("<li>" + errorMessages.getString(index) + "</li>");
+            sb.append("</ol>");
+        }
+        catch (Exception e)
+        {
+            mLogger.error("Exception: " + e);
+        }
+
+        return sb.toString();
+    }
+
+    public JSONArray getErrorMessages() {
+        return errorMessages;
+    }
+
+    public void setErrorMessages(JSONArray errorMessages) {
+        this.errorMessages = errorMessages;
+    }
+
+    public Date getIngestionDate() {
 		return ingestionDate;
 	}
 
 	public void setIngestionDate(Date ingestionDate) {
 		this.ingestionDate = ingestionDate;
 	}
-
-	public String getHtmlErrorMessage() {
-        return (errorMessage == null ? errorMessage : errorMessage.replace("\n", "<br/>"));
-    }
-
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 
     public Long getIngestionRootKey() {
         return ingestionRootKey;
@@ -524,14 +540,6 @@ public class IngestionJob implements Serializable, Comparable {
 
     public void setDependencyIngestionStatus(String dependencyIngestionStatus) {
         this.dependencyIngestionStatus = dependencyIngestionStatus;
-    }
-
-    public Boolean getErrorMessageTruncated() {
-        return errorMessageTruncated;
-    }
-
-    public void setErrorMessageTruncated(Boolean errorMessageTruncated) {
-        this.errorMessageTruncated = errorMessageTruncated;
     }
 
     public int getDependOnSuccess() {
