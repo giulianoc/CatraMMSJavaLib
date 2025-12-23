@@ -1,5 +1,8 @@
 package com.catrammslib.entity;
 
+import netscape.javascript.JSObject;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,6 +16,7 @@ public class RTMPChannelConf implements Serializable{
     private String streamName;
     private String userName;
 	private String password;
+	private JSONObject signedURLDetails;
 	private String playURL;
     private String type;
 	private Long outputIndex;
@@ -94,6 +98,14 @@ public class RTMPChannelConf implements Serializable{
 
 	public void setConfigurationLabel(String configurationLabel) {
 		this.configurationLabel = configurationLabel;
+	}
+
+	public JSONObject getSignedURLDetails() {
+		return signedURLDetails;
+	}
+
+	public void setSignedURLDetails(JSONObject signedURLDetails) {
+		this.signedURLDetails = signedURLDetails;
 	}
 
 	public String getPlayURL() {

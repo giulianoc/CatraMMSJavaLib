@@ -177,7 +177,7 @@ public class LiveStreams {
 
                                     liveStreamInfo.setLiveGridErrorInfo(
                                             (liveGridIngestionJob.getStartProcessing() != null ? simpleDateFormat.format(liveGridIngestionJob.getStartProcessing()) : "")
-                                                    + (liveGridIngestionJob.getErrorMessage() == null ? "" : (" " + liveGridIngestionJob.getErrorMessage()))
+                                                    + (liveGridIngestionJob.getErrorMessagesAsHTML() == null ? "" : (" " + liveGridIngestionJob.getErrorMessagesAsHTML()))
                                     );
 
                                     if (liveStreamInfo.getLiveGridChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveGridStreamingNotWorking))
@@ -372,7 +372,7 @@ public class LiveStreams {
 
                                     liveStreamInfo.setLiveProxyErrorInfo(
                                             (liveProxyIngestionJob.getStartProcessing() != null ? simpleDateFormat.format(liveProxyIngestionJob.getStartProcessing()) : "")
-                                                    + (liveProxyIngestionJob.getErrorMessage() == null ? "" : (" " + liveProxyIngestionJob.getErrorMessage()))
+                                                    + (liveProxyIngestionJob.getErrorMessagesAsHTML() == null ? "" : (" " + liveProxyIngestionJob.getErrorMessagesAsHTML()))
                                     );
 
                                     if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingNotWorking))
@@ -597,7 +597,7 @@ public class LiveStreams {
 
                                     liveStreamInfo.setLiveRecorderErrorInfo(
                                             (liveRecorderIngestionJob.getStartProcessing() != null ? simpleDateFormat.format(liveRecorderIngestionJob.getStartProcessing()) : "")
-                                                    + (liveRecorderIngestionJob.getErrorMessage() == null ? "" : (" " + liveRecorderIngestionJob.getErrorMessage()))
+                                                    + (liveRecorderIngestionJob.getErrorMessagesAsHTML() == null ? "" : (" " + liveRecorderIngestionJob.getErrorMessagesAsHTML()))
                                     );
 
                                     if (liveStreamInfo.getLiveRecorderChannelStatus().startsWith(LiveStreamInfo.liveRecorderFinishedOK))
