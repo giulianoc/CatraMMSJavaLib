@@ -16,7 +16,7 @@ public class RTMPChannelConf implements Serializable{
     private String streamName;
     private String userName;
 	private String password;
-	private JSONObject signedURLDetails;
+	private JSONObject playURLDetails;
 	private String playURL;
     private String type;
 	private Long outputIndex;
@@ -100,13 +100,6 @@ public class RTMPChannelConf implements Serializable{
 		this.configurationLabel = configurationLabel;
 	}
 
-	public JSONObject getSignedURLDetails() {
-		return signedURLDetails;
-	}
-
-	public void setSignedURLDetails(JSONObject signedURLDetails) {
-		this.signedURLDetails = signedURLDetails;
-	}
 
 	public String getPlayURL() {
 		return playURL;
@@ -114,6 +107,14 @@ public class RTMPChannelConf implements Serializable{
 
 	public void setPlayURL(String playURL) {
 		this.playURL = playURL;
+	}
+
+	public JSONObject getPlayURLDetails() {
+		return playURLDetails;
+	}
+
+	public void setPlayURLDetails(JSONObject playURLDetails) {
+		this.playURLDetails = playURLDetails;
 	}
 
 	public String getType() {
