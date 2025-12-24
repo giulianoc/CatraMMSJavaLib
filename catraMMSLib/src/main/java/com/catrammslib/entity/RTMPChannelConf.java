@@ -1,7 +1,10 @@
 package com.catrammslib.entity;
 
+import com.catrammslib.CatraMMSWorkflow;
 import netscape.javascript.JSObject;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -10,6 +13,7 @@ import java.util.Objects;
  * Created by multi on 08.06.18.
  */
 public class RTMPChannelConf implements Serializable{
+	private static final Logger mLogger = LoggerFactory.getLogger(RTMPChannelConf.class);
     private Long confKey;
     private String label;
     private String rtmpURL;
@@ -34,6 +38,20 @@ public class RTMPChannelConf implements Serializable{
 	@Override
 	public int hashCode() {
 		return Objects.hash(confKey);
+	}
+
+	public String getPlayURLDetailsAsString() {
+		try {
+			if (playURLDetails == null)
+				return "";
+			else
+				return playURLDetails.toString(4);
+		}
+		catch (Exception e)
+		{
+			mLogger.error("Exception: " + e);
+			return "";
+		}
 	}
 
 	public Long getConfKey() {
