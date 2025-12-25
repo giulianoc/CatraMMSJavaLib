@@ -2,7 +2,6 @@ package com.catrammslib.helper;
 
 import com.catrammslib.CatraMMSAPI;
 import com.catrammslib.CatraMMSWorkflow;
-import com.catrammslib.entity.CDN77ChannelConf;
 import com.catrammslib.entity.IngestionJob;
 import com.catrammslib.entity.Stream;
 import com.catrammslib.entity.WorkflowVariable;
@@ -1085,7 +1084,6 @@ public class LiveStreams {
             boolean autoRenew,
             boolean utcTimeOverlay,
             boolean monitorHLS,
-            CDN77ChannelConf cdn77Channel,
             String encodingProfileForCDN,
             boolean virtualVOD,
             Long virtualVODMaxDurationInMinutes,
@@ -1111,7 +1109,6 @@ public class LiveStreams {
                 + ", autoRenew: " + autoRenew
                 + ", utcTimeOverlay: " + utcTimeOverlay
                 + ", monitorHLS: " + monitorHLS
-                + ", cdn77Channel: " + cdn77Channel
                 + ", encodingProfileForCDN: " + encodingProfileForCDN
                 + ", virtualVOD: " + virtualVOD
                 + ", virtualVODMaxDurationInMinutes: " + virtualVODMaxDurationInMinutes
@@ -1197,7 +1194,7 @@ public class LiveStreams {
                     channelConf.getLabel(), channelConf.getLabel(), startRecording, stopRecording, buildVODAtTheEnd,
                     localLiveRecorderIngestionJobLabel,
                     segmentDurationInSeconds, retentionChunk, retentionBuildVODAtTheEnd, ingester, thumbnail,
-                    autoRenew, utcTimeOverlay, monitorHLS, cdn77Channel, encodingProfileForCDN,
+                    autoRenew, utcTimeOverlay, monitorHLS, encodingProfileForCDN,
                     virtualVOD, virtualVODMaxDurationInMinutes, encodersPool,
                     monitoringFrameIncreasingEnabled);
             mLogger.info("joWorkflow: " + joWorkflow.toString(4));
@@ -1255,7 +1252,7 @@ public class LiveStreams {
                                                     Long segmentDurationInSeconds, String retentionChunk, String retentionBuildVODAtTheEnd, String ingester,
                                                     boolean chunkThumbnail,
                                                     boolean autoRenew, boolean utcTimeOverlay, boolean monitorHLS,
-                                                    CDN77ChannelConf cdn77Channel, String encodingProfileForCDN,
+                                                    String encodingProfileForCDN,
                                                     boolean liveRecorderVirtualVOD,
                                                     Long liveRecorderVirtualVODMaxDurationInMinutes,
                                                     String encodersPool,
@@ -1315,71 +1312,6 @@ public class LiveStreams {
                 String monitorHLSEncodingProfileLabel = "MMS_HLS_H264_800Kb_veryfast_360p25_high422_AAC_92";
 
                 List<OutputStream> outputStreamList = new ArrayList<>();
-                if (cdn77Channel != null)
-                {
-                    OutputStream outputStream = new OutputStream();
-
-                    outputStream.setOutputType("CDN_CDN77");
-                    outputStream.setCdn77Channel(cdn77Channel);
-                    if (encodingProfileForCDN != null && !encodingProfileForCDN.isBlank())
-                        outputStream.setEncodingProfileLabel(encodingProfileForCDN);
-
-                    // liveProxyOutput.setEncodingProfileLabel(monitorHLSEncodingProfileLabel);
-
-					/*
-					{
-						JSONObject joFilters = new JSONObject();
-						{
-							{
-								JSONArray jaVideo = new JSONArray();
-								joFilters.put("video", jaVideo);
-
-								{
-									JSONObject joBlackdetect = new JSONObject();
-									jaVideo.put(joBlackdetect);
-
-									joBlackdetect.put("type", "blackdetect");
-									joBlackdetect.put("black_min_duration", (float) 2.0);
-									joBlackdetect.put("pixel_black_th", (float) 0.0);
-								}
-
-								{
-									JSONObject joBlackframe = new JSONObject();
-									jaVideo.put(joBlackframe);
-
-									joBlackframe.put("type", "blackframe");
-									joBlackframe.put("amount", 98);
-									joBlackframe.put("threshold", 32);
-								}
-
-								{
-									JSONObject joFreezedetect = new JSONObject();
-									jaVideo.put(joFreezedetect);
-
-									joFreezedetect.put("type", "freezedetect");
-									joFreezedetect.put("noiseInDb", -60);
-									joFreezedetect.put("duration", 2);
-								}
-							}
-							{
-								JSONArray jaAudio = new JSONArray();
-								joFilters.put("audio", jaAudio);
-
-								{
-									JSONObject joSilencedetect = new JSONObject();
-									jaAudio.put(joSilencedetect);
-
-									joSilencedetect.put("type", "silencedetect");
-									joSilencedetect.put("noise", (float) 0.0001);
-								}
-							}
-							liveProxyOutput.setFilters(joFilters);
-						}
-					}
-					*/
-
-                    outputStreamList.add(outputStream);
-                }
 
                 String liveRecorderVirtualVODEncodingProfileLabel = null;
 

@@ -28,16 +28,11 @@ public class OutputStream implements Serializable {
 	// third audio track (0:a:2)
 	private String audioMap;
 
-	// RTMP_Channel, SRT_Channel, HLS_Channel, CDN_CDN77, HLS, UDP_Stream
+	// RTMP_Channel, SRT_Channel, HLS_Channel, HLS, UDP_Stream
 	private String outputType;
 
 	// UDP_Stream
     private String udpURL;
-
-	// CDN_CDN77
-	private CDN77ChannelConf cdn77Channel;
-	// CDN_CDN77
-	private Long cdn77ExpirationInMinutes;
 
 	// RTMP_Channel
 	private RTMPChannelConf rtmpChannel;
@@ -60,8 +55,6 @@ public class OutputStream implements Serializable {
 
 	public OutputStream()
 	{
-		cdn77ExpirationInMinutes = (long) 1440;	// 1 day
-
 		videoMap = "default";
 		audioMap = "default";
 	}
@@ -74,8 +67,6 @@ public class OutputStream implements Serializable {
 		outputStream.setAudioMap(getAudioMap());
 		outputStream.setOutputType(getOutputType());
 		outputStream.setUdpURL(getUdpURL());
-		outputStream.setCdn77Channel(getCdn77Channel());
-		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
 		outputStream.setRtmpChannel(getRtmpChannel());
 		outputStream.setSrtChannel(getSrtChannel());
 		outputStream.setHlsChannel(getHlsChannel());
@@ -98,14 +89,7 @@ public class OutputStream implements Serializable {
 			joOutput.put("audioMap", getAudioMap());
 
 			joOutput.put("outputType", getOutputType());
-			if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
-			{
-				if (getCdn77Channel() != null && getCdn77Channel().getLabel() != null && !getCdn77Channel().getLabel().isBlank())
-					joOutput.put("cdn77ChannelConfigurationLabel", getCdn77Channel().getLabel());
-				if (getCdn77ExpirationInMinutes() != null)
-					joOutput.put("cdn77ExpirationInMinutes", getCdn77ExpirationInMinutes());
-			}
-			else if (getOutputType().equalsIgnoreCase("UDP_Stream"))
+			if (getOutputType().equalsIgnoreCase("UDP_Stream"))
 				joOutput.put("udpUrl", getUdpURL());
 			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
 			{
@@ -162,8 +146,7 @@ public class OutputStream implements Serializable {
 						 List<EncodingProfile> encodingProfileList,
 						 List<HLSChannelConf> hlsChannelList,
 						 List<RTMPChannelConf> rtmpChannelList,
-						 List<SRTChannelConf> srtChannelList,
-						 List<CDN77ChannelConf> cdn77ChannelList
+						 List<SRTChannelConf> srtChannelList
 	)
 	{
 		try
@@ -219,30 +202,7 @@ public class OutputStream implements Serializable {
 				setEncodingProfile(null);
 			}
 
-			if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
-			{
-				if (joOutputStream.has("cdn77ChannelConfigurationLabel") && !joOutputStream.getString("cdn77ChannelConfigurationLabel").isEmpty())
-				{
-					String cdn77ChannelConfigurationLabel = joOutputStream.getString("cdn77ChannelConfigurationLabel");
-
-					{
-						for (CDN77ChannelConf cdn77ChannelConf: cdn77ChannelList)
-						{
-							if (cdn77ChannelConf.getLabel().equals(cdn77ChannelConfigurationLabel))
-							{
-								setCdn77Channel(cdn77ChannelConf);
-
-								break;
-							}
-						}
-					}
-				}
-				else
-					setCdn77Channel(null);
-				if (joOutputStream.has("cdn77ExpirationInMinutes"))
-					setCdn77ExpirationInMinutes(joOutputStream.getLong("cdn77ExpirationInMinutes"));
-			}
-			else if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
+			if (getOutputType().equalsIgnoreCase("RTMP_Channel"))
 			{
 				if (joOutputStream.has("rtmpChannelConfigurationLabel") && !joOutputStream.getString("rtmpChannelConfigurationLabel").isEmpty())
 				{
@@ -395,22 +355,6 @@ public class OutputStream implements Serializable {
 
 	public void setUdpURL(String udpURL) {
 		this.udpURL = udpURL;
-	}
-
-	public CDN77ChannelConf getCdn77Channel() {
-		return cdn77Channel;
-	}
-
-	public void setCdn77Channel(CDN77ChannelConf cdn77Channel) {
-		this.cdn77Channel = cdn77Channel;
-	}
-
-	public Long getCdn77ExpirationInMinutes() {
-		return cdn77ExpirationInMinutes;
-	}
-
-	public void setCdn77ExpirationInMinutes(Long cdn77ExpirationInMinutes) {
-		this.cdn77ExpirationInMinutes = cdn77ExpirationInMinutes;
 	}
 
 	public HLSChannelConf getHlsChannel() {

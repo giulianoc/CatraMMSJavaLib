@@ -107,7 +107,6 @@ public class IngestionJob implements Serializable, Comparable {
 								else if (joOutput.has("outputType") &&
 									(joOutput.getString("outputType").equalsIgnoreCase("RTMP_Stream")
                                         || joOutput.getString("outputType").equalsIgnoreCase("RTMP_Channel")
-                                        || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                     )
                                     // la playURL è stata eliminata perchè le url temporizzate scadevano, non era possibile,
                                     // mantenere sempre la stessa. Ora viene calcolata in tempo reale
@@ -130,7 +129,6 @@ public class IngestionJob implements Serializable, Comparable {
                                 else if (joOutput.has("OutputType") &&
                                         (joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream")
                                                 || joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
-                                                || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                         )
                                         && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
                                             || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
@@ -181,9 +179,7 @@ public class IngestionJob implements Serializable, Comparable {
 								break;
 							}
 							else if (joOutput.has("outputType") &&
-								(joOutput.getString("outputType").equalsIgnoreCase("RTMP_Channel")
-                                    || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
-                                )
+								joOutput.getString("outputType").equalsIgnoreCase("RTMP_Channel")
                                     // la playURL è stata eliminata perchè le url temporizzate scadevano, non era possibile,
                                     // mantenere sempre la stessa. Ora viene calcolata in tempo reale
 //                                && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
@@ -205,7 +201,6 @@ public class IngestionJob implements Serializable, Comparable {
                             }
                             else if (joOutput.has("OutputType") &&
                                     (joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
-                                            || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                     )
                                     && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
                                         || (joOutput.has("playUrl") && !joOutput.getString("playUrl").isEmpty()))
