@@ -21,7 +21,6 @@ public class RTMPChannelConf implements Serializable{
     private String userName;
 	private String password;
 	private JSONObject playURLDetails;
-	private String playURL;
     private String type;
 	private Long outputIndex;
     private Long reservedByIngestionJobKey;
@@ -116,15 +115,6 @@ public class RTMPChannelConf implements Serializable{
 
 	public void setConfigurationLabel(String configurationLabel) {
 		this.configurationLabel = configurationLabel;
-	}
-
-
-	public String getPlayURL() {
-		return playURL;
-	}
-
-	public void setPlayURL(String playURL) {
-		this.playURL = playURL;
 	}
 
 	public JSONObject getPlayURLDetails() {

@@ -6948,7 +6948,7 @@ public class CatraMMSAPI implements Serializable {
 
     public void addRTMPChannelConf(String username, String password,
                                    String label, String rtmpURL, String streamName, String userName, String rtmpPassword,
-                                   JSONObject playURLDetails, String playURL, String type)
+                                   JSONObject playURLDetails, String type)
             throws Exception
     {
         String mmsInfo;
@@ -6968,8 +6968,6 @@ public class CatraMMSAPI implements Serializable {
                     joRTMPChannelConf.put("password", rtmpPassword);
                 if (playURLDetails != null)
                     joRTMPChannelConf.put("playURLDetails", playURLDetails);
-                if (playURL != null)
-                    joRTMPChannelConf.put("playURL", playURL);
                 joRTMPChannelConf.put("type", type);
 
                 jsonRTMPChannelConf = joRTMPChannelConf.toString(4);
@@ -6999,7 +6997,7 @@ public class CatraMMSAPI implements Serializable {
 
     public void modifyRTMPChannelConf(String username, String password, Long confKey,
                                       String label, String rtmpURL, String streamName, String userName,
-                                      String rtmpPassword, JSONObject playURLDetails, String playURL, String type)
+                                      String rtmpPassword, JSONObject playURLDetails, String type)
             throws Exception
     {
 
@@ -7028,10 +7026,6 @@ public class CatraMMSAPI implements Serializable {
                     joRTMPChannelConf.put("playURLDetails", playURLDetails);
                 else
                     joRTMPChannelConf.put("playURLDetails", JSONObject.NULL);
-                if (playURL != null)
-                    joRTMPChannelConf.put("playURL", playURL);
-                else
-                    joRTMPChannelConf.put("playURL", "");
                 joRTMPChannelConf.put("type", type);
 
                 jsonRTMPChannelConf = joRTMPChannelConf.toString(4);
@@ -10784,10 +10778,6 @@ public class CatraMMSAPI implements Serializable {
                 rtmpChannelConf.setPlayURLDetails(null);
             else
                 rtmpChannelConf.setPlayURLDetails(rtmpChannelConfInfo.getJSONObject("playURLDetails"));
-            if (rtmpChannelConfInfo.isNull("playURL"))
-                rtmpChannelConf.setPlayURL(null);
-            else
-                rtmpChannelConf.setPlayURL(rtmpChannelConfInfo.getString("playURL"));
             rtmpChannelConf.setType(rtmpChannelConfInfo.getString("type"));
             if (rtmpChannelConfInfo.isNull("outputIndex"))
                 rtmpChannelConf.setOutputIndex(null);
