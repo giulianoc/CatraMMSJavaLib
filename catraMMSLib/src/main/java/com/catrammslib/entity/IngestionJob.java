@@ -107,7 +107,6 @@ public class IngestionJob implements Serializable, Comparable {
 								else if (joOutput.has("outputType") &&
 									(joOutput.getString("outputType").equalsIgnoreCase("RTMP_Stream")
                                         || joOutput.getString("outputType").equalsIgnoreCase("RTMP_Channel")
-										|| joOutput.getString("outputType").equalsIgnoreCase("CDN_AWS")
                                         || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                     )
                                     // la playURL è stata eliminata perchè le url temporizzate scadevano, non era possibile,
@@ -184,7 +183,6 @@ public class IngestionJob implements Serializable, Comparable {
 							}
 							else if (joOutput.has("outputType") &&
 								(joOutput.getString("outputType").equalsIgnoreCase("RTMP_Channel")
-									|| joOutput.getString("outputType").equalsIgnoreCase("CDN_AWS")
                                     || joOutput.getString("outputType").equalsIgnoreCase("CDN_CDN77")
                                 )
                                     // la playURL è stata eliminata perchè le url temporizzate scadevano, non era possibile,

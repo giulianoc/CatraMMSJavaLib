@@ -28,18 +28,11 @@ public class OutputStream implements Serializable {
 	// third audio track (0:a:2)
 	private String audioMap;
 
-	// RTMP_Channel, SRT_Channel, HLS_Channel, CDN_AWS, CDN_CDN77, HLS, UDP_Stream
+	// RTMP_Channel, SRT_Channel, HLS_Channel, CDN_CDN77, HLS, UDP_Stream
 	private String outputType;
 
 	// UDP_Stream
     private String udpURL;
-
-	// CDN_AWS
-	private AWSChannelConf_toberemoved awsChannel;	// to be started/stopped
-	// CDN_AWS
-	private Boolean awsSignedURL;
-	// CDN_AWS
-	private Long awsExpirationInMinutes;
 
 	// CDN_CDN77
 	private CDN77ChannelConf cdn77Channel;
@@ -110,6 +103,7 @@ public class OutputStream implements Serializable {
 			joOutput.put("audioMap", getAudioMap());
 
 			joOutput.put("outputType", getOutputType());
+			/*
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
 				if (getAwsChannel() != null && getAwsChannel().getLabel() != null && !getAwsChannel().getLabel().isBlank())
@@ -119,7 +113,8 @@ public class OutputStream implements Serializable {
 				if (getAwsExpirationInMinutes() != null)
 					joOutput.put("awsExpirationInMinutes", getAwsExpirationInMinutes());
 			}
-			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
+			 */
+			if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
 				if (getCdn77Channel() != null && getCdn77Channel().getLabel() != null && !getCdn77Channel().getLabel().isBlank())
 					joOutput.put("cdn77ChannelConfigurationLabel", getCdn77Channel().getLabel());
@@ -241,6 +236,7 @@ public class OutputStream implements Serializable {
 				setEncodingProfile(null);
 			}
 
+			/*
 			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
 			{
 				if (joOutputStream.has("awsChannelConfigurationLabel") && !joOutputStream.getString("awsChannelConfigurationLabel").isEmpty())
@@ -266,7 +262,8 @@ public class OutputStream implements Serializable {
 				if (joOutputStream.has("awsExpirationInMinutes"))
 					setAwsExpirationInMinutes(joOutputStream.getLong("awsExpirationInMinutes"));
 			}
-			else if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
+			 */
+			if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
 				if (joOutputStream.has("cdn77ChannelConfigurationLabel") && !joOutputStream.getString("cdn77ChannelConfigurationLabel").isEmpty())
 				{
