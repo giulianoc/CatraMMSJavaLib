@@ -130,7 +130,6 @@ public class IngestionJob implements Serializable, Comparable {
                                 else if (joOutput.has("OutputType") &&
                                         (joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Stream")
                                                 || joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
-                                                || joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
                                                 || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                         )
                                         && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())
@@ -206,7 +205,6 @@ public class IngestionJob implements Serializable, Comparable {
                             }
                             else if (joOutput.has("OutputType") &&
                                     (joOutput.getString("OutputType").equalsIgnoreCase("RTMP_Channel")
-                                            || joOutput.getString("OutputType").equalsIgnoreCase("CDN_AWS")
                                             || joOutput.getString("OutputType").equalsIgnoreCase("CDN_CDN77")
                                     )
                                     && ((joOutput.has("PlayUrl") && !joOutput.getString("PlayUrl").isEmpty())

@@ -60,8 +60,6 @@ public class OutputStream implements Serializable {
 
 	public OutputStream()
 	{
-		awsSignedURL = false;
-		awsExpirationInMinutes = (long) 1440;	// 1 day
 		cdn77ExpirationInMinutes = (long) 1440;	// 1 day
 
 		videoMap = "default";
@@ -76,9 +74,6 @@ public class OutputStream implements Serializable {
 		outputStream.setAudioMap(getAudioMap());
 		outputStream.setOutputType(getOutputType());
 		outputStream.setUdpURL(getUdpURL());
-		outputStream.setAwsChannel(getAwsChannel());
-		outputStream.setAwsSignedURL(getAwsSignedURL());
-		outputStream.setAwsExpirationInMinutes(getAwsExpirationInMinutes());
 		outputStream.setCdn77Channel(getCdn77Channel());
 		outputStream.setCdn77ExpirationInMinutes(getCdn77ExpirationInMinutes());
 		outputStream.setRtmpChannel(getRtmpChannel());
@@ -103,17 +98,6 @@ public class OutputStream implements Serializable {
 			joOutput.put("audioMap", getAudioMap());
 
 			joOutput.put("outputType", getOutputType());
-			/*
-			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
-			{
-				if (getAwsChannel() != null && getAwsChannel().getLabel() != null && !getAwsChannel().getLabel().isBlank())
-					joOutput.put("awsChannelConfigurationLabel", getAwsChannel().getLabel());
-				if (getAwsSignedURL() != null)
-					joOutput.put("awsSignedURL", getAwsSignedURL());
-				if (getAwsExpirationInMinutes() != null)
-					joOutput.put("awsExpirationInMinutes", getAwsExpirationInMinutes());
-			}
-			 */
 			if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
 				if (getCdn77Channel() != null && getCdn77Channel().getLabel() != null && !getCdn77Channel().getLabel().isBlank())
@@ -179,8 +163,7 @@ public class OutputStream implements Serializable {
 						 List<HLSChannelConf> hlsChannelList,
 						 List<RTMPChannelConf> rtmpChannelList,
 						 List<SRTChannelConf> srtChannelList,
-						 List<CDN77ChannelConf> cdn77ChannelList,
-						 List<AWSChannelConf_toberemoved> awsChannelList
+						 List<CDN77ChannelConf> cdn77ChannelList
 	)
 	{
 		try
@@ -236,33 +219,6 @@ public class OutputStream implements Serializable {
 				setEncodingProfile(null);
 			}
 
-			/*
-			if (getOutputType().equalsIgnoreCase("CDN_AWS"))
-			{
-				if (joOutputStream.has("awsChannelConfigurationLabel") && !joOutputStream.getString("awsChannelConfigurationLabel").isEmpty())
-				{
-					String awsChannelConfigurationLabel = joOutputStream.getString("awsChannelConfigurationLabel");
-
-					{
-						for (AWSChannelConf_toberemoved awsChannelConf: awsChannelList)
-						{
-							if (awsChannelConf.getLabel().equals(awsChannelConfigurationLabel))
-							{
-								setAwsChannel(awsChannelConf);
-
-								break;
-							}
-						}
-					}
-				}
-				else
-					setAwsChannel(null);
-				if (joOutputStream.has("awsSignedURL"))
-					setAwsSignedURL(joOutputStream.getBoolean("awsSignedURL"));
-				if (joOutputStream.has("awsExpirationInMinutes"))
-					setAwsExpirationInMinutes(joOutputStream.getLong("awsExpirationInMinutes"));
-			}
-			 */
 			if (getOutputType().equalsIgnoreCase("CDN_CDN77"))
 			{
 				if (joOutputStream.has("cdn77ChannelConfigurationLabel") && !joOutputStream.getString("cdn77ChannelConfigurationLabel").isEmpty())
@@ -465,22 +421,6 @@ public class OutputStream implements Serializable {
 		this.hlsChannel = hlsChannel;
 	}
 
-	public AWSChannelConf_toberemoved getAwsChannel() {
-		return awsChannel;
-	}
-
-	public void setAwsChannel(AWSChannelConf_toberemoved awsChannel) {
-		this.awsChannel = awsChannel;
-	}
-
-	public Boolean getAwsSignedURL() {
-		return awsSignedURL;
-	}
-
-	public void setAwsSignedURL(Boolean awsSignedURL) {
-		this.awsSignedURL = awsSignedURL;
-	}
-
     public String getEncodingProfileLabel() {
         return encodingProfileLabel;
     }
@@ -488,14 +428,6 @@ public class OutputStream implements Serializable {
     public void setEncodingProfileLabel(String encodingProfileLabel) {
         this.encodingProfileLabel = encodingProfileLabel;
     }
-
-	public Long getAwsExpirationInMinutes() {
-		return awsExpirationInMinutes;
-	}
-
-	public void setAwsExpirationInMinutes(Long awsExpirationInMinutes) {
-		this.awsExpirationInMinutes = awsExpirationInMinutes;
-	}
 
 	public String getOtherOutputOptions() {
         return otherOutputOptions;
