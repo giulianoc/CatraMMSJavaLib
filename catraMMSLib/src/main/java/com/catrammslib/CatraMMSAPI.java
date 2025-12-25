@@ -6542,6 +6542,7 @@ public class CatraMMSAPI implements Serializable {
         return stream;
     }
 
+    /*
     public void addAWSChannelConf(String username, String password,
         String label, String channelId, String rtmpURL, String playURL, String type)
  		throws Exception
@@ -6738,6 +6739,7 @@ public class CatraMMSAPI implements Serializable {
 
         return awsChannelConfList;
     }
+    */
 
     public void addCDN77ChannelConf(String username, String password,
                                     String label, Boolean srtFeed, String srtURL, String rtmpURL, String resourceURL, String filePath, String secureToken, String type)
@@ -10683,6 +10685,7 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    /*
     private void fillAWSChannelConf(AWSChannelConf awsChannelConf, JSONObject awsChannelConfInfo)
             throws Exception
     {
@@ -10714,6 +10717,7 @@ public class CatraMMSAPI implements Serializable {
             throw new Exception(errorMessage);
         }
     }
+    */
 
     private void fillCDN77ChannelConf(CDN77ChannelConf cdn77ChannelConf, JSONObject cdn77ChannelConfInfo)
             throws Exception

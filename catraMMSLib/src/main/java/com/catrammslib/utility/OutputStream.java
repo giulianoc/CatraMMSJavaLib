@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import com.catrammslib.entity.*;
-import com.catrammslib.utility.filters.Filter;
 import com.catrammslib.utility.filters.Filters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,7 +35,7 @@ public class OutputStream implements Serializable {
     private String udpURL;
 
 	// CDN_AWS
-	private AWSChannelConf awsChannel;	// to be started/stopped
+	private AWSChannelConf_toberemoved awsChannel;	// to be started/stopped
 	// CDN_AWS
 	private Boolean awsSignedURL;
 	// CDN_AWS
@@ -186,7 +185,7 @@ public class OutputStream implements Serializable {
 						 List<RTMPChannelConf> rtmpChannelList,
 						 List<SRTChannelConf> srtChannelList,
 						 List<CDN77ChannelConf> cdn77ChannelList,
-						 List<AWSChannelConf> awsChannelList
+						 List<AWSChannelConf_toberemoved> awsChannelList
 	)
 	{
 		try
@@ -249,7 +248,7 @@ public class OutputStream implements Serializable {
 					String awsChannelConfigurationLabel = joOutputStream.getString("awsChannelConfigurationLabel");
 
 					{
-						for (AWSChannelConf awsChannelConf: awsChannelList)
+						for (AWSChannelConf_toberemoved awsChannelConf: awsChannelList)
 						{
 							if (awsChannelConf.getLabel().equals(awsChannelConfigurationLabel))
 							{
@@ -469,11 +468,11 @@ public class OutputStream implements Serializable {
 		this.hlsChannel = hlsChannel;
 	}
 
-	public AWSChannelConf getAwsChannel() {
+	public AWSChannelConf_toberemoved getAwsChannel() {
 		return awsChannel;
 	}
 
-	public void setAwsChannel(AWSChannelConf awsChannel) {
+	public void setAwsChannel(AWSChannelConf_toberemoved awsChannel) {
 		this.awsChannel = awsChannel;
 	}
 

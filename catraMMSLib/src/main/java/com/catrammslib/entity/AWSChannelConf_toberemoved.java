@@ -6,7 +6,7 @@ import java.util.Objects;
 /**
  * Created by multi on 08.06.18.
  */
-public class AWSChannelConf implements Serializable{
+public class AWSChannelConf_toberemoved implements Serializable{
 
     private Long confKey;
     private String label;
@@ -22,7 +22,7 @@ public class AWSChannelConf implements Serializable{
 	public boolean equals(Object o) {
 		if (this == o) return true;
 		if (o == null || getClass() != o.getClass()) return false;
-		AWSChannelConf that = (AWSChannelConf) o;
+		AWSChannelConf_toberemoved that = (AWSChannelConf_toberemoved) o;
 		return confKey.equals(that.confKey);
 	}
 
