@@ -414,6 +414,7 @@ public class Constants implements Serializable {
             filtersList.add("Text Overlay");
 
             // audio
+            filtersList.add("Audio Resample");
             filtersList.add("Audio Volume Change");
             filtersList.add("Silence Detect");
 
