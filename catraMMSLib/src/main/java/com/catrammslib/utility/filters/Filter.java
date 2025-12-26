@@ -42,6 +42,8 @@ public class Filter implements Serializable {
 	private Long drawBox_PercentageOpacity;
 	private String drawBox_Thickness;
 
+	private Long audio_resample_async;
+	private Long audio_resample_firstPTS;
 
 	private DrawTextDetails drawTextDetails;
 
@@ -100,6 +102,9 @@ public class Filter implements Serializable {
 		drawBox_PercentageOpacity = 100L;
 		drawBox_Thickness = "fill";
 
+		audio_resample_async = null;
+		audio_resample_firstPTS = null;
+
 		fade_Duration = null;
 
 		freezedetect_Duration = null;
@@ -136,6 +141,9 @@ public class Filter implements Serializable {
 		filter.setDrawBox_FontColor(getDrawBox_FontColor());
 		filter.setDrawBox_PercentageOpacity(getDrawBox_PercentageOpacity());
 		filter.setDrawBox_Thickness(getDrawBox_Thickness());
+
+		filter.setAudio_resample_async(getAudio_resample_async());
+		filter.setAudio_resample_firstPTS(getAudio_resample_firstPTS());
 
 		filter.setDrawTextDetails(getDrawTextDetails().clone());
 
@@ -181,6 +189,12 @@ public class Filter implements Serializable {
 						+ ", height: " + (getDrawBox_Height() == null ? "<default>" : getDrawBox_Height())
 						+ ", x: " + (getDrawBox_X() == null ? "<default>" : getDrawBox_X())
 						+ ", y: " + (getDrawBox_Y() == null ? "<default>" : getDrawBox_Y())
+				;
+
+				break;
+			case "Audio Resample":
+				toString = "async: " + (getAudio_resample_async() == null ? "<default>" : getAudio_resample_async())
+						+ ", firstPTS: " + (getAudio_resample_firstPTS() == null ? "<default>" : getAudio_resample_firstPTS())
 				;
 
 				break;
@@ -728,6 +742,22 @@ public class Filter implements Serializable {
 
 	public void setImageOverlayDetails(ImageOverlayDetails imageOverlayDetails) {
 		this.imageOverlayDetails = imageOverlayDetails;
+	}
+
+	public Long getAudio_resample_async() {
+		return audio_resample_async;
+	}
+
+	public void setAudio_resample_async(Long audio_resample_async) {
+		this.audio_resample_async = audio_resample_async;
+	}
+
+	public Long getAudio_resample_firstPTS() {
+		return audio_resample_firstPTS;
+	}
+
+	public void setAudio_resample_firstPTS(Long audio_resample_firstPTS) {
+		this.audio_resample_firstPTS = audio_resample_firstPTS;
 	}
 
 	public Float getSilencedetect_Noise() {

@@ -158,7 +158,8 @@ public class Filters {
                         Filter filter = new Filter(filterName);
                         filters.add(filter);
 
-                        switch (filterName.toLowerCase()) {
+                        switch (filterName.toLowerCase())
+                        {
                             case "volume":
                                 filter.setFilterName("Audio Volume Change");
                                 if (joFilter.has("factor") && !joFilter.isNull("factor"))
@@ -166,6 +167,13 @@ public class Filters {
                                 break;
                             case "silencedetect":
                                 filter.setFilterName("Silence Detect");
+                                break;
+                            case "aresample":
+                                filter.setFilterName("Audio Resample");
+                                if (joFilter.has("async") && !joFilter.isNull("async"))
+                                    filter.setAudio_resample_async(joFilter.getLong("async"));
+                                if (joFilter.has("first_pts") && !joFilter.isNull("first_pts"))
+                                    filter.setAudio_resample_firstPTS(joFilter.getLong("first_pts"));
                                 break;
                             default:
                                 String errorMessage = "Unknown audio filter type: " + filterName;
@@ -232,6 +240,25 @@ public class Filters {
                 }
 
                 switch (filter.getFilterName()) {
+                    case "Audio Resample":
+                        JSONObject joAudioResample = new JSONObject();
+                        jaAudio.put(joAudioResample);
+
+                        joAudioResample.put("type", "aresample");
+                        if (filter.getAudio_resample_async() != null)
+                            joAudioResample.put("async", filter.getAudio_resample_async());
+                        if (filter.getAudio_resample_firstPTS() != null)
+                            joAudioResample.put("first_pts", filter.getAudio_resample_firstPTS());
+
+                        break;
+                    case "Audio Volume Change":
+                        JSONObject joVolume = new JSONObject();
+                        jaAudio.put(joVolume);
+
+                        joVolume.put("type", "volume");
+                        joVolume.put("factor", filter.getAudioVolumeChange());
+
+                        break;
                     case "Black Detect":
                         JSONObject joBlackDetect = new JSONObject();
                         jaVideo.put(joBlackDetect);
@@ -295,10 +322,6 @@ public class Filters {
                             joDrawBox.put("thickness", filter.getDrawBox_Thickness());
 
                         break;
-                    case "Text Overlay":
-                        jaVideo.put(filter.getDrawTextDetails().toJson());
-
-                        break;
                     case "Fade":
                         JSONObject joFade = new JSONObject();
                         jaVideo.put(joFade);
@@ -320,12 +343,8 @@ public class Filters {
                             joFreezeDetect.put("noiseInDb", filter.getFreezedetect_NoiseInDb());
 
                         break;
-                    case "Audio Volume Change":
-                        JSONObject joVolume = new JSONObject();
-                        jaAudio.put(joVolume);
-
-                        joVolume.put("type", "volume");
-                        joVolume.put("factor", filter.getAudioVolumeChange());
+                    case "Image Overlay":
+                        jaComplex.put(filter.getImageOverlayDetails().toJson());
 
                         break;
                     case "Silence Detect":
@@ -337,8 +356,8 @@ public class Filters {
                             joSilenceDetect.put("noise", filter.getSilencedetect_Noise());
 
                         break;
-                    case "Image Overlay":
-                        jaComplex.put(filter.getImageOverlayDetails().toJson());
+                    case "Text Overlay":
+                        jaVideo.put(filter.getDrawTextDetails().toJson());
 
                         break;
                     default:
