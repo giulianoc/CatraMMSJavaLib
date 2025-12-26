@@ -154,11 +154,11 @@ public class Filters {
                     JSONObject joFilter = jaAudio.getJSONObject(filterIndex);
 
                     if (joFilter.has("type")) {
-                        String filterName = joFilter.getString("type");
-                        Filter filter = new Filter(filterName);
+                        String filterType = joFilter.getString("type");
+                        Filter filter = new Filter(filterType);
                         filters.add(filter);
 
-                        switch (filterName.toLowerCase())
+                        switch (filterType.toLowerCase())
                         {
                             case "volume":
                                 filter.setFilterName("Audio Volume Change");
@@ -176,7 +176,7 @@ public class Filters {
                                     filter.setAudio_resample_firstPTS(joFilter.getLong("first_pts"));
                                 break;
                             default:
-                                String errorMessage = "Unknown audio filter type: " + filterName;
+                                String errorMessage = "Unknown audio filter type: " + filterType;
                                 mLogger.error(errorMessage);
 
                                 throw new Exception(errorMessage);
