@@ -71,6 +71,9 @@ public class EncodingJob implements Serializable {
     private String mediaTitle;
     private String mediaDuration;
 
+    // used by GUI
+    private Boolean selected;
+
 
     @Override
 	public int hashCode() {
@@ -444,6 +447,14 @@ public class EncodingJob implements Serializable {
 
     public void setMediaDuration(String mediaDuration) {
         this.mediaDuration = mediaDuration;
+    }
+
+    public Boolean getSelected() {
+        return selected;
+    }
+
+    public void setSelected(Boolean selected) {
+        this.selected = selected;
     }
 
     public Long getIngestionJobKey() {
