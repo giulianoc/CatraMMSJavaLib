@@ -14,18 +14,18 @@ public class LiveStreamInfo implements Serializable {
     private boolean restreamProduction; // ciborTV
 
     private String liveGridChannelStatus;
-    private String liveProxyChannelStatus;
+    private String proxyChannelStatus;
     private String liveRecorderChannelStatus;
     private String lastChannelStatus;   // channelStatus of the last IngestionJob
     private String htmlChannelStatus;   // channel status of all the IngestionJob (Grid, Proxy, Recorder)
 
     private IngestionJob liveGridIngestionJob;
-    private IngestionJob liveProxyIngestionJob;
+    private IngestionJob proxyIngestionJob;
     private IngestionJob liveRecorderIngestionJob;
     private IngestionJob lastIngestionJob;
 
     private String liveGridErrorInfo;
-    private String liveProxyErrorInfo;
+    private String proxyErrorInfo;
     private String liveRecorderErrorInfo;
     private String lastErrorInfo;
 
@@ -39,14 +39,14 @@ public class LiveStreamInfo implements Serializable {
     public static String LiveGridWorkflowNotRunning = "Grid: workflow not running";
     public static String liveGridStreamingStoppedyUser = "Grid: streaming stopped by user";
     public static String liveGridStreamingStoppedyMMS = "Grid: streaming stopped by MMS";
-    public static String liveProxyStreamingWithoutEncodingJob = "Proxy: no EncodingJob allocated yet";
-    public static String liveProxyStreamingWithoutTranscoderYet = "Proxy: no Transcoder allocated yet";
-    public static String liveProxyStreamingNotWorking = "Proxy: streaming not working";
-    public static String liveProxyStreamingRunning = "Proxy: running";
-    public static String liveProxyStreamingRunningButSomeRequestsFailed = "Proxy: running but we had some failure";
-    public static String liveProxyStreamingStoppedyUser = "Proxy: streaming stopped by user";
-    public static String liveProxyStreamingStoppedyMMS = "Proxy: streaming stopped by MMS";
-    public static String LiveProxyWorkflowNotRunning = "Proxy: workflow not running";
+    public static String proxyStreamingWithoutEncodingJob = "Proxy: no EncodingJob allocated yet";
+    public static String proxyStreamingWithoutTranscoderYet = "Proxy: no Transcoder allocated yet";
+    public static String proxyStreamingNotWorking = "Proxy: streaming not working";
+    public static String proxyStreamingRunning = "Proxy: running";
+    public static String proxyStreamingRunningButSomeRequestsFailed = "Proxy: running but we had some failure";
+    public static String proxyStreamingStoppedyUser = "Proxy: streaming stopped by user";
+    public static String proxyStreamingStoppedyMMS = "Proxy: streaming stopped by MMS";
+    public static String proxyWorkflowNotRunning = "Proxy: workflow not running";
     public static String liveRecorderStreamingWithoutTranscoderYet = "Recorder: no Transcoder allocated yet";
     public static String liveRecorderFinishedOK = "Recorder: finished successful";
     public static String liveRecorderRunning = "Recorder: running";
@@ -99,30 +99,30 @@ public class LiveStreamInfo implements Serializable {
         if (status != null)
         {
             if (status.equalsIgnoreCase(liveGridStreamingRunning)
-                    || status.equalsIgnoreCase(liveProxyStreamingRunning)
+                    || status.equalsIgnoreCase(proxyStreamingRunning)
                     || status.equalsIgnoreCase(liveGridStreamingStoppedyUser)
-                    || status.equalsIgnoreCase(liveProxyStreamingStoppedyUser)
+                    || status.equalsIgnoreCase(proxyStreamingStoppedyUser)
                     || status.startsWith(liveRecorderFinishedOK)
                     || status.equalsIgnoreCase(liveRecorderRunning)
                     || status.equalsIgnoreCase(liveGridStreamingWithoutTranscoderYet)
-                    || status.equalsIgnoreCase(liveProxyStreamingWithoutTranscoderYet)
+                    || status.equalsIgnoreCase(proxyStreamingWithoutTranscoderYet)
                     || status.equalsIgnoreCase(liveRecorderStreamingWithoutTranscoderYet)
             )
                 styleColor = "#28a745"; //"successFullColor";
             else if (status.equalsIgnoreCase(liveGridStreamingNotWorking)
                     || status.equalsIgnoreCase(liveGridStreamingStoppedyMMS)
-                    || status.equalsIgnoreCase(liveProxyStreamingStoppedyMMS)
-                    || status.equalsIgnoreCase(liveProxyStreamingNotWorking)
+                    || status.equalsIgnoreCase(proxyStreamingStoppedyMMS)
+                    || status.equalsIgnoreCase(proxyStreamingNotWorking)
                     || status.equalsIgnoreCase(liveRecorderFailed)
             )
                 styleColor = "#dc3545"; // "failureColor";
             else if (status.equalsIgnoreCase(liveGridStreamingWithoutEncodingJob)
-                    || status.equalsIgnoreCase(liveProxyStreamingWithoutEncodingJob)
+                    || status.equalsIgnoreCase(proxyStreamingWithoutEncodingJob)
                     || status.equalsIgnoreCase(liveRecorderWithoutEncodingJob)
                     || status.equalsIgnoreCase(LiveGridWorkflowNotRunning)
-                    || status.equalsIgnoreCase(LiveProxyWorkflowNotRunning)
+                    || status.equalsIgnoreCase(proxyWorkflowNotRunning)
                     || status.equalsIgnoreCase(LiveRecorderWorkflowNotRunning)
-                    || status.equalsIgnoreCase(liveProxyStreamingRunningButSomeRequestsFailed)
+                    || status.equalsIgnoreCase(proxyStreamingRunningButSomeRequestsFailed)
             )
                 styleColor = "#ffa500"; // "warningColor";
         }
@@ -170,12 +170,12 @@ public class LiveStreamInfo implements Serializable {
         this.liveGridChannelStatus = liveGridChannelStatus;
     }
 
-    public String getLiveProxyChannelStatus() {
-        return liveProxyChannelStatus;
+    public String getProxyChannelStatus() {
+        return proxyChannelStatus;
     }
 
-    public void setLiveProxyChannelStatus(String liveProxyChannelStatus) {
-        this.liveProxyChannelStatus = liveProxyChannelStatus;
+    public void setProxyChannelStatus(String proxyChannelStatus) {
+        this.proxyChannelStatus = proxyChannelStatus;
     }
 
     public String getLiveRecorderChannelStatus() {
@@ -202,12 +202,12 @@ public class LiveStreamInfo implements Serializable {
         this.liveGridErrorInfo = liveGridErrorInfo;
     }
 
-    public String getLiveProxyErrorInfo() {
-        return liveProxyErrorInfo;
+    public String getProxyErrorInfo() {
+        return proxyErrorInfo;
     }
 
-    public void setLiveProxyErrorInfo(String liveProxyErrorInfo) {
-        this.liveProxyErrorInfo = liveProxyErrorInfo;
+    public void setProxyErrorInfo(String proxyErrorInfo) {
+        this.proxyErrorInfo = proxyErrorInfo;
     }
 
     public String getLiveRecorderErrorInfo() {
@@ -234,12 +234,12 @@ public class LiveStreamInfo implements Serializable {
         this.liveGridIngestionJob = liveGridIngestionJob;
     }
 
-    public IngestionJob getLiveProxyIngestionJob() {
-        return liveProxyIngestionJob;
+    public IngestionJob getProxyIngestionJob() {
+        return proxyIngestionJob;
     }
 
-    public void setLiveProxyIngestionJob(IngestionJob liveProxyIngestionJob) {
-        this.liveProxyIngestionJob = liveProxyIngestionJob;
+    public void setProxyIngestionJob(IngestionJob proxyIngestionJob) {
+        this.proxyIngestionJob = proxyIngestionJob;
     }
 
     public IngestionJob getLiveRecorderIngestionJob() {

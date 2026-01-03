@@ -41,6 +41,7 @@ public class LiveStreams {
             String statusFilter,
             boolean gridInfo,
             boolean proxyInfo,
+            String proxyType,  // Live-Proxy, VOD-Proxy
             boolean recorderInfo
     )
             throws Exception
@@ -54,6 +55,7 @@ public class LiveStreams {
                     + ", statusFilter: " + statusFilter
                     + ", gridInfo: " + gridInfo
                     + ", proxyInfo: " + proxyInfo
+                    + ", proxyType: " + proxyType
                     + ", recorderInfo: " + recorderInfo
             );
 
@@ -77,7 +79,7 @@ public class LiveStreams {
                         );
 
                         liveStreamInfo.setLiveGridChannelStatus(LiveStreamInfo.LiveGridWorkflowNotRunning);
-                        liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.LiveProxyWorkflowNotRunning);
+                        liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyWorkflowNotRunning);
                         liveStreamInfo.setLiveRecorderChannelStatus(LiveStreamInfo.LiveRecorderWorkflowNotRunning);
 
                         // liveGrid
@@ -265,12 +267,12 @@ public class LiveStreams {
                             }
                         }
 
-                        // LiveProxy
-                        IngestionJob liveProxyIngestionJob = null;
+                        // LiveProxy or VODProxy
+                        IngestionJob proxyIngestionJob = null;
                         if (proxyInfo)
                         {
                             {
-                                List<IngestionJob> liveProxyIngestionJobList = new ArrayList<>();
+                                List<IngestionJob> proxyIngestionJobList = new ArrayList<>();
                                 {
                                     // 2021-07-26: In case of IP_PULL (or TV), it is possible to understand if
                                     //  a Live-Proxy ingestion Job is running for a specified channel.
@@ -285,7 +287,7 @@ public class LiveStreams {
                                     // In this case, to support the auto-restart of the channel in case of failure, we need to find out the
                                     // associated IngestionJob using the following assumption:
                                     //      - the IngestionJob label has to have the following format: <channel name> Proxy (<channel label>)
-                                    String localIngestionType = "Live-Proxy";
+                                    String localIngestionType = proxyType; // "Live-Proxy";
                                     int localStartIndex = 0;
                                     int localPageSize = 50;
 
@@ -309,7 +311,7 @@ public class LiveStreams {
                                             true,
                                             false, // bisogna sapere se un canale è attivo oppure no, non ammettiamo cache
                                             ingestionJobList);
-                                    mLogger.info("liveStreamsFillList statistics (liveProxy)"
+                                    mLogger.info("liveStreamsFillList statistics (liveProxy/vodProxy)"
                                             + ", localStartIndex: " + localStartIndex
                                             + ", localPageSize: " + localPageSize
                                             + ", localIngestionType: " + localIngestionType
@@ -334,26 +336,26 @@ public class LiveStreams {
                                     }
 
                                     if (notEndedIngestionJob != null)
-                                        liveProxyIngestionJobList.add(notEndedIngestionJob);
+                                        proxyIngestionJobList.add(notEndedIngestionJob);
                                 }
 
-                                if (liveProxyIngestionJobList.size() > 0)
+                                if (proxyIngestionJobList.size() > 0)
                                 {
-                                    liveProxyIngestionJob = liveProxyIngestionJobList.get(0);
+                                    proxyIngestionJob = proxyIngestionJobList.get(0);
 
-                                    mLogger.info("Found LiveProxy"
+                                    mLogger.info("Found " + proxyType
                                             + ", label: " + liveStreamInfo.getStream().getLabel()
                                             + ", ConfKey: " + liveStreamInfo.getStream().getConfKey()
-                                            + ", IngestionJobKey: " + liveProxyIngestionJob.getIngestionJobKey()
-                                            + ", Ingestion Job Label: " + liveProxyIngestionJob.getLabel()
-                                            + ", ingestionStatus: " + liveProxyIngestionJob.getStatus()
-                                            + ", Start Processing: " + (liveProxyIngestionJob.getStartProcessing() != null
-                                            ? simpleDateFormat.format(liveProxyIngestionJob.getStartProcessing()) : "null")
+                                            + ", IngestionJobKey: " + proxyIngestionJob.getIngestionJobKey()
+                                            + ", Ingestion Job Label: " + proxyIngestionJob.getLabel()
+                                            + ", ingestionStatus: " + proxyIngestionJob.getStatus()
+                                            + ", Start Processing: " + (proxyIngestionJob.getStartProcessing() != null
+                                            ? simpleDateFormat.format(proxyIngestionJob.getStartProcessing()) : "null")
                                     );
                                 }
                                 else
                                 {
-                                    mLogger.info("NOT Found LiveProxy"
+                                    mLogger.info("NOT Found " + proxyType
                                             + ", label: " + liveStreamInfo.getStream().getLabel()
                                             + ", ConfKey: " + liveStreamInfo.getStream().getConfKey()
                                     );
@@ -361,20 +363,20 @@ public class LiveStreams {
                             }
 
                             {
-                                liveStreamInfo.setLiveProxyIngestionJob(liveProxyIngestionJob);
+                                liveStreamInfo.setProxyIngestionJob(proxyIngestionJob);
 
                                 boolean toBeFiltered = false;
 
-                                if (liveProxyIngestionJob != null)
+                                if (proxyIngestionJob != null)
                                 {
-                                    setLiveProxyChannelStatus(liveProxyIngestionJob, liveStreamInfo);
+                                    setProxyChannelStatus(proxyIngestionJob, liveStreamInfo);
 
-                                    liveStreamInfo.setLiveProxyErrorInfo(
-                                            (liveProxyIngestionJob.getStartProcessing() != null ? simpleDateFormat.format(liveProxyIngestionJob.getStartProcessing()) : "")
-                                                    + (liveProxyIngestionJob.getErrorMessagesAsHTML() == null ? "" : (" " + liveProxyIngestionJob.getErrorMessagesAsHTML()))
+                                    liveStreamInfo.setProxyErrorInfo(
+                                            (proxyIngestionJob.getStartProcessing() != null ? simpleDateFormat.format(proxyIngestionJob.getStartProcessing()) : "")
+                                                    + (proxyIngestionJob.getErrorMessagesAsHTML() == null ? "" : (" " + proxyIngestionJob.getErrorMessagesAsHTML()))
                                     );
 
-                                    if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingNotWorking))
+                                    if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingNotWorking))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -383,7 +385,7 @@ public class LiveStreams {
                                         else
                                             toBeFiltered = true;
                                     }
-                                    else if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingStoppedyMMS))
+                                    else if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingStoppedyMMS))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -392,7 +394,7 @@ public class LiveStreams {
                                         else
                                             toBeFiltered = true;
                                     }
-                                    else if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingStoppedyUser))
+                                    else if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingStoppedyUser))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -401,7 +403,7 @@ public class LiveStreams {
                                         else
                                             toBeFiltered = true;
                                     }
-                                    else if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingWithoutTranscoderYet))
+                                    else if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingWithoutTranscoderYet))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -412,7 +414,7 @@ public class LiveStreams {
                                         else
                                             toBeFiltered = true;
                                     }
-                                    else if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingRunningButSomeRequestsFailed))
+                                    else if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingRunningButSomeRequestsFailed))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -422,7 +424,7 @@ public class LiveStreams {
                                         else
                                             toBeFiltered = true;
                                     }
-                                    else if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingRunning))
+                                    else if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingRunning))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -431,7 +433,7 @@ public class LiveStreams {
                                         else
                                             toBeFiltered = true;
                                     }
-                                    else if (liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.liveProxyStreamingWithoutEncodingJob))
+                                    else if (liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyStreamingWithoutEncodingJob))
                                     {
                                         if (statusFilter == null
                                                 || statusFilter.equalsIgnoreCase(statusALL)
@@ -443,13 +445,13 @@ public class LiveStreams {
                                 }
                                 else
                                 {
-                                    mLogger.info("Not Found IngestionJob LiveProxy"
+                                    mLogger.info("Not Found IngestionJob LiveProxy/vodProxy"
                                             + ", label: " + liveStreamInfo.getStream().getLabel()
                                             + ", ConfKey: " + liveStreamInfo.getStream().getConfKey()
                                     );
 
-                                    liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.LiveProxyWorkflowNotRunning);
-                                    liveStreamInfo.setLiveProxyErrorInfo(null);
+                                    liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyWorkflowNotRunning);
+                                    liveStreamInfo.setProxyErrorInfo(null);
 
                                     if (statusFilter == null
                                             || statusFilter.equalsIgnoreCase(statusALL))
@@ -461,8 +463,8 @@ public class LiveStreams {
                                 mLogger.info("LiveProxy: statusFilter check"
                                         + ", label: " + liveStreamInfo.getStream().getLabel()
                                         + ", ConfKey: " + liveStreamInfo.getStream().getConfKey()
-                                        + ", ingestionJobKey: " + (liveProxyIngestionJob == null ? "null" : liveProxyIngestionJob.getIngestionJobKey())
-                                        + ", liveProxyChannelStatus: " + liveStreamInfo.getLiveProxyChannelStatus()
+                                        + ", ingestionJobKey: " + (proxyIngestionJob == null ? "null" : proxyIngestionJob.getIngestionJobKey())
+                                        + ", proxyChannelStatus: " + liveStreamInfo.getProxyChannelStatus()
                                         + ", statusFilter: " + statusFilter
                                         + ", toBeFiltered: " + toBeFiltered
                                 );
@@ -679,24 +681,24 @@ public class LiveStreams {
                         {
                             IngestionJob lastIngestionJob = null;
 
-                            // last among liveGridIngestionJob and liveProxyIngestionJob
+                            // last among liveGridIngestionJob and proxyIngestionJob
                             {
-                                if (liveProxyIngestionJob != null && liveGridIngestionJob == null)
-                                    lastIngestionJob = liveProxyIngestionJob;
-                                else if (liveProxyIngestionJob == null && liveGridIngestionJob != null)
+                                if (proxyIngestionJob != null && liveGridIngestionJob == null)
+                                    lastIngestionJob = proxyIngestionJob;
+                                else if (proxyIngestionJob == null && liveGridIngestionJob != null)
                                     lastIngestionJob = liveGridIngestionJob;
-                                else if (liveProxyIngestionJob != null && liveGridIngestionJob != null)
+                                else if (proxyIngestionJob != null && liveGridIngestionJob != null)
                                 {
-                                    if (liveProxyIngestionJob.getStartProcessing() != null && liveGridIngestionJob.getStartProcessing() != null)
+                                    if (proxyIngestionJob.getStartProcessing() != null && liveGridIngestionJob.getStartProcessing() != null)
                                     {
                                         // use the last one
-                                        if (liveProxyIngestionJob.getStartProcessing().getTime() < liveGridIngestionJob.getStartProcessing().getTime())
+                                        if (proxyIngestionJob.getStartProcessing().getTime() < liveGridIngestionJob.getStartProcessing().getTime())
                                             lastIngestionJob = liveGridIngestionJob;
                                         else
-                                            lastIngestionJob = liveProxyIngestionJob;
+                                            lastIngestionJob = proxyIngestionJob;
                                     }
-                                    else if (liveProxyIngestionJob.getStartProcessing() != null && liveGridIngestionJob.getStartProcessing() == null)
-                                        lastIngestionJob = liveProxyIngestionJob;
+                                    else if (proxyIngestionJob.getStartProcessing() != null && liveGridIngestionJob.getStartProcessing() == null)
+                                        lastIngestionJob = proxyIngestionJob;
                                     else
                                         lastIngestionJob = liveGridIngestionJob;
                                 }
@@ -736,8 +738,8 @@ public class LiveStreams {
                                 }
                                 else if (lastIngestionJob.getIngestionType().equalsIgnoreCase("Live-Proxy"))
                                 {
-                                    liveStreamInfo.setLastChannelStatus(liveStreamInfo.getLiveProxyChannelStatus());
-                                    liveStreamInfo.setLastErrorInfo(liveStreamInfo.getLiveProxyErrorInfo());
+                                    liveStreamInfo.setLastChannelStatus(liveStreamInfo.getProxyChannelStatus());
+                                    liveStreamInfo.setLastErrorInfo(liveStreamInfo.getProxyErrorInfo());
                                 }
                                 else if (lastIngestionJob.getIngestionType().equalsIgnoreCase("Live-Recorder"))
                                 {
@@ -750,7 +752,7 @@ public class LiveStreams {
                                 liveStreamInfo.setLastChannelStatus("");
                             }
 
-                            // liveGridIngestionJob and liveProxyIngestionJob and liveRecorderIngestionJob
+                            // liveGridIngestionJob and proxyIngestionJob and liveRecorderIngestionJob
                             {
                                 String htmlChannelStatus;
                                 int channelStatusPresent = 0;
@@ -768,13 +770,13 @@ public class LiveStreams {
 
                                     channelStatusPresent++;
                                 }
-                                if (liveProxyIngestionJob != null
-                                        && !liveStreamInfo.getLiveProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.LiveProxyWorkflowNotRunning))
+                                if (proxyIngestionJob != null
+                                        && !liveStreamInfo.getProxyChannelStatus().equalsIgnoreCase(LiveStreamInfo.proxyWorkflowNotRunning))
                                 {
                                     htmlChannelStatus += (
                                             "<li style=\"color:"
-                                                    + liveStreamInfo.getStatusStyleColor(liveStreamInfo.getLiveProxyChannelStatus()) + "\">"
-                                                    + liveStreamInfo.getLiveProxyChannelStatus() + "</li>"
+                                                    + liveStreamInfo.getStatusStyleColor(liveStreamInfo.getProxyChannelStatus()) + "\">"
+                                                    + liveStreamInfo.getProxyChannelStatus() + "</li>"
                                     );
 
                                     channelStatusPresent++;
@@ -805,13 +807,13 @@ public class LiveStreams {
                                         + ", ConfKey: " + liveStreamInfo.getStream().getConfKey()
                                         + ", liveGridIngestionJob: " + liveGridIngestionJob
                                         + ", liveStreamInfo.getLiveGridChannelStatus(): " + liveStreamInfo.getLiveGridChannelStatus()
-                                        + ", liveProxyIngestionJob: " + liveProxyIngestionJob
+                                        + ", proxyIngestionJob: " + proxyIngestionJob
                                         + ", liveStreamInfo.getLiveProxyChannelStatus(): " + liveStreamInfo.getLiveProxyChannelStatus()
                                         + ", liveRecorderIngestionJob: " + liveRecorderIngestionJob
                                         + ", liveStreamInfo.getLiveRecorderChannelStatus(): " + liveStreamInfo.getLiveRecorderChannelStatus()
                                         + ", htmlChannelStatus: " + liveStreamInfo.getHtmlChannelStatus()
                                 );
-                                 */
+                                */
                             }
                         }
 
@@ -909,24 +911,24 @@ public class LiveStreams {
         }
     }
 
-    public static void setLiveProxyChannelStatus(IngestionJob liveIngestionJob, LiveStreamInfo liveStreamInfo)
+    public static void setProxyChannelStatus(IngestionJob liveIngestionJob, LiveStreamInfo liveStreamInfo)
     {
         // if (liveIngestionJob.getErrorMessage() != null) // || liveIngestionJob.getEncodingJob().getFailuresNumber() > 0)
         if (liveIngestionJob.getStatus() == null
                 || liveIngestionJob.getStatus().equalsIgnoreCase("End_IngestionFailure"))
         {
-            liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingNotWorking);
+            liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingNotWorking);
         }
         else
         {
             // no error
             if (liveIngestionJob.getStatus().equalsIgnoreCase("End_CanceledByUser"))
             {
-                liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingStoppedyUser);
+                liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingStoppedyUser);
             }
             else if (liveIngestionJob.getStatus().equalsIgnoreCase("End_CanceledByMMS"))
             {
-                liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingStoppedyMMS);
+                liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingStoppedyMMS);
             }
             else
             {
@@ -935,7 +937,7 @@ public class LiveStreams {
                     if (liveIngestionJob.getEncodingJob().getEncoderKey() == null ||
                             liveIngestionJob.getEncodingJob().getEncoderKey() == -1)
                     {
-                        liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingWithoutTranscoderYet);
+                        liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingWithoutTranscoderYet);
                     }
                     else
                     {
@@ -950,23 +952,23 @@ public class LiveStreams {
                             //      precedente deploy dell'MMS (restart).
                             //      Comunque aggiungo questo scenario mettendo liveProxyStreamingNotWorking
                             //      La conseguenza è che verrà creato un nuovo IngestionJob per lo stesso canale
-                            liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingNotWorking);
+                            liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingNotWorking);
                         }
                         else
                         {
                             if (liveIngestionJob.getEncodingJob().getFailuresNumber() > 0)
                             {
-                                mLogger.warn("LiveProxy StreamingWorking but some failures"
+                                mLogger.warn("LiveProxy/VODProxy StreamingWorking but some failures"
                                         + ", ingestionJobKey: " + liveIngestionJob.getIngestionJobKey()
                                         + ", encodingJobKey: " + liveIngestionJob.getEncodingJob().getEncodingJobKey()
                                         + ", failuresNumber: " + liveIngestionJob.getEncodingJob().getFailuresNumber()
                                 );
                                 // liveStreamInfo.setChannelStatus(streamingNotWorking);
-                                liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingRunningButSomeRequestsFailed);
+                                liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingRunningButSomeRequestsFailed);
                             }
                             else
                             {
-                                liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingRunning);
+                                liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingRunning);
                             }
                         }
                     }
@@ -974,7 +976,7 @@ public class LiveStreams {
                 else
                 {
                     // it should never been here
-                    liveStreamInfo.setLiveProxyChannelStatus(LiveStreamInfo.liveProxyStreamingWithoutEncodingJob);
+                    liveStreamInfo.setProxyChannelStatus(LiveStreamInfo.proxyStreamingWithoutEncodingJob);
                 }
             }
         }
@@ -1030,7 +1032,7 @@ public class LiveStreams {
             else
             {
                 if (liveStreamInfo.getLiveGridIngestionJob() != null
-                        || liveStreamInfo.getLiveProxyIngestionJob() != null)
+                        || liveStreamInfo.getProxyIngestionJob() != null)
                 {
                     liveStreamInfo.setPlayable(true);
 					/*
@@ -1157,7 +1159,7 @@ public class LiveStreams {
                 boolean recorderInfo = true;
                 String statusFilter = LiveStreams.statusRunning;
                 LiveStreams.fillLastLiveStreamsInfo(catraMMS, userName, password, liveStreamInfoList, statusFilter,
-                        gridInfo, proxyInfo, recorderInfo);
+                        gridInfo, proxyInfo, "", recorderInfo);
                 mLogger.info("Live-Recorder status"
                         + ", channelKey: " + channelKey
                         + ", channelName: " + (liveStreamInfoList.size() > 0 ? liveStreamInfoList.get(0).getStream().getName() : "")
