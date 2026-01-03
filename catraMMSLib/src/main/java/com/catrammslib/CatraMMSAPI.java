@@ -1605,6 +1605,7 @@ public class CatraMMSAPI implements Serializable {
     public void getEncoders(String username, String password,
                             Boolean runningInfo,	// running and cpu usage info 
 							Boolean allEncoders, Long workspaceKey,
+                            String labelOrder, // null, "asc", "desc"
                             Boolean cacheAllowed,
                             List<Encoder> encoderList)
             throws Exception
@@ -1615,24 +1616,37 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/encoder";
+            String queryChar = "?";
+            if (labelOrder != null && !labelOrder.isBlank())
+            {
+                mmsURL += (queryChar + "labelOrder=" + labelOrder);
+                queryChar = "&";
+            }
+            if (runningInfo != null)
+            {
+                mmsURL += (queryChar + "runningInfo=" + runningInfo);
+                queryChar = "&";
+            }
+            if (cacheAllowed != null && !cacheAllowed)
+            {
+                mmsURL += (queryChar + "should_bypass_cache=true");
+                queryChar = "&";
+            }
             // server API will use allEncoders and workspaceKey only in case of admin
-            String urlAdminParameters = "";
             if (allEncoders != null)
-                urlAdminParameters += ("&allEncoders=" + (allEncoders ? "true" : "false"));
+            {
+                mmsURL += (queryChar + "allEncoders=" + (allEncoders ? "true" : "false"));
+                queryChar = "&";
+            }
             if (workspaceKey != null)
             {
                 // in case allEncoders is true (we are admin and want all the encoders),
                 //      workspaceKey, asking the encoder for a specific workspace, does not have sense.
                 //  Anyway MMS API will take care...
-                urlAdminParameters += ("&workspaceKey=" + workspaceKey);
+                mmsURL += (queryChar + "workspaceKey=" + workspaceKey);
+                queryChar = "&";
             }
-
-            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                + "/catramms/1.0.1/encoder?labelOrder=" + "asc"
-				+ (runningInfo == null ? "" : ("&runningInfo=" + runningInfo))
-                + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
-                + urlAdminParameters
-            ;
 
             mLogger.info("mmsURL: " + mmsURL);
 
