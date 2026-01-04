@@ -287,10 +287,15 @@ public class LiveStreams {
                                     // In this case, to support the auto-restart of the channel in case of failure, we need to find out the
                                     // associated IngestionJob using the following assumption:
                                     //      - the IngestionJob label has to have the following format: <channel name> Proxy (<channel label>)
-                                    String localIngestionType = proxyType; // "Live-Proxy";
+                                    String localIngestionType = proxyType; // "Live-Proxy", "VOD-Proxy"
                                     int localStartIndex = 0;
                                     int localPageSize = 50;
 
+                                    // In caso di Live-Proxy usiamo la label dello Stream, salvata nel campo configurationLabel_virtual di IngestionJob,
+                                    //  nella ricerca.
+                                    String configurationLabel = proxyType.equals("VOD-Proxy") ? null : liveStreamInfo.getStream().getLabel();
+                                    // In caso di VOD-Proxy, non abbiamo alcun Stream, usiamo ingestionJobLabel nella ricerca
+                                    String ingestionJobLabel = proxyType.equals("VOD-Proxy") ? liveStreamInfo.getStream().getLabel() : null;
                                     List<IngestionJob> ingestionJobList = new ArrayList<>();
 
                                     // 2021-02-01: we will NOT consider just the last one, may be from the last one it seems down,
@@ -302,20 +307,21 @@ public class LiveStreams {
                                             userName, password,
                                             // ((Integer.parseInt(currentPage) - 1) * pageSize), pageSize,
                                             localStartIndex, localPageSize,
-                                            null, null, null, null, null, null,
+                                            ingestionJobLabel, null, null, null, null, null,
                                             null, localIngestionType,
-                                            liveStreamInfo.getStream().getLabel(), null, null, null,
+                                            configurationLabel, null, null, null,
                                             false,
                                             true, false,
                                             // 2022-12-18: this is important because it could generate a new Workflow in case status is 'not running'
                                             true,
                                             false, // bisogna sapere se un canale è attivo oppure no, non ammettiamo cache
                                             ingestionJobList);
-                                    mLogger.info("liveStreamsFillList statistics (liveProxy/vodProxy)"
+                                    mLogger.info("liveStreamsFillList statistics (" + proxyType + ")"
                                             + ", localStartIndex: " + localStartIndex
                                             + ", localPageSize: " + localPageSize
                                             + ", localIngestionType: " + localIngestionType
-                                            + ", stream label: " + liveStreamInfo.getStream().getLabel()
+                                            + ", ingestionJobLabel (case VOD-Proxy): " + ingestionJobLabel
+                                            + ", configurationLabel (case Live-Proxy): " + configurationLabel
                                             + ", ingestionJobList.size: " + ingestionJobList.size()
                                             + ", elapsed (millisecs): " + (System.currentTimeMillis() - startingPoint)
                                     );
