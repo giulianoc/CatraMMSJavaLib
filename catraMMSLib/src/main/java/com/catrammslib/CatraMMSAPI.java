@@ -9103,6 +9103,8 @@ public class CatraMMSAPI implements Serializable {
 				encoder.setRunning(encoderInfo.getBoolean("running"));
 			if (encoderInfo.has("cpuUsage"))
 				encoder.setCpuUsage(encoderInfo.getLong("cpuUsage"));
+            if (encoderInfo.has("avgBandwidthUsage"))
+                encoder.setAvgBandwidthUsage(encoderInfo.getLong("avgBandwidthUsage"));
 			if (encoderInfo.has("workspacesAssociated"))
 				encoder.setWorkspacesAssociated(encoderInfo.getJSONArray("workspacesAssociated"));
         }

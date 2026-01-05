@@ -23,6 +23,7 @@ public class Encoder implements Serializable{
 
 	private Boolean running;
 	private Long cpuUsage;
+    private Long avgBandwidthUsage;
 
 	private JSONArray workspacesAssociated;
 
@@ -67,6 +68,7 @@ public class Encoder implements Serializable{
         encoder.setPort(port);
         encoder.setRunning(running);
         encoder.setCpuUsage(cpuUsage);
+        encoder.setAvgBandwidthUsage(avgBandwidthUsage);
         encoder.setWorkspacesAssociated(workspacesAssociated);
 
         return encoder;
@@ -129,7 +131,15 @@ public class Encoder implements Serializable{
 		this.internalServerName = internalServerName;
 	}
 
-	public Long getPort() {
+    public Long getAvgBandwidthUsage() {
+        return avgBandwidthUsage;
+    }
+
+    public void setAvgBandwidthUsage(Long avgBandwidthUsage) {
+        this.avgBandwidthUsage = avgBandwidthUsage;
+    }
+
+    public Long getPort() {
         return port;
     }
 
