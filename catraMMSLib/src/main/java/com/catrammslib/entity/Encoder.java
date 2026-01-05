@@ -74,6 +74,10 @@ public class Encoder implements Serializable{
         return encoder;
     }
 
+    public Long getAvgBandwidthUsageInMbps() {
+        return (avgBandwidthUsage * 8) / 1000000;
+    }
+
     public Long getEncoderKey() {
         return encoderKey;
     }
