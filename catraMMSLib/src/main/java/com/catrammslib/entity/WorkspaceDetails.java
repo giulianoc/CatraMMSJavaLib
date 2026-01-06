@@ -63,6 +63,7 @@ public class WorkspaceDetails implements Serializable {
     private Boolean editEncodersPool;
     private Boolean applicationRecorder;
     private Boolean createRemoveLiveChannel;
+    private Boolean updateEncoderStats;
 
 
     // this field is used by the GUI
@@ -113,6 +114,7 @@ public class WorkspaceDetails implements Serializable {
                 ", editEncodersPool=" + editEncodersPool +
                 ", applicationRecorder=" + applicationRecorder +
                 ", createRemoveLiveChannel=" + createRemoveLiveChannel +
+                ", updateEncoderStats=" + updateEncoderStats +
 
                 ", maxStorageInGB=" + maxStorageInGB +
                 ", currentCostForStorage=" + currentCostForStorage +
@@ -224,6 +226,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setCreateProfiles(Boolean createProfiles) {
         this.createProfiles = createProfiles;
+    }
+
+    public Boolean getUpdateEncoderStats() {
+        return updateEncoderStats;
+    }
+
+    public void setUpdateEncoderStats(Boolean updateEncoderStats) {
+        this.updateEncoderStats = updateEncoderStats;
     }
 
     public Boolean getDeliveryAuthorization() {

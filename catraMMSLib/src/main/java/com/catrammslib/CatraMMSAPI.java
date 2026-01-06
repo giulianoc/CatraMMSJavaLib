@@ -285,7 +285,8 @@ public class CatraMMSAPI implements Serializable {
         Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
         Boolean deliveryAuthorization, Boolean shareWorkspace,
         Boolean editMedia, Boolean editConfiguration, Boolean killEncoding,
-        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean applicationRecorder, Boolean createRemoveLiveChannel)
+        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean applicationRecorder,
+        Boolean createRemoveLiveChannel, Boolean updateEncoderStats)
         throws Exception
     {
         String mmsInfo;
@@ -309,6 +310,7 @@ public class CatraMMSAPI implements Serializable {
 				joObj.put("editEncodersPool", editEncodersPool);
 				joObj.put("applicationRecorder", applicationRecorder);
                 joObj.put("createRemoveLiveChannel", createRemoveLiveChannel);
+                joObj.put("updateEncoderStats", updateEncoderStats);
 
 				postBodyRequest = joObj.toString();
 			}
@@ -878,7 +880,8 @@ public class CatraMMSAPI implements Serializable {
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
 		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
 		Boolean newEditMedia, Boolean newEditConfiguration, Boolean newKillEncoding,
-		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newApplicationRecorder, Boolean newCreateRemoveLiveChannel)
+		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newApplicationRecorder,
+        Boolean newCreateRemoveLiveChannel, Boolean newUpdateEncoderStats)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -960,6 +963,7 @@ public class CatraMMSAPI implements Serializable {
 			joUserAPIKey.put("editEncodersPool", newEditEncodersPool);
 			joUserAPIKey.put("applicationRecorder", newApplicationRecorder);
             joUserAPIKey.put("createRemoveLiveChannel", newCreateRemoveLiveChannel);
+            joUserAPIKey.put("updateEncoderStats", newUpdateEncoderStats);
 
             String bodyRequest = joBodyRequest.toString();
 
@@ -8325,6 +8329,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setEditEncodersPool(joUserAPIKey.getBoolean("editEncodersPool"));
                 workspaceDetails.setApplicationRecorder(joUserAPIKey.getBoolean("applicationRecorder"));
                 workspaceDetails.setCreateRemoveLiveChannel(joUserAPIKey.getBoolean("createRemoveLiveChannel"));
+                workspaceDetails.setUpdateEncoderStats(joUserAPIKey.getBoolean("updateEncoderStats"));
             }
 
             if(jaWorkspaceInfo.has("cost"))
