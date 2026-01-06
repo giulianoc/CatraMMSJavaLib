@@ -8370,7 +8370,9 @@ public class CatraMMSAPI implements Serializable {
         }
         catch (Exception e)
         {
-            String errorMessage = "fillWorkspaceDetails failed. Exception: " + e;
+            String errorMessage = "fillWorkspaceDetails failed. Exception: " + e
+                    + ", jaWorkspaceInfo: " + jaWorkspaceInfo.toString()
+                    ;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
