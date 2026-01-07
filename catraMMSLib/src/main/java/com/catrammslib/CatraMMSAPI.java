@@ -2092,6 +2092,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public void getWorkspaceList(String username, String password, Boolean costDetails,
+                                 Boolean cacheAllowed,
                             List<WorkspaceDetails> workspaceDetailsList)
             throws Exception
     {
@@ -2103,8 +2104,18 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/workspace"
-                    + (costDetails != null && costDetails ? "?costDetails=true" : "")
                     ;
+            String queryChar = "?";
+            if (costDetails != null && costDetails)
+            {
+                mmsURL += (queryChar + "costDetails=true");
+                queryChar = "&";
+            }
+            if (cacheAllowed != null && cacheAllowed)
+            {
+                mmsURL += (queryChar + "should_bypass_cache=true");
+                queryChar = "&";
+            }
 
             mLogger.info("mmsURL: " + mmsURL);
 
