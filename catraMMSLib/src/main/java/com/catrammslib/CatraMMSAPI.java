@@ -9455,14 +9455,16 @@ public class CatraMMSAPI implements Serializable {
             ingestionJob.setIngestionJobKey(ingestionJobInfo.getLong("ingestionJobKey"));
             ingestionJob.setLabel(ingestionJobInfo.getString("label"));
             ingestionJob.setIngestionType(ingestionJobInfo.getString("ingestionType"));
-            ingestionJob.setMetaDataContent(ingestionJobInfo.getString("metaDataContent"));
+            ingestionJob.setJoMetaDataContent(ingestionJobInfo.getJSONObject("metaDataContent"));
 
             try
             {
-                JSONObject joMetadataContent = null;
+                JSONObject joMetadataContent = ingestionJob.getJoMetaDataContent();
+                /*
 
                 if (ingestionJob.getMetaDataContent() != null && !ingestionJob.getMetaDataContent().isEmpty())
                     joMetadataContent = new JSONObject(ingestionJob.getMetaDataContent());
+                 */
 
                 if (joMetadataContent.has("ingester") && !joMetadataContent.isNull("ingester"))
                     ingestionJob.setIngester(joMetadataContent.getString("ingester"));
@@ -9569,7 +9571,7 @@ public class CatraMMSAPI implements Serializable {
             catch (Exception e)
             {
                 mLogger.error("wrong json format"
-                        + ", ingestionJob.getMetaDataContent: " + ingestionJob.getMetaDataContent()
+                        + ", ingestionJob.getJoMetaDataContent: " + ingestionJob.getJoMetaDataContent()
                 );
             }
 

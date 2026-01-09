@@ -79,7 +79,7 @@ public class Encoder implements Serializable{
     public Long getTxAvgBandwidthUsageInMbps() {
         return (txAvgBandwidthUsage * 8) / 1000000;
     }
-    
+
     public Long getRxAvgBandwidthUsageInMbps() {
         return (rxAvgBandwidthUsage * 8) / 1000000;
     }

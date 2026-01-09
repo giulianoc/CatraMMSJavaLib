@@ -271,8 +271,7 @@ public class CatraMMSBroadcaster {
 
                 throw new Exception(errorMessage);
             }
-            else if (broadcasterIngestionJob.getMetaDataContent() == null
-				|| broadcasterIngestionJob.getMetaDataContent().isEmpty()
+            else if (broadcasterIngestionJob.getJoMetaDataContent() == null
             )
             {
                 String errorMessage = "No Broadcaster MetaDataContent found";
@@ -281,7 +280,7 @@ public class CatraMMSBroadcaster {
                 throw new Exception(errorMessage);
             }
 
-			JSONObject joBroadcasterMetadataContent = new JSONObject(broadcasterIngestionJob.getMetaDataContent());
+			JSONObject joBroadcasterMetadataContent = broadcasterIngestionJob.getJoMetaDataContent();
 			if (!joBroadcasterMetadataContent.has("internalMMS"))
 			{
                 String errorMessage = "No Broadcaster internalMMS found";
@@ -359,7 +358,7 @@ public class CatraMMSBroadcaster {
 			Date startBroadcaster = broadcasterIngestionJob.getProxyPeriodStart();
 			Date stopBroadcaster = broadcasterIngestionJob.getProxyPeriodEnd();
 
-			JSONObject joBroadcasterMetadataContent = new JSONObject(broadcasterIngestionJob.getMetaDataContent());
+			JSONObject joBroadcasterMetadataContent = broadcasterIngestionJob.getJoMetaDataContent();
 
 			if (joBroadcasterMetadataContent.has("internalMMS"))
 			{
@@ -395,7 +394,7 @@ public class CatraMMSBroadcaster {
 						}
 
 						mLogger.info("Broadcast metadata"
-								+ ", broadcastIngestionJob.getMetaDataContent(): " + broadcastIngestionJob.getMetaDataContent()
+								+ ", broadcastIngestionJob.getMetaDataContent(): " + broadcastIngestionJob.getJoMetaDataContent().toString()
 						);
 						JSONArray jaBroadcastInputsRoot = null;
 						{
@@ -409,7 +408,7 @@ public class CatraMMSBroadcaster {
 							}
 							// Option 2: inputsRoot is into the IngestionJob metadata (Broadcaster in the future)
 							else {
-								JSONObject joBroadcastParameters = new JSONObject(broadcastIngestionJob.getMetaDataContent());
+								JSONObject joBroadcastParameters = broadcastIngestionJob.getJoMetaDataContent();
 								if (joBroadcastParameters.has("internalMMS")) {
 									JSONObject joInternalMMS = joBroadcastParameters.getJSONObject("internalMMS");
 									if (joInternalMMS.has("broadcaster")) {

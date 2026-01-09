@@ -23,7 +23,7 @@ public class IngestionJob implements Serializable, Comparable {
 	private Long ingestionJobKey;
     private String label;
     private String ingestionType;
-    private String metaDataContent;
+    // private String metaDataContent;
     private JSONObject joMetaDataContent;
     private Date processingStartingFrom;
     private Date startProcessing;
@@ -328,6 +328,7 @@ public class IngestionJob implements Serializable, Comparable {
         this.joMetaDataContent = joMetaDataContent;
     }
 
+    /*
     public void setMetaDataContent(String metaDataContent) {
 
         this.metaDataContent = metaDataContent;
@@ -347,6 +348,7 @@ public class IngestionJob implements Serializable, Comparable {
             }
         }
     }
+     */
 
     public String getErrorMessagesAsHTML() {
         if (errorMessages == null)
@@ -512,9 +514,11 @@ public class IngestionJob implements Serializable, Comparable {
         this.encodingJob = encodingJob;
     }
 
+    /*
     public String getMetaDataContent() {
         return metaDataContent;
     }
+     */
 
 
     public Long getDependOnIngestionJobKey() {
