@@ -1,5 +1,7 @@
 package com.catrammslib.entity;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -21,7 +23,7 @@ public class MediaItem implements Serializable{
     private String uniqueName;
     private List<String> tags = new ArrayList<>();
     private List<MediaItemCrossReference> crossReferences = new ArrayList<>();
-    private String userData;
+    private JSONObject joUserData;
     private Long retentionInMinutes;
     private Date willBeRemovedAt;
 
@@ -149,13 +151,6 @@ public class MediaItem implements Serializable{
         this.title = title;
     }
 
-    public String getUserData() {
-        return userData;
-    }
-
-    public void setUserData(String userData) {
-        this.userData = userData;
-    }
 
     public List<MediaItemCrossReference> getCrossReferences() {
         return crossReferences;
@@ -179,6 +174,14 @@ public class MediaItem implements Serializable{
 
     public void setSelected(Boolean selected) {
         this.selected = selected;
+    }
+
+    public JSONObject getJoUserData() {
+        return joUserData;
+    }
+
+    public void setJoUserData(JSONObject joUserData) {
+        this.joUserData = joUserData;
     }
 
     public String getStyle() {
