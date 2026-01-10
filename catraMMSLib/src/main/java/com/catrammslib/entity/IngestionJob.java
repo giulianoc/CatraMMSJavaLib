@@ -24,7 +24,7 @@ public class IngestionJob implements Serializable, Comparable {
     private String label;
     private String ingestionType;
     // private String metaDataContent;
-    private JSONObject joMetaDataContent;
+    private JSONObject joMetaDataContent = null;
     private Date processingStartingFrom;
     private Date startProcessing;
     private Boolean endProcessingEstimate;

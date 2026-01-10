@@ -23,7 +23,7 @@ public class MediaItem implements Serializable{
     private String uniqueName;
     private List<String> tags = new ArrayList<>();
     private List<MediaItemCrossReference> crossReferences = new ArrayList<>();
-    private JSONObject joUserData;
+    private JSONObject joUserData = null;
     private Long retentionInMinutes;
     private Date willBeRemovedAt;
 
