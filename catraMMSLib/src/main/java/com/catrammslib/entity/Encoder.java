@@ -1,6 +1,7 @@
 package com.catrammslib.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 import org.json.JSONArray;
@@ -22,7 +23,10 @@ public class Encoder implements Serializable{
     private Long port;
 
 	private Boolean running;
+    Date selectedLastTime;
+    Date cpuUsageUpdateTime;
 	private Long cpuUsage;
+    Date bandwidthUsageUpdateTime;
     private Long txAvgBandwidthUsage;
     private Long rxAvgBandwidthUsage;
 
@@ -68,7 +72,10 @@ public class Encoder implements Serializable{
         encoder.setInternalServerName(internalServerName);
         encoder.setPort(port);
         encoder.setRunning(running);
+        encoder.setSelectedLastTime(selectedLastTime);
+        encoder.setCpuUsageUpdateTime(cpuUsageUpdateTime);
         encoder.setCpuUsage(cpuUsage);
+        encoder.setBandwidthUsageUpdateTime(bandwidthUsageUpdateTime);
         encoder.setTxAvgBandwidthUsage(txAvgBandwidthUsage);
         encoder.setRxAvgBandwidthUsage(rxAvgBandwidthUsage);
         encoder.setWorkspacesAssociated(workspacesAssociated);
@@ -100,7 +107,31 @@ public class Encoder implements Serializable{
 		this.cpuUsage = cpuUsage;
 	}
 
-	public Boolean getRunning() {
+    public Date getSelectedLastTime() {
+        return selectedLastTime;
+    }
+
+    public void setSelectedLastTime(Date selectedLastTime) {
+        this.selectedLastTime = selectedLastTime;
+    }
+
+    public Date getCpuUsageUpdateTime() {
+        return cpuUsageUpdateTime;
+    }
+
+    public void setCpuUsageUpdateTime(Date cpuUsageUpdateTime) {
+        this.cpuUsageUpdateTime = cpuUsageUpdateTime;
+    }
+
+    public Date getBandwidthUsageUpdateTime() {
+        return bandwidthUsageUpdateTime;
+    }
+
+    public void setBandwidthUsageUpdateTime(Date bandwidthUsageUpdateTime) {
+        this.bandwidthUsageUpdateTime = bandwidthUsageUpdateTime;
+    }
+
+    public Boolean getRunning() {
 		return running;
 	}
 

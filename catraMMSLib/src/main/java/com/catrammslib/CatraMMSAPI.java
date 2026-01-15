@@ -9119,12 +9119,32 @@ public class CatraMMSAPI implements Serializable {
             encoder.setPort(encoderInfo.getLong("port"));
 			if (encoderInfo.has("running"))
 				encoder.setRunning(encoderInfo.getBoolean("running"));
+
+            if (encoderInfo.has("selectedLastTime"))
+                encoder.setSelectedLastTime(new Date(encoderInfo.getLong("selectedLastTime")));
+
 			if (encoderInfo.has("cpuUsage"))
 				encoder.setCpuUsage(encoderInfo.getLong("cpuUsage"));
+            if (encoderInfo.has("cpuUsageUpdateTime"))
+            {
+                if (encoderInfo.isNull("cpuUsageUpdateTime"))
+                    encoder.setSelectedLastTime(null);
+                else
+                    encoder.setSelectedLastTime(new Date(encoderInfo.getLong("cpuUsageUpdateTime")));
+            }
+
             if (encoderInfo.has("txAvgBandwidthUsage"))
                 encoder.setTxAvgBandwidthUsage(encoderInfo.getLong("txAvgBandwidthUsage"));
             if (encoderInfo.has("rxAvgBandwidthUsage"))
                 encoder.setRxAvgBandwidthUsage(encoderInfo.getLong("rxAvgBandwidthUsage"));
+            if (encoderInfo.has("bandwidthUsageUpdateTime"))
+            {
+                if (encoderInfo.isNull("bandwidthUsageUpdateTime"))
+                    encoder.setBandwidthUsageUpdateTime(null);
+                else
+                    encoder.setBandwidthUsageUpdateTime(new Date(encoderInfo.getLong("bandwidthUsageUpdateTime")));
+            }
+
 			if (encoderInfo.has("workspacesAssociated"))
 				encoder.setWorkspacesAssociated(encoderInfo.getJSONArray("workspacesAssociated"));
         }
