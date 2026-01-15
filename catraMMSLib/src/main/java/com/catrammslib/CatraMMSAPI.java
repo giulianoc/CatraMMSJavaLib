@@ -9121,7 +9121,7 @@ public class CatraMMSAPI implements Serializable {
 				encoder.setRunning(encoderInfo.getBoolean("running"));
 
             if (encoderInfo.has("selectedLastTime"))
-                encoder.setSelectedLastTime(new Date(encoderInfo.getLong("selectedLastTime")));
+                encoder.setSelectedLastTime(simpleDateFormat.parse(encoderInfo.getString("selectedLastTime"));
 
 			if (encoderInfo.has("cpuUsage"))
 				encoder.setCpuUsage(encoderInfo.getLong("cpuUsage"));
@@ -9130,7 +9130,7 @@ public class CatraMMSAPI implements Serializable {
                 if (encoderInfo.isNull("cpuUsageUpdateTime"))
                     encoder.setSelectedLastTime(null);
                 else
-                    encoder.setSelectedLastTime(new Date(encoderInfo.getLong("cpuUsageUpdateTime")));
+                    encoder.setSelectedLastTime(simpleDateFormat.parse(encoderInfo.getString("cpuUsageUpdateTime")));
             }
 
             if (encoderInfo.has("txAvgBandwidthUsage"))
@@ -9142,7 +9142,7 @@ public class CatraMMSAPI implements Serializable {
                 if (encoderInfo.isNull("bandwidthUsageUpdateTime"))
                     encoder.setBandwidthUsageUpdateTime(null);
                 else
-                    encoder.setBandwidthUsageUpdateTime(new Date(encoderInfo.getLong("bandwidthUsageUpdateTime")));
+                    encoder.setBandwidthUsageUpdateTime(simpleDateFormat.parse(encoderInfo.getString("bandwidthUsageUpdateTime")));
             }
 
 			if (encoderInfo.has("workspacesAssociated"))
