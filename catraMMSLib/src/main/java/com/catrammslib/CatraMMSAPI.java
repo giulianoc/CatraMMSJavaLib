@@ -9128,9 +9128,9 @@ public class CatraMMSAPI implements Serializable {
             if (encoderInfo.has("cpuUsageUpdateTime"))
             {
                 if (encoderInfo.isNull("cpuUsageUpdateTime"))
-                    encoder.setSelectedLastTime(null);
+                    encoder.setCpuUsageUpdateTime(null);
                 else
-                    encoder.setSelectedLastTime(simpleDateFormat.parse(encoderInfo.getString("cpuUsageUpdateTime")));
+                    encoder.setCpuUsageUpdateTime(simpleDateFormat.parse(encoderInfo.getString("cpuUsageUpdateTime")));
             }
 
             if (encoderInfo.has("txAvgBandwidthUsage"))
