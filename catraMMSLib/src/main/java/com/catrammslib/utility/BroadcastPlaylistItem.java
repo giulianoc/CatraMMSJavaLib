@@ -57,6 +57,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	// in case of Direct URL
 	private String url;
 
+	private Boolean selected; // usato dalla GUI per selezionare un item
 
 	private CatraMMSAPI catraMMS;
 	private String username;
@@ -78,6 +79,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		// drawTextEnable = false;
 
 		endBasedOnMediaDuration = false;
+
+		selected = false;
 	}
 
 	@Override
@@ -818,6 +821,14 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 
 			return 0;
 		}
+	}
+
+	public Boolean getSelected() {
+		return selected;
+	}
+
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
 	}
 
 	public void setStart(Date start) {
