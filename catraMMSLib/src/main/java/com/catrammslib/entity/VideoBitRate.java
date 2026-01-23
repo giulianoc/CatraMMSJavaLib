@@ -22,6 +22,7 @@ public class VideoBitRate implements Serializable {
     private String sKBitRate;
 
     private Long kMaxRate;
+    private Long kMinRate;
     private Long kBufferSize;
 
     @Override
@@ -49,6 +50,7 @@ public class VideoBitRate implements Serializable {
                 ", kBitRate=" + kBitRate +
                 ", sKBitRate='" + sKBitRate + '\'' +
                 ", kMaxRate=" + kMaxRate +
+                ", kMinRate=" + kMinRate +
                 ", kBufferSize=" + kBufferSize +
                 '}';
     }
@@ -129,6 +131,14 @@ public class VideoBitRate implements Serializable {
     public void setkBitRate(Long kBitRate) {
         this.kBitRate = kBitRate;
         sKBitRate = kBitRate != null ? kBitRate.toString() : null;
+    }
+
+    public Long getkMinRate() {
+        return kMinRate;
+    }
+
+    public void setkMinRate(Long kMinRate) {
+        this.kMinRate = kMinRate;
     }
 
     public Long getkMaxRate() {

@@ -9860,6 +9860,10 @@ public class CatraMMSAPI implements Serializable {
                                 videoBitRate.setPad(null);
                             else
                                 videoBitRate.setPad(joBitRate.getBoolean("pad"));
+                            if (!joBitRate.has("kMinRate") || joBitRate.isNull("kMinRate"))
+                                videoBitRate.setkMinRate(null);
+                            else
+                                videoBitRate.setkMinRate(joBitRate.getLong("kMinRate"));
                             if (!joBitRate.has("kMaxRate") || joBitRate.isNull("kMaxRate"))
                                 videoBitRate.setkMaxRate(null);
                             else
