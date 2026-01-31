@@ -285,8 +285,8 @@ public class CatraMMSAPI implements Serializable {
         Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
         Boolean deliveryAuthorization, Boolean shareWorkspace,
         Boolean editMedia, Boolean editConfiguration, Boolean killEncoding,
-        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean applicationRecorder,
-        Boolean createRemoveLiveChannel, Boolean updateEncoderStats)
+        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean editDeliveryServersPool, Boolean applicationRecorder,
+        Boolean createRemoveLiveChannel, Boolean updateEncoderAndDeliveryStats)
         throws Exception
     {
         String mmsInfo;
@@ -308,9 +308,10 @@ public class CatraMMSAPI implements Serializable {
 				joObj.put("killEncoding", killEncoding);
 				joObj.put("cancelIngestionJob", cancelIngestionJob);
 				joObj.put("editEncodersPool", editEncodersPool);
+                joObj.put("editDeliveryServersPool", editDeliveryServersPool);
 				joObj.put("applicationRecorder", applicationRecorder);
                 joObj.put("createRemoveLiveChannel", createRemoveLiveChannel);
-                joObj.put("updateEncoderStats", updateEncoderStats);
+                joObj.put("updateEncoderAndDeliveryStats", updateEncoderAndDeliveryStats);
 
 				postBodyRequest = joObj.toString();
 			}
@@ -880,8 +881,9 @@ public class CatraMMSAPI implements Serializable {
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
 		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
 		Boolean newEditMedia, Boolean newEditConfiguration, Boolean newKillEncoding,
-		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newApplicationRecorder,
-        Boolean newCreateRemoveLiveChannel, Boolean newUpdateEncoderStats)
+		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newEditDeliveryServersPool,
+        Boolean newApplicationRecorder,
+        Boolean newCreateRemoveLiveChannel, Boolean newUpdateEncoderAndDeliveryStats)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -961,9 +963,10 @@ public class CatraMMSAPI implements Serializable {
 			joUserAPIKey.put("killEncoding", newKillEncoding);
 			joUserAPIKey.put("cancelIngestionJob", newCancelIngestionJob);
 			joUserAPIKey.put("editEncodersPool", newEditEncodersPool);
+            joUserAPIKey.put("editDeliveryServersPool", newEditDeliveryServersPool);
 			joUserAPIKey.put("applicationRecorder", newApplicationRecorder);
             joUserAPIKey.put("createRemoveLiveChannel", newCreateRemoveLiveChannel);
-            joUserAPIKey.put("updateEncoderStats", newUpdateEncoderStats);
+            joUserAPIKey.put("updateEncoderAndDeliveryStats", newUpdateEncoderAndDeliveryStats);
 
             String bodyRequest = joBodyRequest.toString();
 
@@ -2005,7 +2008,7 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/1.0.1/workspace-encoder/" + workspaceKey + "/" + encoderKey
+                    + "/catramms/1.0.1/workspaceEncoder/" + workspaceKey + "/" + encoderKey
                     ;
 
             mLogger.info("assignEncoderToWorkspace"
@@ -2052,7 +2055,7 @@ public class CatraMMSAPI implements Serializable {
         try
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
-                    + "/catramms/1.0.1/workspace-encoder/" + workspaceKey + "/" + encoderKey
+                    + "/catramms/1.0.1/workspaceEncoder/" + workspaceKey + "/" + encoderKey
                     ;
 
             mLogger.info("removeEncoderFromWorkspace"
@@ -2085,6 +2088,636 @@ public class CatraMMSAPI implements Serializable {
         catch (Exception e)
         {
             String errorMessage = "removeEncoderFromWorkspace failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public Long addDeliveryServer(String username, String password,
+                           String label, String type, boolean external,
+                           boolean enabled,
+                           String publicServerName, String internalServerName)
+            throws Exception
+    {
+        Long deliveryServerKey;
+
+        String mmsInfo;
+        try
+        {
+            JSONObject joDeliveryServer = new JSONObject();
+
+            joDeliveryServer.put("label", label);
+            joDeliveryServer.put("type", type);
+            joDeliveryServer.put("external", external);
+            joDeliveryServer.put("enabled", enabled);
+            joDeliveryServer.put("publicServerName", publicServerName);
+            joDeliveryServer.put("internalServerName", internalServerName);
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServer";
+
+            mLogger.info("addDeliveryServer"
+                    + ", mmsURL: " + mmsURL
+                    + ", joDeliveryServer: " + joDeliveryServer
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, joDeliveryServer.toString(), outputToBeCompressed);
+            mLogger.info("addEncoder. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addDeliveryServer MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            deliveryServerKey = joWMMSInfo.getLong("DeliveryServerKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addDeliveryServer failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return deliveryServerKey;
+    }
+
+    public void modifyDeliveryServer(String username, String password,
+                              Long deliveryServerKey,
+                              String label, String type, boolean external,
+                              boolean enabled,
+                              String publicServerName, String internalServerName)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            JSONObject joDeliveryServer = new JSONObject();
+
+            joDeliveryServer.put("label", label);
+            joDeliveryServer.put("type", type);
+            joDeliveryServer.put("external", external);
+            joDeliveryServer.put("enabled", enabled);
+            joDeliveryServer.put("publicServerName", publicServerName);
+            joDeliveryServer.put("internalServerName", internalServerName);
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServer/" + deliveryServerKey;
+
+            mLogger.info("modifyDeliveryServer"
+                    + ", mmsURL: " + mmsURL
+                    + ", deliveryServerKey: " + deliveryServerKey
+                    + ", joDeliveryServer: " + joDeliveryServer.toString()
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, joDeliveryServer.toString(), outputToBeCompressed);
+            mLogger.info("modifyDeliveryServer. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyDeliveryServer MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        /*
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            encoderKey = joWMMSInfo.getLong("EncoderKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addEncoder failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+        */
+
+        // return encoderKey;
+    }
+
+    public void removeDeliveryServer(String username, String password,
+                              Long deliveryServerKey)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServer/" + deliveryServerKey;
+
+            mLogger.info("removeDeliveryServer"
+                    + ", mmsURL: " + mmsURL
+                    + ", deliveryServerKey: " + deliveryServerKey
+            );
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("removeEncoder. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeDeliveryServer MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void getDeliveryServers(String username, String password,
+                            Boolean allDeliveryServers, Long workspaceKey,
+                            String labelOrder, // null, "asc", "desc"
+                            Boolean cacheAllowed,
+                            List<DeliveryServer> deliveryServerList)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/deliveryServer";
+            String queryChar = "?";
+            if (labelOrder != null && !labelOrder.isBlank())
+            {
+                mmsURL += (queryChar + "labelOrder=" + labelOrder);
+                queryChar = "&";
+            }
+            if (cacheAllowed != null && !cacheAllowed)
+            {
+                mmsURL += (queryChar + "should_bypass_cache=true");
+                queryChar = "&";
+            }
+            // server API will use allDeliveryServers and workspaceKey only in case of admin
+            if (allDeliveryServers != null)
+            {
+                mmsURL += (queryChar + "allDeliveryServers=" + (allDeliveryServers ? "true" : "false"));
+                queryChar = "&";
+            }
+            if (workspaceKey != null)
+            {
+                // in case allDeliveryServers is true (we are admin and want all the encoders),
+                //      workspaceKey, asking the encoder for a specific workspace, does not have sense.
+                //  Anyway MMS API will take care...
+                mmsURL += (queryChar + "workspaceKey=" + workspaceKey);
+                queryChar = "&";
+            }
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getDeliveryServers. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaDeliveryServers = joResponse.getJSONArray("deliveryServers");
+
+            mLogger.info("jaDeliveryServers.length(): " + jaDeliveryServers.length());
+
+            deliveryServerList.clear();
+
+            for (int deliveryServerIndex = 0;
+                 deliveryServerIndex < jaDeliveryServers.length();
+                 deliveryServerIndex++)
+            {
+                DeliveryServer deliveryServer = new DeliveryServer();
+
+                JSONObject deliveryServerInfo = jaDeliveryServers.getJSONObject(deliveryServerIndex);
+
+                fillDeliveryServer(deliveryServer, deliveryServerInfo);
+
+                deliveryServerList.add(deliveryServer);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public DeliveryServer getDeliveryServer(String username, String password,
+                              Boolean allDeliveryServers, Long deliveryServerKey)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String mmsInfo;
+        try
+        {
+            if (deliveryServerKey == null)
+            {
+                String errorMessage = "getDeliveryServer, deliveryServerKey cannot be null"
+                        + ", deliveryServerKey: " + deliveryServerKey
+                        ;
+                mLogger.error(errorMessage);
+
+                throw new Exception(errorMessage);
+            }
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServer/" + deliveryServerKey
+                    ;
+
+            // server API will use allDeliveryServers only in case of admin.
+            // This is the scenario where User is admin, all the deliveryServers are showed,
+            // the User needs to edit one deliveryServer that, may be, is not associated to his workspace,
+            // So it is needed allDeliveryServers true otherwise only the deliveryServers of the user workspace are considered
+            // and this call will fails
+            if (allDeliveryServers != null)
+                mmsURL += ("?allDeliveryServers=" + (allDeliveryServers ? "true" : "false"));
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getDeliveryServer. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        DeliveryServer deliveryServer = null;
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaDeliveryServers = joResponse.getJSONArray("deliveryServers");
+
+            mLogger.info("jaDeliveryServers.length(): " + jaDeliveryServers.length());
+
+            if (jaDeliveryServers.length() == 1)
+            {
+                deliveryServer = new DeliveryServer();
+
+                JSONObject deliveryServerInfo = jaDeliveryServers.getJSONObject(0);
+
+                fillDeliveryServer(deliveryServer, deliveryServerInfo);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return deliveryServer;
+    }
+
+    public void getDeliveryServersPool(String username, String password,
+                                Boolean cacheAllowed,
+                                List<DeliveryServersPool> deliveryServersPoolList)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServersPool?labelOrder=" + "asc"
+                    + (cacheAllowed == null || cacheAllowed ? "" : "&should_bypass_cache=true")
+                    ;
+
+            mLogger.info("mmsURL: " + mmsURL);
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.GET(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, outputToBeCompressed);
+            mLogger.info("getDeliveryServersPool. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joMMSInfo = new JSONObject(mmsInfo);
+            JSONObject joResponse = joMMSInfo.getJSONObject("response");
+            JSONArray jaDeliveryServersPool = joResponse.getJSONArray("deliveryServersPool");
+
+            mLogger.info("jaDeliveryServersPool.length(): " + jaDeliveryServersPool.length());
+
+            deliveryServersPoolList.clear();
+
+            for (int deliveryServersPoolIndex = 0;
+                 deliveryServersPoolIndex < jaDeliveryServersPool.length();
+                 deliveryServersPoolIndex++)
+            {
+                DeliveryServersPool deliveryServersPool = new DeliveryServersPool();
+
+                JSONObject deliveryServersPoolInfo = jaDeliveryServersPool.getJSONObject(deliveryServersPoolIndex);
+
+                fillDeliveryServersPool(deliveryServersPool, deliveryServersPoolInfo);
+
+                deliveryServersPoolList.add(deliveryServersPool);
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "MMS API failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public Long addDeliveryServersPool(String username, String password,
+                                String label, List<DeliveryServer> deliveryServers)
+            throws Exception
+    {
+        List<Long> deliveryServerKeys = new ArrayList<>();
+
+        for(DeliveryServer deliveryServer: deliveryServers)
+            deliveryServerKeys.add(deliveryServer.getDeliveryServerKey());
+
+        return addDeliveryServersPoolByKeys(username, password, label, deliveryServerKeys);
+    }
+
+    public Long addDeliveryServersPoolByKeys(String username, String password,
+                                      String label, List<Long> deliveryServerListKeys)
+            throws Exception
+    {
+        Long deliveryServerPoolsKey;
+
+        String mmsInfo;
+        try
+        {
+            JSONObject joDeliveryServersPool = new JSONObject();
+            joDeliveryServersPool.put("label", label);
+
+            JSONArray jaDeliveryServerKeys = new JSONArray();
+            joDeliveryServersPool.put("deliveryServerKeys", jaDeliveryServerKeys);
+
+            for (Long deliveryServerKey: deliveryServerListKeys)
+                jaDeliveryServerKeys.put(deliveryServerKey);
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServersPool";
+
+            mLogger.info("addDeliveryServer"
+                    + ", mmsURL: " + mmsURL
+                    + ", joDeliveryServersPool: " + joDeliveryServersPool.toString()
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, joDeliveryServersPool.toString(), outputToBeCompressed);
+            mLogger.info("addDeliveryServersPoolByKeys. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addDeliveryServersPoolByKeys MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            deliveryServerPoolsKey = joWMMSInfo.getLong("DeliveryServersPoolKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addDeliveryServersPoolByKeys failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        return deliveryServerPoolsKey;
+    }
+
+    public void modifyDeliveryServersPool(String username, String password,
+                                   Long deliveryServersPoolKey,
+                                   String label, List<DeliveryServer> deliveryServerList)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            JSONObject joDeliveryServersPool = new JSONObject();
+            joDeliveryServersPool.put("label", label);
+
+            JSONArray jaDeliveryServerKeys = new JSONArray();
+            joDeliveryServersPool.put("deliveryServerKeys", jaDeliveryServerKeys);
+
+            for (DeliveryServer deliveryServer: deliveryServerList)
+                jaDeliveryServerKeys.put(deliveryServer.getDeliveryServerKey());
+
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServersPool/" + deliveryServersPoolKey;
+
+            mLogger.info("modifyDeliveryServersPool"
+                    + ", mmsURL: " + mmsURL
+                    + ", deliveryServersPoolKey: " + deliveryServersPoolKey
+                    + ", joDeliveryServersPool: " + joDeliveryServersPool.toString()
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPutHttpsJson(mmsURL,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, joDeliveryServersPool.toString(), outputToBeCompressed);
+            mLogger.info("modifyDeliveryServersPool. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "modifyDeliveryServersPool MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        /*
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            encoderKey = joWMMSInfo.getLong("EncoderKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "addEncoder failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+        */
+
+        // return encoderKey;
+    }
+
+    public void removeDeliveryServersPool(String username, String password,
+                                   Long deliveryServersPoolKey)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServersPool/" + deliveryServersPoolKey;
+
+            mLogger.info("removeDeliveryServersPool"
+                    + ", mmsURL: " + mmsURL
+                    + ", deliveryServersPoolKey: " + deliveryServersPoolKey
+            );
+
+            long start = System.currentTimeMillis();
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("removeDeliveryServersPool. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeDeliveryServersPool MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void assignDeliveryServerToWorkspace(String username, String password,
+                                         Long workspaceKey, Long deliveryServerKey)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/workspaceDeliveryServer/" + workspaceKey + "/" + deliveryServerKey
+                    ;
+
+            mLogger.info("assignDeliveryServerToWorkspace"
+                    + ", mmsURL: " + mmsURL
+                    + ", workspaceKey: " + workspaceKey
+                    + ", deliveryServerKey: " + deliveryServerKey
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchPostHttpsJson(mmsURL, postContentType,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, null, outputToBeCompressed);
+            mLogger.info("assignDeliveryServerToWorkspace. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "assignDeliveryServerToWorkspace MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            // aaencoderKey = joWMMSInfo.getLong("EncoderKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "assignDeliveryServerToWorkspace failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    public void removeDeliveryServerFromWorkspace(String username, String password,
+                                           Long workspaceKey, Long deliveryServerKey)
+            throws Exception
+    {
+        String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/workspaceDeliveryServer/" + workspaceKey + "/" + deliveryServerKey
+                    ;
+
+            mLogger.info("removeDeliveryServerFromWorkspace"
+                    + ", mmsURL: " + mmsURL
+                    + ", workspaceKey: " + workspaceKey
+                    + ", deliveryServerKey: " + deliveryServerKey
+            );
+
+            long start = System.currentTimeMillis();
+            String postContentType = null;
+            mmsInfo = HttpFeedFetcher.fetchDeleteHttpsJson(mmsURL,
+                    timeoutInSeconds, maxRetriesNumber,
+                    username, password);
+            mLogger.info("removeDeliveryServerFromWorkspace. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeDeliveryServerFromWorkspace MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+
+        try
+        {
+            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
+
+            // aaencoderKey = joWMMSInfo.getLong("EncoderKey");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "removeDeliveryServerFromWorkspace failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -8340,7 +8973,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setEditEncodersPool(joUserAPIKey.getBoolean("editEncodersPool"));
                 workspaceDetails.setApplicationRecorder(joUserAPIKey.getBoolean("applicationRecorder"));
                 workspaceDetails.setCreateRemoveLiveChannel(joUserAPIKey.getBoolean("createRemoveLiveChannel"));
-                workspaceDetails.setUpdateEncoderStats(joUserAPIKey.getBoolean("updateEncoderStats"));
+                workspaceDetails.setUpdateEncoderAndDeliveryStats(joUserAPIKey.getBoolean("updateEncoderAndDeliveryStats"));
             }
 
             if(jaWorkspaceInfo.has("cost"))
@@ -9123,7 +9756,7 @@ public class CatraMMSAPI implements Serializable {
             if (encoderInfo.has("selectedLastTime"))
                 encoder.setSelectedLastTime(simpleDateFormat.parse(encoderInfo.getString("selectedLastTime")));
 
-			if (encoderInfo.has("cpuUsage"))
+			if (encoderInfo.has("cpuUsage") && !encoderInfo.isNull("cpuUsage"))
 				encoder.setCpuUsage(encoderInfo.getLong("cpuUsage"));
             if (encoderInfo.has("cpuUsageUpdateTime"))
             {
@@ -9133,9 +9766,9 @@ public class CatraMMSAPI implements Serializable {
                     encoder.setCpuUsageUpdateTime(simpleDateFormat.parse(encoderInfo.getString("cpuUsageUpdateTime")));
             }
 
-            if (encoderInfo.has("txAvgBandwidthUsage"))
+            if (encoderInfo.has("txAvgBandwidthUsage") && !encoderInfo.isNull("txAvgBandwidthUsage"))
                 encoder.setTxAvgBandwidthUsage(encoderInfo.getLong("txAvgBandwidthUsage"));
-            if (encoderInfo.has("rxAvgBandwidthUsage"))
+            if (encoderInfo.has("rxAvgBandwidthUsage") && !encoderInfo.isNull("rxAvgBandwidthUsage"))
                 encoder.setRxAvgBandwidthUsage(encoderInfo.getLong("rxAvgBandwidthUsage"));
             if (encoderInfo.has("bandwidthUsageUpdateTime"))
             {
@@ -9185,6 +9818,97 @@ public class CatraMMSAPI implements Serializable {
         catch (Exception e)
         {
             String errorMessage = "fillEncodersPool failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillDeliveryServer(DeliveryServer deliveryServer, JSONObject deliveryServerInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try
+        {
+            deliveryServer.setDeliveryServerKey(deliveryServerInfo.getLong("deliveryServerKey"));
+            deliveryServer.setLabel(deliveryServerInfo.getString("label"));
+            deliveryServer.setType(deliveryServerInfo.getString("type"));
+            if (deliveryServerInfo.has("originDeliveryServerKey") && !deliveryServerInfo.isNull("originDeliveryServerKey"))
+                deliveryServer.setOriginDeliveryServerKey(deliveryServerInfo.getLong("originDeliveryServerKey"));
+            // if (deliveryServerInfo.has("originDeliveryServerLabel") && !deliveryServerInfo.isNull("originDeliveryServerLabel"))
+            //    deliveryServer.setOriginDeliveryServerLabel(deliveryServerInfo.getString("originDeliveryServerLabel"));
+            deliveryServer.setExternal(deliveryServerInfo.getBoolean("external"));
+            deliveryServer.setEnabled(deliveryServerInfo.getBoolean("enabled"));
+            deliveryServer.setPublicServerName(deliveryServerInfo.getString("publicServerName"));
+            deliveryServer.setInternalServerName(deliveryServerInfo.getString("internalServerName"));
+
+            if (deliveryServerInfo.has("selectedLastTime"))
+                deliveryServer.setSelectedLastTime(simpleDateFormat.parse(deliveryServerInfo.getString("selectedLastTime")));
+
+            if (deliveryServerInfo.has("cpuUsage") && !deliveryServerInfo.isNull("cpuUsage"))
+                deliveryServer.setCpuUsage(deliveryServerInfo.getLong("cpuUsage"));
+            if (deliveryServerInfo.has("cpuUsageUpdateTime"))
+            {
+                if (deliveryServerInfo.isNull("cpuUsageUpdateTime"))
+                    deliveryServer.setCpuUsageUpdateTime(null);
+                else
+                    deliveryServer.setCpuUsageUpdateTime(simpleDateFormat.parse(deliveryServerInfo.getString("cpuUsageUpdateTime")));
+            }
+
+            if (deliveryServerInfo.has("txAvgBandwidthUsage") && !deliveryServerInfo.isNull("txAvgBandwidthUsage"))
+                deliveryServer.setTxAvgBandwidthUsage(deliveryServerInfo.getLong("txAvgBandwidthUsage"));
+            if (deliveryServerInfo.has("rxAvgBandwidthUsage") && !deliveryServerInfo.isNull("rxAvgBandwidthUsage"))
+                deliveryServer.setRxAvgBandwidthUsage(deliveryServerInfo.getLong("rxAvgBandwidthUsage"));
+            if (deliveryServerInfo.has("bandwidthUsageUpdateTime"))
+            {
+                if (deliveryServerInfo.isNull("bandwidthUsageUpdateTime"))
+                    deliveryServer.setBandwidthUsageUpdateTime(null);
+                else
+                    deliveryServer.setBandwidthUsageUpdateTime(simpleDateFormat.parse(deliveryServerInfo.getString("bandwidthUsageUpdateTime")));
+            }
+
+            if (deliveryServerInfo.has("workspacesAssociated"))
+                deliveryServer.setWorkspacesAssociated(deliveryServerInfo.getJSONArray("workspacesAssociated"));
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillDeliveryServer failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
+    private void fillDeliveryServersPool(DeliveryServersPool deliveryServersPool, JSONObject deliveryServersPoolInfo)
+            throws Exception
+    {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+
+        try
+        {
+            deliveryServersPool.setDeliveryServersPoolKey(deliveryServersPoolInfo.getLong("deliveryServersPoolKey"));
+            deliveryServersPool.setLabel(deliveryServersPoolInfo.getString("label"));
+            if (deliveryServersPoolInfo.has("deliveryServers"))
+            {
+                JSONArray jaDeliveryServersInfo = deliveryServersPoolInfo.getJSONArray("deliveryServers");
+                for(int deliveryServerIndex = 0; deliveryServerIndex < jaDeliveryServersInfo.length(); deliveryServerIndex++)
+                {
+                    JSONObject joDeliveryServerInfo = jaDeliveryServersInfo.getJSONObject(deliveryServerIndex);
+
+                    DeliveryServer deliveryServer = new DeliveryServer();
+
+                    fillDeliveryServer(deliveryServer, joDeliveryServerInfo);
+
+                    deliveryServersPool.getDeliveryServerList().add(deliveryServer);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "fillDeliveryServersPool failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);

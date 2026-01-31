@@ -61,9 +61,10 @@ public class WorkspaceDetails implements Serializable {
     private Boolean killEncoding;
     private Boolean cancelIngestionJob;
     private Boolean editEncodersPool;
+    private Boolean editDeliveryServersPool;
     private Boolean applicationRecorder;
     private Boolean createRemoveLiveChannel;
-    private Boolean updateEncoderStats;
+    private Boolean updateEncoderAndDeliveryStats;
 
 
     // this field is used by the GUI
@@ -112,9 +113,10 @@ public class WorkspaceDetails implements Serializable {
                 ", killEncoding=" + killEncoding +
                 ", cancelIngestionJob=" + cancelIngestionJob +
                 ", editEncodersPool=" + editEncodersPool +
+                ", editDeliveryServersPool=" + editDeliveryServersPool +
                 ", applicationRecorder=" + applicationRecorder +
                 ", createRemoveLiveChannel=" + createRemoveLiveChannel +
-                ", updateEncoderStats=" + updateEncoderStats +
+                ", updateEncoderAndDeliveryStats=" + updateEncoderAndDeliveryStats +
 
                 ", maxStorageInGB=" + maxStorageInGB +
                 ", currentCostForStorage=" + currentCostForStorage +
@@ -228,12 +230,12 @@ public class WorkspaceDetails implements Serializable {
         this.createProfiles = createProfiles;
     }
 
-    public Boolean getUpdateEncoderStats() {
-        return updateEncoderStats;
+    public Boolean getUpdateEncoderAndDeliveryStats() {
+        return updateEncoderAndDeliveryStats;
     }
 
-    public void setUpdateEncoderStats(Boolean updateEncoderStats) {
-        this.updateEncoderStats = updateEncoderStats;
+    public void setUpdateEncoderAndDeliveryStats(Boolean updateEncoderAndDeliveryStats) {
+        this.updateEncoderAndDeliveryStats = updateEncoderAndDeliveryStats;
     }
 
     public Boolean getDeliveryAuthorization() {
@@ -394,6 +396,14 @@ public class WorkspaceDetails implements Serializable {
 
     public void setEditEncodersPool(Boolean editEncodersPool) {
         this.editEncodersPool = editEncodersPool;
+    }
+
+    public Boolean getEditDeliveryServersPool() {
+        return editDeliveryServersPool;
+    }
+
+    public void setEditDeliveryServersPool(Boolean editDeliveryServersPool) {
+        this.editDeliveryServersPool = editDeliveryServersPool;
     }
 
     public Long getMaxStorageInGB() {
