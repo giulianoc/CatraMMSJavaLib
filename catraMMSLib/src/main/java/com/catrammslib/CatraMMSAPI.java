@@ -2095,7 +2095,7 @@ public class CatraMMSAPI implements Serializable {
     }
 
     public Long addDeliveryServer(String username, String password,
-                           String label, String type, boolean external,
+                           String label, String type, Long originDeliveryServerKey, boolean external,
                            boolean enabled,
                            String publicServerName, String internalServerName)
             throws Exception
@@ -2109,6 +2109,8 @@ public class CatraMMSAPI implements Serializable {
 
             joDeliveryServer.put("label", label);
             joDeliveryServer.put("type", type);
+            if (type.equals("edge"))
+                joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
             joDeliveryServer.put("publicServerName", publicServerName);
@@ -2156,7 +2158,7 @@ public class CatraMMSAPI implements Serializable {
 
     public void modifyDeliveryServer(String username, String password,
                               Long deliveryServerKey,
-                              String label, String type, boolean external,
+                              String label, String type, Long originDeliveryServerKey, boolean external,
                               boolean enabled,
                               String publicServerName, String internalServerName)
             throws Exception
@@ -2168,6 +2170,8 @@ public class CatraMMSAPI implements Serializable {
 
             joDeliveryServer.put("label", label);
             joDeliveryServer.put("type", type);
+            if (type.equals("edge"))
+                joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
             joDeliveryServer.put("publicServerName", publicServerName);
