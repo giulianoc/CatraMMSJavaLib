@@ -2143,7 +2143,7 @@ public class CatraMMSAPI implements Serializable {
         {
             JSONObject joWMMSInfo = new JSONObject(mmsInfo);
 
-            deliveryServerKey = joWMMSInfo.getLong("DeliveryServerKey");
+            deliveryServerKey = joWMMSInfo.getLong("deliveryServerKey");
         }
         catch (Exception e)
         {
@@ -2200,24 +2200,6 @@ public class CatraMMSAPI implements Serializable {
 
             throw new Exception(errorMessage);
         }
-
-        /*
-        try
-        {
-            JSONObject joWMMSInfo = new JSONObject(mmsInfo);
-
-            encoderKey = joWMMSInfo.getLong("EncoderKey");
-        }
-        catch (Exception e)
-        {
-            String errorMessage = "addEncoder failed. Exception: " + e;
-            mLogger.error(errorMessage);
-
-            throw new Exception(errorMessage);
-        }
-        */
-
-        // return encoderKey;
     }
 
     public void removeDeliveryServer(String username, String password,
