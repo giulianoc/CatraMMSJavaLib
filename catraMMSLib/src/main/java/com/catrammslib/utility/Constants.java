@@ -559,6 +559,10 @@ public class Constants implements Serializable {
         return addSilentAudioTypes;
     }
 
+    public List<String> getDeliveryServerTypeList() {
+        return deliveryServerTypeList;
+    }
+
     public List<Cost> getDedicatedResources() {
         return dedicatedResources;
     }
