@@ -31,6 +31,9 @@ public class DeliveryServer implements Serializable{
 
 	private JSONArray workspacesAssociated;
 
+    // gestito dalla GUI, true se è un "nodo" da sistemare.
+    // Ad esempio si trova in stato 'edge' con un originDeliveryServerKey che si trova a sua volta in stato edge anzicche origin o mid-origin
+    private Boolean error;
 	
     @Override
     public boolean equals(Object o) {
@@ -208,6 +211,14 @@ public class DeliveryServer implements Serializable{
 
     public void setOriginDeliveryServerKey(Long originDeliveryServerKey) {
         this.originDeliveryServerKey = originDeliveryServerKey;
+    }
+
+    public Boolean getError() {
+        return error;
+    }
+
+    public void setError(Boolean error) {
+        this.error = error;
     }
 
     public JSONArray getWorkspacesAssociated() {
