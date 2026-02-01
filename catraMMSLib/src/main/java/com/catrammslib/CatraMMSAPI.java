@@ -2109,7 +2109,7 @@ public class CatraMMSAPI implements Serializable {
 
             joDeliveryServer.put("label", label);
             joDeliveryServer.put("type", type);
-            if (type.equals("edge"))
+            if (type.equals("edge") || type.equals("mid-origin"))
                 joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
@@ -2170,7 +2170,7 @@ public class CatraMMSAPI implements Serializable {
 
             joDeliveryServer.put("label", label);
             joDeliveryServer.put("type", type);
-            if (type.equals("edge"))
+            if (type.equals("edge") || type.equals("mid-origin"))
                 joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
