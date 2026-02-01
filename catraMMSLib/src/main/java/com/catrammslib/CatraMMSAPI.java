@@ -2234,6 +2234,7 @@ public class CatraMMSAPI implements Serializable {
 
     public void getDeliveryServers(String username, String password,
                             Boolean allDeliveryServers, Long workspaceKey,
+                            String label,
                             String labelOrder, // null, "asc", "desc"
                             Boolean cacheAllowed,
                             List<DeliveryServer> deliveryServerList)
@@ -2247,6 +2248,11 @@ public class CatraMMSAPI implements Serializable {
         {
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort + "/catramms/1.0.1/deliveryServer";
             String queryChar = "?";
+            if (label != null && !label.isBlank())
+            {
+                mmsURL += (queryChar + "label=" + java.net.URLEncoder.encode(label, "UTF-8"));
+                queryChar = "&";
+            }
             if (labelOrder != null && !labelOrder.isBlank())
             {
                 mmsURL += (queryChar + "labelOrder=" + labelOrder);
