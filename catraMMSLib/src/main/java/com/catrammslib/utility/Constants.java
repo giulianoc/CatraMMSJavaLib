@@ -37,6 +37,7 @@ public class Constants implements Serializable {
     private List<String> filtersList;
     private List<String> timecodeList;
     private List<String> ptsTimecodeRateList;
+    private List<String> deliveryServerTypeList;
 
     public Constants()
     {
@@ -325,6 +326,13 @@ public class Constants implements Serializable {
             addSilentAudioTypes.add("entireTrack");
             addSilentAudioTypes.add("begin");
             addSilentAudioTypes.add("end");
+        }
+
+        {
+            deliveryServerTypeList = new ArrayList<>();
+            deliveryServerTypeList.add("origin");
+            deliveryServerTypeList.add("mid-origin");
+            deliveryServerTypeList.add("edge");
         }
 
         {
