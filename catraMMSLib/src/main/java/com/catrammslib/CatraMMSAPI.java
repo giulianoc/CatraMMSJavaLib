@@ -8958,6 +8958,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setKillEncoding(joUserAPIKey.getBoolean("killEncoding"));
                 workspaceDetails.setCancelIngestionJob(joUserAPIKey.getBoolean("cancelIngestionJob"));
                 workspaceDetails.setEditEncodersPool(joUserAPIKey.getBoolean("editEncodersPool"));
+                workspaceDetails.setEditDeliveryServersPool(joUserAPIKey.getBoolean("editDeliveryServersPool"));
                 workspaceDetails.setApplicationRecorder(joUserAPIKey.getBoolean("applicationRecorder"));
                 workspaceDetails.setCreateRemoveLiveChannel(joUserAPIKey.getBoolean("createRemoveLiveChannel"));
                 workspaceDetails.setUpdateEncoderAndDeliveryStats(joUserAPIKey.getBoolean("updateEncoderAndDeliveryStats"));
