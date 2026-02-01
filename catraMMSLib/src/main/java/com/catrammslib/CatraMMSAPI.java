@@ -9823,6 +9823,8 @@ public class CatraMMSAPI implements Serializable {
             deliveryServer.setType(deliveryServerInfo.getString("type"));
             if (deliveryServerInfo.has("originDeliveryServerKey") && !deliveryServerInfo.isNull("originDeliveryServerKey"))
                 deliveryServer.setOriginDeliveryServerKey(deliveryServerInfo.getLong("originDeliveryServerKey"));
+            else
+                deliveryServer.setOriginDeliveryServerKey(null);
             // if (deliveryServerInfo.has("originDeliveryServerLabel") && !deliveryServerInfo.isNull("originDeliveryServerLabel"))
             //    deliveryServer.setOriginDeliveryServerLabel(deliveryServerInfo.getString("originDeliveryServerLabel"));
             deliveryServer.setExternal(deliveryServerInfo.getBoolean("external"));
