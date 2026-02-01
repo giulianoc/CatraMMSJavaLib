@@ -2166,12 +2166,13 @@ public class CatraMMSAPI implements Serializable {
         String mmsInfo;
         try
         {
+            // modify lo lasciamo "libero" di modificare, eventualmente il DB indica se ci sono errori
+
             JSONObject joDeliveryServer = new JSONObject();
 
             joDeliveryServer.put("label", label);
             joDeliveryServer.put("type", type);
-            if (type.equals("edge") || type.equals("mid-origin"))
-                joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
+            joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
             joDeliveryServer.put("publicServerName", publicServerName);
