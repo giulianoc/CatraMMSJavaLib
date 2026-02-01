@@ -37,6 +37,7 @@ public class Constants implements Serializable {
     private List<String> filtersList;
     private List<String> timecodeList;
     private List<String> ptsTimecodeRateList;
+    private List<String> deliveryServerTypeList;
 
     public Constants()
     {
@@ -328,6 +329,13 @@ public class Constants implements Serializable {
         }
 
         {
+            deliveryServerTypeList = new ArrayList<>();
+            deliveryServerTypeList.add("origin");
+            deliveryServerTypeList.add("mid-origin");
+            deliveryServerTypeList.add("edge");
+        }
+
+        {
             dedicatedResources = new ArrayList<>();
             {
                 Cost cost = new Cost();
@@ -529,6 +537,10 @@ public class Constants implements Serializable {
 
     public List<String> getPtsTimecodeRateList() {
         return ptsTimecodeRateList;
+    }
+
+    public List<String> getDeliveryServerTypeList() {
+        return deliveryServerTypeList;
     }
 
     public List<String> getOverlayTextXList() {
