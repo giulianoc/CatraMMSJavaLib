@@ -18,9 +18,10 @@ public class DeliveryServer implements Serializable{
     private Boolean enabled;
 
     // it is used by the GUI, true publicServerName is used, false internalServerName is used
-    private Boolean publicEncoderNameToBeUsed;
-    private String publicServerName;
-    private String internalServerName;
+    // private Boolean publicEncoderNameToBeUsed;
+    private String publicIP;
+    private String internalIP;
+    private String hostname;
 
     Date selectedLastTime;
     Date cpuUsageUpdateTime;
@@ -40,11 +41,13 @@ public class DeliveryServer implements Serializable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         DeliveryServer encoder = (DeliveryServer) o;
+        /*
         // in alcuni casi usiamo una List<Encoder> dove ogni encoder è duplicato a meno del PublicEncoderNameToBeUsed
         // per differenziare l'encoder che utilizza il public IP da quello che utilizza il private IP
         if (publicEncoderNameToBeUsed != null && encoder.getPublicEncoderNameToBeUsed() != null)
             return deliveryServerKey.equals(encoder.deliveryServerKey) && publicEncoderNameToBeUsed.equals(encoder.getPublicEncoderNameToBeUsed());
         else
+         */
             return deliveryServerKey.equals(encoder.deliveryServerKey);
     }
 
@@ -53,6 +56,7 @@ public class DeliveryServer implements Serializable{
         return Objects.hash(deliveryServerKey);
     }
 
+    /*
     public String getEncoderName()
     {
         if (getPublicEncoderNameToBeUsed())
@@ -60,6 +64,7 @@ public class DeliveryServer implements Serializable{
         else
             return internalServerName;
     }
+     */
 
     public DeliveryServer clone()
     {
@@ -70,9 +75,10 @@ public class DeliveryServer implements Serializable{
         deliveryServer.setOriginDeliveryServerKey(originDeliveryServerKey);
         deliveryServer.setExternal(external);
         deliveryServer.setEnabled(enabled);
-        deliveryServer.setPublicEncoderNameToBeUsed(publicEncoderNameToBeUsed);
-        deliveryServer.setPublicServerName(publicServerName);
-        deliveryServer.setInternalServerName(internalServerName);
+        // deliveryServer.setPublicEncoderNameToBeUsed(publicEncoderNameToBeUsed);
+        deliveryServer.setPublicIP(publicIP);
+        deliveryServer.setInternalIP(internalIP);
+        deliveryServer.setHostname(hostname);
         deliveryServer.setSelectedLastTime(selectedLastTime);
         deliveryServer.setCpuUsageUpdateTime(cpuUsageUpdateTime);
         deliveryServer.setCpuUsage(cpuUsage);
@@ -141,21 +147,29 @@ public class DeliveryServer implements Serializable{
     }
 
 
-    public String getPublicServerName() {
-		return publicServerName;
-	}
+    public String getPublicIP() {
+        return publicIP;
+    }
 
-	public void setPublicServerName(String publicServerName) {
-		this.publicServerName = publicServerName;
-	}
+    public void setPublicIP(String publicIP) {
+        this.publicIP = publicIP;
+    }
 
-	public String getInternalServerName() {
-		return internalServerName;
-	}
+    public String getInternalIP() {
+        return internalIP;
+    }
 
-	public void setInternalServerName(String internalServerName) {
-		this.internalServerName = internalServerName;
-	}
+    public void setInternalIP(String internalIP) {
+        this.internalIP = internalIP;
+    }
+
+    public String getHostname() {
+        return hostname;
+    }
+
+    public void setHostname(String hostname) {
+        this.hostname = hostname;
+    }
 
     public Long getTxAvgBandwidthUsage() {
         return txAvgBandwidthUsage;
@@ -179,14 +193,6 @@ public class DeliveryServer implements Serializable{
 
     public void setExternal(Boolean external) {
         this.external = external;
-    }
-
-    public Boolean getPublicEncoderNameToBeUsed() {
-        return publicEncoderNameToBeUsed;
-    }
-
-    public void setPublicEncoderNameToBeUsed(Boolean publicEncoderNameToBeUsed) {
-        this.publicEncoderNameToBeUsed = publicEncoderNameToBeUsed;
     }
 
     public Boolean getEnabled() {

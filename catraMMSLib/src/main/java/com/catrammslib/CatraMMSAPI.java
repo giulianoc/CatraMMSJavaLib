@@ -9837,8 +9837,9 @@ public class CatraMMSAPI implements Serializable {
             //    deliveryServer.setOriginDeliveryServerLabel(deliveryServerInfo.getString("originDeliveryServerLabel"));
             deliveryServer.setExternal(deliveryServerInfo.getBoolean("external"));
             deliveryServer.setEnabled(deliveryServerInfo.getBoolean("enabled"));
-            deliveryServer.setPublicServerName(deliveryServerInfo.getString("publicServerName"));
-            deliveryServer.setInternalServerName(deliveryServerInfo.getString("internalServerName"));
+            deliveryServer.setPublicIP(deliveryServerInfo.getString("publicIP"));
+            deliveryServer.setInternalIP(deliveryServerInfo.getString("internalIP"));
+            deliveryServer.setHostname(deliveryServerInfo.getString("hostname"));
 
             if (deliveryServerInfo.has("selectedLastTime"))
                 deliveryServer.setSelectedLastTime(simpleDateFormat.parse(deliveryServerInfo.getString("selectedLastTime")));
