@@ -22,6 +22,8 @@ public class DeliveryServer implements Serializable{
     private String publicIP;
     private String internalIP;
     private String hostname;
+    private Double latitude;
+    private Double longitude;
 
     Date selectedLastTime;
     Date cpuUsageUpdateTime;
@@ -79,6 +81,8 @@ public class DeliveryServer implements Serializable{
         deliveryServer.setPublicIP(publicIP);
         deliveryServer.setInternalIP(internalIP);
         deliveryServer.setHostname(hostname);
+        deliveryServer.setLatitude(latitude);
+        deliveryServer.setLongitude(longitude);
         deliveryServer.setSelectedLastTime(selectedLastTime);
         deliveryServer.setCpuUsageUpdateTime(cpuUsageUpdateTime);
         deliveryServer.setCpuUsage(cpuUsage);
@@ -161,6 +165,22 @@ public class DeliveryServer implements Serializable{
 
     public void setInternalIP(String internalIP) {
         this.internalIP = internalIP;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
     }
 
     public String getHostname() {

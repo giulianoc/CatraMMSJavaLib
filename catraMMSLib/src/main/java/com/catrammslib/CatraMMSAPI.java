@@ -2097,7 +2097,7 @@ public class CatraMMSAPI implements Serializable {
     public Long addDeliveryServer(String username, String password,
                            String label, String type, Long originDeliveryServerKey, boolean external,
                            boolean enabled,
-                           String publicIP, String internalIP, String hostname)
+                           String publicIP, String internalIP, String hostname, double latitude, double longitude)
             throws Exception
     {
         Long deliveryServerKey;
@@ -2116,6 +2116,8 @@ public class CatraMMSAPI implements Serializable {
             joDeliveryServer.put("publicIP", publicIP);
             joDeliveryServer.put("internalIP", internalIP);
             joDeliveryServer.put("hostname", hostname);
+            joDeliveryServer.put("latitude", latitude);
+            joDeliveryServer.put("longitude", longitude);
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/deliveryServer";
@@ -2161,7 +2163,8 @@ public class CatraMMSAPI implements Serializable {
                               Long deliveryServerKey,
                               String label, String type, Long originDeliveryServerKey, boolean external,
                               boolean enabled,
-                              String publicIP, String internalIP, String hostname)
+                              String publicIP, String internalIP, String hostname,
+                                     Double latitude, Double longitude)
             throws Exception
     {
         String mmsInfo;
@@ -2179,6 +2182,10 @@ public class CatraMMSAPI implements Serializable {
             joDeliveryServer.put("publicIP", publicIP);
             joDeliveryServer.put("internalIP", internalIP);
             joDeliveryServer.put("hostname", hostname);
+            if (latitude != null)
+                joDeliveryServer.put("latitude", latitude);
+            if (longitude != null)
+                joDeliveryServer.put("longitude", longitude);
 
             String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
                     + "/catramms/1.0.1/deliveryServer/" + deliveryServerKey;
@@ -9854,6 +9861,8 @@ public class CatraMMSAPI implements Serializable {
             deliveryServer.setPublicIP(deliveryServerInfo.getString("publicIP"));
             deliveryServer.setInternalIP(deliveryServerInfo.getString("internalIP"));
             deliveryServer.setHostname(deliveryServerInfo.getString("hostname"));
+            deliveryServer.setLatitude(deliveryServerInfo.getDouble("latitude"));
+            deliveryServer.setLongitude(deliveryServerInfo.getDouble("longitude"));
 
             if (deliveryServerInfo.has("selectedLastTime"))
                 deliveryServer.setSelectedLastTime(simpleDateFormat.parse(deliveryServerInfo.getString("selectedLastTime")));
