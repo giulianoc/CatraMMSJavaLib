@@ -5355,8 +5355,8 @@ public class CatraMMSAPI implements Serializable {
     public String getLiveDeliveryURL(String username, String password,
         String playerIP, // puo' essere null, in tal caso MMS calcola lui l'iP address remoto
         Boolean playerIPToBeAuthorized, // true: when the player deliveries the content, the playerIP is checked
-        String playerCountry,
-        String playerRegion,
+        Double playerLatitude,
+        Double playerLongitude,
 		Long ingestionJobKey,
 		Long deliveryCode,
 		Long ttlInSeconds, // if null -> 3600 * 24
@@ -5409,8 +5409,8 @@ public class CatraMMSAPI implements Serializable {
                     + "&maxRetries=" + lMaxRetries
                     + (playerIP == null || playerIP.isBlank() ? "" : ("&playerIP=" + playerIP))
                     + (playerIPToBeAuthorized == null ? "" : ("&playerIPToBeAuthorized=" + playerIPToBeAuthorized))
-                    + (playerCountry == null || playerCountry.isBlank() ? "" : ("&playerCountry=" + playerCountry))
-                    + (playerRegion == null || playerRegion.isBlank() ? "" : ("&playerRegion=" + playerRegion))
+                    + (playerLatitude == null ? "" : ("&playerLatitude=" + playerLatitude))
+                    + (playerLongitude == null ? "" : ("&playerLongitude=" + playerLongitude))
                     + "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "AWSMMS_SignedURL" : deliveryType)
                     + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + "&redirect=false"
