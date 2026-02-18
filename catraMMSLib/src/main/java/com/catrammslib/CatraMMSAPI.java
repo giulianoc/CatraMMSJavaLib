@@ -5357,7 +5357,7 @@ public class CatraMMSAPI implements Serializable {
         Boolean playerIPToBeAuthorized, // true: when the player deliveries the content, the playerIP is checked
         Double playerLatitude,
         Double playerLongitude,
-		Long ingestionJobKey, Long deliveryCode, Long outputIndex,
+		Long ingestionJobKey, Long deliveryCode, Long outputIndex, String deliveryHostToBeUsed,
 		Long ttlInSeconds, // if null -> 3600 * 24
 		Long maxRetries,    // if null -> 3600 * 24 / 5
 
@@ -5413,6 +5413,8 @@ public class CatraMMSAPI implements Serializable {
                     + "&deliveryType=" + (deliveryType == null || deliveryType.isEmpty() ? "AWSMMS_SignedURL" : deliveryType)
                     + (deliveryCode != null ? ("&deliveryCode=" +  deliveryCode) : "")
                     + (outputIndex != null ? ("&outputIndex=" +  outputIndex) : "")
+                    + (deliveryHostToBeUsed == null || deliveryHostToBeUsed.isBlank() ? ""
+                        : ("&deliveryHostToBeUsed=" + java.net.URLEncoder.encode(deliveryHostToBeUsed, "UTF-8")))
                     + "&redirect=false"
 					+ "&filteredByStatistic=" + (filteredByStatistic == null ? false : filteredByStatistic.toString())
 					+ (userId == null || userId.isEmpty() ? "" : ("&userId=" + java.net.URLEncoder.encode(userId, "UTF-8")))
