@@ -9787,10 +9787,14 @@ public class CatraMMSAPI implements Serializable {
                     encoder.setCpuUsageUpdateTime(simpleDateFormat.parse(encoderInfo.getString("cpuUsageUpdateTime")));
             }
 
-            if (encoderInfo.has("txAvgBandwidthUsage") && !encoderInfo.isNull("txAvgBandwidthUsage"))
-                encoder.setTxAvgBandwidthUsage(encoderInfo.getLong("txAvgBandwidthUsage"));
             if (encoderInfo.has("rxAvgBandwidthUsage") && !encoderInfo.isNull("rxAvgBandwidthUsage"))
                 encoder.setRxAvgBandwidthUsage(encoderInfo.getLong("rxAvgBandwidthUsage"));
+            if (encoderInfo.has("txAvgBandwidthUsage") && !encoderInfo.isNull("txAvgBandwidthUsage"))
+                encoder.setTxAvgBandwidthUsage(encoderInfo.getLong("txAvgBandwidthUsage"));
+            if (encoderInfo.has("rxPeakBandwidthUsage") && !encoderInfo.isNull("rxPeakBandwidthUsage"))
+                encoder.setRxPeakBandwidthUsage(encoderInfo.getLong("rxPeakBandwidthUsage"));
+            if (encoderInfo.has("txPeakBandwidthUsage") && !encoderInfo.isNull("txPeakBandwidthUsage"))
+                encoder.setTxPeakBandwidthUsage(encoderInfo.getLong("txPeakBandwidthUsage"));
             if (encoderInfo.has("bandwidthUsageUpdateTime"))
             {
                 if (encoderInfo.isNull("bandwidthUsageUpdateTime"))
@@ -9804,7 +9808,10 @@ public class CatraMMSAPI implements Serializable {
         }
         catch (Exception e)
         {
-            String errorMessage = "fillEncoder failed. Exception: " + e;
+            String errorMessage = "fillEncoder failed"
+                    + ", encoderInfo: " + encoderInfo.toString()
+                    + ", E" +
+                    "exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -9884,10 +9891,14 @@ public class CatraMMSAPI implements Serializable {
                     deliveryServer.setCpuUsageUpdateTime(simpleDateFormat.parse(deliveryServerInfo.getString("cpuUsageUpdateTime")));
             }
 
-            if (deliveryServerInfo.has("txAvgBandwidthUsage") && !deliveryServerInfo.isNull("txAvgBandwidthUsage"))
-                deliveryServer.setTxAvgBandwidthUsage(deliveryServerInfo.getLong("txAvgBandwidthUsage"));
             if (deliveryServerInfo.has("rxAvgBandwidthUsage") && !deliveryServerInfo.isNull("rxAvgBandwidthUsage"))
                 deliveryServer.setRxAvgBandwidthUsage(deliveryServerInfo.getLong("rxAvgBandwidthUsage"));
+            if (deliveryServerInfo.has("txAvgBandwidthUsage") && !deliveryServerInfo.isNull("txAvgBandwidthUsage"))
+                deliveryServer.setTxAvgBandwidthUsage(deliveryServerInfo.getLong("txAvgBandwidthUsage"));
+            if (deliveryServerInfo.has("rxPeakBandwidthUsage") && !deliveryServerInfo.isNull("rxPeakBandwidthUsage"))
+                deliveryServer.setRxPeakBandwidthUsage(deliveryServerInfo.getLong("rxPeakBandwidthUsage"));
+            if (deliveryServerInfo.has("txPeakBandwidthUsage") && !deliveryServerInfo.isNull("txPeakBandwidthUsage"))
+                deliveryServer.setTxPeakBandwidthUsage(deliveryServerInfo.getLong("txPeakBandwidthUsage"));
             if (deliveryServerInfo.has("bandwidthUsageUpdateTime"))
             {
                 if (deliveryServerInfo.isNull("bandwidthUsageUpdateTime"))

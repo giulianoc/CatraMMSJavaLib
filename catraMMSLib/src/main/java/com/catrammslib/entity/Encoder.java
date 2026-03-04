@@ -27,8 +27,10 @@ public class Encoder implements Serializable{
     Date cpuUsageUpdateTime;
 	private Long cpuUsage;
     Date bandwidthUsageUpdateTime;
-    private Long txAvgBandwidthUsage;
     private Long rxAvgBandwidthUsage;
+    private Long txAvgBandwidthUsage;
+    private Long rxPeakBandwidthUsage;
+    private Long txPeakBandwidthUsage;
 
 	private JSONArray workspacesAssociated;
 
@@ -76,8 +78,10 @@ public class Encoder implements Serializable{
         encoder.setCpuUsageUpdateTime(cpuUsageUpdateTime);
         encoder.setCpuUsage(cpuUsage);
         encoder.setBandwidthUsageUpdateTime(bandwidthUsageUpdateTime);
-        encoder.setTxAvgBandwidthUsage(txAvgBandwidthUsage);
         encoder.setRxAvgBandwidthUsage(rxAvgBandwidthUsage);
+        encoder.setTxAvgBandwidthUsage(txAvgBandwidthUsage);
+        encoder.setRxPeakBandwidthUsage(rxPeakBandwidthUsage);
+        encoder.setTxPeakBandwidthUsage(txPeakBandwidthUsage);
         encoder.setWorkspacesAssociated(workspacesAssociated);
 
         return encoder;
@@ -89,6 +93,14 @@ public class Encoder implements Serializable{
 
     public Long getRxAvgBandwidthUsageInMbps() {
         return rxAvgBandwidthUsage == null ? 0L : (rxAvgBandwidthUsage * 8) / 1000000;
+    }
+
+    public Long getTxPeakBandwidthUsageInMbps() {
+        return txPeakBandwidthUsage == null ? 0L : (txPeakBandwidthUsage * 8) / 1000000;
+    }
+
+    public Long getRxPeakBandwidthUsageInMbps() {
+        return rxPeakBandwidthUsage == null ? 0L : (rxPeakBandwidthUsage * 8) / 1000000;
     }
 
     public Long getEncoderKey() {
@@ -178,6 +190,22 @@ public class Encoder implements Serializable{
 
     public void setTxAvgBandwidthUsage(Long txAvgBandwidthUsage) {
         this.txAvgBandwidthUsage = txAvgBandwidthUsage;
+    }
+
+    public Long getRxPeakBandwidthUsage() {
+        return rxPeakBandwidthUsage;
+    }
+
+    public void setRxPeakBandwidthUsage(Long rxPeakBandwidthUsage) {
+        this.rxPeakBandwidthUsage = rxPeakBandwidthUsage;
+    }
+
+    public Long getTxPeakBandwidthUsage() {
+        return txPeakBandwidthUsage;
+    }
+
+    public void setTxPeakBandwidthUsage(Long txPeakBandwidthUsage) {
+        this.txPeakBandwidthUsage = txPeakBandwidthUsage;
     }
 
     public Long getRxAvgBandwidthUsage() {

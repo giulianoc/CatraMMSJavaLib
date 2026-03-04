@@ -30,8 +30,10 @@ public class DeliveryServer implements Serializable{
     Date cpuUsageUpdateTime;
 	private Long cpuUsage;
     Date bandwidthUsageUpdateTime;
-    private Long txAvgBandwidthUsage;
     private Long rxAvgBandwidthUsage;
+    private Long txAvgBandwidthUsage;
+    private Long rxPeakBandwidthUsage;
+    private Long txPeakBandwidthUsage;
 
 	private JSONArray workspacesAssociated;
 
@@ -89,8 +91,10 @@ public class DeliveryServer implements Serializable{
         deliveryServer.setCpuUsageUpdateTime(cpuUsageUpdateTime);
         deliveryServer.setCpuUsage(cpuUsage);
         deliveryServer.setBandwidthUsageUpdateTime(bandwidthUsageUpdateTime);
-        deliveryServer.setTxAvgBandwidthUsage(txAvgBandwidthUsage);
         deliveryServer.setRxAvgBandwidthUsage(rxAvgBandwidthUsage);
+        deliveryServer.setTxAvgBandwidthUsage(txAvgBandwidthUsage);
+        deliveryServer.setRxPeakBandwidthUsage(rxPeakBandwidthUsage);
+        deliveryServer.setTxPeakBandwidthUsage(txPeakBandwidthUsage);
         deliveryServer.setWorkspacesAssociated(workspacesAssociated);
 
         return deliveryServer;
@@ -102,6 +106,14 @@ public class DeliveryServer implements Serializable{
 
     public Long getRxAvgBandwidthUsageInMbps() {
         return rxAvgBandwidthUsage == null ? 0L : (rxAvgBandwidthUsage * 8) / 1000000;
+    }
+
+    public Long getTxPeakBandwidthUsageInMbps() {
+        return txPeakBandwidthUsage == null ? 0L : (txPeakBandwidthUsage * 8) / 1000000;
+    }
+
+    public Long getRxPeakBandwidthUsageInMbps() {
+        return rxPeakBandwidthUsage == null ? 0L : (rxPeakBandwidthUsage * 8) / 1000000;
     }
 
     public Long getDeliveryServerKey() {
@@ -215,6 +227,22 @@ public class DeliveryServer implements Serializable{
 
     public void setRxAvgBandwidthUsage(Long rxAvgBandwidthUsage) {
         this.rxAvgBandwidthUsage = rxAvgBandwidthUsage;
+    }
+
+    public Long getRxPeakBandwidthUsage() {
+        return rxPeakBandwidthUsage;
+    }
+
+    public void setRxPeakBandwidthUsage(Long rxPeakBandwidthUsage) {
+        this.rxPeakBandwidthUsage = rxPeakBandwidthUsage;
+    }
+
+    public Long getTxPeakBandwidthUsage() {
+        return txPeakBandwidthUsage;
+    }
+
+    public void setTxPeakBandwidthUsage(Long txPeakBandwidthUsage) {
+        this.txPeakBandwidthUsage = txPeakBandwidthUsage;
     }
 
     public Boolean getExternal() {
