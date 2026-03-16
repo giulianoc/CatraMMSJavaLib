@@ -8990,9 +8990,9 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setApplicationRecorder(joUserAPIKey.getBoolean("applicationRecorder"));
                 workspaceDetails.setCreateRemoveLiveChannel(joUserAPIKey.getBoolean("createRemoveLiveChannel"));
                 workspaceDetails.setUpdateEncoderAndDeliveryStats(joUserAPIKey.getBoolean("updateEncoderAndDeliveryStats"));
-                workspaceDetails.setAppUploadMediaContent(joUserAPIKey.getBoolean("appUploadMediaContent"));
-                workspaceDetails.setAppCaptureScreenAndProxy(joUserAPIKey.getBoolean("appCaptureScreenAndProxy"));
-                workspaceDetails.setAppStreamAndProxy(joUserAPIKey.getBoolean("appStreamAndProxy"));
+                workspaceDetails.setAppUploadMediaContent(joUserAPIKey.optBoolean("appUploadMediaContent", false));
+                workspaceDetails.setAppCaptureScreenAndProxy(joUserAPIKey.optBoolean("appCaptureScreenAndProxy", false));
+                workspaceDetails.setAppStreamAndProxy(joUserAPIKey.optBoolean("appStreamAndProxy", false));
             }
 
             if(jaWorkspaceInfo.has("cost"))
