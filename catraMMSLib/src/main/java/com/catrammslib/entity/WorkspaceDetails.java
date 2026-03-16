@@ -64,6 +64,9 @@ public class WorkspaceDetails implements Serializable {
     private Boolean applicationRecorder;
     private Boolean createRemoveLiveChannel;
     private Boolean updateEncoderAndDeliveryStats;
+    private Boolean appUploadMediaContent;
+    private Boolean appCaptureScreenAndProxy;
+    private Boolean appStreamAndProxy;
 
 
     // this field is used by the GUI
@@ -115,6 +118,9 @@ public class WorkspaceDetails implements Serializable {
                 ", applicationRecorder=" + applicationRecorder +
                 ", createRemoveLiveChannel=" + createRemoveLiveChannel +
                 ", updateEncoderAndDeliveryStats=" + updateEncoderAndDeliveryStats +
+                ", appUploadMediaContent=" + appUploadMediaContent +
+                ", appCaptureScreenAndProxy=" + appCaptureScreenAndProxy +
+                ", appStreamAndProxy=" + appStreamAndProxy +
 
                 ", maxStorageInGB=" + maxStorageInGB +
                 ", currentCostForStorage=" + currentCostForStorage +
@@ -234,6 +240,30 @@ public class WorkspaceDetails implements Serializable {
 
     public void setUpdateEncoderAndDeliveryStats(Boolean updateEncoderAndDeliveryStats) {
         this.updateEncoderAndDeliveryStats = updateEncoderAndDeliveryStats;
+    }
+
+    public Boolean getAppUploadMediaContent() {
+        return appUploadMediaContent;
+    }
+
+    public void setAppUploadMediaContent(Boolean appUploadMediaContent) {
+        this.appUploadMediaContent = appUploadMediaContent;
+    }
+
+    public Boolean getAppCaptureScreenAndProxy() {
+        return appCaptureScreenAndProxy;
+    }
+
+    public void setAppCaptureScreenAndProxy(Boolean appCaptureScreenAndProxy) {
+        this.appCaptureScreenAndProxy = appCaptureScreenAndProxy;
+    }
+
+    public Boolean getAppStreamAndProxy() {
+        return appStreamAndProxy;
+    }
+
+    public void setAppStreamAndProxy(Boolean appStreamAndProxy) {
+        this.appStreamAndProxy = appStreamAndProxy;
     }
 
     public Boolean getDeliveryAuthorization() {

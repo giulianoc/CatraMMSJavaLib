@@ -1,5 +1,7 @@
 package com.catrammslib.entity;
 
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.Date;
 
