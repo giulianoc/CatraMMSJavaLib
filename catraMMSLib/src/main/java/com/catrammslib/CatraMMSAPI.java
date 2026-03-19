@@ -8931,6 +8931,7 @@ public class CatraMMSAPI implements Serializable {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
         simpleDateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 
+        // mLogger.info("jaWorkspaceInfo: " + jaWorkspaceInfo.toString());
         try
         {
             workspaceDetails.setWorkspaceKey(jaWorkspaceInfo.getLong("workspaceKey"));
