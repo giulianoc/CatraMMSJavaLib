@@ -2104,7 +2104,7 @@ public class CatraMMSAPI implements Serializable {
                            String label, String type, Long originDeliveryServerKey, boolean external,
                            boolean enabled,
                            String publicIP, String internalIP, String hostname,
-                                  double latitude, double longitude, Long maxTXBandwidthInGbps)
+                                  double latitude, double longitude, double maxTXBandwidthInGbps)
             throws Exception
     {
         Long deliveryServerKey;
@@ -2172,7 +2172,7 @@ public class CatraMMSAPI implements Serializable {
                               String label, String type, Long originDeliveryServerKey, boolean external,
                               boolean enabled,
                               String publicIP, String internalIP, String hostname,
-                                     Double latitude, Double longitude, Long maxTXBandwidthInGbps)
+                                     Double latitude, Double longitude, Double maxTXBandwidthInGbps)
             throws Exception
     {
         String mmsInfo;
@@ -4679,7 +4679,7 @@ public class CatraMMSAPI implements Serializable {
         }
         catch (Exception e)
         {
-            String errorMessage = "getEncodingJobs failed. Exception: " + e;
+            String errorMessage = "getEncodingJob failed. Exception: " + e;
             mLogger.error(errorMessage);
 
             throw new Exception(errorMessage);
@@ -9874,7 +9874,7 @@ public class CatraMMSAPI implements Serializable {
             deliveryServer.setHostname(deliveryServerInfo.getString("hostname"));
             deliveryServer.setLatitude(deliveryServerInfo.getDouble("latitude"));
             deliveryServer.setLongitude(deliveryServerInfo.getDouble("longitude"));
-            deliveryServer.setMaxTXBandwidthInGbps(deliveryServerInfo.getLong("maxTXBandwidthInGbps"));
+            deliveryServer.setMaxTXBandwidthInGbps(deliveryServerInfo.getDouble("maxTXBandwidthInGbps"));
 
             if (deliveryServerInfo.has("selectedLastTime"))
                 deliveryServer.setSelectedLastTime(simpleDateFormat.parse(deliveryServerInfo.getString("selectedLastTime")));

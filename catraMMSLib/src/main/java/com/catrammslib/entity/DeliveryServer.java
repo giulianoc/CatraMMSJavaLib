@@ -24,7 +24,7 @@ public class DeliveryServer implements Serializable{
     private String hostname;
     private Double latitude;
     private Double longitude;
-    private Long maxTXBandwidthInGbps;
+    private Double maxTXBandwidthInGbps;
 
     Date selectedLastTime;
     Date cpuUsageUpdateTime;
@@ -189,11 +189,11 @@ public class DeliveryServer implements Serializable{
         this.latitude = latitude;
     }
 
-    public Long getMaxTXBandwidthInGbps() {
+    public Double getMaxTXBandwidthInGbps() {
         return maxTXBandwidthInGbps;
     }
 
-    public void setMaxTXBandwidthInGbps(Long maxTXBandwidthInGbps) {
+    public void setMaxTXBandwidthInGbps(Double maxTXBandwidthInGbps) {
         this.maxTXBandwidthInGbps = maxTXBandwidthInGbps;
     }
 
