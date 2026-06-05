@@ -287,7 +287,7 @@ public class CatraMMSAPI implements Serializable {
         Boolean editMedia, Boolean editConfiguration, Boolean killEncoding,
         Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean editDeliveryServersPool, Boolean applicationRecorder,
         Boolean createRemoveLiveChannel, Boolean updateEncoderAndDeliveryStats,
-        Boolean appUploadMediaContent, Boolean appCaptureScreenAndProxy, Boolean appStreamAndProxy)
+        Boolean appUploadMediaContent, Boolean appCaptureAndProxy, Boolean appStreamAndProxy)
         throws Exception
     {
         String mmsInfo;
@@ -314,7 +314,7 @@ public class CatraMMSAPI implements Serializable {
                 joObj.put("createRemoveLiveChannel", createRemoveLiveChannel);
                 joObj.put("updateEncoderAndDeliveryStats", updateEncoderAndDeliveryStats);
                 joObj.put("appUploadMediaContent", appUploadMediaContent);
-                joObj.put("appCaptureScreenAndProxy", appCaptureScreenAndProxy);
+                joObj.put("appCaptureAndProxy", appCaptureAndProxy);
                 joObj.put("appStreamAndProxy", appStreamAndProxy);
 
 				postBodyRequest = joObj.toString();
@@ -888,7 +888,7 @@ public class CatraMMSAPI implements Serializable {
 		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newEditDeliveryServersPool,
         Boolean newApplicationRecorder,
         Boolean newCreateRemoveLiveChannel, Boolean newUpdateEncoderAndDeliveryStats,
-        Boolean newAppUploadMediaContent, Boolean newAppCaptureScreenAndProxy, Boolean newAppStreamAndProxy)
+        Boolean newAppUploadMediaContent, Boolean newAppCaptureAndProxy, Boolean newAppStreamAndProxy)
         throws Exception
     {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
@@ -971,7 +971,7 @@ public class CatraMMSAPI implements Serializable {
             joUserAPIKey.put("createRemoveLiveChannel", newCreateRemoveLiveChannel);
             joUserAPIKey.put("updateEncoderAndDeliveryStats", newUpdateEncoderAndDeliveryStats);
             joUserAPIKey.put("appUploadMediaContent", newAppUploadMediaContent);
-            joUserAPIKey.put("appCaptureScreenAndProxy", newAppCaptureScreenAndProxy);
+            joUserAPIKey.put("appCaptureAndProxy", newAppCaptureAndProxy);
             joUserAPIKey.put("appStreamAndProxy", newAppStreamAndProxy);
 
             String bodyRequest = joBodyRequest.toString();
@@ -8992,7 +8992,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setCreateRemoveLiveChannel(joUserAPIKey.getBoolean("createRemoveLiveChannel"));
                 workspaceDetails.setUpdateEncoderAndDeliveryStats(joUserAPIKey.getBoolean("updateEncoderAndDeliveryStats"));
                 workspaceDetails.setAppUploadMediaContent(joUserAPIKey.optBoolean("appUploadMediaContent", false));
-                workspaceDetails.setAppCaptureScreenAndProxy(joUserAPIKey.optBoolean("appCaptureScreenAndProxy", false));
+                workspaceDetails.setAppCaptureAndProxy(joUserAPIKey.optBoolean("appCaptureAndProxy", false));
                 workspaceDetails.setAppStreamAndProxy(joUserAPIKey.optBoolean("appStreamAndProxy", false));
             }
 

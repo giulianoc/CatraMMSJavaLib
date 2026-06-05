@@ -65,7 +65,7 @@ public class WorkspaceDetails implements Serializable {
     private Boolean createRemoveLiveChannel;
     private Boolean updateEncoderAndDeliveryStats;
     private Boolean appUploadMediaContent;
-    private Boolean appCaptureScreenAndProxy;
+    private Boolean appCaptureAndProxy;
     private Boolean appStreamAndProxy;
 
 
@@ -119,7 +119,7 @@ public class WorkspaceDetails implements Serializable {
                 ", createRemoveLiveChannel=" + createRemoveLiveChannel +
                 ", updateEncoderAndDeliveryStats=" + updateEncoderAndDeliveryStats +
                 ", appUploadMediaContent=" + appUploadMediaContent +
-                ", appCaptureScreenAndProxy=" + appCaptureScreenAndProxy +
+                ", appCaptureAndProxy=" + appCaptureAndProxy +
                 ", appStreamAndProxy=" + appStreamAndProxy +
 
                 ", maxStorageInGB=" + maxStorageInGB +
@@ -250,12 +250,12 @@ public class WorkspaceDetails implements Serializable {
         this.appUploadMediaContent = appUploadMediaContent;
     }
 
-    public Boolean getAppCaptureScreenAndProxy() {
-        return appCaptureScreenAndProxy;
+    public Boolean getAppCaptureAndProxy() {
+        return appCaptureAndProxy;
     }
 
-    public void setAppCaptureScreenAndProxy(Boolean appCaptureScreenAndProxy) {
-        this.appCaptureScreenAndProxy = appCaptureScreenAndProxy;
+    public void setAppCaptureAndProxy(Boolean appCaptureAndProxy) {
+        this.appCaptureAndProxy = appCaptureAndProxy;
     }
 
     public Boolean getAppStreamAndProxy() {
