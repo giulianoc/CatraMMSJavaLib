@@ -741,7 +741,7 @@ public class CatraMMSBroadcaster {
 
 						outputStreamList,
 					joExtraLiveProxyInternalMMSParameters,
-					null, null
+					null, null, null, null
                 );
                 joWorkflow.put("task", joBroadcaster);
             }

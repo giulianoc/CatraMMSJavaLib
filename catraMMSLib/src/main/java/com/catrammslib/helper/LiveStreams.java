@@ -1095,7 +1095,7 @@ public class LiveStreams {
             String encodingProfileForCDN,
             boolean virtualVOD,
             Long virtualVODMaxDurationInMinutes,
-            Boolean monitoringFrameIncreasingEnabled)
+            Boolean monitoringRealTimeInfoEnabled)
             throws Exception
     {
         mLogger.info("Received startLiveRecorder"
@@ -1120,7 +1120,7 @@ public class LiveStreams {
                 + ", encodingProfileForCDN: " + encodingProfileForCDN
                 + ", virtualVOD: " + virtualVOD
                 + ", virtualVODMaxDurationInMinutes: " + virtualVODMaxDurationInMinutes
-                + ", monitoringFrameIncreasingEnabled: " + monitoringFrameIncreasingEnabled
+                + ", monitoringRealTimeInfoEnabled: " + monitoringRealTimeInfoEnabled
         );
 
         try
@@ -1204,7 +1204,7 @@ public class LiveStreams {
                     segmentDurationInSeconds, retentionChunk, retentionBuildVODAtTheEnd, ingester, thumbnail,
                     autoRenew, utcTimeOverlay, monitorHLS, encodingProfileForCDN,
                     virtualVOD, virtualVODMaxDurationInMinutes, encodersPool,
-                    monitoringFrameIncreasingEnabled);
+                    monitoringRealTimeInfoEnabled);
             mLogger.info("joWorkflow: " + joWorkflow.toString(4));
 
             {
@@ -1264,7 +1264,7 @@ public class LiveStreams {
                                                     boolean liveRecorderVirtualVOD,
                                                     Long liveRecorderVirtualVODMaxDurationInMinutes,
                                                     String encodersPool,
-                                                    Boolean monitoringFrameIncreasingEnabled
+                                                    Boolean monitoringRealTimeInfoEnabled
     )
             throws Exception
     {
@@ -1352,7 +1352,7 @@ public class LiveStreams {
                         null,
                         outputStreamList,
                         null,
-                        monitoringFrameIncreasingEnabled
+                        monitoringRealTimeInfoEnabled
                 );
 
                 if (buildVODAtTheEnd != null && buildVODAtTheEnd)

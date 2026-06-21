@@ -223,7 +223,7 @@ public class CatraMMSWorkflow {
             String userAgent,
             List<OutputStream> liveRecorderOutputList,
 			JSONArray jaFramesToBeDetected,
-			Boolean monitoringFrameIncreasingEnabled
+			Boolean monitoringRealTimeInfoEnabled
     )
             throws Exception
     {
@@ -321,8 +321,10 @@ public class CatraMMSWorkflow {
 			if (jaFramesToBeDetected != null)
 				joParameters.put("framesToBeDetected", jaFramesToBeDetected);
 
-			if (monitoringFrameIncreasingEnabled != null)
-				joParameters.put("monitoringFrameIncreasingEnabled", monitoringFrameIncreasingEnabled);
+            JSONObject joMonitoring = new JSONObject();
+			if (monitoringRealTimeInfoEnabled != null)
+                joMonitoring.put("realTimeInfoEnabled", monitoringRealTimeInfoEnabled);
+            joParameters.put("monitoring", joMonitoring);
 
 			return joTask;
         }
@@ -351,7 +353,9 @@ public class CatraMMSWorkflow {
             List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
 			Boolean defaultBroadcast,
-            Boolean monitoringFrameIncreasingEnabled
+            Boolean monitoringRealTimeInfoEnabled,
+            Double lowSpeedThreshold,
+            Double lowFpsThreshold
     )
             throws Exception
     {
@@ -429,8 +433,14 @@ public class CatraMMSWorkflow {
 			if (joInternalMMSParameters != null)
 				joParameters.put("internalMMS", joInternalMMSParameters);
 
-            if (monitoringFrameIncreasingEnabled != null)
-                joParameters.put("monitoringFrameIncreasingEnabled", monitoringFrameIncreasingEnabled);
+            JSONObject joMonitoring = new JSONObject();
+            if (monitoringRealTimeInfoEnabled != null)
+                joMonitoring.put("realTimeInfoEnabled", monitoringRealTimeInfoEnabled);
+            if (lowSpeedThreshold != null)
+                joMonitoring.put("lowSpeedThreshold", lowSpeedThreshold);
+            if (lowFpsThreshold != null)
+                joMonitoring.put("lowFpsThreshold", lowFpsThreshold);
+            joParameters.put("monitoring", joMonitoring);
 
             return joTask;
         }
@@ -477,7 +487,8 @@ public class CatraMMSWorkflow {
             JSONObject joTask = buildLiveProxyJson(label, liveConfigurationLabel, null,
                 encodersPool, proxyStartTime, proxyEndTime, null, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
-                    outputStreamList, joInternalMMSParameters, defaultBroadcast, null);
+                    outputStreamList, joInternalMMSParameters, defaultBroadcast,
+                    null, null, null);
 
 			if (filters != null)
 			{
