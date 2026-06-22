@@ -322,9 +322,14 @@ public class CatraMMSWorkflow {
 				joParameters.put("framesToBeDetected", jaFramesToBeDetected);
 
             JSONObject joMonitoring = new JSONObject();
-			if (monitoringRealTimeInfoEnabled != null)
-                joMonitoring.put("realTimeInfoEnabled", monitoringRealTimeInfoEnabled);
             joParameters.put("monitoring", joMonitoring);
+            if (monitoringRealTimeInfoEnabled != null)
+            {
+                JSONObject joRealTimeInfo = new JSONObject();
+                joMonitoring.put("realTimeInfo", joRealTimeInfo);
+
+                joRealTimeInfo.put("enabled", monitoringRealTimeInfoEnabled);
+            }
 
 			return joTask;
         }
@@ -354,8 +359,10 @@ public class CatraMMSWorkflow {
 			JSONObject joInternalMMSParameters,
 			Boolean defaultBroadcast,
             Boolean monitoringRealTimeInfoEnabled,
+            Boolean lowSpeedAndFpsEnabled,
             Double lowSpeedThreshold,
-            Double lowFpsThreshold
+            Double lowFpsThreshold,
+            Long lowSpeedAndFpsToleranceInSeconds
     )
             throws Exception
     {
@@ -434,13 +441,28 @@ public class CatraMMSWorkflow {
 				joParameters.put("internalMMS", joInternalMMSParameters);
 
             JSONObject joMonitoring = new JSONObject();
-            if (monitoringRealTimeInfoEnabled != null)
-                joMonitoring.put("realTimeInfoEnabled", monitoringRealTimeInfoEnabled);
-            if (lowSpeedThreshold != null)
-                joMonitoring.put("lowSpeedThreshold", lowSpeedThreshold);
-            if (lowFpsThreshold != null)
-                joMonitoring.put("lowFpsThreshold", lowFpsThreshold);
             joParameters.put("monitoring", joMonitoring);
+            if (monitoringRealTimeInfoEnabled != null)
+            {
+                JSONObject joRealTimeInfo = new JSONObject();
+                joMonitoring.put("realTimeInfo", joRealTimeInfo);
+
+                joRealTimeInfo.put("enabled", monitoringRealTimeInfoEnabled);
+            }
+            if (lowSpeedAndFpsEnabled != null)
+            {
+                JSONObject joLowSpeedAndFps = new JSONObject();
+                joMonitoring.put("lowSpeedAndFps", joLowSpeedAndFps);
+
+                joLowSpeedAndFps.put("enabled", lowSpeedAndFpsEnabled);
+
+                if (lowSpeedThreshold != null)
+                    joLowSpeedAndFps.put("lowSpeedThreshold", lowSpeedThreshold);
+                if (lowFpsThreshold != null)
+                    joLowSpeedAndFps.put("lowFpsThreshold", lowFpsThreshold);
+                if (lowSpeedAndFpsToleranceInSeconds != null)
+                    joLowSpeedAndFps.put("toleranceInSeconds", lowSpeedAndFpsToleranceInSeconds);
+            }
 
             return joTask;
         }
@@ -488,6 +510,7 @@ public class CatraMMSWorkflow {
                 encodersPool, proxyStartTime, proxyEndTime, null, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
                     outputStreamList, joInternalMMSParameters, defaultBroadcast,
+                    null, null,
                     null, null, null);
 
 			if (filters != null)
