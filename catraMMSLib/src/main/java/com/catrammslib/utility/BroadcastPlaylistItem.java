@@ -737,6 +737,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 	}
 
 	public int addReferencePhysicalPathKey(JSONObject joReferencePhysicalPathKey)
+			throws Exception
 	{
 		try
 		{
@@ -750,6 +751,7 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 				mLogger.warn("localPhysicalPathKey is null"
 				);
 
+				// 2026-08-11: è corretto non lanciare una eccezione?
 				return 0;
 			}
 
@@ -783,7 +785,6 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 			positionIndex = jaReferencePhysicalPathKeys.length() - 1;
 
 			MediaItem mediaItem = catraMMS.getMediaItemByPhysicalPathKey(username, password, physicalPathKey, null);
-
 			if (mediaItem != null)
 			{
 				if (mediaItems.size() <= positionIndex)
@@ -792,10 +793,15 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 					mediaItems.set(positionIndex, mediaItem);
 			}
 			else
-				mLogger.error("MediaItem is not found"
-					+ ", physicalPathKey: " + physicalPathKey
-				);
-			
+			{
+				// 2026-08-11: era solo loggato un errore ma penso sia bloccante per cui ho aggiunto il throw
+				String errorMessage = "MediaItem is not found"
+						+ ", physicalPathKey: " + physicalPathKey
+						;
+				mLogger.error(errorMessage);
+				throw new Exception(errorMessage);
+			}
+
 			if (endBasedOnMediaDuration != null && endBasedOnMediaDuration
 				&& mediaItems != null && start != null)
 			{
@@ -819,7 +825,9 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		{
 			mLogger.error("Exception: " + e.getMessage());
 
-			return 0;
+			// 2026-08-11: penso sia bloccante per cui ho aggiunto il throw
+			// return 0;
+			throw e;
 		}
 	}
 
