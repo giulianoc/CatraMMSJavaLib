@@ -43,6 +43,9 @@ public class OutputStream implements Serializable {
 	// HLS_Channel
 	private HLSChannelConf hlsChannel;
 
+	// HLS (solo nel caso di HLS è possibile utilizzare la CDN di MMS)
+	private Boolean mmsCDN;
+
 	// HLS
 	private String otherOutputOptions;
 
@@ -70,6 +73,7 @@ public class OutputStream implements Serializable {
 		outputStream.setRtmpChannel(getRtmpChannel());
 		outputStream.setSrtChannel(getSrtChannel());
 		outputStream.setHlsChannel(getHlsChannel());
+		outputStream.setMmsCDN(getMmsCDN());
 		outputStream.setOtherOutputOptions(getOtherOutputOptions());
 		outputStream.setEncodingProfile(getEncodingProfile());
 		outputStream.setEncodingProfileLabel(getEncodingProfileLabel());
@@ -105,6 +109,8 @@ public class OutputStream implements Serializable {
 			{
 				if (getHlsChannel() != null && getHlsChannel().getLabel() != null && !getHlsChannel().getLabel().isBlank())
 					joOutput.put("hlsChannelConfigurationLabel", getHlsChannel().getLabel());
+				if (getMmsCDN() != null)
+					joOutput.put("mmsCDN", getMmsCDN());
 			}
 			else
 			{
@@ -264,6 +270,9 @@ public class OutputStream implements Serializable {
 				}
 				else
 					setHlsChannel(null);
+
+				if (joOutputStream.has("mmsCDN"))
+					setMmsCDN(joOutputStream.getBoolean("mmsCDN"));
 			}
 
 			if (joOutputStream.has("otherOutputOptions") && !joOutputStream.getString("otherOutputOptions").isEmpty())
@@ -274,23 +283,6 @@ public class OutputStream implements Serializable {
 				JSONObject joFilters = joOutputStream.getJSONObject("filters");
 				filters.fromJson(joFilters);
 			}
-
-			/*
-			{
-				if (joOutputStream.has("drawTextDetails"))
-				{
-					filters.setDrawTextEnable(true);
-
-					JSONObject joDrawTextDetails = joOutputStream.getJSONObject("drawTextDetails");
-
-					filters.getDrawTextDetails().fromJson(joDrawTextDetails);
-				}
-				else
-				{
-					filters.setDrawTextEnable(false);
-				}
-			}
-			 */
 		}
 		catch(Exception e)
 		{
@@ -365,7 +357,15 @@ public class OutputStream implements Serializable {
 		this.hlsChannel = hlsChannel;
 	}
 
-    public String getEncodingProfileLabel() {
+	public Boolean getMmsCDN() {
+		return mmsCDN;
+	}
+
+	public void setMmsCDN(Boolean mmsCDN) {
+		this.mmsCDN = mmsCDN;
+	}
+
+	public String getEncodingProfileLabel() {
         return encodingProfileLabel;
     }
 
