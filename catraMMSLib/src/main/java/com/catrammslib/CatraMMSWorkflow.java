@@ -359,6 +359,7 @@ public class CatraMMSWorkflow {
 			JSONObject joInternalMMSParameters,
 			Boolean defaultBroadcast,
             Boolean monitoringRealTimeInfoEnabled,
+            Long monitoringRealTimeInfo_maxTimestampDiscontinuitiesInTimeWindow,
             Boolean lowSpeedAndFpsEnabled,
             Double lowSpeedThreshold,
             Double lowFpsThreshold,
@@ -449,6 +450,13 @@ public class CatraMMSWorkflow {
 
                 joRealTimeInfo.put("enabled", monitoringRealTimeInfoEnabled);
             }
+            if (monitoringRealTimeInfo_maxTimestampDiscontinuitiesInTimeWindow != null)
+            {
+                JSONObject joRealTimeInfo = new JSONObject();
+                joMonitoring.put("timestampDiscontinuity", joRealTimeInfo);
+
+                joRealTimeInfo.put("maxTimestampDiscontinuitiesInTimeWindow", monitoringRealTimeInfo_maxTimestampDiscontinuitiesInTimeWindow);
+            }
             if (lowSpeedAndFpsEnabled != null)
             {
                 JSONObject joLowSpeedAndFps = new JSONObject();
@@ -510,7 +518,7 @@ public class CatraMMSWorkflow {
                 encodersPool, proxyStartTime, proxyEndTime, null, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
                     outputStreamList, joInternalMMSParameters, defaultBroadcast,
-                    null, null,
+                    null, null,null,
                     null, null, null);
 
 			if (filters != null)

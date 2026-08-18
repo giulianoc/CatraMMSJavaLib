@@ -27,6 +27,7 @@ public class CatraMMSBroadcaster {
 		String broadcastEncodersPoolLabel,
 		String editBroadcasterDeliveryType, // HLS_Channel, CDN
 		HLSChannelConf editBroadcasterHlsChannel,
+		boolean mmsCDN,
 		String encodingProfileLabel,
 		List<BroadcastPlaylistItem> broadcastPlaylistItems,
 		CatraMMSAPI catraMMS, String username, String password)
@@ -46,6 +47,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcastEncodersPoolLabel: " + broadcastEncodersPoolLabel
 				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
 				+ ", editBroadcasterHlsChannel: " + editBroadcasterHlsChannel
+				+ ", mmsCDN: " + mmsCDN
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 			);
 
@@ -163,7 +165,7 @@ public class CatraMMSBroadcaster {
 					filters,
 					broadcasterStart, broadcasterEnd, encodingProfileLabel,
 					editBroadcasterDeliveryType,
-					editBroadcasterHlsChannel,
+					editBroadcasterHlsChannel, mmsCDN,
 					broadcastIngestionJobKey,
 					broadcastDefaultPlaylistItem
 				);
@@ -654,6 +656,7 @@ public class CatraMMSBroadcaster {
 		String encodingProfileLabel,
 		String editBroadcasterDeliveryType, // HLS_Channel, CDN
 		HLSChannelConf editBroadcasterHlsChannel,
+		boolean mmsCDN,
 
 		Long broadcastIngestionJobKey,
 		BroadcastPlaylistItem broadcastDefaultPlaylistItem
@@ -669,6 +672,7 @@ public class CatraMMSBroadcaster {
 				+ ", broadcasterEnd: " + broadcasterEnd
 				+ ", encodingProfileLabel: " + encodingProfileLabel
 				+ ", editBroadcasterDeliveryType: " + editBroadcasterDeliveryType
+				+ ", mmsCDN: " + mmsCDN
 				+ ", editBroadcasterHlsChannel: " + editBroadcasterHlsChannel
 				+ ", broadcastIngestionJobKey: " + broadcastIngestionJobKey
 			);
@@ -709,6 +713,7 @@ public class CatraMMSBroadcaster {
 					outputStream.setOutputType("HLS_Channel");
 					if (editBroadcasterHlsChannel != null)
 						outputStream.setHlsChannel(editBroadcasterHlsChannel);
+					outputStream.setMmsCDN(mmsCDN);
 
 					outputStream.setEncodingProfileLabel(encodingProfileLabel);
 
@@ -739,9 +744,11 @@ public class CatraMMSBroadcaster {
 					null,
 					null,
 
-						outputStreamList,
+					outputStreamList,
 					joExtraLiveProxyInternalMMSParameters,
-					null, null, null,
+					null, null,
+						250L,
+						null,
 						null, null, null
                 );
                 joWorkflow.put("task", joBroadcaster);
