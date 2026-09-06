@@ -2222,6 +2222,36 @@ public class CatraMMSAPI implements Serializable {
         }
     }
 
+    public void enableDeliveryServer(String username, String password,
+                                     Long deliveryServerKey, Boolean enable)
+            throws Exception
+    {
+        // String mmsInfo;
+        try
+        {
+            String mmsURL = mmsAPIProtocol + "://" + mmsAPIHostName + ":" + mmsAPIPort
+                    + "/catramms/1.0.1/deliveryServer/" + deliveryServerKey + "/" + enable.toString();
+
+            mLogger.info("enableDeliveryServer"
+                    + ", mmsURL: " + mmsURL
+                    + ", deliveryServerKey: " + deliveryServerKey
+                    + ", enable: " + enable
+            );
+
+            long start = System.currentTimeMillis();
+            HttpFeedFetcher.fetchPutHttpsJson(mmsURL, timeoutInSeconds, maxRetriesNumber,
+                    username, password, null, null, outputToBeCompressed);
+            mLogger.info("enableDeliveryServer. Elapsed (@" + mmsURL + "@): @" + (System.currentTimeMillis() - start) + "@ millisecs.");
+        }
+        catch (Exception e)
+        {
+            String errorMessage = "enableDeliveryServer MMS failed. Exception: " + e;
+            mLogger.error(errorMessage);
+
+            throw new Exception(errorMessage);
+        }
+    }
+
     public void removeDeliveryServer(String username, String password,
                               Long deliveryServerKey)
             throws Exception
