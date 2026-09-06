@@ -285,7 +285,7 @@ public class CatraMMSAPI implements Serializable {
         Boolean createRemoveWorkspace, Boolean ingestWorkflow, Boolean createProfiles,
         Boolean deliveryAuthorization, Boolean shareWorkspace,
         Boolean editMedia, Boolean editConfiguration, Boolean killEncoding,
-        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean editDeliveryServersPool, Boolean applicationRecorder,
+        Boolean cancelIngestionJob, Boolean editEncodersPool, Boolean enableDeliveryServer, Boolean applicationRecorder,
         Boolean createRemoveLiveChannel, Boolean updateEncoderAndDeliveryStats,
         Boolean appUploadMediaContent, Boolean appCaptureAndProxy, Boolean appStreamAndProxy)
         throws Exception
@@ -309,7 +309,7 @@ public class CatraMMSAPI implements Serializable {
 				joObj.put("killEncoding", killEncoding);
 				joObj.put("cancelIngestionJob", cancelIngestionJob);
 				joObj.put("editEncodersPool", editEncodersPool);
-                joObj.put("editDeliveryServersPool", editDeliveryServersPool);
+                joObj.put("enableDeliveryServer", enableDeliveryServer);
 				joObj.put("applicationRecorder", applicationRecorder);
                 joObj.put("createRemoveLiveChannel", createRemoveLiveChannel);
                 joObj.put("updateEncoderAndDeliveryStats", updateEncoderAndDeliveryStats);
@@ -885,7 +885,7 @@ public class CatraMMSAPI implements Serializable {
 		Boolean newCreateRemoveWorkspace, Boolean newIngestWorkflow, Boolean newCreateProfiles,
 		Boolean newDeliveryAuthorization, Boolean newShareWorkspace,
 		Boolean newEditMedia, Boolean newEditConfiguration, Boolean newKillEncoding,
-		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newEditDeliveryServersPool,
+		Boolean newCancelIngestionJob, Boolean newEditEncodersPool, Boolean newEnableDeliveryServer,
         Boolean newApplicationRecorder,
         Boolean newCreateRemoveLiveChannel, Boolean newUpdateEncoderAndDeliveryStats,
         Boolean newAppUploadMediaContent, Boolean newAppCaptureAndProxy, Boolean newAppStreamAndProxy)
@@ -966,7 +966,7 @@ public class CatraMMSAPI implements Serializable {
 			joUserAPIKey.put("killEncoding", newKillEncoding);
 			joUserAPIKey.put("cancelIngestionJob", newCancelIngestionJob);
 			joUserAPIKey.put("editEncodersPool", newEditEncodersPool);
-            joUserAPIKey.put("editDeliveryServersPool", newEditDeliveryServersPool);
+            joUserAPIKey.put("enableDeliveryServer", newEnableDeliveryServer);
 			joUserAPIKey.put("applicationRecorder", newApplicationRecorder);
             joUserAPIKey.put("createRemoveLiveChannel", newCreateRemoveLiveChannel);
             joUserAPIKey.put("updateEncoderAndDeliveryStats", newUpdateEncoderAndDeliveryStats);
@@ -8998,7 +8998,7 @@ public class CatraMMSAPI implements Serializable {
                 workspaceDetails.setKillEncoding(joUserAPIKey.getBoolean("killEncoding"));
                 workspaceDetails.setCancelIngestionJob(joUserAPIKey.getBoolean("cancelIngestionJob"));
                 workspaceDetails.setEditEncodersPool(joUserAPIKey.getBoolean("editEncodersPool"));
-                workspaceDetails.setEditDeliveryServersPool(joUserAPIKey.getBoolean("editDeliveryServersPool"));
+                workspaceDetails.setEnableDeliveryServer(joUserAPIKey.getBoolean("enableDeliveryServer"));
                 workspaceDetails.setApplicationRecorder(joUserAPIKey.getBoolean("applicationRecorder"));
                 workspaceDetails.setCreateRemoveLiveChannel(joUserAPIKey.getBoolean("createRemoveLiveChannel"));
                 workspaceDetails.setUpdateEncoderAndDeliveryStats(joUserAPIKey.getBoolean("updateEncoderAndDeliveryStats"));

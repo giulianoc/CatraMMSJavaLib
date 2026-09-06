@@ -60,7 +60,7 @@ public class WorkspaceDetails implements Serializable {
     private Boolean killEncoding;
     private Boolean cancelIngestionJob;
     private Boolean editEncodersPool;
-    private Boolean editDeliveryServersPool;
+    private Boolean enableDeliveryServer;
     private Boolean applicationRecorder;
     private Boolean createRemoveLiveChannel;
     private Boolean updateEncoderAndDeliveryStats;
@@ -114,7 +114,7 @@ public class WorkspaceDetails implements Serializable {
                 ", killEncoding=" + killEncoding +
                 ", cancelIngestionJob=" + cancelIngestionJob +
                 ", editEncodersPool=" + editEncodersPool +
-                ", editDeliveryServersPool=" + editDeliveryServersPool +
+                ", enableDeliveryServer=" + enableDeliveryServer +
                 ", applicationRecorder=" + applicationRecorder +
                 ", createRemoveLiveChannel=" + createRemoveLiveChannel +
                 ", updateEncoderAndDeliveryStats=" + updateEncoderAndDeliveryStats +
@@ -386,7 +386,15 @@ public class WorkspaceDetails implements Serializable {
 		this.expirationDate = expirationDate;
 	}
 
-	public Boolean getEditConfiguration() {
+    public Boolean getEnableDeliveryServer() {
+        return enableDeliveryServer;
+    }
+
+    public void setEnableDeliveryServer(Boolean enableDeliveryServer) {
+        this.enableDeliveryServer = enableDeliveryServer;
+    }
+
+    public Boolean getEditConfiguration() {
         return editConfiguration;
     }
 
@@ -418,13 +426,6 @@ public class WorkspaceDetails implements Serializable {
         this.editEncodersPool = editEncodersPool;
     }
 
-    public Boolean getEditDeliveryServersPool() {
-        return editDeliveryServersPool;
-    }
-
-    public void setEditDeliveryServersPool(Boolean editDeliveryServersPool) {
-        this.editDeliveryServersPool = editDeliveryServersPool;
-    }
 
     public Long getMaxStorageInGB() {
         return maxStorageInGB;
