@@ -17,23 +17,10 @@ public class Filters {
     private Filter editFilter;
 
 
-    /*
-    public Filter appendFilter() {
-        Filter filter = new Filter();
-        filters.add(filter);
-
-        return filter;
-    }
-
-    public void removeLastFilter() {
-        if (filters.size() > 0)
-            filters.remove(filters.size() - 1);
-    }
-     */
-
     public void prepareFilterDialog()
     {
-        editFilter = new Filter(null);
+        String defaultFilterName = "Black Detect";
+        editFilter = new Filter(defaultFilterName);
     }
 
     public void remove(int index)
