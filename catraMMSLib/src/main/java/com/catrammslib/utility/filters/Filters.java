@@ -65,6 +65,10 @@ public class Filters {
                         switch (filterName.toLowerCase()) {
                             case "blackdetect":
                                 filter.setFilterName("Black Detect");
+                                if (joFilter.has("black_min_duration"))
+                                    filter.setBlackdetect_BlackMinDuration(Double.valueOf(joFilter.getDouble("black_min_duration")).floatValue());
+                                if (joFilter.has("pixel_black_th"))
+                                    filter.setBlackdetect_PixelBlackTh(Double.valueOf(joFilter.getDouble("pixel_black_th")).floatValue());
                                 break;
                             case "blackframe":
                                 filter.setFilterName("Black Frame");
