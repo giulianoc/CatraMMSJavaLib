@@ -651,7 +651,8 @@ public class BroadcastPlaylistItem implements Serializable, Comparable<Broadcast
 		}
 		catch (Exception e)
 		{
-			mLogger.error("getJson2" 
+			mLogger.error("getJson2"
+				+ ", referencePhysicalPathKeys: " + (getMediaType().equalsIgnoreCase("Media") ? getReferencePhysicalPathKeys() : "")
 				+ ", exception: " + e
 			);
 
