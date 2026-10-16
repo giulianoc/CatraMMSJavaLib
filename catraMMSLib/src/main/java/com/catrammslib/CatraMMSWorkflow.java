@@ -1638,6 +1638,7 @@ public class CatraMMSWorkflow {
             String streamingName,       // only if inputType is URL
             String streamingUrl,        // only if inputType is URL
             Boolean isVideo,
+            int timeoutInSeconds,       // maximum time in seconds to wait for the streaming to be available
             String waitForGlobalIngestionLabel,
             Long utcProcessingStartingFrom
     )
@@ -1671,6 +1672,7 @@ public class CatraMMSWorkflow {
 
             if (isVideo != null)
                 joParameters.put("isVideo", isVideo);
+            joParameters.put("timeoutInSeconds", timeoutInSeconds);
 
             if (utcProcessingStartingFrom != null)
             {
