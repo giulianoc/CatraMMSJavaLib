@@ -16,6 +16,7 @@ public class DeliveryServer implements Serializable{
     private Long originDeliveryServerKey;
     private Boolean external;
     private Boolean enabled;
+    private Boolean cdnEnabled;
 
     // it is used by the GUI, true publicServerName is used, false internalServerName is used
     // private Boolean publicEncoderNameToBeUsed;
@@ -80,6 +81,7 @@ public class DeliveryServer implements Serializable{
         deliveryServer.setOriginDeliveryServerKey(originDeliveryServerKey);
         deliveryServer.setExternal(external);
         deliveryServer.setEnabled(enabled);
+        deliveryServer.setCdnEnabled(cdnEnabled);
         // deliveryServer.setPublicEncoderNameToBeUsed(publicEncoderNameToBeUsed);
         deliveryServer.setPublicIP(publicIP);
         deliveryServer.setInternalIP(internalIP);
@@ -259,6 +261,14 @@ public class DeliveryServer implements Serializable{
 
     public void setEnabled(Boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Boolean getCdnEnabled() {
+        return cdnEnabled;
+    }
+
+    public void setCdnEnabled(Boolean cdnEnabled) {
+        this.cdnEnabled = cdnEnabled;
     }
 
     public String getType() {

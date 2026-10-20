@@ -2102,7 +2102,7 @@ public class CatraMMSAPI implements Serializable {
 
     public Long addDeliveryServer(String username, String password,
                            String label, String type, Long originDeliveryServerKey, boolean external,
-                           boolean enabled,
+                           boolean enabled, boolean cdnEnabled,
                            String publicIP, String internalIP, String hostname,
                                   double latitude, double longitude, double maxTXBandwidthInGbps)
             throws Exception
@@ -2120,6 +2120,7 @@ public class CatraMMSAPI implements Serializable {
                 joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
+            joDeliveryServer.put("cdnEnabled", cdnEnabled);
             joDeliveryServer.put("publicIP", publicIP);
             joDeliveryServer.put("internalIP", internalIP);
             joDeliveryServer.put("hostname", hostname);
@@ -2170,7 +2171,7 @@ public class CatraMMSAPI implements Serializable {
     public void modifyDeliveryServer(String username, String password,
                               Long deliveryServerKey,
                               String label, String type, Long originDeliveryServerKey, boolean external,
-                              boolean enabled,
+                              boolean enabled, boolean cdnEnabled,
                               String publicIP, String internalIP, String hostname,
                                      Double latitude, Double longitude, Double maxTXBandwidthInGbps)
             throws Exception
@@ -2187,6 +2188,7 @@ public class CatraMMSAPI implements Serializable {
             joDeliveryServer.put("originDeliveryServerKey", originDeliveryServerKey);
             joDeliveryServer.put("external", external);
             joDeliveryServer.put("enabled", enabled);
+            joDeliveryServer.put("cdnEnabled", cdnEnabled);
             joDeliveryServer.put("publicIP", publicIP);
             joDeliveryServer.put("internalIP", internalIP);
             joDeliveryServer.put("hostname", hostname);
@@ -9910,6 +9912,7 @@ public class CatraMMSAPI implements Serializable {
             //    deliveryServer.setOriginDeliveryServerLabel(deliveryServerInfo.getString("originDeliveryServerLabel"));
             deliveryServer.setExternal(deliveryServerInfo.getBoolean("external"));
             deliveryServer.setEnabled(deliveryServerInfo.getBoolean("enabled"));
+            deliveryServer.setCdnEnabled(deliveryServerInfo.getBoolean("cdnEnabled"));
             deliveryServer.setPublicIP(deliveryServerInfo.getString("publicIP"));
             deliveryServer.setInternalIP(deliveryServerInfo.getString("internalIP"));
             deliveryServer.setHostname(deliveryServerInfo.getString("hostname"));
