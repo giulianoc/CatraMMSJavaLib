@@ -358,6 +358,7 @@ public class CatraMMSWorkflow {
             List<OutputStream> outputStreamList,
 			JSONObject joInternalMMSParameters,
 			Boolean defaultBroadcast,
+            String httpProxy,
             Boolean monitoringRealTimeInfoEnabled,
             Long monitoringRealTimeInfo_maxTimestampDiscontinuitiesInTimeWindow,
             Boolean lowSpeedAndFpsEnabled,
@@ -401,6 +402,9 @@ public class CatraMMSWorkflow {
                 joParameters.put("maxAttemptsNumberInCaseOfErrors", maxAttemptsNumberInCaseOfErrors);
             if (waitingSecondsBetweenAttemptsInCaseOfErrors != null)
                 joParameters.put("waitingSecondsBetweenAttemptsInCaseOfErrors", waitingSecondsBetweenAttemptsInCaseOfErrors);
+
+            if (httpProxy != null && !httpProxy.isBlank())
+                joParameters.put("httpProxy", httpProxy);
 
             if (proxyStartTime != null && proxyEndTime != null)
             {
@@ -518,7 +522,8 @@ public class CatraMMSWorkflow {
                 encodersPool, proxyStartTime, proxyEndTime, null, userAgent, maxWidth, otherInputOptions,
 				maxAttemptsNumberInCaseOfErrors, waitingSecondsBetweenAttemptsInCaseOfErrors,
                     outputStreamList, joInternalMMSParameters, defaultBroadcast,
-                    null, null,null,
+                    null, null,
+                    null,null,
                     null, null, null);
 
 			if (filters != null)

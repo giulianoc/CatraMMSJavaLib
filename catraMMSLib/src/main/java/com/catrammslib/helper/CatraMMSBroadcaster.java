@@ -746,7 +746,7 @@ public class CatraMMSBroadcaster {
 
 					outputStreamList,
 					joExtraLiveProxyInternalMMSParameters,
-					null, null,
+					null, null, null,
 						250L,
 						null,
 						null, null, null
