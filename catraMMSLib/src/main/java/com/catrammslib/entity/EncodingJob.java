@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -122,16 +123,25 @@ public class EncodingJob implements Serializable {
 
             for (String key : sortedKeys)
             {
-                Object value = realTimeInfo.get(key);
-
+                mLogger.info("realTimeInfoAsHTML"
+                        + ", key: " + key);
                 String valueStr;
-                if (value instanceof String) {
-                    valueStr = (String) value;
-                } else if (value instanceof Number || value instanceof Boolean || value instanceof Double) {
-                    valueStr = value.toString();
-                } else {
-                    // JSONObject, JSONArray, ecc.
-                    valueStr = value.toString();
+                Object value = realTimeInfo.get(key);
+                if (key.equals("processedOutputTimestampMilliSecs") && value instanceof Number)
+                {
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+                    valueStr = simpleDateFormat.format(new Date(realTimeInfo.getLong(key)));
+                }
+                else
+                {
+                    if (value instanceof String) {
+                        valueStr = (String) value;
+                    } else if (value instanceof Number || value instanceof Boolean || value instanceof Double) {
+                        valueStr = value.toString();
+                    } else {
+                        // JSONObject, JSONArray, ecc.
+                        valueStr = value.toString();
+                    }
                 }
 
                 sb.append("    <tr>");
