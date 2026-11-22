@@ -130,6 +130,7 @@ public class EncodingJob implements Serializable {
                 if (key.equals("processedOutputTimestampMilliSecs") && value instanceof Number)
                 {
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
+                    simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
                     valueStr = simpleDateFormat.format(new Date(realTimeInfo.getLong(key)));
                     key = "processedOutputTimestamp";
                 }
