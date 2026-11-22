@@ -129,9 +129,9 @@ public class EncodingJob implements Serializable {
                 Object value = realTimeInfo.get(key);
                 if (key.equals("processedOutputTimestampMilliSecs") && value instanceof Number)
                 {
-                    key = "processedOutputTimestamp";
                     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("HH:mm:ss.SSS");
                     valueStr = simpleDateFormat.format(new Date(realTimeInfo.getLong(key)));
+                    key = "processedOutputTimestamp";
                 }
                 else
                 {
